@@ -1,0 +1,68 @@
+ <!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Populate RFID Database</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+	<script src="/js/jquery.min.js"></script>
+ 	<script src="/js/bootstrap.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+ 
+  </head>
+    <body>
+          <!-- Fixed navbar -->
+<!-- No nav for the moment -->
+
+    <!-- Begin page content -->
+    <div class="container-fluid"style="margin:10%;">
+    <h1>Référencement des badges RFID</h1>
+    <form action="/populate" method="post">
+    	<div class="row">
+    		<u>code</u>&nbsp;:&nbsp;<div id="rfidcode" style="color:red;"></div>
+    	</div>
+    	<div class="row">
+    		<input type="radio" name="group" value="A">&nbsp;&nbsp;Group A<br>
+    	</div>
+    	<div class="row">
+    		<input type="radio" name="group" value="B">&nbsp;&nbsp;Group B<br>
+    	</div>
+    	<div class="row">
+    		<input type="radio" name="group" value="C">&nbsp;&nbsp;Group C<br>
+    	</div>
+    	<div class="row">
+    		<input type="submit" name="Referencer" value="Referencer">
+    	</div>
+    	</form>
+    </div>
+  <script type='text/javascript'> 
+$(document).ready(function(){
+     var socket = io();
+     var rfidcode = $('#rfidcode');
+    // ------------------------------------------------------------------
+    // Socket listening
+    // ------------------------------------------------------------------
+    // Receiving new media attributes by socket.
+    socket.on('toclient.rfidData', function(data) {
+        console.log("<server.rfidData> rfid #" + data.tag + " on reader #" + data.reader);
+        rfidcode.html(data.tag);
+        
+    });
+}); // $(document).ready()
+  </script>
+ 
+ 
+
+    </div>
+
+	<footer class="footer">
+       <div class="container-fluid"> 
+      </div>
+	</footer>
+  </body>
+</html>
