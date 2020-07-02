@@ -1,0 +1,35 @@
+{
+  "name": "parallaxe2050",
+  "version": "1.0.0",
+  "description": "Serious game sur les filles et les metiers du numérique ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pilooz/parallaxe2050.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pilooz/parallaxe2050/issues"
+  },
+  "homepage": "https://github.com/pilooz/parallaxe2050#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "bootstrap": "^4.5.0",
+    "cookie-parser": "^1.4.5",
+    "cookieparser": "^0.1.0",
+    "ejs": "^3.1.3",
+    "express": "^4.17.1",
+    "formidable": "^1.2.2",
+    "fs": "0.0.1-security",
+    "ip": "^1.1.5",
+    "jquery": "^3.5.1",
+    "json-editor": "^0.7.28",
+    "node-math": "0.0.3",
+    "serialport": "^9.0.0",
+    "socket.io": "^2.3.0"
+  }
+}

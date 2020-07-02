@@ -1,0 +1,30 @@
+// 
+// Config File
+//
+var app_root = "/home/parallaxe2050";
+module.exports = app_root;
+
+module.exports = {
+  // Node Server configuration
+  server : {
+    port : 3000,
+    host : 'localhost',
+    
+  },
+
+  // Serial Port configuration for rfid reads
+  rfid : {
+    portName : '/dev/cu.usbserial-A603XVZO',
+    baudRate : 115200,
+    behavior : 'real', // 'real' => means that tags come form USB-Serial port, 'emulated' is just for dev (no usb port reading)
+    numReaders : 1
+  },
+
+  // Application spcific conf
+  app : {
+    dbPath : app_root + "/data",
+    dbSavePath : app_root + "/data/sav",
+   }
+}
+
+
