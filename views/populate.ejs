@@ -22,23 +22,41 @@
     <!-- Begin page content -->
     <div class="container-fluid"style="margin:10%;">
     <h1>Référencement des badges RFID</h1>
-    <form action="/populate" method="post">
+    <form action="/populate" method="get">
     	<div class="row">
-    		<u>code</u>&nbsp;:&nbsp;<div id="rfidcode" style="color:red;"></div>
+    		<u>code</u>&nbsp;:&nbsp;<input type="text" id="rfidcode" name="rfidcode" value="" style="color:red;">
     	</div>
     	<div class="row">
-    		<input type="radio" name="group" value="A">&nbsp;&nbsp;Group A<br>
+    		<input id="groupA" type="radio" name="group" value="A"><label for="groupA">&nbsp;&nbsp;Group A</label>
     	</div>
     	<div class="row">
-    		<input type="radio" name="group" value="B">&nbsp;&nbsp;Group B<br>
+    		<input id="groupB" type="radio" name="group" value="B"><label for="groupB">&nbsp;&nbsp;Group B</label>
     	</div>
     	<div class="row">
-    		<input type="radio" name="group" value="C">&nbsp;&nbsp;Group C<br>
+    		<input id="groupC" type="radio" name="group" value="C"><label for="groupC">&nbsp;&nbsp;Group C</label>
+    	</div>
+    	<hr />
+    	<div class="row">
+    		<input id="subgroup1" type="radio" name="subgroup" value="1"><label for="subgroup1">&nbsp;&nbsp;Sub-group 1</label>
     	</div>
     	<div class="row">
-    		<input type="submit" name="Referencer" value="Referencer">
+    		<input id="subgroup2" type="radio" name="subgroup" value="2"><label for="subgroup2">&nbsp;&nbsp;Sub-group 2</label>
+    	</div>
+    	<div class="row">
+    		<input id="subgroup3" type="radio" name="subgroup" value="3"><label for="subgroup3">&nbsp;&nbsp;Sub-group 3</label>
+    	</div>
+    	<div class="row">
+    		<input id="subgroup4" type="radio" name="subgroup" value="4"><label for="subgroup4">&nbsp;&nbsp;Sub-group 4</label>
+    	</div>
+    	<div class="row">
+    		<input id="subgroup5" type="radio" name="subgroup" value="5"><label for="subgroup5">&nbsp;&nbsp;Sub-group 5</label>
+    	</div>
+    	<div class="row">
+    		<input type="submit" class="btn btn-primary" value="Referencer">
     	</div>
     	</form>
+    	<hr />
+    	<button class="btn btn-danger" id="save">Sauvegarder</button>
     </div>
   <script type='text/javascript'> 
 $(document).ready(function(){
@@ -50,9 +68,24 @@ $(document).ready(function(){
     // Receiving new media attributes by socket.
     socket.on('toclient.rfidData', function(data) {
         console.log("<server.rfidData> rfid #" + data.tag + " on reader #" + data.reader);
-        rfidcode.html(data.tag);
+        rfidcode.val(data.tag);
         
     });
+    // Bouton sauvegarde
+    $('#save').click(function(e) {
+    	e.preventDefault();
+    	console.log("On veut sauvegarder");
+    	$.ajax({
+    		url: '/save',
+    		type: 'GET',
+    		dataType: 'json',
+    		success: function(result) {
+	    		if(result.status == 200) {
+		    		console.log(result);
+		    	}
+	    	}
+    	});
+    }); 
 }); // $(document).ready()
   </script>
  
