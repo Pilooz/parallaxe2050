@@ -13,6 +13,8 @@ var bodyParser    = require('body-parser');
 var path          = require('path');
 var formidable    = require('formidable'); // File upload
 
+const fs = require('fs');
+
 // Timout to simulate searching, if needed by config.
 var timeBeforeSendingMedia = (CONFIG.app.simulateSearchTime) ? CONFIG.app.searchTimeout : 0;
 
@@ -24,7 +26,7 @@ var lastReadData = { code: "", reader: "" };
 var rfidData     = { code: "x", reader: "1"};
 
 // Databases
-var db_rfid      = require(CONFIG.app.dbPath + '/db-rfid.js');
+var db_rfid      = require(CONFIG.app.dbPath + '/db-rfid.json');
 
 //------------------------------------------------------------------------
 // Init Socket to transmit Serial data to HTTP client
@@ -82,6 +84,9 @@ server.listen( httpPort, '0.0.0.0', function( ) {
   console.log( '------------------------------------------------------------' );
 });
 
+
+app.use(express.json());
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -128,34 +133,19 @@ router.all('/*', function (req, res, next) {
 
 /* GET populate page. */
 .get('/populate', function(req, res, next) {
-  res.render('populate', { data: httpRequests });
+	if (httpRequests && httpRequests.rfidcode) {
+		db_rfid[httpRequests.rfidcode] = {'group': httpRequests.group, 'subgroup': httpRequests.subgroup};
+	}
+	res.render('populate');
 })
 
-/* POST populate page. */
-.post('/populate', function(req, res, next) {
-  var form = new formidable.IncomingForm();
-  form.parse(req, function (err, fields, file) {
-	// 
-	console.log(httpRequests);
-});
-  res.render('populate', { data: dataForTemplate });
+/* GET save page. */
+.get('/save', function(req, res, next) {
+	let data = JSON.stringify(db_rfid);
+	fs.writeFileSync(CONFIG.app.dbPath + '/db-rfid.json', data);
+	
+	res.end('{"success": "Sauvegarde ok !", "status": 200}');
 })
-
-/* POST media page. 
-.post('/media-upload', function(req, res, next) {
-    var form = new formidable.IncomingForm();
-    form.uploadDir = path.join(__dirname, CONFIG.app.mediaPath);
-    form.keepExtensions = true; // keep original extension
-
-    form.parse(req, function (err, fields, files) {
-       // Let the media library do the rest of the job !
-      mediaDB.newMedia(fields, files);
-    });
-  // Routing to index
-  res.redirect('/');
-  //res.render('index', { data: dataForTemplate });
-});
-*/
 
 //-----------------------------------------------------------------------------
 // Application express
