@@ -1,0 +1,25 @@
+#
+# Description du service ngrok.
+# Installation : 
+#  - cd /etc/systemd/system 
+#  - sudo ln -s /home/parallaxe2050/projets/parallaxe2050/services/ubuntu/p2050_ngrokd.service p2050_ngrokd.service
+#  - sudo systemctl enable p2050_ngrokd.service
+#  - sudo systemctl daemon-reload
+#
+[Unit]
+Description=p2050_ngrok Daemon
+After=network-online.target
+ 
+[Service]
+Type=simple
+ 
+User=parallaxe2050
+Group=parallaxe2050
+ 
+ExecStart=/usr/bin/ngrok tcp 22
+ 
+Restart=on-failure
+RestartSec=60s
+
+[Install]
+WantedBy=multi-user.target
