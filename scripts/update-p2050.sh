@@ -4,15 +4,17 @@
 #
 # Script de dééploiement automatique de version de l'application
 #
+# Lancer en mode sudo.
 
 #---------------------------------------------------------------
 # Vars
 #---------------------------------------------------------------
 logfile="/tmp/p2050_deploy.log"
 online_git_repo="https://github.com/Pilooz/parallaxe2050.git"
-production_link="p2050"
+branch="develop"
+production_link="parallaxe2050"
 precedent_production_link="p2050_old"
-working_dir="/home/parallaxe2050/projets/p2050"
+working_dir="/home/parallaxe2050/projets"
 cur_rep_name="p2050" #nom répertoire de production courant comportant.
 new_rep_name="p2050_new" #nom du futur répertoire de production
 
@@ -118,16 +120,9 @@ cat $working_dir"/"output.$etape.log
 
 comment "Recopier la config de prod"
 cd $working_dir
-cp $cur_rep_name/config/config.json $new_rep_name/config/
-ls ./$new_rep_name/config/config.json
+cp $cur_rep_name/config/config.js $new_rep_name/config/
+ls ./$new_rep_name/config/config.js
 check
-
-#comment "Recopier le cache de data"
-#cp $cur_rep_name/public/data/*.json $new_rep_name/public/data/
-
-#comment "rechargement de la définition des services"
-#sudo systemctl daemon-reload
-#check
 
 # Arrêter  NodeJs
 etape "Arrêter  NodeJs"
@@ -143,7 +138,7 @@ rm -f $production_link
 check
 
 comment "changer les droits d'accès sur $new_rep_name"
-chown -R cnr:cnr $new_rep_name 
+chown -R parallaxe2050:parallaxe2050 $new_rep_name 
 
 comment "création du nouveau lien"
 ln -s $new_rep_name $production_link
