@@ -5,12 +5,48 @@ var app_root = "/home/parallaxe2050/projets/parallaxe2050";
 module.exports = app_root;
 
 module.exports = {
-  // Node Server configuration
-  server : {
-    port : 3000,
-    host : 'localhost',
-    
-  },
+  servers : [
+ 
+      {
+        name : "parallaxe2050-1",
+        ip : "192.168.10.10",
+        port : 3000,
+        host : 'localhost',
+        description : "Dispositif Admin Réseau"
+      },
+
+      {
+        name : "parallaxe2050-2",
+        ip : "192.168.10.20",
+        port : 3000,
+        host : 'localhost',
+        description : "Dispositif Base de données / DATA"
+      },
+
+      {
+        name : "parallaxe2050-3",
+        ip : "192.168.10.30",
+        port : 3000,
+        host : 'localhost',
+        description : "Dispositif Code et Programmation"
+      },
+
+      {
+        name : "parallaxe2050-4",
+        ip : "192.168.10.40",
+        port : 3000,
+        host : 'localhost',
+        description : "Dispositif Communication Digitale"
+      },
+
+      {
+        name : "parallaxe2050-5",
+        ip : "192.168.10.50",
+        port : 3000,
+        host : 'localhost',
+        description : "Dispositif Hardware"
+      },
+  ], 
 
   // Serial Port configuration for rfid reads
   rfid : {
