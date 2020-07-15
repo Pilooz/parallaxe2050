@@ -112,6 +112,9 @@ new_rep_name=$rep
 
 # Installation
 etape "Installation"
+comment "Changer les droits sur $working_dir/$new_rep_name"
+chown -R parallaxe2050:parallaxe2050 $working_dir/$new_rep_name
+
 comment "Ré-installer les dépendances"
 cd $working_dir"/"$new_rep_name
 npm install > $working_dir"/"output.$etape.log 2>&1
@@ -147,7 +150,7 @@ cd $production_link
 check
 
 comment "changer les droits d'accès sur $production_link"
-chown -R cnr:cnr $production_link
+chown -R parallaxe2050:parallaxe2050 $production_link
 
 # Redémarrer nodeJS
 etape "Redémarrer nodeJS"
