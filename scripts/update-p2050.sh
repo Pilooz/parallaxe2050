@@ -15,7 +15,7 @@ branch="develop"
 production_link="parallaxe2050"
 precedent_production_link="p2050_old"
 working_dir="/home/parallaxe2050/projets"
-cur_rep_name="p2050" #nom répertoire de production courant comportant.
+cur_rep_name="parallaxe2050" #nom répertoire de production courant comportant.
 new_rep_name="p2050_new" #nom du futur répertoire de production
 
 current_commit=""
