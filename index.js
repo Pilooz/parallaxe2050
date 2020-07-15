@@ -1,22 +1,26 @@
 global.__basedir  = __dirname;
-var CONFIG        = require('./config/config.js');
+const CONFIG        = require('./config/config.js');
 
 var app           = require('express')();
 var express       = require('express');
 var router        = express.Router();
 var server        = require('http').createServer(app);
-const httpPort    = CONFIG.server.port;
-var io            = require('socket.io').listen(server);
+
 var ip            = require('ip');
+
+// Find configuration, with fixed IP
+const CONFIG_SERVER = get_server_conf();
+console.log(ip.address());
+console.log(CONFIG_SERVER);
+
+const httpPort    = CONFIG_SERVER.port;
+var io            = require('socket.io').listen(server);
 var cookieParser  = require('cookie-parser');
 var bodyParser    = require('body-parser');
 var path          = require('path');
 var formidable    = require('formidable'); // File upload
 
 const fs = require('fs');
-
-// Timout to simulate searching, if needed by config.
-var timeBeforeSendingMedia = (CONFIG.app.simulateSearchTime) ? CONFIG.app.searchTimeout : 0;
 
 // Rfid parsing functions
 var rfid          = require('./lib/rfid.js');
@@ -29,13 +33,23 @@ var rfidData     = { code: "x", reader: "1"};
 var db_rfid      = require(CONFIG.app.dbPath + '/db-rfid.json');
 
 //------------------------------------------------------------------------
+// Some usefull functions
+//------------------------------------------------------------------------
+
+//------------------------------------------------------------------------
+// return the conf from server ip
+//------------------------------------------------------------------------
+function get_server_conf() {
+  return CONFIG.servers.filter(server => server.ip == ip.address())[0];
+}
+
+//------------------------------------------------------------------------
 // Init Socket to transmit Serial data to HTTP client
 //------------------------------------------------------------------------
 io.on('connection', function(socket) {
     console.log("New client is connected : " + socket.id );
 
 });
-
 
 //------------------------------------------------------------------------
 // Reading Serial Port (App have to be configure un 'real' mode, see below)
@@ -141,7 +155,7 @@ router.all('/*', function (req, res, next) {
 
 /* GET save page. */
 .get('/save', function(req, res, next) {
-	let data = JSON.stringify(db_rfid);
+	let data = JSON.stringify(db_rfid, null, 4);
 	fs.writeFileSync(CONFIG.app.dbPath + '/db-rfid.json', data);
 	
 	res.end('{"success": "Sauvegarde ok !", "status": 200}');
