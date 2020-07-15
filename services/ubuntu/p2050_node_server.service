@@ -1,0 +1,22 @@
+#
+# Description du service de démarrage de nodeJS
+# Installation : 
+#  - cd /etc/systemd/system 
+#  - sudo ln -s /home/parallaxe2050/projets/parallaxe2050/services/ubuntu/p2050_node_server.service p2050_node_server.service
+#  - sudo systemctl enable p2050_node_server.service
+#  - sudo systemctl daemon-reload
+#
+[Unit]
+Description=Serveur NodeJS - Parallaxe2050
+
+[Service]
+PIDFile=/var/run/p2050_node_server.pid
+User=parallaxe2050
+Group=parallaxe2050
+Restart=always
+KillSignal=SIGQUIT
+WorkingDirectory=/home/parallaxe2050/projets/parallaxe2050
+ExecStart=/home/parallaxe2050/projets/parallaxe2050/index.js
+
+[Install]
+WantedBy=multi-user.target

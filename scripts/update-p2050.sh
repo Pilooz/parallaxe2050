@@ -102,7 +102,7 @@ comment "commit nouvelle version : \e[93m'$new_commit'\e[39m"
 git diff --compact-summary $current_commit $new_commit
 
 cd $working_dir
-rep="qde_"$new_commit
+rep="p2050_"$new_commit
 comment "le répertoire d'installation de la nouvelle version est \e[93m'$rep'\e[39m."
 mv $new_rep_name $rep
 check
@@ -131,7 +131,6 @@ check
 
 # Arrêter  NodeJs
 etape "Arrêter  NodeJs"
-#sudo service qde_node_server status
 sudo service p2050_node_server stop
 check
 sudo journalctl -n 10 --no-pager -u p2050_node_server.service
