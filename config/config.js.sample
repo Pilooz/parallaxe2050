@@ -1,7 +1,7 @@
 // 
 // Config File
 //
-var app_root = "/home/parallaxe2050";
+var app_root = "/home/parallaxe2050/projets/parallaxe2050";
 module.exports = app_root;
 
 module.exports = {
@@ -14,8 +14,8 @@ module.exports = {
 
   // Serial Port configuration for rfid reads
   rfid : {
-    portName : '/dev/cu.usbserial-A603XVZO',
-    baudRate : 115200,
+    portName : '/dev/ttyUSB0',
+    baudRate : 9600,
     behavior : 'real', // 'real' => means that tags come form USB-Serial port, 'emulated' is just for dev (no usb port reading)
     numReaders : 1
   },
