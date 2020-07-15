@@ -16,7 +16,7 @@ Group=parallaxe2050
 Restart=always
 KillSignal=SIGQUIT
 WorkingDirectory=/home/parallaxe2050/projets/parallaxe2050
-ExecStart=/home/parallaxe2050/projets/parallaxe2050/index.js
+ExecStart=/usr/bin/node /home/parallaxe2050/projets/parallaxe2050/index.js
 
 [Install]
 WantedBy=multi-user.target
