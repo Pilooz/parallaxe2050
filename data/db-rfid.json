@@ -1,10 +1,302 @@
 {
-    "F9FF3188": {
+    "49426960": {
+        "group": "A",
+        "subgroup": "4"
+    },
+    "53240021": {
         "group": "C",
         "subgroup": "5"
     },
-    "B79AA032": {
+    "F5458426": {
+        "group": "C",
+        "subgroup": "5"
+    },
+    "15917E27": {
+        "group": "C",
+        "subgroup": "5"
+    },
+    "C6C1441B": {
+        "group": "C",
+        "subgroup": "5"
+    },
+    "538CF421": {
+        "group": "C",
+        "subgroup": "5"
+    },
+    "5E68811A": {
+        "group": "A",
+        "subgroup": "5"
+    },
+    "2EB3791A": {
+        "group": "A",
+        "subgroup": "5"
+    },
+    "DEC77B1A": {
+        "group": "A",
+        "subgroup": "5"
+    },
+    "CE04851A": {
+        "group": "A",
+        "subgroup": "5"
+    },
+    "CE054260": {
+        "group": "A",
+        "subgroup": "5"
+    },
+    "D166991D": {
+        "group": "B",
+        "subgroup": "5"
+    },
+    "E1220F1D": {
+        "group": "B",
+        "subgroup": "5"
+    },
+    "52E8E11B": {
+        "group": "B",
+        "subgroup": "5"
+    },
+    "D16F731D": {
+        "group": "B",
+        "subgroup": "5"
+    },
+    "62776A1B": {
+        "group": "B",
+        "subgroup": "5"
+    },
+    "7EF97E1A": {
+        "group": "A",
+        "subgroup": "2"
+    },
+    "FED7801A": {
+        "group": "A",
+        "subgroup": "2"
+    },
+    "2E6E771A": {
+        "group": "A",
+        "subgroup": "2"
+    },
+    "5E3D621A": {
+        "group": "A",
+        "subgroup": "2"
+    },
+    "CE70821A": {
+        "group": "A",
+        "subgroup": "2"
+    },
+    "2E798C60": {
         "group": "B",
         "subgroup": "2"
+    },
+    "FE226E60": {
+        "group": "B",
+        "subgroup": "2"
+    },
+    "4E2F8260": {
+        "group": "B",
+        "subgroup": "2"
+    },
+    "5EA78160": {
+        "group": "B",
+        "subgroup": "2"
+    },
+    "8E268860": {
+        "group": "B",
+        "subgroup": "2"
+    },
+    "1E017960": {
+        "group": "C",
+        "subgroup": "2"
+    },
+    "0E887460": {
+        "group": "C",
+        "subgroup": "2"
+    },
+    "3E622860": {
+        "group": "C",
+        "subgroup": "2"
+    },
+    "AE676660": {
+        "group": "C",
+        "subgroup": "2"
+    },
+    "1E086C60": {
+        "group": "C",
+        "subgroup": "2"
+    },
+    "7ED72360": {
+        "group": "A",
+        "subgroup": "1"
+    },
+    "BEB1761A": {
+        "group": "A",
+        "subgroup": "1"
+    },
+    "BEC67F1A": {
+        "group": "A",
+        "subgroup": "1"
+    },
+    "8E9A791A": {
+        "group": "A",
+        "subgroup": "1"
+    },
+    "BE1F7D1A": {
+        "group": "A",
+        "subgroup": "1"
+    },
+    "5EAD7260": {
+        "group": "B",
+        "subgroup": "1"
+    },
+    "7EBD9860": {
+        "group": "B",
+        "subgroup": "1"
+    },
+    "CE4E2B60": {
+        "group": "B",
+        "subgroup": "1"
+    },
+    "BE097560": {
+        "group": "B",
+        "subgroup": "1"
+    },
+    "BE857360": {
+        "group": "B",
+        "subgroup": "1"
+    },
+    "02FC29CA": {
+        "group": "C",
+        "subgroup": "1"
+    },
+    "92161BCA": {
+        "group": "C",
+        "subgroup": "1"
+    },
+    "62281BCA": {
+        "group": "C",
+        "subgroup": "1"
+    },
+    "B210F2C9": {
+        "group": "C",
+        "subgroup": "1"
+    },
+    "6299E9C9": {
+        "group": "C",
+        "subgroup": "1"
+    },
+    "0EAF4C60": {
+        "group": "A",
+        "subgroup": "3"
+    },
+    "6EE8781A": {
+        "group": "A",
+        "subgroup": "3"
+    },
+    "7E23791A": {
+        "group": "A",
+        "subgroup": "3"
+    },
+    "FEF08A1A": {
+        "group": "A",
+        "subgroup": "3"
+    },
+    "BE11871A": {
+        "group": "A",
+        "subgroup": "3"
+    },
+    "1E278B1A": {
+        "group": "B",
+        "subgroup": "3"
+    },
+    "CEFFD015": {
+        "group": "B",
+        "subgroup": "3"
+    },
+    "DE9AD415": {
+        "group": "B",
+        "subgroup": "3"
+    },
+    "2EF33A60": {
+        "group": "B",
+        "subgroup": "3"
+    },
+    "CE164860": {
+        "group": "B",
+        "subgroup": "3"
+    },
+    "1346AF1B": {
+        "group": "C",
+        "subgroup": "3"
+    },
+    "52926A1B": {
+        "group": "C",
+        "subgroup": "3"
+    },
+    "627C9F1B": {
+        "group": "C",
+        "subgroup": "3"
+    },
+    "E12CD11D": {
+        "group": "C",
+        "subgroup": "3"
+    },
+    "52AE061B": {
+        "group": "C",
+        "subgroup": "3"
+    },
+    "F9B16D60": {
+        "group": "A",
+        "subgroup": "4"
+    },
+    "1B063F12": {
+        "group": "A",
+        "subgroup": "4"
+    },
+    "6B344012": {
+        "group": "A",
+        "subgroup": "4"
+    },
+    "4944C65C": {
+        "group": "A",
+        "subgroup": "4"
+    },
+    "101B76A2": {
+        "group": "B",
+        "subgroup": "4"
+    },
+    "909581A2": {
+        "group": "B",
+        "subgroup": "4"
+    },
+    "F067D157": {
+        "group": "B",
+        "subgroup": "4"
+    },
+    "B04681A2": {
+        "group": "B",
+        "subgroup": "4"
+    },
+    "40FC75A2": {
+        "group": "B",
+        "subgroup": "4"
+    },
+    "B0877EA2": {
+        "group": "C",
+        "subgroup": "4"
+    },
+    "A01179A2": {
+        "group": "C",
+        "subgroup": "4"
+    },
+    "806B77A2": {
+        "group": "C",
+        "subgroup": "4"
+    },
+    "607174A2": {
+        "group": "C",
+        "subgroup": "4"
+    },
+    "C0D77AA2": {
+        "group": "C",
+        "subgroup": "4"
     }
 }
