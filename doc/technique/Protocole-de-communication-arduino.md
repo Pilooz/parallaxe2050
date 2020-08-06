@@ -40,7 +40,6 @@ Mot clé | Type | Ex de valeurs | Commentaires
 |:- | :-: | :-: | :-
 TAG | Alpha | DC8C2A33 | Ce message est suvi d'un identifiant de lecteur RFID.
 READER | Num | 1| Identifiant d'un lecteur du lié à un dispositif
-DATA | Alpha, Num| 12345, abcd, Etape3 | Message de données générique.
 CMD | Alpha| ETAPE1, RESET, START, STOP | Ce type de message est plutôt en provenance d'un serveur et à destination d'un dispositif électronique
 ACK | Alpha, num | OK, KO | Message envoyé pour handshake lors de la réception d'un message important pour l'avancement dans l'énigme, le pilotage d'un dispositif. OK est suivi d'un message expliquant la raison de l'erreur.
 MSG | Alpha, Num | "Impossible de lire le Mp3", "Success" | Message générique
