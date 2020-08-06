@@ -1,3 +1,29 @@
-{
-    "scenario_name":"Dispositif Admin Réseau"
-}
+{ 
+    "scenario_name" : "Dispositif Admin Réseau", 
+    "scenarioMediaPath" : "medias/admin-reseau/",
+    "steps" : [
+    {
+      "stepId" : "step-1",
+      "title" : "Typing windows",
+      "template" : "admin-reseau/typing",
+      "medias" : [],
+      "text" : "text1",
+      "transitions" : 
+        [
+          { "id" : "step-2", "condition" : "byeFunction" }
+        ]
+    },
+
+    {
+      "stepId" : "step-2",
+      "title" : "Page2",
+      "template" : "admin-reseau/content",
+      "text" : "",
+      "transitions" :  
+        [ 
+          { "id" : "step-3", "condition" : "choice == 'Choice 1'" },
+          { "id" : "step-3-error", "condition" : "choice != 'Choice 1'" }
+        ]
+    }
+    ]
+  }

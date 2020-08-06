@@ -1,18 +1,19 @@
 global.__basedir  = __dirname;
 const GLOBAL_CONFIG        = require('./config/config.js');
 
+// MVC Framework
 var app           = require('express')();
 var express       = require('express');
 var router        = express.Router();
+// Server utilities
 var server        = require('http').createServer(app);
-
 var ip            = require('ip');
+const fs          = require('fs');
 
 // Find configuration, with fixed IP
 const CONFIG_SERVER = get_server_conf();
 // Loading scenario
 const SCENARIO = require('./data/' + CONFIG_SERVER.name + '.json');
-console.log(SCENARIO);
 
 const httpPort    = CONFIG_SERVER.port;
 var io            = require('socket.io').listen(server);
@@ -20,8 +21,6 @@ var cookieParser  = require('cookie-parser');
 var bodyParser    = require('body-parser');
 var path          = require('path');
 var formidable    = require('formidable'); // File upload
-
-const fs = require('fs');
 
 // Rfid parsing functions
 var rfid          = require('./lib/rfid.js');
