@@ -1,5 +1,5 @@
 global.__basedir  = __dirname;
-const CONFIG        = require('./config/config.js');
+const GLOBAL_CONFIG        = require('./config/config.js');
 
 var app           = require('express')();
 var express       = require('express');
@@ -10,8 +10,9 @@ var ip            = require('ip');
 
 // Find configuration, with fixed IP
 const CONFIG_SERVER = get_server_conf();
-console.log(ip.address());
-console.log(CONFIG_SERVER);
+// Loading scenario
+const SCENARIO = require('./data/' + CONFIG_SERVER.name + '.json');
+console.log(SCENARIO);
 
 const httpPort    = CONFIG_SERVER.port;
 var io            = require('socket.io').listen(server);
@@ -30,7 +31,7 @@ var lastReadData = { code: "", reader: "" };
 var rfidData     = { code: "x", reader: "1"};
 
 // Databases
-var db_rfid      = require(CONFIG.app.dbPath + '/db-rfid.json');
+var db_rfid      = require(GLOBAL_CONFIG.app.dbPath + '/db-rfid.json');
 
 //------------------------------------------------------------------------
 // Some usefull functions
@@ -40,7 +41,7 @@ var db_rfid      = require(CONFIG.app.dbPath + '/db-rfid.json');
 // return the conf from server ip
 //------------------------------------------------------------------------
 function get_server_conf() {
-  return CONFIG.servers.filter(server => server.ip == ip.address())[0];
+  return GLOBAL_CONFIG.servers.filter(server => server.ip == ip.address())[0];
 }
 
 //------------------------------------------------------------------------
@@ -54,12 +55,12 @@ io.on('connection', function(socket) {
 //------------------------------------------------------------------------
 // Reading Serial Port (App have to be configure un 'real' mode, see below)
 //------------------------------------------------------------------------
-if (CONFIG.rfid.behavior == "real") {
+if (GLOBAL_CONFIG.rfid.behavior == "real") {
   const SerialPort = require('serialport');
   const Readline = SerialPort.parsers.Readline;
-  const port = new SerialPort(CONFIG.rfid.portName, { 
+  const port = new SerialPort(GLOBAL_CONFIG.rfid.portName, { 
       autoOpen: true,
-      baudRate: CONFIG.rfid.baudRate
+      baudRate: GLOBAL_CONFIG.rfid.baudRate
     });
   // Parser definiton
   const parser = port.pipe(new Readline({ delimiter: '\r\n' }));
@@ -81,7 +82,7 @@ if (CONFIG.rfid.behavior == "real") {
     if (err) {
       return console.log('Error opening port: ', err.message);
     } else {
-      console.log('Reading on ', CONFIG.rfid.portName);
+      console.log('Reading on ', GLOBAL_CONFIG.rfid.portName);
     }
   });
 }
@@ -94,7 +95,7 @@ server.listen( httpPort, '0.0.0.0', function( ) {
   console.log( 'server Ip Address is %s', ip.address() );     
   console.log( 'it is listening at port %d', httpPort );
   console.log( '------------------------------------------------------------' );
-  console.log( 'RFID reading is ' + CONFIG.rfid.behavior);
+  console.log( 'RFID reading is ' + GLOBAL_CONFIG.rfid.behavior);
   console.log( '------------------------------------------------------------' );
 });
 
@@ -112,7 +113,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-//app.use('/videos', express.static(__dirname + CONFIG.app.mediaPath)); // redirect media directory
+//app.use('/videos', express.static(__dirname + GLOBAL_CONFIG.app.mediaPath)); // redirect media directory
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 app.use('/js', express.static(__dirname + '/node_modules/socket.io/dist')); // Socket.io
@@ -129,8 +130,8 @@ var httpRequests = {};
 router.all('/*', function (req, res, next) {
   // mettre toutes les requests dans un seul objet.
   httpRequests = req.query; // according to the use of express
-  dataForTemplate.mode = CONFIG.app.mode;
-  dataForTemplate.numReaders = CONFIG.rfid.numReaders;
+  dataForTemplate.mode = GLOBAL_CONFIG.app.mode;
+  dataForTemplate.numReaders = GLOBAL_CONFIG.rfid.numReaders;
 
   next(); // pass control to the next handler
 })
@@ -156,7 +157,7 @@ router.all('/*', function (req, res, next) {
 /* GET save page. */
 .get('/save', function(req, res, next) {
 	let data = JSON.stringify(db_rfid, null, 4);
-	fs.writeFileSync(CONFIG.app.dbPath + '/db-rfid.json', data);
+	fs.writeFileSync(GLOBAL_CONFIG.app.dbPath + '/db-rfid.json', data);
 	
 	res.end('{"success": "Sauvegarde ok !", "status": 200}');
 })
