@@ -1,6 +1,16 @@
+/**
+ * Exemple d'envoie et de réceptions de messages entre arduino et un ordi
+ * par la liaison USB/Serial.
+ * 
+ *    la librairie peut gérer une file de messages à la suite :
+ *    Pour tester, ouvrir la moniteur serie et taper : 
+ *    <CMD:STOP/><CMD:START/>
+ * 
+ **/
+
 #include "protocole_parallaxe2050.h"
 
-ParalaxeCom message;
+ParallaxeCom message;
 
 void setup() {
   // Init Serial communication
@@ -10,24 +20,26 @@ void setup() {
 }
 
 void loop() {
-  // Sending a group of messages
-  // message.send("TAG", "12345");
-  // message.send("READER", "1");
+  /*
+   
+   ...
+   Doing Super Stuff here
+   ...
 
-  // delay(1000);
-  // // sending a unique message
-  // message.send("DATA", String(message.count));
-  // delay(1000);
+  */
 
   // Read an incoming message
   if (message.isKey("CMD")) {
-    Serial.println("key = " + message.key());
-    Serial.println("val = " + message.val());  
-    // Send a feedback : This is important beacause it mark the message as treated.
-    message.ack_ok();
-    // message.ack_ko("Reasonok the problem...");
-  
-    delay(1000);
+    if (message.val() == "STOP") {
+    // Send a OK feedback : This is important beacause it mark the message as treated.
+    // /!\ This mandatory to send a feedback to treat next message.
+      message.ack_ok();
+    }
+    if (message.val() == "START") {
+    // Send a KO feedback : This is important beacause it mark the message as treated.
+    // /!\ This mandatory to send a feedback to treat next message.
+      message.ack_ko("Reason of the problem... This is just for testing !");
+    }
   }
 }
 
