@@ -66,8 +66,8 @@ $(document).ready(function(){
     // Socket listening
     // ------------------------------------------------------------------
     // Receiving new media attributes by socket.
-    socket.on('toclient.rfidData', function(data) {
-        console.log("<server.rfidData> rfid #" + data.tag + " on reader #" + data.reader);
+    socket.on('toclient.currnetBadge', function(data) {
+        console.log("<server.currnetBadge> rfid #" + data.tag + " on reader #" + data.reader);
         rfidcode.val(data.tag);
 
     });
