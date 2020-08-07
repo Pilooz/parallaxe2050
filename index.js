@@ -116,7 +116,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 app.use('/js', express.static(__dirname + '/node_modules/socket.io/dist')); // Socket.io
-//app.use('/js', express.static(__dirname + '/node_modules/json-editor/dist')); // Json-editor
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
 
 //-----------------------------------------------------------------------------
@@ -129,8 +128,10 @@ var httpRequests = {};
 router.all('/*', function (req, res, next) {
   // mettre toutes les requests dans un seul objet.
   httpRequests = req.query; // according to the use of express
-  dataForTemplate.mode = GLOBAL_CONFIG.app.mode;
-  dataForTemplate.numReaders = GLOBAL_CONFIG.rfid.numReaders;
+  // dataForTemplate.mode = GLOBAL_CONFIG.app.mode;
+  // dataForTemplate.numReaders = GLOBAL_CONFIG.rfid.numReaders;
+  dataForTemplate.CONFIG_SERVER = CONFIG_SERVER;
+  dataForTemplate.SCENARIO = SCENARIO;
 
   next(); // pass control to the next handler
 })

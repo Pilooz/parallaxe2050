@@ -22,13 +22,21 @@
 	<script src="/js/jquery.min.js"></script>
 <!--  	<script src="/js/bootstrap.min.js"></script> -->
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/progressbar.min.js"></script>
 
   <script>
-	  var socket = null;
+    var socket = null;
+    var scenar = <%-JSON.stringify(data.SCENARIO, null, 2) %>;
 		$(document).ready(function(){
-      socket = io('http://localhost:3000'); // http://localhost:3000
-		});
+      socket = io('http://<%= data.CONFIG_SERVER.ip %>:<%= data.CONFIG_SERVER.port %>'); // http://localhost:3000
+
+      // ------------------------------------------------------------------
+      // Socket listening
+      // ------------------------------------------------------------------
+      // Receiving config from server
+      // socket.on('ServertoClient_', function(data) {
+      //   config = data;
+      // });
+    });
   </script>
 
   </head>
