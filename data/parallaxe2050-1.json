@@ -1,5 +1,5 @@
-{ 
-    "scenario_name" : "Dispositif Admin Réseau", 
+{
+    "scenario_name" : "Dispositif Admin Réseau",
     "scenarioMediaPath" : "medias/admin-reseau/",
     "templateDirectory" : "admin-reseau/",
     "steps" : [
@@ -9,7 +9,7 @@
       "template" : "typing",
       "medias" : [],
       "text" : "text1",
-      "transitions" : 
+      "transitions" :
         [
           { "id" : "step-2", "condition" : "byeFunction" }
         ]
@@ -20,8 +20,8 @@
       "title" : "Page2",
       "template" : "admin-reseau/content",
       "text" : "",
-      "transitions" :  
-        [ 
+      "transitions" :
+        [
           { "id" : "step-3", "condition" : "choice == 'Choice 1'" },
           { "id" : "step-3-error", "condition" : "choice != 'Choice 1'" }
         ]

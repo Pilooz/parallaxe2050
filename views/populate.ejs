@@ -13,7 +13,7 @@
 	<script src="/js/jquery.min.js"></script>
  	<script src="/js/bootstrap.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
- 
+
   </head>
     <body>
           <!-- Fixed navbar -->
@@ -58,7 +58,7 @@
     	<hr />
     	<button class="btn btn-danger" id="save">Sauvegarder</button>
     </div>
-  <script type='text/javascript'> 
+  <script type='text/javascript'>
 $(document).ready(function(){
      var socket = io();
      var rfidcode = $('#rfidcode');
@@ -69,7 +69,7 @@ $(document).ready(function(){
     socket.on('toclient.rfidData', function(data) {
         console.log("<server.rfidData> rfid #" + data.tag + " on reader #" + data.reader);
         rfidcode.val(data.tag);
-        
+
     });
     // Bouton sauvegarde
     $('#save').click(function(e) {
@@ -85,16 +85,16 @@ $(document).ready(function(){
 		    	}
 	    	}
     	});
-    }); 
+    });
 }); // $(document).ready()
   </script>
- 
- 
+
+
 
     </div>
 
 	<footer class="footer">
-       <div class="container-fluid"> 
+       <div class="container-fluid">
       </div>
 	</footer>
   </body>
