@@ -1,302 +1,529 @@
 {
-    "badge_49426960": {
-        "group": "A",
-        "subgroup": "4"
-    },
-    "badge_53240021": {
-        "group": "C",
-        "subgroup": "5"
-    },
-    "badge_F5458426": {
-        "group": "C",
-        "subgroup": "5"
-    },
-    "badge_15917E27": {
-        "group": "C",
-        "subgroup": "5"
-    },
-    "badge_C6C1441B": {
-        "group": "C",
-        "subgroup": "5"
-    },
-    "badge_538CF421": {
-        "group": "C",
-        "subgroup": "5"
-    },
-    "badge_5E68811A": {
-        "group": "A",
-        "subgroup": "5"
-    },
-    "badge_2EB3791A": {
-        "group": "A",
-        "subgroup": "5"
-    },
-    "badge_DEC77B1A": {
-        "group": "A",
-        "subgroup": "5"
-    },
-    "badge_CE04851A": {
-        "group": "A",
-        "subgroup": "5"
-    },
-    "badge_CE054260": {
-        "group": "A",
-        "subgroup": "5"
-    },
-    "badge_D166991D": {
-        "group": "B",
-        "subgroup": "5"
-    },
-    "badge_E1220F1D": {
-        "group": "B",
-        "subgroup": "5"
-    },
-    "badge_52E8E11B": {
-        "group": "B",
-        "subgroup": "5"
-    },
-    "badge_D16F731D": {
-        "group": "B",
-        "subgroup": "5"
-    },
-    "badge_62776A1B": {
-        "group": "B",
-        "subgroup": "5"
-    },
-    "badge_7EF97E1A": {
-        "group": "A",
-        "subgroup": "2"
-    },
-    "badge_FED7801A": {
-        "group": "A",
-        "subgroup": "2"
-    },
-    "badge_2E6E771A": {
-        "group": "A",
-        "subgroup": "2"
-    },
-    "badge_5E3D621A": {
-        "group": "A",
-        "subgroup": "2"
-    },
-    "badge_CE70821A": {
-        "group": "A",
-        "subgroup": "2"
-    },
-    "badge_2E798C60": {
-        "group": "B",
-        "subgroup": "2"
-    },
-    "badge_FE226E60": {
-        "group": "B",
-        "subgroup": "2"
-    },
-    "badge_4E2F8260": {
-        "group": "B",
-        "subgroup": "2"
-    },
-    "badge_5EA78160": {
-        "group": "B",
-        "subgroup": "2"
-    },
-    "badge_8E268860": {
-        "group": "B",
-        "subgroup": "2"
-    },
-    "badge_1E017960": {
-        "group": "C",
-        "subgroup": "2"
-    },
-    "badge_0E887460": {
-        "group": "C",
-        "subgroup": "2"
-    },
-    "badge_3E622860": {
-        "group": "C",
-        "subgroup": "2"
-    },
-    "badge_AE676660": {
-        "group": "C",
-        "subgroup": "2"
-    },
-    "badge_1E086C60": {
-        "group": "C",
-        "subgroup": "2"
-    },
-    "badge_7ED72360": {
-        "group": "A",
-        "subgroup": "1"
-    },
-    "badge_BEB1761A": {
-        "group": "A",
-        "subgroup": "1"
-    },
-    "badge_BEC67F1A": {
-        "group": "A",
-        "subgroup": "1"
-    },
-    "badge_8E9A791A": {
-        "group": "A",
-        "subgroup": "1"
-    },
-    "badge_BE1F7D1A": {
-        "group": "A",
-        "subgroup": "1"
-    },
-    "badge_5EAD7260": {
-        "group": "B",
-        "subgroup": "1"
-    },
-    "badge_7EBD9860": {
-        "group": "B",
-        "subgroup": "1"
-    },
-    "badge_CE4E2B60": {
-        "group": "B",
-        "subgroup": "1"
-    },
-    "badge_BE097560": {
-        "group": "B",
-        "subgroup": "1"
-    },
-    "badge_BE857360": {
-        "group": "B",
-        "subgroup": "1"
-    },
-    "badge_02FC29CA": {
-        "group": "C",
-        "subgroup": "1"
-    },
-    "badge_92161BCA": {
-        "group": "C",
-        "subgroup": "1"
-    },
-    "badge_62281BCA": {
-        "group": "C",
-        "subgroup": "1"
-    },
-    "badge_B210F2C9": {
-        "group": "C",
-        "subgroup": "1"
-    },
-    "badge_6299E9C9": {
-        "group": "C",
-        "subgroup": "1"
-    },
-    "badge_0EAF4C60": {
-        "group": "A",
-        "subgroup": "3"
-    },
-    "badge_6EE8781A": {
-        "group": "A",
-        "subgroup": "3"
-    },
-    "badge_7E23791A": {
-        "group": "A",
-        "subgroup": "3"
-    },
-    "badge_FEF08A1A": {
-        "group": "A",
-        "subgroup": "3"
-    },
-    "badge_BE11871A": {
-        "group": "A",
-        "subgroup": "3"
-    },
-    "badge_1E278B1A": {
-        "group": "B",
-        "subgroup": "3"
-    },
-    "badge_CEFFD015": {
-        "group": "B",
-        "subgroup": "3"
-    },
-    "badge_DE9AD415": {
-        "group": "B",
-        "subgroup": "3"
-    },
-    "badge_2EF33A60": {
-        "group": "B",
-        "subgroup": "3"
-    },
-    "badge_CE164860": {
-        "group": "B",
-        "subgroup": "3"
-    },
-    "badge_1346AF1B": {
-        "group": "C",
-        "subgroup": "3"
-    },
-    "badge_52926A1B": {
-        "group": "C",
-        "subgroup": "3"
-    },
-    "badge_627C9F1B": {
-        "group": "C",
-        "subgroup": "3"
-    },
-    "badge_E12CD11D": {
-        "group": "C",
-        "subgroup": "3"
-    },
-    "badge_52AE061B": {
-        "group": "C",
-        "subgroup": "3"
-    },
-    "badge_F9B16D60": {
-        "group": "A",
-        "subgroup": "4"
-    },
-    "badge_1B063F12": {
-        "group": "A",
-        "subgroup": "4"
-    },
-    "badge_6B344012": {
-        "group": "A",
-        "subgroup": "4"
-    },
-    "badge_4944C65C": {
-        "group": "A",
-        "subgroup": "4"
-    },
-    "badge_101B76A2": {
-        "group": "B",
-        "subgroup": "4"
-    },
-    "badge_909581A2": {
-        "group": "B",
-        "subgroup": "4"
-    },
-    "badge_F067D157": {
-        "group": "B",
-        "subgroup": "4"
-    },
-    "badge_B04681A2": {
-        "group": "B",
-        "subgroup": "4"
-    },
-    "badge_40FC75A2": {
-        "group": "B",
-        "subgroup": "4"
-    },
-    "badge_B0877EA2": {
-        "group": "C",
-        "subgroup": "4"
-    },
-    "badge_A01179A2": {
-        "group": "C",
-        "subgroup": "4"
-    },
-    "badge_806B77A2": {
-        "group": "C",
-        "subgroup": "4"
-    },
-    "badge_607174A2": {
-        "group": "C",
-        "subgroup": "4"
-    },
-    "badge_C0D77AA2": {
-        "group": "C",
-        "subgroup": "4"
-    }
+	"badges": [{
+			"code": "49426960",
+			"params": {
+				"group": "A",
+				"subgroup": "4"
+			}
+		},
+		{
+			"code": "53240021",
+			"params": {
+				"group": "C",
+				"subgroup": "5"
+			}
+		},
+		{
+			"code": "F5458426",
+			"params": {
+				"group": "C",
+				"subgroup": "5"
+			}
+		},
+		{
+			"code": "15917E27",
+			"params": {
+				"group": "C",
+				"subgroup": "5"
+			}
+		},
+		{
+			"code": "C6C1441B",
+			"params": {
+				"group": "C",
+				"subgroup": "5"
+			}
+		},
+		{
+			"code": "538CF421",
+			"params": {
+				"group": "C",
+				"subgroup": "5"
+			}
+		},
+		{
+			"code": "5E68811A",
+			"params": {
+				"group": "A",
+				"subgroup": "5"
+			}
+		},
+		{
+			"code": "2EB3791A",
+			"params": {
+				"group": "A",
+				"subgroup": "5"
+			}
+		},
+		{
+			"code": "DEC77B1A",
+			"params": {
+				"group": "A",
+				"subgroup": "5"
+			}
+		},
+		{
+			"code": "CE04851A",
+			"params": {
+				"group": "A",
+				"subgroup": "5"
+			}
+		},
+		{
+			"code": "CE054260",
+			"params": {
+				"group": "A",
+				"subgroup": "5"
+			}
+		},
+		{
+			"code": "D166991D",
+			"params": {
+				"group": "B",
+				"subgroup": "5"
+			}
+		},
+		{
+			"code": "E1220F1D",
+			"params": {
+				"group": "B",
+				"subgroup": "5"
+			}
+		},
+		{
+			"code": "52E8E11B",
+			"params": {
+				"group": "B",
+				"subgroup": "5"
+			}
+		},
+		{
+			"code": "D16F731D",
+			"params": {
+				"group": "B",
+				"subgroup": "5"
+			}
+		},
+		{
+			"code": "62776A1B",
+			"params": {
+				"group": "B",
+				"subgroup": "5"
+			}
+		},
+		{
+			"code": "7EF97E1A",
+			"params": {
+				"group": "A",
+				"subgroup": "2"
+			}
+		},
+		{
+			"code": "FED7801A",
+			"params": {
+				"group": "A",
+				"subgroup": "2"
+			}
+		},
+		{
+			"code": "2E6E771A",
+			"params": {
+				"group": "A",
+				"subgroup": "2"
+			}
+		},
+		{
+			"code": "5E3D621A",
+			"params": {
+				"group": "A",
+				"subgroup": "2"
+			}
+		},
+		{
+			"code": "CE70821A",
+			"params": {
+				"group": "A",
+				"subgroup": "2"
+			}
+		},
+		{
+			"code": "2E798C60",
+			"params": {
+				"group": "B",
+				"subgroup": "2"
+			}
+		},
+		{
+			"code": "FE226E60",
+			"params": {
+				"group": "B",
+				"subgroup": "2"
+			}
+		},
+		{
+			"code": "4E2F8260",
+			"params": {
+				"group": "B",
+				"subgroup": "2"
+			}
+		},
+		{
+			"code": "5EA78160",
+			"params": {
+				"group": "B",
+				"subgroup": "2"
+			}
+		},
+		{
+			"code": "8E268860",
+			"params": {
+				"group": "B",
+				"subgroup": "2"
+			}
+		},
+		{
+			"code": "1E017960",
+			"params": {
+				"group": "C",
+				"subgroup": "2"
+			}
+		},
+		{
+			"code": "0E887460",
+			"params": {
+				"group": "C",
+				"subgroup": "2"
+			}
+		},
+		{
+			"code": "3E622860",
+			"params": {
+				"group": "C",
+				"subgroup": "2"
+			}
+		},
+		{
+			"code": "AE676660",
+			"params": {
+				"group": "C",
+				"subgroup": "2"
+			}
+		},
+		{
+			"code": "1E086C60",
+			"params": {
+				"group": "C",
+				"subgroup": "2"
+			}
+		},
+		{
+			"code": "7ED72360",
+			"params": {
+				"group": "A",
+				"subgroup": "1"
+			}
+		},
+		{
+			"code": "BEB1761A",
+			"params": {
+				"group": "A",
+				"subgroup": "1"
+			}
+		},
+		{
+			"code": "BEC67F1A",
+			"params": {
+				"group": "A",
+				"subgroup": "1"
+			}
+		},
+		{
+			"code": "8E9A791A",
+			"params": {
+				"group": "A",
+				"subgroup": "1"
+			}
+		},
+		{
+			"code": "BE1F7D1A",
+			"params": {
+				"group": "A",
+				"subgroup": "1"
+			}
+		},
+		{
+			"code": "5EAD7260",
+			"params": {
+				"group": "B",
+				"subgroup": "1"
+			}
+		},
+		{
+			"code": "7EBD9860",
+			"params": {
+				"group": "B",
+				"subgroup": "1"
+			}
+		},
+		{
+			"code": "CE4E2B60",
+			"params": {
+				"group": "B",
+				"subgroup": "1"
+			}
+		},
+		{
+			"code": "BE097560",
+			"params": {
+				"group": "B",
+				"subgroup": "1"
+			}
+		},
+		{
+			"code": "BE857360",
+			"params": {
+				"group": "B",
+				"subgroup": "1"
+			}
+		},
+		{
+			"code": "02FC29CA",
+			"params": {
+				"group": "C",
+				"subgroup": "1"
+			}
+		},
+		{
+			"code": "92161BCA",
+			"params": {
+				"group": "C",
+				"subgroup": "1"
+			}
+		},
+		{
+			"code": "62281BCA",
+			"params": {
+				"group": "C",
+				"subgroup": "1"
+			}
+		},
+		{
+			"code": "B210F2C9",
+			"params": {
+				"group": "C",
+				"subgroup": "1"
+			}
+		},
+		{
+			"code": "6299E9C9",
+			"params": {
+				"group": "C",
+				"subgroup": "1"
+			}
+		},
+		{
+			"code": "0EAF4C60",
+			"params": {
+				"group": "A",
+				"subgroup": "3"
+			}
+		},
+		{
+			"code": "6EE8781A",
+			"params": {
+				"group": "A",
+				"subgroup": "3"
+			}
+		},
+		{
+			"code": "7E23791A",
+			"params": {
+				"group": "A",
+				"subgroup": "3"
+			}
+		},
+		{
+			"code": "FEF08A1A",
+			"params": {
+				"group": "A",
+				"subgroup": "3"
+			}
+		},
+		{
+			"code": "BE11871A",
+			"params": {
+				"group": "A",
+				"subgroup": "3"
+			}
+		},
+		{
+			"code": "1E278B1A",
+			"params": {
+				"group": "B",
+				"subgroup": "3"
+			}
+		},
+		{
+			"code": "CEFFD015",
+			"params": {
+				"group": "B",
+				"subgroup": "3"
+			}
+		},
+		{
+			"code": "DE9AD415",
+			"params": {
+				"group": "B",
+				"subgroup": "3"
+			}
+		},
+		{
+			"code": "2EF33A60",
+			"params": {
+				"group": "B",
+				"subgroup": "3"
+			}
+		},
+		{
+			"code": "CE164860",
+			"params": {
+				"group": "B",
+				"subgroup": "3"
+			}
+		},
+		{
+			"code": "1346AF1B",
+			"params": {
+				"group": "C",
+				"subgroup": "3"
+			}
+		},
+		{
+			"code": "52926A1B",
+			"params": {
+				"group": "C",
+				"subgroup": "3"
+			}
+		},
+		{
+			"code": "627C9F1B",
+			"params": {
+				"group": "C",
+				"subgroup": "3"
+			}
+		},
+		{
+			"code": "E12CD11D",
+			"params": {
+				"group": "C",
+				"subgroup": "3"
+			}
+		},
+		{
+			"code": "52AE061B",
+			"params": {
+				"group": "C",
+				"subgroup": "3"
+			}
+		},
+		{
+			"code": "F9B16D60",
+			"params": {
+				"group": "A",
+				"subgroup": "4"
+			}
+		},
+		{
+			"code": "1B063F12",
+			"params": {
+				"group": "A",
+				"subgroup": "4"
+			}
+		},
+		{
+			"code": "6B344012",
+			"params": {
+				"group": "A",
+				"subgroup": "4"
+			}
+		},
+		{
+			"code": "4944C65C",
+			"params": {
+				"group": "A",
+				"subgroup": "4"
+			}
+		},
+		{
+			"code": "101B76A2",
+			"params": {
+				"group": "B",
+				"subgroup": "4"
+			}
+		},
+		{
+			"code": "909581A2",
+			"params": {
+				"group": "B",
+				"subgroup": "4"
+			}
+		},
+		{
+			"code": "F067D157",
+			"params": {
+				"group": "B",
+				"subgroup": "4"
+			}
+		},
+		{
+			"code": "B04681A2",
+			"params": {
+				"group": "B",
+				"subgroup": "4"
+			}
+		},
+		{
+			"code": "40FC75A2",
+			"params": {
+				"group": "B",
+				"subgroup": "4"
+			}
+		},
+		{
+			"code": "B0877EA2",
+			"params": {
+				"group": "C",
+				"subgroup": "4"
+			}
+		},
+		{
+			"code": "A01179A2",
+			"params": {
+				"group": "C",
+				"subgroup": "4"
+			}
+		},
+		{
+			"code": "806B77A2",
+			"params": {
+				"group": "C",
+				"subgroup": "4"
+			}
+		},
+		{
+			"code": "607174A2",
+			"params": {
+				"group": "C",
+				"subgroup": "4"
+			}
+		},
+		{
+			"code": "C0D77AA2",
+			"params": {
+				"group": "C",
+				"subgroup": "4"
+
+			}
+		}
+	]
 }
