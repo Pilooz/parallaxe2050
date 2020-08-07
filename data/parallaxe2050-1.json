@@ -17,8 +17,8 @@
 
     {
       "stepId" : "step-2",
-      "title" : "Page2",
-      "template" : "admin-reseau/content",
+      "title" : "Console réseau",
+      "template" : "console",
       "text" : "",
       "transitions" :
         [
