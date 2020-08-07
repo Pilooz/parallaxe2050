@@ -85,23 +85,7 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
       console.log("extracted rfid code : " + rfid.getCurrentCode() + " on reader #" + rfid.getCurrentReader());
       // Send Rfid code to client
       io.emit('toclient.currentBadge', {tag: rfid.getCurrentCode(), reader: rfid.getCurrentReader()});
-
-      // Get group of Students in database, to determinate game's solutions.
-      
     }
-  //     ____   _________    ___   ______      ___    
-  //   .' __ \ |  _   _  | .'   `.|_   _ `.  .'   `.  
-  //  / .'  \ ||_/ | | \_|/  .-.  \ | | `. \/  .-.  \ 
-  //  | | (_/ |    | |    | |   | | | |  | || |   | | 
-  //  \ `.__.'\   _| |_   \  `-'  /_| |_.' /\  `-'  / 
-  //   `.___ .'  |_____|   `.___.'|______.'  `.___.'  
-                                                  
-  // implémenter ici le chargement dans un objet des solutions des énigmes 
-  // choisies dans un fichier de solutions à 3 groupes A,B,C pour les 5 dispositifs
-
-  // currentGroup = rfid..getCurrentGroup(rfid.currentBadge.code);
-  // scenario.getSolutionsForCurrentStep(currentGroup);
-
   });
 
   // Opening serial port, checking for errors
@@ -112,7 +96,27 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
       console.log('Reading on ', GLOBAL_CONFIG.rfid.portName);
     }
   });
+} 
+
+if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
+
+  // Testing for null data
+  // rfid.extractTag("\n");
+  // rfid.extractReader("\n");
+  // Testing for group A
+  // rfid.extractTag("<TAG:49426960/><READER:1/>");
+  // rfid.extractReader("<TAG:49426960/><READER:1/>");
+  // Testing for group B
+  // rfid.extractTag("<TAG:CE4E2B60/><READER:2/>");
+  // rfid.extractReader("<TAG:CE4E2B60/><READER:2/>");
+  // Testing for group C
+  rfid.extractTag("<TAG:E12CD11D/><READER:3/>");
+  rfid.extractReader("<TAG:E12CD11D/><READER:3/>");
+
+  console.log("extracted rfid code : " + rfid.getCurrentCode() + " on reader #" + rfid.getCurrentReader());
+  io.emit('toclient.currentBadge', {tag: rfid.getCurrentCode(), reader: rfid.getCurrentReader()});
 }
+
 
 //------------------------------------------------------------------------
 // HTTP Server configuration
@@ -160,6 +164,9 @@ router.all('/*', function (req, res, next) {
   // send current step of the scenario to client
   dataForTemplate.currentStep = scenario.getCurrentStep();
 
+  // send solutions in the client's data
+  dataForTemplate.solutions = scenario.getSolutionsForCurrentStep(rfid.getCurrentGroup());
+
   next(); // pass control to the next handler
 })
 
@@ -169,14 +176,11 @@ router.all('/*', function (req, res, next) {
 })
 
 /* GET home page. 
-  This route  gives the right template to the client in term of scenario step
+  This route gives the right template to the client in term of scenario step
 */
 .get('/', function(req, res, next) {
-  // We need to see what is the template for the currentStep
-  var step = scenario.getCurrentStep();
-
   // By default the template is "content.ejs"
-  var tmpl = (step.template == "") ? "content" : step.template;
+  var tmpl = (dataForTemplate.currentStep.template == "") ? "content" : dataForTemplate.currentStep.template;
   
   if (!fs.existsSync("./views/" + scenario.data().templateDirectory + tmpl + ".ejs")) { 
     console.log("The template ./views/" + scenario.data().templateDirectory + tmpl + ".ejs was not found.");
