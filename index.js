@@ -22,15 +22,8 @@ const scenario     = require('./lib/scenario_utils.js')(CONFIG_SERVER);
 // Rfid parsing functions
 var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG);
 
-console.log(scenario.getSolutionsForCurrentStep("A"));
-
 const httpPort    = CONFIG_SERVER.port;
 // var formidable    = require('formidable'); // File upload
-
-console.log(rfid.currentBadge());
-console.log(rfid.groups_db().badge_49426960);
-console.log(rfid.extractTag("<TAG:123456/><READER:1/>"));
-console.log(rfid.extractReader("<TAG:123456/><READER:1/>"));
 
 //------------------------------------------------------------------------
 // Some usefull functions
@@ -193,7 +186,7 @@ router.all('/*', function (req, res, next) {
 /* GET populate page. */
 .get('/populate', function(req, res, next) {
 	if (httpRequests && httpRequests.rfidcode) {
-		rfid.groups_db["badge_" + httpRequests.rfidcode] = {'group': httpRequests.group, 'subgroup': httpRequests.subgroup};
+		rfid.groups_db.badges.push ( { 'code' : httpRequests.rfidcode, 'params' : {'group': httpRequests.group, 'subgroup': httpRequests.subgroup}} );
 	}
 	res.render('populate');
 })
