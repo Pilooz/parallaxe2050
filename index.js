@@ -59,7 +59,7 @@ io.on('connection', function(socket) {
 if (GLOBAL_CONFIG.rfid.behavior == "real") {
   const SerialPort = require('serialport');
   const Readline = SerialPort.parsers.Readline;
-  const port = new SerialPort(GLOBAL_CONFIG.rfid.portName, { 
+  const port = new SerialPort(GLOBAL_CONFIG.rfid.portName, {
       autoOpen: true,
       baudRate: GLOBAL_CONFIG.rfid.baudRate
     });
@@ -69,9 +69,9 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
   // Parsing RFID Tag
   parser.on('data', function(msg){
     // If data is a tag
-    rfidData.code = rfid.extractTag(msg); 
+    rfidData.code = rfid.extractTag(msg);
     if (rfidData.code != "") {
-      rfidData.reader = rfid.extractReader(msg);  
+      rfidData.reader = rfid.extractReader(msg);
       console.log("extracted rfid code : " + rfidData.code + " on reader #" + rfidData.reader);
       // Send Rfid code to client
       io.emit('toclient.rfidData', {tag: rfidData.code, reader: rfidData.reader});
@@ -93,7 +93,7 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
 //------------------------------------------------------------------------
 server.listen( httpPort, '0.0.0.0', function( ) {
   console.log( '------------------------------------------------------------' );
-  console.log( 'server Ip Address is %s', ip.address() );     
+  console.log( 'server Ip Address is %s', ip.address() );
   console.log( 'it is listening at port %d', httpPort );
   console.log( '------------------------------------------------------------' );
   console.log( 'RFID reading is ' + GLOBAL_CONFIG.rfid.behavior);
@@ -160,7 +160,7 @@ router.all('/*', function (req, res, next) {
 .get('/save', function(req, res, next) {
 	let data = JSON.stringify(db_rfid, null, 4);
 	fs.writeFileSync(GLOBAL_CONFIG.app.dbPath + '/db-rfid.json', data);
-	
+
 	res.end('{"success": "Sauvegarde ok !", "status": 200}');
 })
 
