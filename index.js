@@ -129,8 +129,13 @@ var httpRequests = {};
 router.all('/*', function (req, res, next) {
   // mettre toutes les requests dans un seul objet.
   httpRequests = req.query; // according to the use of express
+
+  // Send server config to client
   dataForTemplate.config_server = CONFIG_SERVER;
-  dataForTemplate.scenario = scenario.data();
+
+  // send current step of the scenario to client
+  dataForTemplate.currentStep = scenario.getCurrentStep();
+  console.log(dataForTemplate.currentStep);
 
   next(); // pass control to the next handler
 })
