@@ -12,21 +12,23 @@ const fs          = require('fs');
 
 // Find configuration, with fixed IP
 const CONFIG_SERVER = get_server_conf();
+
 // Loading scenario
-const SCENARIO = require('./data/' + CONFIG_SERVER.name + '.json');
+const scenario = require('./lib/scenario_utils.js')(CONFIG_SERVER);
 
 const httpPort    = CONFIG_SERVER.port;
 var io            = require('socket.io').listen(server);
 var cookieParser  = require('cookie-parser');
 var bodyParser    = require('body-parser');
 var path          = require('path');
-var formidable    = require('formidable'); // File upload
+// var formidable    = require('formidable'); // File upload
 
 // Rfid parsing functions
 var rfid          = require('./lib/rfid.js');
+const { exit } = require('process');
 
 // RFID Data structure
-var lastReadData = { code: "", reader: "" };
+// var lastReadData = { code: "", reader: "" };
 var rfidData     = { code: "x", reader: "1"};
 
 // Databases
@@ -48,6 +50,14 @@ function get_server_conf() {
 //------------------------------------------------------------------------
 io.on('connection', function(socket) {
     console.log("New client is connected : " + socket.id );
+
+    // Client asks for the next step
+    io.on('toserver.nextStep', function(data){
+      // The data var contains the next stepId that has been dexcribed and validated in the current step trnasition
+      scenario.setCurrentStepId(data.nextStep);
+      // Say to the client it has to refresh
+      io.emit('toclient.refreshNow');
+    });
 
 });
 
@@ -98,16 +108,13 @@ server.listen( httpPort, '0.0.0.0', function( ) {
   console.log( '------------------------------------------------------------' );
 });
 
-
 app.use(express.json());
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views/', SCENARIO.templateDirectory));
+app.set('views', path.join(__dirname, 'views/', scenario.data().templateDirectory));
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-//app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -128,8 +135,12 @@ var httpRequests = {};
 router.all('/*', function (req, res, next) {
   // mettre toutes les requests dans un seul objet.
   httpRequests = req.query; // according to the use of express
-  dataForTemplate.CONFIG_SERVER = CONFIG_SERVER;
-  dataForTemplate.SCENARIO = SCENARIO;
+
+  // Send server config to client
+  dataForTemplate.config_server = CONFIG_SERVER;
+
+  // send current step of the scenario to client
+  dataForTemplate.currentStep = scenario.getCurrentStep();
 
   next(); // pass control to the next handler
 })
@@ -139,9 +150,22 @@ router.all('/*', function (req, res, next) {
   res.render('index', { data: dataForTemplate });
 })
 
-/* GET home page. */
+/* GET home page. 
+  This route  gives the right template to the client in term of scenario step
+*/
 .get('/', function(req, res, next) {
-  res.render('typing', { data: dataForTemplate });
+  // We need to see what is the template for the currentStep
+  var step = scenario.getCurrentStep();
+
+  // By default the template is "content.ejs"
+  var tmpl = (step.template == "") ? "content" : step.template;
+  
+  if (!fs.existsSync("./views/" + scenario.data().templateDirectory + tmpl + ".ejs")) { 
+    console.log("The template ./views/" + scenario.data().templateDirectory + tmpl + ".ejs was not found.");
+    next();
+  } else {
+    res.render(tmpl, { data: dataForTemplate });
+  }
 })
 
 /* GET populate page. */
