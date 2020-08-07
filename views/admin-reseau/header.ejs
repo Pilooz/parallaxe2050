@@ -28,13 +28,14 @@
 		$(document).ready(function(){
       socket = io('http://<%= data.config_server.ip %>:<%= data.config_server.port %>'); // http://localhost:3000
 
-      // ------------------------------------------------------------------
-      // Socket listening
-      // ------------------------------------------------------------------
-      // Receiving config from server
-      // socket.on('ServertoClient_', function(data) {
-      //   config = data;
-      // });
+    // ------------------------------------------------------------------
+    // Socket listening
+    // ------------------------------------------------------------------
+        socket.on('toclient.refreshNow', function() {
+        console.log("I have received the order to reload my page...");
+        location.href="/";
+      });
+
     });
 
   </script>
@@ -43,6 +44,3 @@
     <body>
     <!-- Begin page content -->
     <div class="container-fluid">
-      Header
-
-      <pre><%- JSON.stringify(data, null, 2) %></pre>

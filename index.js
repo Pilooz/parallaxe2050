@@ -59,6 +59,12 @@ io.on('connection', function(socket) {
       io.emit('toclient.refreshNow');
     });
 
+
+    // setTimeout(function(){
+    //   console.log("go to step-2...");
+    //   scenario.setCurrentStepId("step-2");
+    //   io.emit('toclient.refreshNow')}
+    // , 5000);
 });
 
 //------------------------------------------------------------------------
@@ -84,6 +90,16 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
       // Send Rfid code to client
       io.emit('toclient.rfidData', {tag: rfidData.code, reader: rfidData.reader});
     }
+  //     ____   _________    ___   ______      ___    
+  //   .' __ \ |  _   _  | .'   `.|_   _ `.  .'   `.  
+  //  / .'  \ ||_/ | | \_|/  .-.  \ | | `. \/  .-.  \ 
+  //  | | (_/ |    | |    | |   | | | |  | || |   | | 
+  //  \ `.__.'\   _| |_   \  `-'  /_| |_.' /\  `-'  / 
+  //   `.___ .'  |_____|   `.___.'|______.'  `.___.'  
+                                                  
+  // implémenter ici le chargement dans un objet des solutions des énigmes 
+  // choisies dans un fichier de solutions à 3 groupes A,B,C pour les 5 dispositifs
+
   });
 
   // Opening serial port, checking for errors
