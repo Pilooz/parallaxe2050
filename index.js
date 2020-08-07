@@ -102,7 +102,7 @@ server.listen( httpPort, '0.0.0.0', function( ) {
 app.use(express.json());
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'views/', SCENARIO.templateDirectory));
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
@@ -128,8 +128,6 @@ var httpRequests = {};
 router.all('/*', function (req, res, next) {
   // mettre toutes les requests dans un seul objet.
   httpRequests = req.query; // according to the use of express
-  // dataForTemplate.mode = GLOBAL_CONFIG.app.mode;
-  // dataForTemplate.numReaders = GLOBAL_CONFIG.rfid.numReaders;
   dataForTemplate.CONFIG_SERVER = CONFIG_SERVER;
   dataForTemplate.SCENARIO = SCENARIO;
 
@@ -143,7 +141,7 @@ router.all('/*', function (req, res, next) {
 
 /* GET home page. */
 .get('/', function(req, res, next) {
-  res.render('index', { data: dataForTemplate });
+  res.render('typing', { data: dataForTemplate });
 })
 
 /* GET populate page. */

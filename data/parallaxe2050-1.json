@@ -1,11 +1,12 @@
 { 
     "scenario_name" : "Dispositif Admin Réseau", 
     "scenarioMediaPath" : "medias/admin-reseau/",
+    "templateDirectory" : "admin-reseau/",
     "steps" : [
     {
       "stepId" : "step-1",
       "title" : "Typing windows",
-      "template" : "admin-reseau/typing",
+      "template" : "typing",
       "medias" : [],
       "text" : "text1",
       "transitions" : 

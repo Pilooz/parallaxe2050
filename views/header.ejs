@@ -25,7 +25,9 @@
 
   <script>
     var socket = null;
-    var scenar = <%-JSON.stringify(data.SCENARIO, null, 2) %>;
+    // the description of the whole scenario is here
+    // @TODO : What if the data from server are undefined ?
+    var currentStep = <%-JSON.stringify(data.currentStep, null, 2) %>;
 		$(document).ready(function(){
       socket = io('http://<%= data.CONFIG_SERVER.ip %>:<%= data.CONFIG_SERVER.port %>'); // http://localhost:3000
 
@@ -37,6 +39,8 @@
       //   config = data;
       // });
     });
+
+    console.log(scenario);
   </script>
 
   </head>
