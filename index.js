@@ -12,29 +12,25 @@ const fs          = require('fs');
 
 // Find configuration, with fixed IP
 const CONFIG_SERVER = get_server_conf();
-
-// Loading scenario
-const scenario = require('./lib/scenario_utils.js')(CONFIG_SERVER);
-
-console.log(scenario.getSolutionsForCurrentStep("A"));
-
-const httpPort    = CONFIG_SERVER.port;
 var io            = require('socket.io').listen(server);
 var cookieParser  = require('cookie-parser');
 var bodyParser    = require('body-parser');
 var path          = require('path');
+
+// Loading scenario
+const scenario     = require('./lib/scenario_utils.js')(CONFIG_SERVER);
+// Rfid parsing functions
+var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG);
+
+console.log(scenario.getSolutionsForCurrentStep("A"));
+
+const httpPort    = CONFIG_SERVER.port;
 // var formidable    = require('formidable'); // File upload
 
-// Rfid parsing functions
-var rfid          = require('./lib/rfid.js');
-const { exit } = require('process');
-
-// RFID Data structure
-// var lastReadData = { code: "", reader: "" };
-var rfidData     = { code: "x", reader: "1"};
-
-// Databases
-var db_rfid      = require(GLOBAL_CONFIG.app.dbPath + '/db-rfid.json');
+console.log(rfid.currentBadge());
+console.log(rfid.groups_db().badge_49426960);
+console.log(rfid.extractTag("<TAG:123456/><READER:1/>"));
+console.log(rfid.extractReader("<TAG:123456/><READER:1/>"));
 
 //------------------------------------------------------------------------
 // Some usefull functions
@@ -44,7 +40,12 @@ var db_rfid      = require(GLOBAL_CONFIG.app.dbPath + '/db-rfid.json');
 // return the conf from server ip
 //------------------------------------------------------------------------
 function get_server_conf() {
-  return GLOBAL_CONFIG.servers.filter(server => server.ip == ip.address())[0];
+  var cnf =  GLOBAL_CONFIG.servers.filter(server => server.ip == ip.address())[0];
+  if (!cnf) {
+    console.log("\nNo configuration was found with the IP '" + ip.address() + "' !\n");
+    return process.exit(1);
+  }
+  return cnf;
 }
 
 //------------------------------------------------------------------------
@@ -85,12 +86,12 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
   // Parsing RFID Tag
   parser.on('data', function(msg){
     // If data is a tag
-    rfidData.code = rfid.extractTag(msg);
-    if (rfidData.code != "") {
-      rfidData.reader = rfid.extractReader(msg);
-      console.log("extracted rfid code : " + rfidData.code + " on reader #" + rfidData.reader);
+    rfid.currentBadge.code = rfid.extractTag(msg);
+    if (rfid.currentBadge.code != "") {
+      rfid.currentBadge.reader = rfid.extractReader(msg);
+      console.log("extracted rfid code : " + rfid.currentBadge.code + " on reader #" + rfid.currentBadge.reader);
       // Send Rfid code to client
-      io.emit('toclient.rfidData', {tag: rfidData.code, reader: rfidData.reader});
+      io.emit('toclient.currentBadge', {tag: rfid.currentBadge.code, reader: rfid.currentBadge.reader});
     }
   //     ____   _________    ___   ______      ___    
   //   .' __ \ |  _   _  | .'   `.|_   _ `.  .'   `.  
@@ -102,7 +103,7 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
   // implémenter ici le chargement dans un objet des solutions des énigmes 
   // choisies dans un fichier de solutions à 3 groupes A,B,C pour les 5 dispositifs
 
-  // currentGroup = db_rfid.getGroup(rfidData.code);
+  // currentGroup = rfid..getCurrentGroup(rfid.currentBadge.code);
   // scenario.getSolutionsForCurrentStep(currentGroup);
 
   });
@@ -192,14 +193,14 @@ router.all('/*', function (req, res, next) {
 /* GET populate page. */
 .get('/populate', function(req, res, next) {
 	if (httpRequests && httpRequests.rfidcode) {
-		db_rfid[httpRequests.rfidcode] = {'group': httpRequests.group, 'subgroup': httpRequests.subgroup};
+		rfid.groups_db["badge_" + httpRequests.rfidcode] = {'group': httpRequests.group, 'subgroup': httpRequests.subgroup};
 	}
 	res.render('populate');
 })
 
 /* GET save page. */
 .get('/save', function(req, res, next) {
-	let data = JSON.stringify(db_rfid, null, 4);
+	let data = JSON.stringify(rfid.groups_db, null, 4);
 	fs.writeFileSync(GLOBAL_CONFIG.app.dbPath + '/db-rfid.json', data);
 
 	res.end('{"success": "Sauvegarde ok !", "status": 200}');
