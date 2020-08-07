@@ -1,11 +1,10 @@
 <%- include('header', { data: data }) %>
+<body>
     <div class="container">
-
-    <div class="row">
-        <div class="col-md-12">
-            Typing Content
-        </div>
+        <span class="typed-text"></span><span class="cursor">&nbsp;</span>
     </div>
-
-    </div>
+<div id="main">
+    <div><input id="input" type="text" autocomplete="off" style="background-color: rgb(20, 20, 20); color: rgb(18, 134, 18); border: rgb(18, 134, 18); font-size: 50px; width: 97vw; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: 85vh;"/></div>
+</div>
+</body>
 <%- include('footer', { data: data })%>

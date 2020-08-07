@@ -2,8 +2,24 @@
 
 	<footer class="footer">
        <div class="container-fluid">
-         Footer
       </div>
-	</footer>
+  </footer>
+  <script>
+    const text_one   = ["> Vous êtes là ? Il y a quelqu’un ? Vous me recevez ?", "> …", "> Si quelqu’un peut lire ce message, tapez “yes” !"];
+    const text_two   = ["> Enfin quelqu'un ! On a un gros problème qui m'empêche de vous contacter atrement.", "J'ai besoin de votre aide. Je compte sur vous !", "Êtes-vous prêt·es à m'aider ?"]
+    const text_three = ["> Super. Lisez attentivement ce qui va suivre.", "> Le malware lancé par les méchants infecte l’ensemble du réseau Greenternet, même les objets connectés ! Il est capable de se répliquer, de s’adapter et de corrompre les différents langages qui constituent le Greenternet. On doit arrêter cette propagation.", "> Trouvez tous les objets sur lesquels on injectera un bout de code pour bloquer le malware."]
+    document.addEventListener("DOMContentLoaded", () => {
+      const inputField = document.getElementById("input");
+      inputField.addEventListener("keydown", function(e) {
+          if (e.code === "Enter") {
+              let input = inputField.value;
+              if (input == "yes") {
+                  console.log(`ok`);
+              }
+            inputField.value = "";
+          }
+      });
+    });
+  </script>
   </body>
 </html>
