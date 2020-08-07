@@ -16,6 +16,8 @@ const CONFIG_SERVER = get_server_conf();
 // Loading scenario
 const scenario = require('./lib/scenario_utils.js')(CONFIG_SERVER);
 
+console.log(scenario.getSolutionsForCurrentStep("A"));
+
 const httpPort    = CONFIG_SERVER.port;
 var io            = require('socket.io').listen(server);
 var cookieParser  = require('cookie-parser');
@@ -99,6 +101,9 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
                                                   
   // implémenter ici le chargement dans un objet des solutions des énigmes 
   // choisies dans un fichier de solutions à 3 groupes A,B,C pour les 5 dispositifs
+
+  // currentGroup = db_rfid.getGroup(rfidData.code);
+  // scenario.getSolutionsForCurrentStep(currentGroup);
 
   });
 

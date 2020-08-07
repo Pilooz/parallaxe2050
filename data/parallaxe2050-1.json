@@ -3,28 +3,64 @@
     "scenarioMediaPath" : "medias/admin-reseau/",
     "templateDirectory" : "admin-reseau/",
     "steps" : [
-    {
-      "stepId" : "step-1",
-      "title" : "Typing windows",
-      "template" : "typing",
-      "medias" : [],
-      "text" : "text1",
-      "transitions" :
-        [
-          { "id" : "step-2", "condition" : "byeFunction" }
-        ]
-    },
+        {
+        "stepId" : "step-1",
+        "title" : "Typing windows",
+        "template" : "typing",
+        "medias" : [],
+        "text" : "text1",
+        "transitions" :
+            [
+            { "id" : "step-2", "condition" : "byeFunction" }
+            ],
+        "solutions" : 
+            [
+                {
+                    "group": "A", 
+                    "responses" : 
+                    [1, 2, 3]
+                },
+                {
+                    "group": "B", 
+                    "responses" : 
+                    [4, 5, 6]
+                },
+                {
+                    "group": "C", 
+                    "responses" : 
+                    [7, 8, 9]
+                }
+            ]
+        },
 
-    {
-      "stepId" : "step-2",
-      "title" : "Console réseau",
-      "template" : "console",
-      "text" : "",
-      "transitions" :
-        [
-          { "id" : "step-3", "condition" : "choice == 'Choice 1'" },
-          { "id" : "step-3-error", "condition" : "choice != 'Choice 1'" }
-        ]
-    }
+        {
+        "stepId" : "step-2",
+        "title" : "Console réseau",
+        "template" : "console",
+        "text" : "",
+        "transitions" :
+            [
+            { "id" : "step-3", "condition" : "choice == 'Choice 1'" },
+            { "id" : "step-3-error", "condition" : "choice != 'Choice 1'" }
+            ],
+            "solutions" : 
+            [
+                {
+                    "group": "A", 
+                    "responses" : 
+                    []
+                },
+                {
+                    "group": "B", 
+                    "responses" : 
+                    []
+                },
+                {
+                    "group": "C", 
+                    "responses" : 
+                    []
+                }
+            ]
+        }
     ]
   }
