@@ -12,21 +12,23 @@ const fs          = require('fs');
 
 // Find configuration, with fixed IP
 const CONFIG_SERVER = get_server_conf();
+
 // Loading scenario
-const SCENARIO = require('./data/' + CONFIG_SERVER.name + '.json');
+const scenario = require('./lib/scenario_utils.js')(CONFIG_SERVER);
 
 const httpPort    = CONFIG_SERVER.port;
 var io            = require('socket.io').listen(server);
 var cookieParser  = require('cookie-parser');
 var bodyParser    = require('body-parser');
 var path          = require('path');
-var formidable    = require('formidable'); // File upload
+// var formidable    = require('formidable'); // File upload
 
 // Rfid parsing functions
 var rfid          = require('./lib/rfid.js');
+const { exit } = require('process');
 
 // RFID Data structure
-var lastReadData = { code: "", reader: "" };
+// var lastReadData = { code: "", reader: "" };
 var rfidData     = { code: "x", reader: "1"};
 
 // Databases
@@ -98,11 +100,10 @@ server.listen( httpPort, '0.0.0.0', function( ) {
   console.log( '------------------------------------------------------------' );
 });
 
-
 app.use(express.json());
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views/', SCENARIO.templateDirectory));
+app.set('views', path.join(__dirname, 'views/', scenario.data().templateDirectory));
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
@@ -128,8 +129,8 @@ var httpRequests = {};
 router.all('/*', function (req, res, next) {
   // mettre toutes les requests dans un seul objet.
   httpRequests = req.query; // according to the use of express
-  dataForTemplate.CONFIG_SERVER = CONFIG_SERVER;
-  dataForTemplate.SCENARIO = SCENARIO;
+  dataForTemplate.config_server = CONFIG_SERVER;
+  dataForTemplate.scenario = scenario.data();
 
   next(); // pass control to the next handler
 })
@@ -139,8 +140,11 @@ router.all('/*', function (req, res, next) {
   res.render('index', { data: dataForTemplate });
 })
 
-/* GET home page. */
+/* GET home page. 
+  This route  gives the right template to the client in term of scenario step
+*/
 .get('/', function(req, res, next) {
+  
   res.render('typing', { data: dataForTemplate });
 })
 
