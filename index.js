@@ -51,6 +51,14 @@ function get_server_conf() {
 io.on('connection', function(socket) {
     console.log("New client is connected : " + socket.id );
 
+    // Client asks for the next step
+    io.on('toserver.nextStep', function(data){
+      // The data var contains the next stepId that has been dexcribed and validated in the current step trnasition
+      scenario.setCurrentStepId(data.nextStep);
+      // Say to the client it has to refresh
+
+    });
+
 });
 
 //------------------------------------------------------------------------
@@ -107,8 +115,6 @@ app.set('views', path.join(__dirname, 'views/', scenario.data().templateDirector
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-//app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -135,7 +141,6 @@ router.all('/*', function (req, res, next) {
 
   // send current step of the scenario to client
   dataForTemplate.currentStep = scenario.getCurrentStep();
-  console.log(dataForTemplate.currentStep);
 
   next(); // pass control to the next handler
 })
@@ -149,8 +154,18 @@ router.all('/*', function (req, res, next) {
   This route  gives the right template to the client in term of scenario step
 */
 .get('/', function(req, res, next) {
+  // We need to see what is the template for the currentStep
+  var step = scenario.getCurrentStep();
+
+  // By default the template is "content.ejs"
+  var tmpl = (step.template == "") ? "content" : step.template;
   
-  res.render('typing', { data: dataForTemplate });
+  if (!fs.existsSync("./views/" + scenario.data().templateDirectory + tmpl + ".ejs")) { 
+    console.log("The template ./views/" + scenario.data().templateDirectory + tmpl + ".ejs was not found.");
+    next();
+  } else {
+    res.render(tmpl, { data: dataForTemplate });
+  }
 })
 
 /* GET populate page. */
