@@ -41,6 +41,11 @@ function get_server_conf() {
   return cnf;
 }
 
+function simulate_badge_reading() {
+  rfid.extractTag("<TAG:49426960/><READER:1/>");
+  rfid.extractReader("<TAG:49426960/><READER:1/>");
+}
+
 //------------------------------------------------------------------------
 // Init Socket to transmit Serial data to HTTP client
 //------------------------------------------------------------------------
