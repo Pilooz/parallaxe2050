@@ -56,7 +56,7 @@ io.on('connection', function(socket) {
       // The data var contains the next stepId that has been dexcribed and validated in the current step trnasition
       scenario.setCurrentStepId(data.nextStep);
       // Say to the client it has to refresh
-
+      io.emit('toclient.refreshNow');
     });
 
 });
