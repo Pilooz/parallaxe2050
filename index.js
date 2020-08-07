@@ -41,11 +41,6 @@ function get_server_conf() {
   return cnf;
 }
 
-function simulate_badge_reading() {
-  rfid.extractTag("<TAG:49426960/><READER:1/>");
-  rfid.extractReader("<TAG:49426960/><READER:1/>");
-}
-
 //------------------------------------------------------------------------
 // Init Socket to transmit Serial data to HTTP client
 //------------------------------------------------------------------------
@@ -84,12 +79,15 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
   // Parsing RFID Tag
   parser.on('data', function(msg){
     // If data is a tag
-    rfid.currentBadge.code = rfid.extractTag(msg);
-    if (rfid.currentBadge.code != "") {
-      rfid.currentBadge.reader = rfid.extractReader(msg);
-      console.log("extracted rfid code : " + rfid.currentBadge.code + " on reader #" + rfid.currentBadge.reader);
+    rfid.extractTag(msg);
+    if (rfid.getCurrentCode() != "") {
+      rfid.extractReader(msg);
+      console.log("extracted rfid code : " + rfid.getCurrentCode() + " on reader #" + rfid.getCurrentReader());
       // Send Rfid code to client
-      io.emit('toclient.currentBadge', {tag: rfid.currentBadge.code, reader: rfid.currentBadge.reader});
+      io.emit('toclient.currentBadge', {tag: rfid.getCurrentCode(), reader: rfid.getCurrentReader()});
+
+      // Get group of Students in database, to determinate game's solutions.
+      
     }
   //     ____   _________    ___   ______      ___    
   //   .' __ \ |  _   _  | .'   `.|_   _ `.  .'   `.  
