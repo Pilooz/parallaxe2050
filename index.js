@@ -55,7 +55,6 @@ io.on('connection', function(socket) {
       io.emit('toclient.refreshNow');
     });
 
-
     // setTimeout(function(){
     //   console.log("go to step-2...");
     //   scenario.setCurrentStepId("step-2");
@@ -104,14 +103,15 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // rfid.extractTag("\n");
   // rfid.extractReader("\n");
   // Testing for group A
-  // rfid.extractTag("<TAG:49426960/><READER:1/>");
-  // rfid.extractReader("<TAG:49426960/><READER:1/>");
+  rfid.extractTag("<TAG:49426960/><READER:1/>");
+  rfid.extractReader("<TAG:49426960/><READER:1/>");
+  scenario.setCurrentStepId("step-2");
   // Testing for group B
   // rfid.extractTag("<TAG:CE4E2B60/><READER:2/>");
   // rfid.extractReader("<TAG:CE4E2B60/><READER:2/>");
   // Testing for group C
-  rfid.extractTag("<TAG:E12CD11D/><READER:3/>");
-  rfid.extractReader("<TAG:E12CD11D/><READER:3/>");
+  // rfid.extractTag("<TAG:E12CD11D/><READER:3/>");
+  // rfid.extractReader("<TAG:E12CD11D/><READER:3/>");
 
   console.log("extracted rfid code : " + rfid.getCurrentCode() + " on reader #" + rfid.getCurrentReader());
   io.emit('toclient.currentBadge', {tag: rfid.getCurrentCode(), reader: rfid.getCurrentReader()});
@@ -145,7 +145,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 app.use('/js', express.static(__dirname + '/node_modules/socket.io/dist')); // Socket.io
-app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css')); // redirect CSS bootstrap
+app.use('/js/xterm', express.static(__dirname + '/node_modules/xterm/lib')); // redirect JS for xTerm
+app.use('/css/xterm', express.static(__dirname + '/node_modules/xterm/css')); // redirect CSS for xTerm
 
 //-----------------------------------------------------------------------------
 // Routing Middleware functions
