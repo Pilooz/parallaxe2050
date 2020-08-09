@@ -1,11 +1,49 @@
 <%- include('header', { data: data }) %>
-    <div class="container">
+<link rel="stylesheet" href="/css/xterm/xterm.css" />
+<script src="/js/xterm/xterm.js"></script>
+      <div id="terminal"></div>
+<script>
+    var term = new Terminal();
+    term.open(document.getElementById('terminal'));
 
-    <div class="row">
-        <div class="col-md-12">
-            Template Console
-        </div>
-    </div>
+    function runFakeTerminal() {
+        if (term._initialized) {
+        return;
+        }
 
-    </div>
+        term._initialized = true;
+
+        term.prompt = () => {
+        term.write('\r\n$ ');
+        };
+
+        term.writeln('Bienvenue dans la console');
+        term.writeln('Avec cet outil, vous pouvez vérifier les status des serveurs,');
+        term.writeln('Et voir si vous pouvez les atteindre...');
+        term.writeln('');
+        prompt(term);
+
+        term.onData(e => {
+        switch (e) {
+            case '\r': // Enter
+            case '\u0003': // Ctrl+C
+            exec_command(e);
+            break;
+            case '\u007F': // Backspace (DEL)
+            // Do not delete the prompt
+            if (term._core.buffer.x > 2) {
+                term.write('\b \b');
+            }
+            break;
+            default: // Print all other characters for demo
+            term.write(e);
+        }
+        });
+    }
+
+    function prompt(term) {
+        term.write('\r\n$ ');
+    }
+    runFakeTerminal();
+</script>
 <%- include('footer', { data: data })%>

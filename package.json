@@ -30,6 +30,7 @@
     "json-editor": "^0.7.28",
     "node-math": "0.0.3",
     "serialport": "^9.0.0",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "xterm": "^4.8.1"
   }
 }
