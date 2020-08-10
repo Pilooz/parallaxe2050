@@ -1,3 +1,11 @@
+.container {
+    height: 50vh;
+}
+
+.typed-text {
+    overflow: auto;
+}
+
 body {
     background-color:rgb(0, 0, 0);
     color: rgb(18, 134, 18);
@@ -23,8 +31,4 @@ body {
     50%  { background-color: transparent; }
     80%  { background-color: transparent; }
     100% { background-color: rgb(20, 175, 20); }
-}
-
-p {
-    margin-bottom: 1em;
 }
