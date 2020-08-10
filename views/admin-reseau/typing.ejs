@@ -25,7 +25,7 @@
 
     $('#console').keydown(function(event) {
       if (event.keyCode == 13) {
-        let input = $('#console').val();
+        let input = $('#console').val().trim().toLowerCase();
         if (input == "yes" && text_counter < 2) {
           console.log("yes");
           text_counter++;
@@ -35,8 +35,8 @@
           type()
         }
         if (input == "ok" && text_counter == 2) {
-          console.log("ok");
-          socket.emit('toserver.nextStep', nextStep);
+          console.log("ok, Asking for a new step...");
+          socket.emit('toserver.nextStep', {nextStep: nextStep});
         }
         $('#console').val("");
       }

@@ -26,15 +26,17 @@
   <script>
     var socket = null;
 		$(document).ready(function(){
-      socket = io('http://<%= data.config_server.ip %>:<%= data.config_server.port %>'); // http://localhost:3000
+      socket = io('http://<%= data.config_server.ip %>:<%= data.config_server.port %>');
+      // socket = io('http://localhost:3000');
 
       // ------------------------------------------------------------------
       // Socket listening
       // ------------------------------------------------------------------
-      // Receiving config from server
-      // socket.on('ServertoClient_', function(data) {
-      //   config = data;
-      // });
+      // Receiving refresh order
+      socket.on('toclient.refreshNow', function(data) {
+        location.href = "/";
+        });
+
     });
 
   </script>

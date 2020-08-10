@@ -46,13 +46,14 @@ function get_server_conf() {
 //------------------------------------------------------------------------
 io.on('connection', function(socket) {
     console.log("New client is connected : " + socket.id );
-
+    
     // Client asks for the next step
-    io.on('toserver.nextStep', function(data){
+    socket.on('toserver.nextStep', function(data){
       // The data var contains the next stepId that has been dexcribed and validated in the current step trnasition
+      console.log("The client asked for the step '" + data.nexStep +  "'");
       scenario.setCurrentStepId(data.nextStep);
       // Say to the client it has to refresh
-      io.emit('toclient.refreshNow');
+      socket.emit('toclient.refreshNow');
     });
 
     // setTimeout(function(){
@@ -105,7 +106,7 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // Testing for group A
   rfid.extractTag("<TAG:49426960/><READER:1/>");
   rfid.extractReader("<TAG:49426960/><READER:1/>");
-  scenario.setCurrentStepId("step-2");
+  scenario.setCurrentStepId("step-1");
   // Testing for group B
   // rfid.extractTag("<TAG:CE4E2B60/><READER:2/>");
   // rfid.extractReader("<TAG:CE4E2B60/><READER:2/>");
