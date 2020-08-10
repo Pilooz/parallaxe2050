@@ -8,16 +8,17 @@
 </div>
 </body>
 <script>
+    const nextStep = JSON.parse('<%- JSON.stringify(data.currentStep.transitions[0].id) %>');
     $(document).ready(function() {
     const typed_text_span = document.querySelector(".typed-text");
 
     const text_one   = ["> Vous êtes là ? Il y a quelqu’un ? Vous me recevez ?", "> …", "> Si quelqu’un peut lire ce message, tapez “yes” !"];
     const text_two   = ["> Enfin quelqu'un ! On a un gros problème qui m'empêche de vous contacter autrement.", "J'ai besoin de votre aide. Je compte sur vous !", "Êtes-vous prêt·es à m'aider ?"];
-    const text_three = ["> Super. Lisez attentivement ce qui va suivre.", "> Le malware lancé par les méchants infecte l’ensemble du réseau Greenternet, même les objets connectés ! Il est capable de se répliquer, de s’adapter et de corrompre les différents langages qui constituent le Greenternet. On doit arrêter cette propagation.", "> Trouvez tous les objets sur lesquels on injectera un bout de code pour bloquer le malware."];
+    const text_three = ["> Super. Lisez attentivement ce qui va suivre.", "> Le malware lancé par les méchants infecte l’ensemble du réseau Greenternet, même les objets connectés ! Il est capable de se répliquer, de s’adapter et de corrompre les différents langages qui constituent le Greenternet. On doit arrêter cette propagation.", "> Trouvez tous les objets sur lesquels on injectera un bout de code pour bloquer le malware. (tapez : \"ok\")"];
     const text       = [text_one, text_two, text_three];
 
     const typing_delay = 10;
-    const typing_pause = 1000;
+    const typing_pause = 2000;
     let text_counter = 0;
     let array_counter = 0;
     let char_counter = 0;
@@ -25,13 +26,17 @@
     $('#console').keydown(function(event) {
       if (event.keyCode == 13) {
         let input = $('#console').val();
-        if (input == "yes") {
+        if (input == "yes" && text_counter < 2) {
           console.log("yes");
           text_counter++;
           array_counter = 0;
           char_counter = 0;
           $('#typed-text').html("<p>");
           type()
+        }
+        if (input == "ok" && text_counter == 2) {
+          console.log("ok");
+          socket.emit('toserver.nextStep', nextStep);
         }
         $('#console').val("");
       }
