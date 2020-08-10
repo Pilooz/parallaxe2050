@@ -24,3 +24,7 @@ body {
     80%  { background-color: transparent; }
     100% { background-color: rgb(20, 175, 20); }
 }
+
+p {
+    margin-bottom: 1em;
+}
