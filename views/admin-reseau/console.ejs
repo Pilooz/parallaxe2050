@@ -3,6 +3,21 @@
 <script src="/js/xterm/xterm.js"></script>
       <div id="terminal"></div>
 <script>
+    var serveursAllies = JSON.parse('<%- JSON.stringify(data.solutions[0].responses) %>');
+    var serverList = JSON.parse('<%- JSON.stringify(data.currentStep.serverData) %>');
+
+    var IPList = Array();
+        serverList.forEach(s => { IPList.push(s.ip) });
+    console.log(IPList);
+
+    var banner = Array("\033[93m ",
+    "  _____                 __                   __      __                         __", 
+    " / ___/______ ___ ___  / /____ _______  ___ / /_   _/_/ _______  ___  ___ ___  / /__ ",
+    "/ (_ / __/ -_) -_) _ \\/ __/ -_) __/ _ \\/ -_) __/ _/_/  / __/ _ \\/ _ \\(_-</ _ \\/ / -_)",
+    "\\___/_/  \\__/\\__/_//_/\\__/\\__/_/ /_//_/\\__/\\__/ /_/    \\__/\\___/_//_/___/\\___/_/\\__/ ",
+    " \033[0m");
+              
+    var maxCommandNumber = 50; // maximum de commandes que les élèves peuvent taper dans la console
     var term = new Terminal({cols:120});
     term.open(document.getElementById('terminal'));
 
@@ -18,13 +33,7 @@
         };
 
         cmd_line = "";
-        var banner = Array(" ",
-        "  _____                 __                   __      __                         __", 
-        " / ___/______ ___ ___  / /____ _______  ___ / /_   _/_/ _______  ___  ___ ___  / /__ ",
-        "/ (_ / __/ -_) -_) _ \\/ __/ -_) __/ _ \\/ -_) __/ _/_/  / __/ _ \\/ _ \\(_-</ _ \\/ / -_)",
-        "\\___/_/  \\__/\\__/_//_/\\__/\\__/_/ /_//_/\\__/\\__/ /_/    \\__/\\___/_//_/___/\\___/_/\\__/ ",
-        " ");
-              
+
         banner.forEach(line => {
             write_line(line);
         });
@@ -38,7 +47,8 @@
         switch (e) {
             case '\r': // Enter
             case '\u0003': // Ctrl+C
-            exec_command(cmd_line);
+            if (maxCommandNumber > 0) exec_command(cmd_line);
+            else displayErrorNoMoreCMd();
             cmd_line = "";
             prompt(term);
             break;
@@ -57,7 +67,7 @@
     }
 
     function prompt(term) {
-        term.write('\r\n$ ');
+        term.write('\r\n\033[95m/root\033[0m@\033[32mGreenternet-console\033[0m $\033[0m ');
     }
 
     /*
@@ -69,13 +79,24 @@
       - "help" which give explanation on both of previous commands
     */
     function exec_command(line){
-        cmd = line.toLowerCase();
-        console.log(line);
-        // 1. Regex to parse command
+        maxCommandNumber--;
+        cmd = line.toLowerCase().trim();
+        // 1. Parse command
+        var ping = (cmd.substring(0,4) == "ping") ? true : false;
+        var status = (cmd.substring(0,6) == "status") ? true : false;
+        var help  = (cmd.substring(0,4) == "help") ? true : false;
+        var arg1 = cmd.split(" ")[1]; // this should be IP of server
+
+        var hacker_rm = (cmd.substring(0,3) == "rm " || cmd.substring(0,5) == "rmdir") ? true : false;
+
         // 2. switch on what we should do
-        if (cmd == "help") {
-            help();
-        }
+        if (help) display_help();
+        if (ping) display_ping(arg1);
+        if (status) display_status(arg1);
+        
+        if (hacker_rm) display_hacker_rm(cmd);
+
+        if (!status && ! ping && ! help && !hacker_rm) display_error(cmd);
         // 3. Post to the server (socket ?)
         // 4. The server gives back true/false response
     };
@@ -84,11 +105,12 @@
         term.write("");
         for( i=0; i < line.length; i++ ){
             term.write(line[i]);
+            // @TODO : How can we add some random display effect
         }
         term.writeln("");
     }    
     
-    function help() {
+    function display_help() {
         write_line("");
         write_line("-----------------------------------------------------------");
         write_line("Here is a little help for guys...");
@@ -98,9 +120,73 @@
         write_line("");
         write_line("Command '\x1B[1;3;31mping\x1B[0m' : see if the server is reachable.");
         write_line("usage : '\x1B[1;3;31mping [IP Address]\x1B[0m'");
+        commandRemaining();
     }
 
+    function display_status(ip) {
+        var isInfected = true;
+        var indexIP = IPList.indexOf(ip) + 1;
+        console.log(indexIP);
+        // 10 servers 
+        var serveursOK = serveursAllies[0].chemin1.concat(serveursAllies[1].chemin2);
+        serveursOK.sort();
+        console.log(serveursOK);
+        // Verify that the array index of the typed ip is in the allies serves list
+        if ( serveursOK.includes(indexIP) ) isInfected = false;
 
+        // Displaying a result
+        write_line("");
+        if (ip === undefined) {
+            write_line("\x1B[1;3;31mError !\x1B[0m");
+            write_line("usage : '\x1B[1;3;31mstatus [IP address]\x1B[0m'");
+        } else {
+            if (isInfected) {
+                write_line("[***********************-------] : Scan OK.");
+                write_line("[###########################   ] : Scan OK.");
+                num = (Math.floor(Math.random() * 1840033));
+                write_line( num + " / 1840033 files inected.");
+                write_line("\x1B[1;3;31mServer infected !\x1B[0m");
+                write_line("IP : "+ ip);
+            } else {
+                write_line("[***********************-------] : Scan OK.");
+                write_line("[###########################   ] : Scan OK.");
+                write_line( "0 / 1840033 files inected.");
+                write_line("\x1B[1;3;32mServer clean !\x1B[0m");
+                write_line("IP : "+ ip);
+            }
+        }
+        commandRemaining();
+    }
+
+    function display_ping(ip) {
+
+    }
+
+    function display_hacker_rm(cmd) {
+        write_line("");
+        write_line("La commande '\x1B[1;3;31m" + cmd + "\x1B[0m' est biensûr reconnue, petit(e) rigolo(te) ! Je l'ai bien évidemment bloquée ! ");
+        write_line("Il faudra trouver autre chose de plus malin pour me pirater...");  
+        maxCommandNumber -= 5;
+        write_line("Puisque tu veux jouer, je te retire 5 commandes !");  
+        commandRemaining();
+    }
+
+    function display_error(cmd) {
+        write_line("");
+        write_line("La commande '\x1B[1;3;31m" + cmd + "\x1B[0m' n'est pas reconnue ! "); 
+        commandRemaining()      
+    }
+
+    function commandRemaining() {
+        write_line("/!\\ Plus que " + maxCommandNumber + " commande" + ((maxCommandNumber > 1)? "s" : "") + "...");
+    }
+
+    function displayErrorNoMoreCMd() {
+        write_line("");
+        write_line("La console verrouillée. Impossible de prendre votre commande.");
+        // write_line("try 'sudo unlock term' ");
+
+    }
     runFakeTerminal();
 </script>
 <%- include('footer', { data: data })%>
