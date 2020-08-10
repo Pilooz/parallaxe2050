@@ -21,13 +21,25 @@
         "stepId" : "step-2",
         "title" : "Console réseau",
         "template" : "console",
-        "text" : "",
+        "serverData" :[
+            { "ip" : "46.229.161.131", "country" : "[US]" },
+            { "ip" : "194.71.211.50", "country" : "[SE]" },
+            { "ip" : "111.206.198.123", "country" : "[CN]" },
+            { "ip" : "192.71.18.47", "country" : "[DE]" },
+            { "ip" : "91.121.180.203", "country" : "[FR]" },
+            { "ip" : "105.112.100.226", "country" : "[NG]" },
+            { "ip" : "5.182.210.16", "country" : "[NL]" },
+            { "ip" : "79.152.164.28", "country" : "[ES]" },
+            { "ip" : "167.88.60.250", "country" : "[CA]" },
+            { "ip" : "31.13.127.11", "country" : "[IE]" }
+        ],
+    
         "transitions" :
             [
             { "id" : "step-3", "condition" : "choice == 'Choice 1'" },
             { "id" : "step-3-error", "condition" : "choice != 'Choice 1'" }
             ],
-            "solutions" : 
+        "solutions" : 
             [
                 {
                     "group": "A", 
