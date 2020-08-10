@@ -16,7 +16,7 @@
     const text_three = ["> Super. Lisez attentivement ce qui va suivre.", "> Le malware lancé par les méchants infecte l’ensemble du réseau Greenternet, même les objets connectés ! Il est capable de se répliquer, de s’adapter et de corrompre les différents langages qui constituent le Greenternet. On doit arrêter cette propagation.", "> Trouvez tous les objets sur lesquels on injectera un bout de code pour bloquer le malware."];
     const text       = [text_one, text_two, text_three];
 
-    const typing_delay = 50;
+    const typing_delay = 10;
     const typing_pause = 1000;
     let text_counter = 0;
     let array_counter = 0;
@@ -30,25 +30,29 @@
           text_counter++;
           array_counter = 0;
           char_counter = 0;
-          setTimeout(type, typing_pause);
+          $('#typed-text').html("<p>");
+          type()
         }
         $('#console').val("");
       }
     });
     $('#typed-text').html("<p>");
-    setTimeout(type, typing_pause);
+    type()
 
     function type() {
       if (char_counter < text[text_counter][array_counter].length) {
         typed_text_span.textContent += text[text_counter][array_counter].charAt(char_counter);
         char_counter++;
-        setTimeout(type, typing_delay);
+        setTimeout(type, typing_delay + Math.floor(Math.random() * Math.floor(200)));
       } else {
         if (array_counter < text[text_counter].length - 1) {
           array_counter++;
           char_counter = 0;
+          var start = Date.now();
+          var i = 0;
+          while (Date.now() < start + typing_pause) {}
           $('#typed-text').html("<p/>");
-          setTimeout(type, typing_pause);
+          type();
         }
       }
     }
