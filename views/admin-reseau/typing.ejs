@@ -1,10 +1,57 @@
 <%- include('header', { data: data }) %>
 <body>
     <div class="container">
-        <span class="typed-text"></span><span class="cursor">&nbsp;</span>
+        <span id="typed-text" class="typed-text"></span><span class="cursor">&nbsp;</span>
     </div>
 <div id="main">
-    <div><input id="input" type="text" autocomplete="off" style="background-color: rgb(20, 20, 20); color: rgb(18, 134, 18); border: rgb(18, 134, 18); font-size: 50px; width: 97vw; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; margin-top: 85vh;"/></div>
+    <div><input id="console" type="text" autocomplete="off" style="position: fixed; bottom: 20px; width: 97vw; background-color: rgb(20, 20, 20); color: rgb(18, 134, 18); border: rgb(18, 134, 18); font-size: 50px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;"/></div>
 </div>
 </body>
+<script>
+    $(document).ready(function() {
+    const typed_text_span = document.querySelector(".typed-text");
+
+    const text_one   = ["> Vous êtes là ? Il y a quelqu’un ? Vous me recevez ?", "> …", "> Si quelqu’un peut lire ce message, tapez “yes” !"];
+    const text_two   = ["> Enfin quelqu'un ! On a un gros problème qui m'empêche de vous contacter autrement.", "J'ai besoin de votre aide. Je compte sur vous !", "Êtes-vous prêt·es à m'aider ?"];
+    const text_three = ["> Super. Lisez attentivement ce qui va suivre.", "> Le malware lancé par les méchants infecte l’ensemble du réseau Greenternet, même les objets connectés ! Il est capable de se répliquer, de s’adapter et de corrompre les différents langages qui constituent le Greenternet. On doit arrêter cette propagation.", "> Trouvez tous les objets sur lesquels on injectera un bout de code pour bloquer le malware."];
+    const text       = [text_one, text_two, text_three];
+
+    const typing_delay = 50;
+    const typing_pause = 1000;
+    let text_counter = 0;
+    let array_counter = 0;
+    let char_counter = 0;
+
+    $('#console').keydown(function(event) {
+      if (event.keyCode == 13) {
+        let input = $('#console').val();
+        if (input == "yes") {
+          console.log("yes");
+          text_counter++;
+          array_counter = 0;
+          char_counter = 0;
+          setTimeout(type, typing_pause);
+        }
+        $('#console').val("");
+      }
+    });
+    $('#typed-text').html("<p>");
+    setTimeout(type, typing_pause);
+
+    function type() {
+      if (char_counter < text[text_counter][array_counter].length) {
+        typed_text_span.textContent += text[text_counter][array_counter].charAt(char_counter);
+        char_counter++;
+        setTimeout(type, typing_delay);
+      } else {
+        if (array_counter < text[text_counter].length - 1) {
+          array_counter++;
+          char_counter = 0;
+          $('#typed-text').html("<p/>");
+          setTimeout(type, typing_pause);
+        }
+      }
+    }
+  });
+  </script>
 <%- include('footer', { data: data })%>
