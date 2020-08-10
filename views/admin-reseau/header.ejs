@@ -28,14 +28,13 @@
 		$(document).ready(function(){
       socket = io('http://<%= data.config_server.ip %>:<%= data.config_server.port %>'); // http://localhost:3000
 
-    // ------------------------------------------------------------------
-    // Socket listening
-    // ------------------------------------------------------------------
-        socket.on('toclient.refreshNow', function() {
-        console.log("I have received the order to reload my page...");
-        location.href="/";
-      });
-
+      // ------------------------------------------------------------------
+      // Socket listening
+      // ------------------------------------------------------------------
+      // Receiving config from server
+      // socket.on('ServertoClient_', function(data) {
+      //   config = data;
+      // });
     });
 
   </script>
