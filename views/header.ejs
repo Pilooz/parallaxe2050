@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
 
-    <title>Parallaxe 2050</title>
-
+    <title><%= data.currentStep.title %></title>
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 		<link rel="manifest" href="/site.webmanifest">
-		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#774d3c">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#774d3c">
+    <link type="text/css" href="css/admin-reseau/style.css" rel="stylesheet">
 		<meta name="msapplication-TileColor" content="#774d3c">
 		<meta name="theme-color" content="#ffffff">
 
@@ -25,22 +25,19 @@
 
   <script>
     var socket = null;
-    // the description of the whole scenario is here
-    // @TODO : What if the data from server are undefined ?
-    var currentStep = <%-JSON.stringify(data.currentStep, null, 2) %>;
 		$(document).ready(function(){
-      socket = io('http://<%= data.CONFIG_SERVER.ip %>:<%= data.CONFIG_SERVER.port %>'); // http://localhost:3000
+      socket = io('http://<%= data.config_server.ip %>:<%= data.config_server.port %>');
+      // socket = io('http://localhost:3000');
 
       // ------------------------------------------------------------------
       // Socket listening
       // ------------------------------------------------------------------
-      // Receiving config from server
-      // socket.on('ServertoClient_', function(data) {
-      //   config = data;
-      // });
+      // Receiving refresh order
+      socket.on('toclient.refreshNow', function(data) {
+        location.href = "/";
+      });
     });
 
-    console.log(scenario);
   </script>
 
   </head>
