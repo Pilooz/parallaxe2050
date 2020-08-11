@@ -51,6 +51,21 @@ function get_server_conf() {
 }
 
 //------------------------------------------------------------------------
+// Setup of environnment for the scenario.
+// It is call each time a RFID badge is detected
+//------------------------------------------------------------------------
+function setup_scenario_environment() {
+  rfid.extractReader(msg);
+  console.log("extracted rfid code : " + rfid.getCurrentCode() + " on reader #" + rfid.getCurrentReader());
+  // Putting Rfid Info in data for client
+  dataForTemplate.currentRfidTag = rfid.getCurrentCode();
+  dataForTemplate.currentRfidReader = rfid.getCurrentReader();
+  // get the set of solutions for the group/subgroup team
+  dataForTemplate.solutionsSet = scenario.getSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
+  console.log(`The team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
+  console.log(`Solutions set #${dataForTemplate.solutionsSet}`);
+}
+//------------------------------------------------------------------------
 // Init Socket to transmit Serial data to HTTP client
 //------------------------------------------------------------------------
 io.on('connection', function(socket) {
@@ -84,15 +99,7 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
     // If data is a tag
     rfid.extractTag(msg);
     if (rfid.getCurrentCode() != "") {
-      rfid.extractReader(msg);
-      console.log("extracted rfid code : " + rfid.getCurrentCode() + " on reader #" + rfid.getCurrentReader());
-      // Putting Rfid Info in data for client
-      dataForTemplate.currentRfidTag = rfid.getCurrentCode();
-      dataForTemplate.currentRfidReader = rfid.getCurrentReader();
-      // get the set of solutions for the group/subgroup team
-      dataForTemplate.solutionsSet = scenario.getSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
-      console.log(`The team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
-      console.log(`Solutions set #${dataForTemplate.solutionsSet}`);
+      setup_scenario_environment();
     }
   });
 
@@ -114,7 +121,7 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // Testing for group A
   rfid.extractTag("<TAG:49426960/><READER:1/>");
   rfid.extractReader("<TAG:49426960/><READER:1/>");
-  scenario.setCurrentStepId("step-1");
+  scenario.setCurrentStepId("step-2");
   // Testing for group A2 5E3D621A
   // rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
   // rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
@@ -126,14 +133,7 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // Testing for group C
   // rfid.extractTag("<TAG:E12CD11D/><READER:3/>");
   // rfid.extractReader("<TAG:E12CD11D/><READER:3/>");
-
-  console.log("extracted rfid code : " + rfid.getCurrentCode() + " on reader #" + rfid.getCurrentReader());
-  dataForTemplate.currentRfidTag = rfid.getCurrentCode();
-  dataForTemplate.currentRfidReader = rfid.getCurrentReader();
-  // get the set of solutions for the group/subgroup team
-  dataForTemplate.solutionsSet = scenario.getSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
-  console.log(`The team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
-  console.log(`Solutions set #${dataForTemplate.solutionsSet}`);
+  setup_scenario_environment();
 }
 
 
