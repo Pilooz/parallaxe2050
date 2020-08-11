@@ -22,6 +22,12 @@ const scenario     = require('./lib/scenario_utils.js')(CONFIG_SERVER);
 // Rfid parsing functions
 var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG);
 
+// Loading Specific librairy for the specific scenario
+var scenario_specifics;
+if (fs.existsSync("./lib/scenario-" + scenario.data().scenarioId + ".js")){
+  scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io);
+}
+
 const httpPort    = CONFIG_SERVER.port;
 // var formidable    = require('formidable'); // File upload
 
