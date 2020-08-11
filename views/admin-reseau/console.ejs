@@ -6,7 +6,7 @@
     // Data and vars
     const prompt_linux = '\r\n\033[95m/root\033[0m@\033[32mGreenternet-console\033[0m $\033[0m ';
     const prompt_linux_length = 28;
-    const serveursAllies = JSON.parse('<%- JSON.stringify(data.solutions[0].responses) %>');
+    const serveursAllies = JSON.parse('<%- JSON.stringify(data.solutions) %>');
     const serverList = JSON.parse('<%- JSON.stringify(data.currentStep.serverData) %>');
 
     const nextStep = JSON.parse('<%- JSON.stringify(data.currentStep.transitions[0].id) %>');

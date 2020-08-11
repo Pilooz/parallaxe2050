@@ -25,6 +25,9 @@ var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG);
 const httpPort    = CONFIG_SERVER.port;
 // var formidable    = require('formidable'); // File upload
 
+var dataForTemplate = {};
+var httpRequests = {};
+
 //------------------------------------------------------------------------
 // Some usefull functions
 //------------------------------------------------------------------------
@@ -50,17 +53,11 @@ io.on('connection', function(socket) {
     // Client asks for the next step
     socket.on('toserver.nextStep', function(data){
       // The data var contains the next stepId that has been dexcribed and validated in the current step trnasition
-      console.log("The client asked for the step '" + data.nexStep +  "'");
+      console.log("The client asked for the step '" + data.nextStep +  "'");
       scenario.setCurrentStepId(data.nextStep);
       // Say to the client it has to refresh
       socket.emit('toclient.refreshNow');
     });
-
-    // setTimeout(function(){
-    //   console.log("go to step-2...");
-    //   scenario.setCurrentStepId("step-2");
-    //   io.emit('toclient.refreshNow')}
-    // , 5000);
 });
 
 //------------------------------------------------------------------------
@@ -83,8 +80,13 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
     if (rfid.getCurrentCode() != "") {
       rfid.extractReader(msg);
       console.log("extracted rfid code : " + rfid.getCurrentCode() + " on reader #" + rfid.getCurrentReader());
-      // Send Rfid code to client
-      io.emit('toclient.currentBadge', {tag: rfid.getCurrentCode(), reader: rfid.getCurrentReader()});
+      // Putting Rfid Info in data for client
+      dataForTemplate.currentRfidTag = rfid.getCurrentCode();
+      dataForTemplate.currentRfidReader = rfid.getCurrentReader();
+      // get the set of solutions for the group/subgroup team
+      dataForTemplate.solutionsSet = scenario.getSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
+      console.log(`The team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
+      console.log(`Solutions set #${dataForTemplate.solutionsSet}`);
     }
   });
 
@@ -107,6 +109,11 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   rfid.extractTag("<TAG:49426960/><READER:1/>");
   rfid.extractReader("<TAG:49426960/><READER:1/>");
   scenario.setCurrentStepId("step-1");
+  // Testing for group A2 5E3D621A
+  // rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
+  // rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
+  // scenario.setCurrentStepId("step-1");
+
   // Testing for group B
   // rfid.extractTag("<TAG:CE4E2B60/><READER:2/>");
   // rfid.extractReader("<TAG:CE4E2B60/><READER:2/>");
@@ -115,7 +122,12 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // rfid.extractReader("<TAG:E12CD11D/><READER:3/>");
 
   console.log("extracted rfid code : " + rfid.getCurrentCode() + " on reader #" + rfid.getCurrentReader());
-  io.emit('toclient.currentBadge', {tag: rfid.getCurrentCode(), reader: rfid.getCurrentReader()});
+  dataForTemplate.currentRfidTag = rfid.getCurrentCode();
+  dataForTemplate.currentRfidReader = rfid.getCurrentReader();
+  // get the set of solutions for the group/subgroup team
+  dataForTemplate.solutionsSet = scenario.getSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
+  console.log(`The team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
+  console.log(`Solutions set #${dataForTemplate.solutionsSet}`);
 }
 
 
@@ -153,21 +165,12 @@ app.use('/css/xterm', express.static(__dirname + '/node_modules/xterm/css')); //
 // Routing Middleware functions
 // application logic is here / GET and POST on Index
 //-----------------------------------------------------------------------------
-var dataForTemplate = {};
-var httpRequests = {};
-
 router.all('/*', function (req, res, next) {
   // mettre toutes les requests dans un seul objet.
   httpRequests = req.query; // according to the use of express
 
   // Send server config to client
   dataForTemplate.config_server = CONFIG_SERVER;
-
-  // send current step of the scenario to client
-  dataForTemplate.currentStep = scenario.getCurrentStep();
-
-  // send solutions in the client's data
-  dataForTemplate.solutions = scenario.getSolutionsForCurrentStep(rfid.getCurrentGroup());
 
   next(); // pass control to the next handler
 })
@@ -181,6 +184,22 @@ router.all('/*', function (req, res, next) {
   This route gives the right template to the client in term of scenario step
 */
 .get('/', function(req, res, next) {
+
+  // send current step of the scenario to client
+  dataForTemplate.currentStep = scenario.getCurrentStep();
+  console.log(`Current step is '${dataForTemplate.currentStep.stepId}'`);
+
+  // Filter the right solution for this team.
+  dataForTemplate.solutions = dataForTemplate.currentStep.solutions.filter(s => s.set == dataForTemplate.solutionsSet)[0].responses; 
+  dataForTemplate.currentGroup = rfid.getCurrentGroup();
+  dataForTemplate.currentSubGroup = rfid.getCurrentSubGroup();
+
+  // If this set if undefined, then the team has not badged to the right activity => let's tell them gentlely !
+  if (!dataForTemplate.solutionsSet) {
+    console.log("Pas de set de solution pour cette team sur ce dispositif.");
+    res.render("../badge_error", { data: dataForTemplate });
+  }  
+  
   // By default the template is "content.ejs"
   var tmpl = (dataForTemplate.currentStep.template == "") ? "content" : dataForTemplate.currentStep.template;
   
@@ -192,6 +211,9 @@ router.all('/*', function (req, res, next) {
   }
 })
 
+//
+// Back-office 
+//
 /* GET populate page. */
 .get('/populate', function(req, res, next) {
 	if (httpRequests && httpRequests.rfidcode) {
