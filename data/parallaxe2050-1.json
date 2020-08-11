@@ -1,5 +1,6 @@
 {
-    "scenario_name" : "Dispositif Admin Réseau",
+    "scenarioId" : "AdminReseau",
+    "scenarioName" : "Dispositif Admin Réseau",
     "scenarioMediaPath" : "medias/admin-reseau/",
     "templateDirectory" : "admin-reseau/",
     "steps" : [
@@ -11,10 +12,19 @@
         "text" : "text1",
         "transitions" :
             [
-            { "id" : "step-2", "condition" : "byeFunction" }
+            { "id" : "step-2", "condition" : "" }
             ],
         "solutions" : 
-            []
+            [
+                {
+                    "set": "1", 
+                    "responses" : []
+                },
+                {
+                    "set": "2", 
+                    "responses" : []
+                }
+            ]
         },
 
         {
@@ -36,30 +46,22 @@
     
         "transitions" :
             [
-            { "id" : "step-3", "condition" : "choice == 'Choice 1'" },
-            { "id" : "step-3-error", "condition" : "choice != 'Choice 1'" }
+            { "id" : "step-3", "condition" : "" }
             ],
         "solutions" : 
             [
                 {
-                    "group": "A", 
+                    "set": "1", 
                     "responses" : [ 
                         {"chemin1" : [ 3, 4 ] }, 
                         {"chemin2" : [ 1, 6, 8 ] }
                     ]
                 },
                 {
-                    "group": "B", 
+                    "set": "2", 
                     "responses" : [ 
                         {"chemin1" : [ 1, 6 ] }, 
                         {"chemin2" : [ 9, 7, 8 ] }
-                    ]
-                },
-                {
-                    "group": "C", 
-                    "responses" : [ 
-                        {"chemin1" : [ 3, 4 ] }, 
-                        {"chemin2" : [ 1, 5, 7, 2 ] }
                     ]
                 }
             ]

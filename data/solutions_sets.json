@@ -1,0 +1,36 @@
+{
+    "solutionSets" : [
+        { "team" : "A1", "scenarioId" : "Hardware", "set": 1 },
+        { "team" : "A1", "scenarioId" : "CodeEtProg", "set": 2 },
+        { "team" : "A2", "scenarioId" : "CodeEtProg", "set": 1 },
+        { "team" : "A2", "scenarioId" : "BDD", "set": 2 },
+        { "team" : "A3", "scenarioId" : "BDD", "set": 1 },
+        { "team" : "A3", "scenarioId" : "Hardware", "set": 2 },
+        { "team" : "A4", "scenarioId" : "ComDigitale", "set": 1 },
+        { "team" : "A4", "scenarioId" : "AdminReseau", "set": 2 },
+        { "team" : "A5", "scenarioId" : "AdminReseau", "set": 1 },
+        { "team" : "A5", "scenarioId" : "ComDigitale", "set": 2 },
+
+        { "team" : "B1", "scenarioId" : "Hardware", "set": 1 },
+        { "team" : "B1", "scenarioId" : "CodeEtProg", "set": 2 },
+        { "team" : "B2", "scenarioId" : "CodeEtProg", "set": 1 },
+        { "team" : "B2", "scenarioId" : "BDD", "set": 2 },
+        { "team" : "B3", "scenarioId" : "BDD", "set": 1 },
+        { "team" : "B3", "scenarioId" : "Hardware", "set": 2 },
+        { "team" : "B4", "scenarioId" : "ComDigitale", "set": 1 },
+        { "team" : "B4", "scenarioId" : "AdminReseau", "set": 2 },
+        { "team" : "B5", "scenarioId" : "AdminReseau", "set": 1 },
+        { "team" : "B5", "scenarioId" : "ComDigitale", "set": 2 },
+
+        { "team" : "C1", "scenarioId" : "Hardware", "set": 1 },
+        { "team" : "C1", "scenarioId" : "CodeEtProg", "set": 2 },
+        { "team" : "C2", "scenarioId" : "CodeEtProg", "set": 1 },
+        { "team" : "C2", "scenarioId" : "BDD", "set": 2 },
+        { "team" : "C3", "scenarioId" : "BDD", "set": 1 },
+        { "team" : "C3", "scenarioId" : "Hardware", "set": 2 },
+        { "team" : "C4", "scenarioId" : "ComDigitale", "set": 1 },
+        { "team" : "C4", "scenarioId" : "AdminReseau", "set": 2 },
+        { "team" : "C5", "scenarioId" : "AdminReseau", "set": 1 },
+        { "team" : "C5", "scenarioId" : "ComDigitale", "set": 2 }
+    ]
+}
