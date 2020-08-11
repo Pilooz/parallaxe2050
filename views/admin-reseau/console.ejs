@@ -6,19 +6,24 @@
     // Data and vars
     const prompt_linux = '\r\n\033[95m/root\033[0m@\033[32mGreenternet-console\033[0m $\033[0m ';
     const prompt_linux_length = 28;
-    const serveursAllies = JSON.parse('<%- JSON.stringify(data.solutions) %>');
+    const cheminsVersServeursAllies = JSON.parse('<%- JSON.stringify(data.solutions) %>');
     const serverList = JSON.parse('<%- JSON.stringify(data.currentStep.serverData) %>');
+    const IPList = Array();
+        serverList.forEach(s => { IPList.push(s.ip) });
 
     const nextStep = JSON.parse('<%- JSON.stringify(data.currentStep.transitions[0].id) %>');
 
-    var goodServersIndexList = serveursAllies[0].chemin1.concat(serveursAllies[1].chemin2);
+    var goodServersIndexList = cheminsVersServeursAllies[0].chemin1.concat(cheminsVersServeursAllies[1].chemin2);
         goodServersIndexList.sort();
 
     const typing_pause = 1000; 
 
-    const IPList = Array();
-        serverList.forEach(s => { IPList.push(s.ip) });
+    // Debug a virer pour le passage en prod
+    console.log("liste des serveurs : ");
     console.log(IPList);
+    console.log("liste des chemins allies : ");
+    console.log(cheminsVersServeursAllies);
+
 
     const banner = Array("\033[93m ",
     "  _____                 __                   __      __                         __", 
