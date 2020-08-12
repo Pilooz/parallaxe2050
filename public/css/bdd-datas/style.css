@@ -4,6 +4,15 @@ body {
 	font-weight: 800;
 }
 
+table {
+	font-size: 10px;
+}
+
+#database,
+#datavisualization {
+	width: 50% !important;
+}
+
 
 .toggle-btn {
   width: 80px;
@@ -51,4 +60,13 @@ body {
     z-index: 9;
     cursor:pointer;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
+
+
+
+
+/*********** MAP *************/
+.circle:hover{
+  stroke: black;
+  stroke-width: 4px;
 }
