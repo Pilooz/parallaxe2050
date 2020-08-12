@@ -135,6 +135,13 @@
     }    
 
     // --------------------------------------------
+    // Retruns true if the parametre is an IP
+    // --------------------------------------------
+    function isAnIP(ip) {
+        return ip.match(/^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/);
+    }
+
+    // --------------------------------------------
     // Command Help : Displaying result of help
     // --------------------------------------------
     function display_help() {
@@ -155,32 +162,51 @@
     function display_status(ip) {
         var isInfected = true;
         var indexIP = IPList.indexOf(ip) + 1;
-        // 10 servers 
-        console.log(goodServersIndexList);
         // Verify that the array index of the typed ip is in the allies serves list
         if ( goodServersIndexList.includes(indexIP) ) isInfected = false;
+        // Verify that the ip is in the list of AllyServer1 and 2 : The Allies are never infected
+        if (ip == cheminsVersServeursAllies[0].ip || ip == cheminsVersServeursAllies[1].ip ) isInfected = false;
 
         // Displaying a result
         write_line("");
-        if (ip === undefined) {
+        if (ip === undefined || ! isAnIP(ip) ) {
             write_line("\x1B[1;3;31mError !\x1B[0m");
             write_line("usage : '\x1B[1;3;31mstatus [IP address]\x1B[0m'");
         } else {
+            // /!\ No random here to have always same results by IP
+            var maxFiles = Math.floor(parseInt(ip.replace(/\./gi, "")) * 7   / 23);
+            var pct = parseFloat("0."+ip.split(".")[0]);
+            var num = Math.floor( pct * maxFiles);
             if (isInfected) {
-                write_line("[***********************-------] : Scan OK.");
-                write_line("[###########################   ] : Scan OK.");
-                num = (Math.floor(Math.random() * 1840033));
-                write_line( num + " / 1840033 files inected.");
+                fakeGauge(ip, num, maxFiles);
                 write_line("\x1B[1;3;31mServer infected !\x1B[0m");
                 write_line("IP : "+ ip);
             } else {
-                write_line("[***********************-------] : Scan OK.");
-                write_line("[###########################   ] : Scan OK.");
-                write_line( "0 / 1840033 files inected.");
-                write_line("\x1B[1;3;32mServer clean !\x1B[0m");
+                fakeGauge(ip, 0, maxFiles);
+                write_line("\x1B[1;3;32mServer Clean !\x1B[0m");
                 write_line("IP : "+ ip);
             }
         }
+    }
+    function fakeGauge(ip, n, max){
+        var nbIntervall = 50;
+        var sysScan = "System : [";
+        var fileScan = "Files  : [";
+        for (var i=1; i<=nbIntervall; i++) {
+            if (  i * max/50 < n ) {
+                sysScan += "*";
+                fileScan += "#";
+            } else {
+                sysScan += "-";
+                fileScan += "-";
+            }
+        }
+        sysScan += "] : Scan OK.";
+        fileScan += "] : Scan OK.";
+
+        write_line(sysScan);
+        write_line(fileScan);
+        write_line( n + " / "+ max + " files infected.");
     }
 
     function display_ping_messages(ip) {
@@ -198,8 +224,8 @@
     function display_ping(ip) {
         var thisIsAGoodServer = false, ping_finished=  false;
         var indexIP = IPList.indexOf(ip) + 1;
-        isIP = ip.match(/^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/);
-        if ( goodServersIndexList.includes(indexIP) ) thisIsAGoodServer = true;
+        isIP = isAnIP(ip);
+        if (ip == cheminsVersServeursAllies[0].ip || ip == cheminsVersServeursAllies[1].ip ) thisIsAGoodServer = true;
 
         write_line("");
         if (isIP) {
@@ -218,7 +244,11 @@
             // Les autres IP : 
             if (!ping_finished) {
                 if (thisIsAGoodServer ) {
-                    // Pour un serveur connu dans la liste
+                    // Pour un des serveurs Alliés
+                    // 1. Socket vers node pour connaître la configuration du patch-panel
+                    socket.emit('toserver.isAllyServerReachable', {serveurAllie : cheminsVersServeursAllies.filter(c => c.ip == ip)[0].ip });
+                    // 2. S'il est ok => ça pingue
+                    // 3. S'il n'est pas ok => Ordre de décrochage des câbles
                     display_ping_messages(ip); 
                 } else {
                     // @TODO : Rendre aléaoirement quelques site "unreachable" ?

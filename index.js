@@ -1,6 +1,10 @@
 global.__basedir  = __dirname;
 const GLOBAL_CONFIG        = require('./config/config.js');
 
+// Events 
+const events = require('events');
+var eventArduinoMsg = new events.EventEmitter();
+
 // MVC Framework
 var app           = require('express')();
 var express       = require('express');
@@ -17,15 +21,17 @@ var cookieParser  = require('cookie-parser');
 var bodyParser    = require('body-parser');
 var path          = require('path');
 
+// Applicative libs
 // Loading scenario
 const scenario     = require('./lib/scenario_utils.js')(CONFIG_SERVER);
 // Rfid parsing functions
 var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG);
-
+// Arduino stuffs 
+var arduino        = require('./lib/arduino.js')(GLOBAL_CONFIG, eventArduinoMsg);
 // Loading Specific librairy for the specific scenario
 var scenario_specifics;
 if (fs.existsSync("./lib/scenario-" + scenario.data().scenarioId + ".js")){
-  scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io);
+  scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, arduino, eventArduinoMsg);
 }
 
 const httpPort    = CONFIG_SERVER.port;
