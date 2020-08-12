@@ -29,8 +29,11 @@
     "jquery": "^3.5.1",
     "json-editor": "^0.7.28",
     "node-math": "0.0.3",
-    "serialport": "^9.0.0",
+    "serialport": "^9.0.1",
     "socket.io": "^2.3.0",
-    "xterm": "^4.8.1"
+    "xterm": "^4.8.1",
+    "popper.js": "^1.16.1",
+    "bufferutil": "^4.0.1",
+    "utf-8-validate": "^5.0.2"
   }
 }
