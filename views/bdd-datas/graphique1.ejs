@@ -1,0 +1,25 @@
+<h2>Pourcentage des serveurs allumés par zone (bâtons)</h2>
+<div class="container-fluid">
+	<div class="row">
+		<div>
+			<div class="form-group">
+			    <label for="graphique1-zone">Zone</label>
+				<select class="form-control" id="graphique1-zone">
+					<option value="reset" disabled selected>Choisir</option>
+					<option value="zone-1">Afrique</option>
+					<option value="zone-2">Amérique centrale</option>
+					<option value="zone-3">Amérique du Nord</option>
+					<option value="zone-4">Amérique du Sud</option>
+					<option value="zone-5">Asie</option>
+					<option value="zone-6">Europe</option>
+					<option value="zone-7">Moyen Orient</option>
+					<option value="zone-8">Océanie</option>
+				</select>
+			</div>
+		</div>
+	</div>
+</div>
+
+<blockquote>SELECTIONNE tout DANS serveurs AVEC zone = "<span id='graphique1-request-zone'></span>"</blockquote>
+
+<canvas id="graphique1" width="200" height="200"></canvas>
