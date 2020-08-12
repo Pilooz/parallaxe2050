@@ -4,10 +4,10 @@
 <!-- Base de données -->
 <div class="container-fluid">
 	<div class="row">
-		<div class="col">
+		<div class="col" id="database">
 			<h1>Base de données : serveurs du monde entier</h1>
 			<table class="table table-striped table-bordered table-sm">
-				<caption>208 700 serveurs dans la base de données</caption>
+				<caption>965 000 000 serveurs dans la base de données</caption>
 				<thead class="thead-light">
 					<tr>
 						<th scope="col">id</th>
@@ -35,14 +35,16 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="col">
-			<h1>Datavisualisation des données</h1>
+		<div class="col" id="datavisualization">
+			<h1>Datavisualisation (visualisation des données)</h1>
 			<div class="form-group">
 			    <label for="exampleFormControlSelect1">Datavisualisation</label>
 			    <select class="form-control" id="graphique-select">
 					<option value="reset" disabled selected>Choisir</option>
-					<option value="graphique1">Pourcentage des serveurs allumés par zone (bâtons)</option>
-					<option value="graphique2">Pourcentage des serveurs allumés par zone (radar)</option>
+					<option value="graphique1">Datacenters par zone (map)</option>
+					<option value="graphique2">Pourcentage des serveurs allumés par zone (bâtons horizontaux)</option>
+					<option value="graphique3">Quantité de serveurs par zone (bâtons)</option>
+					<option value="graphique4">Pourcentage des serveurs allumés par zone (radar)</option>
 				</select>
 			</div>
 			<div>
@@ -51,6 +53,12 @@
 				</div>
 				<div id="container-graphique2" class="container-graphique">
 					<%- include('graphique2', { data: data }) %>
+				</div>
+				<div id="container-graphique3" class="container-graphique">
+					<%- include('graphique3', { data: data }) %>
+				</div>
+				<div id="container-graphique4" class="container-graphique">
+					<%- include('graphique4', { data: data }) %>
 				</div>
 			</div>
 		</div>
@@ -87,8 +95,10 @@
 		// Initialisation de l'activité
 		resetActivity();
 		// Initialisation du graphique 1
-		var context1 = document.getElementById('graphique1').getContext('2d');
-		var graphique1 = new Chart(context1, {
+		initGraphique1();
+		// Initialisation du graphique 2
+		var context2 = document.getElementById('graphique2').getContext('2d');
+		var graphique2 = new Chart(context2, {
 			type: 'horizontalBar',
 			data: {
 				labels: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8'],
@@ -110,14 +120,38 @@
 				}
 			}
 		});
-		// Initialisation du graphique 2
-		var context2 = document.getElementById('graphique2').getContext('2d');
-		var graphique2 = new Chart(context2, {
+		// Initialisation du graphique 3
+		var context3 = document.getElementById('graphique3').getContext('2d');
+		var graphique3 = new Chart(context3, {
+			type: 'bar',
+			data: {
+				labels: ['Afrique', 'Amérique centrale', 'Amérique du Nord', 'Amérique du Sud', 'Asie', 'Europe', 'Moyen-Orient', 'Océanie'],
+				datasets: [{
+					label: 'Nombre de serveurs infectés',
+					data: ['3900000', '700000', '200000000', '5000000', '9500000', '140000000', '5000000', '15000000'],
+					backgroundColor: [ 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)' ],
+					borderColor: [ 'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)' ],
+					borderWidth: 1
+				}]
+			},
+			options: {
+				scales: {
+					xAxes: [{
+						ticks: {
+							beginAtZero: true
+						}
+					}]
+				}
+			}
+		});
+		// Initialisation du graphique 4
+		var context4 = document.getElementById('graphique4').getContext('2d');
+		var graphique4 = new Chart(context4, {
 			type: 'radar',
 			data: {
 				labels: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8'],
 				datasets: [{
-					label: 'Pourcentage de serveurs allumés',
+					label: 'Pourcentage de serveurs allumés dans chaque zone en fonction des heures',
 					data: [],
 					backgroundColor: [ 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)' ],
 					borderColor: [ 'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)' ],
@@ -128,7 +162,6 @@
 				scale: {
 					ticks: {
 						min: 0,
-						max: 100
 					}
 				}
 			}
@@ -149,14 +182,6 @@
 	    /******************************************************************
 	    // ACTIONS POUR PARAMETRER LES GRAPHIQUES
 	    ******************************************************************/
-		// GRAPHIQUE 1
-		// Sélection de la zone
-	    $('select#graphique1-zone').change(function(e) {
-	    	$('#graphique1').css('display', 'block');
-	    	$('#graphique1-request-zone').html($('#graphique1-zone option:selected').html());
-	    	updateGraphique(graphique1, 1);
-	    });
-
 		// GRAPHIQUE 2
 		// Sélection de la zone
 	    $('select#graphique2-zone').change(function(e) {
@@ -164,58 +189,25 @@
 	    	$('#graphique2-request-zone').html($('#graphique2-zone option:selected').html());
 	    	updateGraphique(graphique2, 2);
 	    });
+
+		// GRAPHIQUE 4
+		// Sélection de la zone
+	    $('select#graphique4-zone').change(function(e) {
+	    	$('#graphique4').css('display', 'block');
+	    	$('#graphique4-request-zone').html($('#graphique4-zone option:selected').html());
+	    	updateGraphique(graphique4, 4);
+	    });
 	    // Affichage ou non des serveurs sains
-		$('#checkbox-serveurs-sains-graphique2 input').click(function() {
+		$('#checkbox-serveurs-sains-graphique4 input').click(function() {
 			var mainParent = $(this).parent('.toggle-btn');
 			if($(mainParent).find('input').is(':checked')) {
-				$('#graphique2-request-sains').html("vrai");
+				$('#graphique4-request-sains').html("vrai");
 			} else {
-				$('#graphique2-request-sains').html("faux");
+				$('#graphique4-request-sains').html("faux");
 			}
-			updateGraphique(graphique2, 2);
+			updateGraphique(graphique4, 4);
 		})
 	});
-
-
-
-
-
-
-
-	// function updateGraphique2(graphique) {
-	// 	var datasServeurs = [];
-	// 	afficherServeursSainsGraphique2 = $('#checkbox-serveurs-sains-graphique2').hasClass('active');
-	// 	switch($('select#graphique2-zone-select').val()) {
-	// 	  case 'datasServeursZone1':
-	// 	    datasServeurs = afficherServeursSainsGraphique2 ? [100, 100, 90, 99, 100, 100, 98, 100] : [100, 100, 90, 100, 100, 100, 100, 100];
-	// 	    break;
-	// 	  case 'datasServeursZone2':
-	// 	  	datasServeurs = afficherServeursSainsGraphique2 ? [100, 88, 100, 91, 100, 94, 100, 98] : [100, 100, 100, 100, 100, 99, 100, 93];
-	// 	    break;
-	// 	  case 'datasServeursZone3':
-	// 		datasServeurs = afficherServeursSainsGraphique2 ? [100, 81, 100, 100, 78, 92, 100, 98] : [100, 100, 92, 100, 85, 100, 96, 100];
-	// 	    break;
-	// 	  case 'datasServeursZone4':
-	// 		datasServeurs = afficherServeursSainsGraphique2 ? [90, 100, 100, 58, 100, 69, 100, 100] : [100, 100, 100, 100, 100, 90, 100, 100];
-	// 	    break;
-	// 	  case 'datasServeursZone5':
-	// 		datasServeurs = afficherServeursSainsGraphique2 ? [100, 85, 90, 82, 99, 95, 80, 100] : [100, 100, 94, 100, 88, 100, 100, 100];
-	// 	    break;
-	// 	  case 'datasServeursZone6':
-	// 		datasServeurs = afficherServeursSainsGraphique2 ? [88, 100, 100, 100, 92, 100, 95, 99] : [100, 100, 79, 100, 100, 100, 100, 100];
-	// 	    break;
-	// 	  case 'datasServeursZone7':
-	// 		datasServeurs = afficherServeursSainsGraphique2 ? [100, 100, 91, 75, 83, 88, 100, 98] : [100, 100, 83, 96, 100, 98, 100, 100];
-	// 	    break;
-	// 	  case 'datasServeursZone8':
-	// 		datasServeurs = afficherServeursSainsGraphique2 ? [100, 100, 98, 100, 78, 100, 100, 100] : [95, 100, 100, 100, 100, 89, 100, 100, 99];
-	// 	    break;
-	// 	  default:
-	// 	    break;
-	// 	}
-	// 	graphique.data.datasets[0].data = datasServeurs;
-	// 	graphique.update();
-	// }
 </script>
 
 <%- include('footer', { data: data }) %>
