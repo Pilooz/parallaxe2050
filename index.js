@@ -55,7 +55,6 @@ function get_server_conf() {
 // It is call each time a RFID badge is detected
 //------------------------------------------------------------------------
 function setup_scenario_environment() {
-  rfid.extractReader(msg);
   console.log("extracted rfid code : " + rfid.getCurrentCode() + " on reader #" + rfid.getCurrentReader());
   // Putting Rfid Info in data for client
   dataForTemplate.currentRfidTag = rfid.getCurrentCode();
@@ -99,6 +98,7 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
     // If data is a tag
     rfid.extractTag(msg);
     if (rfid.getCurrentCode() != "") {
+      rfid.extractReader(msg);
       setup_scenario_environment();
     }
   });
