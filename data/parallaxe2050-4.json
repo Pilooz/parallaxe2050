@@ -1,0 +1,59 @@
+{
+    "scenarioId" : "ComDigitale",
+    "scenarioName" : "Dispositif Com digitale",
+    "scenarioMediaPath" : "medias/comdigitale/",
+    "templateDirectory" : "comdigitale/",
+    "steps" : [
+        {
+            "stepId" : "step-1",
+            "title" : "Com Digitale",
+            "template" : "temp",
+            "medias" : [],
+            "text" : "test1",
+            "transitions" :
+            [
+                { "id" : "step-2", "condition" : "" }
+            ],
+            "solutions" : 
+            [
+                {
+                    "set": "1",
+                    "responses": []
+                },
+                {
+                    "set": "2",
+                    "responses": []
+                }
+            ]
+        },
+
+        {
+            "stepId" : "step-2",
+            "title" : "Temporaire",
+            "template" : "temp",
+            "medias" : [],
+            "text" : "test2",
+            "transitions" :
+            [
+                { "id" : "step-2", "condition" : "" }
+            ],
+            "solutions" : 
+            [
+                {
+                    "set": "1", 
+                    "responses" : [ 
+                        {}, 
+                        {}
+                    ]
+                },
+                {
+                    "set": "2", 
+                    "responses" : [ 
+                        {}, 
+                        {}
+                    ]
+                }
+            ]
+        }
+    ]
+}
