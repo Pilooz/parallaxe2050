@@ -1,9 +1,9 @@
-<%- include('head', { data: data }) %>
-<!-- START Include here your files in the head -->
+<%- include('../partials/head', { data: data }) %>
+<!-- START // Styles in head -->
 <link type="text/css" href="css/bdd/style-graphiques.css" rel="stylesheet">
 <link type="text/css" href="css/lib/Chart.css" rel="stylesheet">
-<!-- END Include here your files in the head -->
-<%- include('header', { data: data }) %>
+<!-- END // Styles in head -->
+<%- include('../partials/header', { data: data }) %>
 
 <%- include('simulate', { data: data }) %>
 
@@ -71,7 +71,7 @@
 	</div>
 </div>
 
-<!-- START include here your files in the footer -->
+<!-- START // Scripts in footer -->
 <script src="js/lib/Chart.bundle.js"></script>
 <script src="js/lib/Chart.js"></script>
 <script src="https://d3js.org/d3.v4.js"></script>
@@ -223,6 +223,6 @@
 		})
 	});
 </script>
-<!-- END include here your files in the footer -->
+<!-- END // Scripts in footer -->
 
-<%- include('footer', { data: data }) %>
+<%- include('../partials/footer', { data: data }) %>
