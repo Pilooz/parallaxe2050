@@ -30,7 +30,6 @@ function fillTableWithServersDatas(serveurs) {
 					lignes += "<td>" + (serveurs[i]['commentaire'] != undefined ? serveurs[i]['commentaire'] : "") + "</td>";
 					lignes += "<td>" + (serveurs[i]['lat'] != undefined ? serveurs[i]['lat'] : "") + "</td>";
 					lignes += "<td>" + (serveurs[i]['lng'] != undefined ? serveurs[i]['lng'] : "") + "</td>";
-					lignes += "<td>" + (serveurs[i]['pays'] != undefined ? serveurs[i]['pays'] : "") + "</td>";
 					lignes += "<td>" + (serveurs[i]['zone'] != undefined ? serveurs[i]['zone'] : "") + "</td>";
 
 					lignes += "<td>" + (serveurs[i]['h1'] != undefined ? serveurs[i]['h1'] : "") + "</td>";
@@ -44,7 +43,7 @@ function fillTableWithServersDatas(serveurs) {
 				lignes += "</tr>";
 			}
 		};
-		lignes += "<tr><td colspan='16'>Impossible de charger les données suivantes.</td></tr>"
+		lignes += "<tr><td colspan='15'>Impossible de charger les données suivantes.</td></tr>"
 		$('table tbody').prepend(lignes);
 		$('table tbody tr.loading').remove();
 	}
