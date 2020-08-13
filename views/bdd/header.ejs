@@ -1,0 +1,19 @@
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = null;
+        $(document).ready(function() {
+            socket = io('http://<%= data.config_server.ip %>:<%= data.config_server.port %>');
+            // socket = io('http://localhost:3000');
+
+            // ------------------------------------------------------------------
+            // Socket listening
+            // ------------------------------------------------------------------
+            // Receiving refresh order
+            socket.on('toclient.refreshNow', function(data) {
+                location.href = "/";
+            });
+
+        });
+    </script>
+</head>
+<body>
