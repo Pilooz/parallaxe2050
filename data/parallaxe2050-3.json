@@ -1,0 +1,59 @@
+{
+    "scenarioId" : "CodeEtProg",
+    "scenarioName" : "Dispositif Code et programmation",
+    "scenarioMediaPath" : "medias/codeetprog/",
+    "templateDirectory" : "codeetprog/",
+    "steps" : [
+        {
+            "stepId" : "step-1",
+            "title" : "Code et programmation",
+            "template" : "temp",
+            "medias" : [],
+            "text" : "test1",
+            "transitions" :
+            [
+                { "id" : "step-2", "condition" : "" }
+            ],
+            "solutions" : 
+            [
+                {
+                    "set": "1",
+                    "responses": []
+                },
+                {
+                    "set": "2",
+                    "responses": []
+                }
+            ]
+        },
+
+        {
+            "stepId" : "step-2",
+            "title" : "Step temporaire",
+            "template" : "temp",
+            "medias" : [],
+            "text" : "test2",
+            "transitions" :
+            [
+                { "id" : "step-2", "condition" : "" }
+            ],
+            "solutions" : 
+            [
+                {
+                    "set": "1", 
+                    "responses" : [ 
+                        {}, 
+                        {}
+                    ]
+                },
+                {
+                    "set": "2", 
+                    "responses" : [ 
+                        {}, 
+                        {}
+                    ]
+                }
+            ]
+        }
+    ]
+}
