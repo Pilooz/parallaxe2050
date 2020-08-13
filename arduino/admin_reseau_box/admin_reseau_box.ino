@@ -55,6 +55,9 @@
   // bouton principal : 35
 
 */
+
+//#define DEBUG
+
 // Pour communiquer avec le serveur via USBSerial
 ParallaxeCom message;
 
@@ -66,23 +69,100 @@ typedef struct {
   int value;
 } PhysicalPin;
 
-PhysicalPin capteurs[12] = {
-  {"C01", 2, LOW},
-  {"C02", 3, LOW},
-  {"C03", 4, LOW},
-  {"C04", 5, LOW},
-  {"C05", 6, LOW},
-  {"C06", 7, LOW},
-  {"C07", 8, LOW},
-  {"C08", 9, LOW},
-  {"C09", 10, LOW},
-  {"C10", 11, LOW},
-  {"C_A01", 12, LOW},
-  {"C_A02", 13, LOW}
-};
+PhysicalPin capteurs[12] = { {"C01", 2, LOW}, {"C02", 3, LOW}, {"C03", 4, LOW}, {"C04", 5, LOW}, {"C05", 6, LOW}, {"C06", 7, LOW}, {"C07", 8, LOW}, {"C08", 9, LOW}, {"C09", 10, LOW}, {"C10", 11, LOW}, {"C_A01", 12, LOW}, {"C_A02", 13, LOW} };
+// L'odre est important car il permet de lire les catpeur dans un ordre défini
+//PhysicalPin capteurs[12] = { {"C03", 4, LOW}, {"C01", 2, LOW}, {"C09", 10, LOW}, {"C05", 6, LOW}, {"C06", 7, LOW}, {"C07", 8, LOW},  {"C02", 3, LOW}, {"C04", 5, LOW}, {"C08", 9, LOW}, {"C10", 11, LOW}, {"C_A01", 12, LOW}, {"C_A02", 13, LOW} };
 PhysicalPin leds[13] = { {"LED01", 18, LOW}, {"LED02", 19, LOW}, {"LED03", 20, LOW}, {"LED04", 21, LOW}, {"LED05", 22, LOW}, {"LED06", 23, LOW}, {"LED07", 24, LOW}, {"LED08", 25, LOW}, {"LED09", 26, LOW}, {"LED10", 27, LOW}, {"LED_A01", 28, LOW}, {"LED_A02", 29, LOW}, {"LED_Base", 30, LOW} };
-PhysicalPin relais[13] = { {"R_01", 40, HIGH}, {"R_02", 41, HIGH}, {"R_03", 42, HIGH}, {"R_04", 43, HIGH}, {"R_05", 44, LOW}, {"R_06", 45, LOW}, {"R_07", 46, LOW}, {"R_08", 47, LOW}, {"R_09", 48, LOW}, {"R_10", 49, LOW}, {"R_A01", 51, LOW}, {"R_A02", 52, LOW}, {"R_Base", 50, HIGH} };
+PhysicalPin relais[13] = { {"R_01", 40, HIGH}, {"R_02", 41, HIGH}, {"R_03", 42, HIGH}, {"R_04", 43, HIGH}, {"R_05", 44, HIGH}, {"R_06", 45, LOW}, {"R_07", 46, LOW}, {"R_08", 47, LOW}, {"R_09", 48, LOW}, {"R_10", 49, LOW}, {"R_A01", 51, LOW}, {"R_A02", 52, LOW}, {"R_Base", 50, HIGH} };
 
+//String chemin[2] = {"", ""};
+const int nb_noeuds_max = 30;
+String chemin[nb_noeuds_max];
+int indexChemin = 0;
+
+//
+// Nettoyer le nom du noeud
+// pour le transformer en qqch
+// de facilement interprétable en JSON.
+//
+String sanitize(String s) {
+  s.replace("C", "");
+  s.replace("_", "");
+  return s;
+}
+
+boolean noeudExiste(String noeud) {
+  for (int i = 0; i < nb_noeuds_max; i++) {
+    if ( chemin[i] == noeud) return true;
+  }
+  return false;
+}
+
+void initChemin() {
+  indexChemin = 0;
+  for (int i = 0; i < nb_noeuds_max; i++) {
+    chemin[i] = "";
+  }
+}
+
+//
+// ajouter un noeud au chemin
+//
+void tracerChemin(String noeud) {
+  noeud = sanitize(noeud);
+  if (!noeudExiste(noeud)) {
+    chemin[indexChemin] = noeud;
+    indexChemin++;
+  }
+  if (indexChemin == nb_noeuds_max) {
+    initChemin();
+  }
+}
+
+//
+// Virer un noeud du chemin
+//
+void supprimerNoeud(String noeud) {
+  noeud = sanitize(noeud);
+  for (int i = 0; i < nb_noeuds_max; i++) {
+    if ( chemin[i] == noeud) {
+      chemin[i] = "";
+      break;
+    }
+  }
+}
+
+//
+// transformer le chemin en JSON pour l'envoyer au serveur
+//
+String cheminJSON() {
+  String connections = "[";
+  for (int i = 0; i < nb_noeuds_max; i++) {
+    if (chemin[i] != "" ) {
+      connections += "\"" + chemin[i] + "\",";
+    }
+  }
+  if (connections.length() > 1) {
+    connections = connections.substring(0, connections.length() - 1);
+  }
+  connections += "]";
+  return connections;
+}
+
+//
+// Décrocher l'ensemble des câble
+//
+void toutDecrocher() {
+  for (int i = 0; i < 13; i++) {
+    relais[i].value = relais[i].default_value;
+    digitalWrite (relais[i].pin, relais[i].value);
+  }
+  initChemin();
+}
+
+//
+// Setup Arduino
+//
 void setup() {
   Serial.begin(9600);
   for (int i = 0; i < 12; i++) pinMode (capteurs[i].pin, INPUT);
@@ -93,6 +173,9 @@ void setup() {
   for (int i = 0; i < 13; i++) pinMode (relais[i].pin, OUTPUT);
   for (int i = 0; i < 13; i++) digitalWrite (relais[i].pin, relais[i].default_value);
 
+  // Allumer la base
+  digitalWrite (leds[12].pin, HIGH);
+  digitalWrite (relais[12].pin, LOW);
   // Send a message to say arduino is ready
   message.send("MSG", "READY");
 }
@@ -103,30 +186,34 @@ void loop() {
     capteurs[i].old_value = capteurs[i].value;
     capteurs[i].value = digitalRead (capteurs[i].pin);
   }
-  /*
+
+#ifdef DEBUG
   // Debug
   for (int i = 0; i < 12; i++) {
     if (capteurs[i].old_value != capteurs[i].value) {
       Serial.print (capteurs[i].name); Serial.print("="); Serial.println (capteurs[i].value);
     }
   }
-*/
+#endif
 
-  //for (int i=0; i<13; i++) digitalWrite (relais[i].pin, !digitalRead(relais[i].pin));
-
-
+  // Logique du patch : Allumer le relais de l'entrée qu'on vient de relier à la base
   for (int i = 0; i < 12; i++) {
+    // Allumer ou eteindre les leds selon l'état des capteurs
     digitalWrite (leds[i].pin, capteurs[i].value);
-    if (capteurs[i].value == HIGH) {
-      digitalWrite (leds[12].pin, capteurs[i].value);
-      relais[i].value = (relais[i].default_value == LOW) ? HIGH : LOW;
-      digitalWrite (relais[i].pin, relais[i].value);
+    // Gérer les relais et le tracage du chemin,
+    // si les valeurs de capteur ont changé
+    if (capteurs[i].old_value != capteurs[i].value) {
+      if (capteurs[i].value == HIGH) {
+        relais[i].old_value = relais[i].value;
+        relais[i].value = (relais[i].default_value == LOW) ? HIGH : LOW;
+        digitalWrite (relais[i].pin, relais[i].value);
+        // Gérer la construction du chemin
+        tracerChemin(capteurs[i].name);
+      } else {
+        supprimerNoeud(capteurs[i].name);
+      }
     }
   }
-
-  /* For testing
-
-  */
 
   // Read an incoming messages from the server
   if (message.isKey("CMD")) {
@@ -150,27 +237,14 @@ void loop() {
     // Reset : lâcher tous les câbles
     //
     if (message.val() == "RELEASE") {
-      for (int i = 0; i < 13; i++) {
-        relais[i].value = relais[i].default_value;
-        digitalWrite (relais[i].pin, relais[i].value);
-      }
+      toutDecrocher();
       message.ack_ok();
     }
     //
     // Envoyer les données de câbles connectés sur demande du serveur.
-    //
+    // L'arduino doit renvoyer un JSON comme celui -ci :  { chemin1: [9,7,8] }
     if (message.val() == "CONNECTIONS") {
-      String connections = "[";
-      for (int i = 0; i < 12; i++) {
-        if (capteurs[i].value == HIGH) {
-          connections += "{\"" + capteurs[i].name + "\":" + String(capteurs[i].value) +"},";
-        }
-      }
-      if(connections.length() > 1) {
-        connections =connections.substring(0, connections.length()-1);
-      }
-      connections += "]"; 
-      message.send("CONNECTIONS", connections);
+      message.send("CONNECTIONS", cheminJSON());
       message.ack_ok();
     }
   }
