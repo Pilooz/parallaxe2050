@@ -1,7 +1,8 @@
 {
-    "scenario_name" : "Dispositif Base de données et datas",
-    "scenarioMediaPath" : "medias/bdd-datas/",
-    "templateDirectory" : "bdd-datas/",
+    "scenarioId" : "BDD",
+    "scenarioName" : "Dispositif Base de données et datas",
+    "scenarioMediaPath" : "medias/bdd/",
+    "templateDirectory" : "bdd/",
     "steps" : [
         {
         "stepId" : "step-1",
@@ -52,10 +53,25 @@
         ],
         "transitions" :
             [
-            { "id" : "step-2", "condition" : "byeFunction" }
+                { "id" : "step-1", "condition" : "" }
             ],
         "solutions" : 
-            []
+            [
+                {
+                    "set": "1", 
+                    "responses" : [ 
+                        {"chemin1" : [ 3, 4 ], "ip" : "34.76.60.69" }, 
+                        {"chemin2" : [ 1, 6, 8 ], "ip" : "111.206.198.31" }
+                    ]
+                },
+                {
+                    "set": "2", 
+                    "responses" : [ 
+                        {"chemin1" : [ 1, 6 ], "ip" : "34.76.60.69" }, 
+                        {"chemin2" : [ 9, 7, 8 ], "ip" : "111.206.198.31" }
+                    ]
+                }
+            ]
         }
     ]
 }
