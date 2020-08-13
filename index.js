@@ -125,13 +125,13 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // rfid.extractTag("\n");
   // rfid.extractReader("\n");
   // Testing for group A
-  rfid.extractTag("<TAG:49426960/><READER:1/>");
-  rfid.extractReader("<TAG:49426960/><READER:1/>");
-  scenario.setCurrentStepId("step-1");
+  // rfid.extractTag("<TAG:49426960/><READER:1/>");
+  // rfid.extractReader("<TAG:49426960/><READER:1/>");
+  // scenario.setCurrentStepId("step-1");
   // Testing for group A2 5E3D621A
-  // rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
-  // rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
-  // scenario.setCurrentStepId("step-2");
+  rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
+  rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
+  scenario.setCurrentStepId("step-2");
 
   // Testing for group B
   // rfid.extractTag("<TAG:CE4E2B60/><READER:2/>");

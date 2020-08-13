@@ -21,31 +21,30 @@ function fillTableWithServersDatas(serveurs) {
 	if(serveurs.length > 0) {
 		var lignes = "";
 		var i;
-		for (var j = 0; j < 100; j++) {
-			for (i = serveurs.length - 1; i >= 0; i--) {
-				if(serveurs[i]['id'] != "") {
-					lignes += "<tr>";
-						lignes += "<td>" + serveurs[i]['id'] + "</td>";
-						lignes += "<td>" + (serveurs[i]['params']['est_sain'] != undefined ? serveurs[i]['params']['est_sain'] : "") + "</td>";
-						lignes += "<td>" + (serveurs[i]['params']['date_construction'] != undefined ? serveurs[i]['params']['date_construction'] : "") + "</td>";
-						lignes += "<td>" + (serveurs[i]['params']['commentaire'] != undefined ? serveurs[i]['params']['commentaire'] : "") + "</td>";
-						lignes += "<td>" + (serveurs[i]['params']['lat'] != undefined ? serveurs[i]['params']['lat'] : "") + "</td>";
-						lignes += "<td>" + (serveurs[i]['params']['lng'] != undefined ? serveurs[i]['params']['lng'] : "") + "</td>";
-						lignes += "<td>" + (serveurs[i]['params']['pays'] != undefined ? serveurs[i]['params']['pays'] : "") + "</td>";
-						lignes += "<td>" + (serveurs[i]['params']['zone'] != undefined ? serveurs[i]['params']['zone'] : "") + "</td>";
+		for (i = 0 ; i < serveurs.length ; i++) {
+			if(serveurs[i]['id'] != "") {
+				lignes += "<tr>";
+					lignes += "<td>" + serveurs[i]['id'] + "</td>";
+					lignes += "<td>" + (serveurs[i]['est_sain'] != undefined ? serveurs[i]['est_sain'] : "") + "</td>";
+					lignes += "<td>" + (serveurs[i]['date_construction'] != undefined ? serveurs[i]['date_construction'] : "") + "</td>";
+					lignes += "<td>" + (serveurs[i]['commentaire'] != undefined ? serveurs[i]['commentaire'] : "") + "</td>";
+					lignes += "<td>" + (serveurs[i]['lat'] != undefined ? serveurs[i]['lat'] : "") + "</td>";
+					lignes += "<td>" + (serveurs[i]['lng'] != undefined ? serveurs[i]['lng'] : "") + "</td>";
+					lignes += "<td>" + (serveurs[i]['pays'] != undefined ? serveurs[i]['pays'] : "") + "</td>";
+					lignes += "<td>" + (serveurs[i]['zone'] != undefined ? serveurs[i]['zone'] : "") + "</td>";
 
-						lignes += "<td>" + (serveurs[i]['params']['h1'] != undefined ? serveurs[i]['params']['h1'] : "") + "</td>";
-						lignes += "<td>" + (serveurs[i]['params']['h2'] != undefined ? serveurs[i]['params']['h2'] : "") + "</td>";
-						lignes += "<td>" + (serveurs[i]['params']['h3'] != undefined ? serveurs[i]['params']['h3'] : "") + "</td>";
-						lignes += "<td>" + (serveurs[i]['params']['h4'] != undefined ? serveurs[i]['params']['h4'] : "") + "</td>";
-						lignes += "<td>" + (serveurs[i]['params']['h5'] != undefined ? serveurs[i]['params']['h5'] : "") + "</td>";
-						lignes += "<td>" + (serveurs[i]['params']['h6'] != undefined ? serveurs[i]['params']['h6'] : "") + "</td>";
-						lignes += "<td>" + (serveurs[i]['params']['h7'] != undefined ? serveurs[i]['params']['h7'] : "") + "</td>";
-						lignes += "<td>" + (serveurs[i]['params']['h8'] != undefined ? serveurs[i]['params']['h8'] : "") + "</td>";
-					lignes += "</tr>";
-				}
-			};
+					lignes += "<td>" + (serveurs[i]['h1'] != undefined ? serveurs[i]['h1'] : "") + "</td>";
+					lignes += "<td>" + (serveurs[i]['h2'] != undefined ? serveurs[i]['h2'] : "") + "</td>";
+					lignes += "<td>" + (serveurs[i]['h3'] != undefined ? serveurs[i]['h3'] : "") + "</td>";
+					lignes += "<td>" + (serveurs[i]['h4'] != undefined ? serveurs[i]['h4'] : "") + "</td>";
+					lignes += "<td>" + (serveurs[i]['h5'] != undefined ? serveurs[i]['h5'] : "") + "</td>";
+					lignes += "<td>" + (serveurs[i]['h6'] != undefined ? serveurs[i]['h6'] : "") + "</td>";
+					lignes += "<td>" + (serveurs[i]['h7'] != undefined ? serveurs[i]['h7'] : "") + "</td>";
+					lignes += "<td>" + (serveurs[i]['h8'] != undefined ? serveurs[i]['h8'] : "") + "</td>";
+				lignes += "</tr>";
+			}
 		};
+		lignes += "<tr><td colspan='16'>Impossible de charger les données suivantes.</td></tr>"
 		$('table tbody').prepend(lignes);
 		$('table tbody tr.loading').remove();
 	}
