@@ -83,7 +83,7 @@ function initGraphique1() {
 	];
 
 	// Load external data and boot about the map
-	d3.json("/js/bdd-datas/world-110m.geojson", function(data) {
+	d3.json("js/lib/world-110m.geojson", function(data) {
 
 		// Create a color scale
 		var color = d3.scaleOrdinal()
