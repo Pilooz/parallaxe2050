@@ -5,57 +5,80 @@
     "templateDirectory" : "bdd/",
     "steps" : [
         {
-        "stepId" : "step-1",
-        "title" : "Base de données des serveurs",
-        "template" : "bdd-graphiques",
-        "medias" : [],
-        "text" : "test1",
-        "serveurs": [{
-                "id": "49426960",
-                "params": {
-                    "est_sain": "true",
-                    "date_construction": "15/10/2007",
-                    "commentaire": "",
-                    "lat": "45.772022",
-                    "lng": "4.874033",
-                    "pays": "FR",
-                    "zone": "1",
-                    "h1": "true",
-                    "h2": "true",
-                    "h3": "true",
-                    "h4": "true",
-                    "h5": "true",
-                    "h6": "true",
-                    "h7": "true",
-                    "h8": "true"
-                }
-            },
-            {
-                "id": "82930013",
-                "params": {
-                    "est_sain": "true",
-                    "date_construction": "01/05/2003",
-                    "commentaire": "",
-                    "lat": "45.672022",
-                    "lng": "5.874033",
-                    "pays": "DE",
-                    "zone": "1",
-                    "h1": "true",
-                    "h2": "true",
-                    "h3": "false",
-                    "h4": "true",
-                    "h5": "true",
-                    "h6": "true",
-                    "h7": "true",
-                    "h8": "true"
-                }
-            }
-        ],
-        "transitions" :
+            "stepId" : "step-1",
+            "title" : "Base de données et datas",
+            "template" : "bdd-video",
+            "medias" : [],
+            "text" : "test1",
+            "transitions" :
             [
-                { "id" : "step-1", "condition" : "" }
+                { "id" : "step-2", "condition" : "" }
             ],
-        "solutions" : 
+            "solutions" : 
+            [
+                {
+                    "set": "1",
+                    "responses": []
+                },
+                {
+                    "set": "2",
+                    "responses": []
+                }
+            ]
+        },
+
+        {
+            "stepId" : "step-2",
+            "title" : "Base de données des serveurs",
+            "template" : "bdd-graphiques",
+            "medias" : [],
+            "text" : "test2",
+            "serveurs": [{
+                    "id": "49426960",
+                    "params": {
+                        "est_sain": "true",
+                        "date_construction": "15/10/2007",
+                        "commentaire": "",
+                        "lat": "45.772022",
+                        "lng": "4.874033",
+                        "pays": "FR",
+                        "zone": "1",
+                        "h1": "true",
+                        "h2": "true",
+                        "h3": "true",
+                        "h4": "true",
+                        "h5": "true",
+                        "h6": "true",
+                        "h7": "true",
+                        "h8": "true"
+                    }
+                },
+                {
+                    "id": "82930013",
+                    "params": {
+                        "est_sain": "true",
+                        "date_construction": "01/05/2003",
+                        "commentaire": "",
+                        "lat": "45.672022",
+                        "lng": "5.874033",
+                        "pays": "DE",
+                        "zone": "1",
+                        "h1": "true",
+                        "h2": "true",
+                        "h3": "false",
+                        "h4": "true",
+                        "h5": "true",
+                        "h6": "true",
+                        "h7": "true",
+                        "h8": "true"
+                    }
+                }
+            ],
+            "transitions" :
+            [
+                { "id" : "step-2", "condition" : "" }
+            ],
+            "solutions" : 
             [
                 {
                     "set": "1", 

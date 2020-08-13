@@ -1,4 +1,10 @@
 <%- include('head', { data: data }) %>
+<!-- START Include here your files in the head -->
+<link type="text/css" href="css/bdd/style-graphiques.css" rel="stylesheet">
+<link type="text/css" href="css/lib/Chart.css" rel="stylesheet">
+<!-- END Include here your files in the head -->
+<%- include('header', { data: data }) %>
+
 <%- include('simulate', { data: data }) %>
 
 <!-- Base de données -->
@@ -65,6 +71,14 @@
 	</div>
 </div>
 
+<!-- START include here your files in the footer -->
+<script src="js/lib/Chart.bundle.js"></script>
+<script src="js/lib/Chart.js"></script>
+<script src="https://d3js.org/d3.v4.js"></script>
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://d3js.org/d3-geo-projection.v2.min.js"></script>
+
+<script src="js/bdd/functions-graphiques.js"></script>
 <script>
 	const serveurs = JSON.parse('<%- JSON.stringify(data.currentStep.serveurs) %>');
 
@@ -209,5 +223,6 @@
 		})
 	});
 </script>
+<!-- END include here your files in the footer -->
 
 <%- include('footer', { data: data }) %>
