@@ -19,6 +19,7 @@
   "dependencies": {
     "body-parser": "^1.19.0",
     "bootstrap": "^4.5.2",
+    "bufferutil": "^4.0.1",
     "cookie-parser": "^1.4.5",
     "cookieparser": "^0.1.0",
     "ejs": "^3.1.3",
@@ -28,12 +29,12 @@
     "ip": "^1.1.5",
     "jquery": "^3.5.1",
     "json-editor": "^0.7.28",
+    "midi": "^1.0.0",
     "node-math": "0.0.3",
+    "popper.js": "^1.16.1",
     "serialport": "^9.0.1",
     "socket.io": "^2.3.0",
-    "xterm": "^4.8.1",
-    "popper.js": "^1.16.1",
-    "bufferutil": "^4.0.1",
-    "utf-8-validate": "^5.0.2"
+    "utf-8-validate": "^5.0.2",
+    "xterm": "^4.8.1"
   }
 }
