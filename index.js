@@ -137,18 +137,18 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // rfid.extractTag("<TAG:7ED72360/><READER:1/>");
   // rfid.extractReader("<TAG:7ED72360/><READER:1/>");
   // scenario.setCurrentStepId("step-1");
-  // // Testing for group A2 5E3D621A (énigme "Code et prog" ou énigme "BDD et datas")
-  // rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
-  // rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
-  // scenario.setCurrentStepId("step-1");
+  // Testing for group A2 5E3D621A (énigme "Code et prog" ou énigme "BDD et datas")
+  rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
+  rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
+  scenario.setCurrentStepId("step-1");
   // // Testing for group A3 0EAF4C60 (énigme "BDD et datas" ou énigme "Hardware")
   // rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
   // rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
   // scenario.setCurrentStepId("step-1");
   // Testing for group A4 49426960 (énigme "Com digitale" ou énigme "Admin réseau")
-  rfid.extractTag("<TAG:49426960/><READER:1/>");
-  rfid.extractReader("<TAG:49426960/><READER:1/>");
-  scenario.setCurrentStepId("step-1");
+  // rfid.extractTag("<TAG:49426960/><READER:1/>");
+  // rfid.extractReader("<TAG:49426960/><READER:1/>");
+  // scenario.setCurrentStepId("step-1");
   // // Testing for group A5 5E68811A (énigme "Admin réseau" ou énigme "Com digitale")
   // rfid.extractTag("<TAG:5E68811A/><READER:1/>");
   // rfid.extractReader("<TAG:5E68811A/><READER:1/>");
@@ -187,13 +187,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-//app.use('/videos', express.static(__dirname + GLOBAL_CONFIG.app.mediaPath)); // redirect media directory
+// app.use('/medias', express.static(__dirname + GLOBAL_CONFIG.app.mediaPath)); // redirect media directory
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 app.use('/js', express.static(__dirname + '/node_modules/socket.io/dist')); // Socket.io
 app.use('/js/xterm', express.static(__dirname + '/node_modules/xterm/lib')); // redirect JS for xTerm
 app.use('/css/xterm', express.static(__dirname + '/node_modules/xterm/css')); // redirect CSS for xTerm
-
 //-----------------------------------------------------------------------------
 // Routing Middleware functions
 // application logic is here / GET and POST on Index
