@@ -31,7 +31,7 @@ var arduino        = require('./lib/arduino.js')(GLOBAL_CONFIG, eventArduinoMsg)
 // Loading Specific librairy for the specific scenario
 var scenario_specifics;
 if (fs.existsSync("./lib/scenario-" + scenario.data().scenarioId + ".js")){
-  scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, arduino, eventArduinoMsg);
+  scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, rfid, arduino, eventArduinoMsg);
 }
 
 const httpPort    = CONFIG_SERVER.port;
@@ -66,8 +66,13 @@ function setup_scenario_environment() {
   dataForTemplate.currentRfidTag = rfid.getCurrentCode();
   dataForTemplate.currentRfidReader = rfid.getCurrentReader();
   // get the set of solutions for the group/subgroup team
+  console.log(`Current Team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
   dataForTemplate.solutionsSet = scenario.getSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
-  console.log(`The team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
+
+  //_______________________________________________________
+  // #TODO : Gérer l'erreur si le solutionSet est vide.
+  //_______________________________________________________
+
   console.log(`Solutions set #${dataForTemplate.solutionsSet}`);
 }
 //------------------------------------------------------------------------
