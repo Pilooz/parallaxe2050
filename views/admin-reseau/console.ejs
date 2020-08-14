@@ -1,7 +1,13 @@
-<%- include('header', { data: data }) %>
-<link rel="stylesheet" href="/css/xterm/xterm.css" />
+<%- include('../partials/head', { data: data }) %>
+<!-- START // Styles in head -->
+    <link rel="stylesheet" href="/css/xterm/xterm.css" />
+<!-- END // Styles in head -->
+<%- include('../partials/header', { data: data }) %>
+
+    <div id="terminal"></div>
+
+<!-- START // Scripts in footer -->
 <script src="/js/xterm/xterm.js"></script>
-      <div id="terminal"></div>
 <script>
     // Data and vars
     const prompt_linux = '\r\n\033[95m/root\033[0m@\033[32mGreenternet-console\033[0m $\033[0m ';
@@ -339,4 +345,5 @@ $(document).ready(function(){
     });
 });
 </script>
-<%- include('footer', { data: data })%>
+<!-- END // Scripts in footer -->
+<%- include('../partials/footer', { data: data }) %>
