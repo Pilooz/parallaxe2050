@@ -150,16 +150,48 @@ String cheminJSON() {
 }
 
 //
+// Coller un relais
+//
+void collerRelais(int index) {
+  // Coller le relais
+  relais[index].old_value = relais[index].value;
+  relais[index].value = (relais[index].default_value == LOW) ? HIGH : LOW;
+  digitalWrite (relais[index].pin, relais[index].value);
+}
+
+//
+// Décoller un relais
+//
+void decollerRelais(int index) {
+  relais[index].old_value = relais[index].value;
+  relais[index].value = relais[index].default_value;
+  digitalWrite (relais[index].pin, relais[index].value);
+}
+
 // Décrocher l'ensemble des câble
 //
-void toutDecrocher() {
+void toutDecoller() {
   for (int i = 0; i < 13; i++) {
-    relais[i].value = relais[i].default_value;
-    digitalWrite (relais[i].pin, relais[i].value);
+    decollerRelais(i);
   }
   initChemin();
 }
 
+//
+// lire un capteur avec sauvegarde de la valeur précédente
+//
+void lireCapteur(int index) {
+  capteurs[index].old_value = capteurs[index].value;
+  capteurs[index].value = digitalRead (capteurs[index].pin);
+}
+
+//
+// Allumer la Base
+//
+void allumerBase() {
+  digitalWrite (leds[12].pin, HIGH);
+  digitalWrite (relais[12].pin, LOW);
+}
 //
 // Setup Arduino
 //
@@ -173,9 +205,11 @@ void setup() {
   for (int i = 0; i < 13; i++) pinMode (relais[i].pin, OUTPUT);
   for (int i = 0; i < 13; i++) digitalWrite (relais[i].pin, relais[i].default_value);
 
+  // un petit delay pour attendre que tout soit bien décroché
+  delay(300);
+  
   // Allumer la base
-  digitalWrite (leds[12].pin, HIGH);
-  digitalWrite (relais[12].pin, LOW);
+  allumerBase();
   // Send a message to say arduino is ready
   message.send("MSG", "READY");
 }
@@ -183,8 +217,7 @@ void setup() {
 void loop() {
   // Lecture des capteurs
   for (int i = 0; i < 12; i++) {
-    capteurs[i].old_value = capteurs[i].value;
-    capteurs[i].value = digitalRead (capteurs[i].pin);
+    lireCapteur(i);
   }
 
 #ifdef DEBUG
@@ -201,17 +234,15 @@ void loop() {
     // Allumer ou eteindre les leds selon l'état des capteurs
     digitalWrite (leds[i].pin, capteurs[i].value);
     // Gérer les relais et le tracage du chemin,
-    // si les valeurs de capteur ont changé
-    if (capteurs[i].old_value != capteurs[i].value) {
-      if (capteurs[i].value == HIGH) {
-        relais[i].old_value = relais[i].value;
-        relais[i].value = (relais[i].default_value == LOW) ? HIGH : LOW;
-        digitalWrite (relais[i].pin, relais[i].value);
-        // Gérer la construction du chemin
-        tracerChemin(capteurs[i].name);
-      } else {
-        supprimerNoeud(capteurs[i].name);
-      }
+    if (capteurs[i].value == HIGH) {
+      // Coller le relais
+      collerRelais(i);
+      // Gérer la construction du chemin
+      tracerChemin(capteurs[i].name);
+    } else {
+      // décoller le relais
+      decollerRelais(i);
+      supprimerNoeud(capteurs[i].name);
     }
   }
 
@@ -237,12 +268,13 @@ void loop() {
     // Reset : lâcher tous les câbles
     //
     if (message.val() == "RELEASE") {
-      toutDecrocher();
+      toutDecoller();
       message.ack_ok();
     }
     //
     // Envoyer les données de câbles connectés sur demande du serveur.
     // L'arduino doit renvoyer un JSON comme celui -ci :  { chemin1: [9,7,8] }
+    //
     if (message.val() == "CONNECTIONS") {
       message.send("CONNECTIONS", cheminJSON());
       message.ack_ok();
