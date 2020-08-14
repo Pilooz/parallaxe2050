@@ -28,6 +28,10 @@ const scenario     = require('./lib/scenario_utils.js')(CONFIG_SERVER);
 var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG);
 // Arduino stuffs 
 var arduino        = require('./lib/arduino.js')(GLOBAL_CONFIG, eventArduinoMsg);
+
+// Arduino stuffs 
+var launchpad        = require('./lib/launchpad.js')(GLOBAL_CONFIG);
+
 // Loading Specific librairy for the specific scenario
 var scenario_specifics;
 if (fs.existsSync("./lib/scenario-" + scenario.data().scenarioId + ".js")){
