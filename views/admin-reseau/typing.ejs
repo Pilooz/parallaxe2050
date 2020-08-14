@@ -1,12 +1,16 @@
-<%- include('header', { data: data }) %>
-<body>
+<%- include('../partials/head', { data: data }) %>
+<!-- START // Styles in head -->
+<!-- END // Styles in head -->
+<%- include('../partials/header', { data: data }) %>
+
     <div class="container">
         <span id="typed-text" class="typed-text"></span><span class="cursor">&nbsp;</span>
     </div>
-<div id="main">
-    <div><input id="console" type="text" autocomplete="off" style="position: fixed; bottom: 20px; width: 97vw; background-color: rgb(20, 20, 20); color: rgb(18, 134, 18); border: rgb(18, 134, 18); font-size: 50px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;"/></div>
-</div>
-</body>
+    <div id="main">
+        <div><input id="console" type="text" autocomplete="off" style="position: fixed; bottom: 20px; width: 97vw; background-color: rgb(20, 20, 20); color: rgb(18, 134, 18); border: rgb(18, 134, 18); font-size: 50px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;"/></div>
+    </div>
+
+<!-- START // Scripts in footer -->
 <script>
     const nextStep = JSON.parse('<%- JSON.stringify(data.currentStep.transitions[0].id) %>');
     $(document).ready(function() {
@@ -63,4 +67,5 @@
     }
   });
   </script>
-<%- include('footer', { data: data })%>
+<!-- END // Scripts in footer -->
+<%- include('../partials/footer', { data: data }) %>

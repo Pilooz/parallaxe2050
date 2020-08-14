@@ -1,0 +1,59 @@
+{
+    "scenarioId" : "Hardware",
+    "scenarioName" : "Dispositif Hardware",
+    "scenarioMediaPath" : "medias/hardware/",
+    "templateDirectory" : "hardware/",
+    "steps" : [
+        {
+            "stepId" : "step-1",
+            "title" : "Hardware",
+            "template" : "hardware-video",
+            "medias" : [],
+            "text" : "test1",
+            "transitions" :
+            [
+                { "id" : "step-2", "condition" : "" }
+            ],
+            "solutions" : 
+            [
+                {
+                    "set": "1",
+                    "responses": []
+                },
+                {
+                    "set": "2",
+                    "responses": []
+                }
+            ]
+        },
+
+        {
+            "stepId" : "step-2",
+            "title" : "Base de données des serveurs",
+            "template" : "hardware-video",
+            "medias" : [],
+            "text" : "test2",
+            "transitions" :
+            [
+                { "id" : "step-2", "condition" : "" }
+            ],
+            "solutions" : 
+            [
+                {
+                    "set": "1", 
+                    "responses" : [ 
+                        {}, 
+                        {}
+                    ]
+                },
+                {
+                    "set": "2", 
+                    "responses" : [ 
+                        {}, 
+                        {}
+                    ]
+                }
+            ]
+        }
+    ]
+}
