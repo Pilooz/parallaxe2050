@@ -242,17 +242,11 @@
             [
                 {
                     "set": "1", 
-                    "responses" : [ 
-                        {"chemin1" : [ 3, 4 ], "ip" : "34.76.60.69" }, 
-                        {"chemin2" : [ 1, 6, 8 ], "ip" : "111.206.198.31" }
-                    ]
+                    "responses" : { "hour": "H1", "continents": [ 1, 2, 3, 5, 7, 8 ] }
                 },
                 {
                     "set": "2", 
-                    "responses" : [ 
-                        {"chemin1" : [ 1, 6 ], "ip" : "34.76.60.69" }, 
-                        {"chemin2" : [ 9, 7, 8 ], "ip" : "111.206.198.31" }
-                    ]
+                    "responses" : { "hour": "H1", "continents": [ 1, 2, 3, 5, 7, 8 ] }
                 }
             ]
         }
