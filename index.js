@@ -44,6 +44,8 @@ const httpPort    = CONFIG_SERVER.port;
 var dataForTemplate = {};
 var httpRequests = {};
 
+var error_wrong_badge_on_wrong_device = false;
+
 //------------------------------------------------------------------------
 // Some usefull functions
 //------------------------------------------------------------------------
@@ -71,20 +73,23 @@ function setup_scenario_environment() {
   dataForTemplate.currentRfidReader = rfid.getCurrentReader();
   // get the set of solutions for the group/subgroup team
   console.log(`Current Team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
-  dataForTemplate.solutionsSet = scenario.getSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
-
-  //_______________________________________________________
-  // #TODO : Gérer l'erreur si le solutionSet est vide.
-  //_______________________________________________________
-
-  console.log(`Solutions set #${dataForTemplate.solutionsSet}`);
+  var set = scenario.getSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
+  if (set > -1) {
+    dataForTemplate.solutionsSet = set;
+    console.log(`Solutions set #${dataForTemplate.solutionsSet}`);
+  } else {
+    // Wrong badge on wrong device.
+    // emit a socket to teel the client to refresh on error page
+    // io.emit('toclient.errorOnBadge', {data: { errorMsg : "WRONG_CODE_ON_WRONG_DEVICE", errorPage, "/badgeError" } });
+    // @TODO : do something clever here !!! 
+  }
 }
 //------------------------------------------------------------------------
 // Init Socket to transmit Serial data to HTTP client
 //------------------------------------------------------------------------
 io.on('connection', function(socket) {
     console.log("New client is connected : " + socket.id );
-    
+
     // Client asks for the next step
     socket.on('toserver.nextStep', function(data){
       // The data var contains the next stepId that has been dexcribed and validated in the current step trnasition
@@ -241,6 +246,13 @@ router.all('/*', function (req, res, next) {
   } else {
     res.render(tmpl, { data: dataForTemplate });
   }
+})
+
+//
+// Handle Badge Error
+//
+.get('/badgeError', function(req, rs, next){
+  res.render('../badge_error', { data: dataForTemplate });
 })
 
 //
