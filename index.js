@@ -3,7 +3,7 @@ const GLOBAL_CONFIG        = require('./config/config.js');
 
 // Events 
 const events = require('events');
-var eventArduinoMsg = new events.EventEmitter();
+var eventEmitter = new events.EventEmitter();
 
 // MVC Framework
 var app           = require('express')();
@@ -27,15 +27,15 @@ const scenario     = require('./lib/scenario_utils.js')(CONFIG_SERVER);
 // Rfid parsing functions
 var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG);
 // Arduino stuffs 
-var arduino        = require('./lib/arduino.js')(GLOBAL_CONFIG, eventArduinoMsg);
+var arduino        = require('./lib/arduino.js')(GLOBAL_CONFIG, eventEmitter);
 
 // Arduino stuffs 
-var launchpad        = require('./lib/launchpad.js')(GLOBAL_CONFIG);
+var launchpad        = require('./lib/launchpad.js')(GLOBAL_CONFIG, eventEmitter);
 
 // Loading Specific librairy for the specific scenario
 var scenario_specifics;
 if (fs.existsSync("./lib/scenario-" + scenario.data().scenarioId + ".js")){
-  scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, rfid, arduino, eventArduinoMsg);
+  scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, rfid, arduino, scenario, eventEmitter);
 }
 
 const httpPort    = CONFIG_SERVER.port;
@@ -43,8 +43,6 @@ const httpPort    = CONFIG_SERVER.port;
 
 var dataForTemplate = {};
 var httpRequests = {};
-
-var error_wrong_badge_on_wrong_device = false;
 
 //------------------------------------------------------------------------
 // Some usefull functions
@@ -145,7 +143,7 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // Testing for group A2 5E3D621A (énigme "Code et prog" ou énigme "BDD et datas")
   rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
   rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
-  scenario.setCurrentStepId("step-1");
+  scenario.setCurrentStepId("step-2");
   // // Testing for group A3 0EAF4C60 (énigme "BDD et datas" ou énigme "Hardware")
   // rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
   // rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");

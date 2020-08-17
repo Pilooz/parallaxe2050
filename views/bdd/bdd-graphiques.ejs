@@ -219,6 +219,21 @@
 			updateGraphique(graphique4, 4);
 		})
 	});
+
+// Specific socket listeners
+$(document).ready(function(){
+    //
+    // rponse de node concernant les solutions.
+    //
+    socket.on('toclient.responseAnalysis', function(data) {
+        console.log(data);
+        if (data.result == "KO") {
+            console.log("Afficher erreur");
+        } else {
+            console.log("Afficher réussite");
+        }
+    });
+});
 </script>
 <!-- END // Scripts in footer -->
 
