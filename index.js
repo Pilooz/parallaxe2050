@@ -3,7 +3,7 @@ const GLOBAL_CONFIG        = require('./config/config.js');
 
 // Events 
 const events = require('events');
-var eventArduinoMsg = new events.EventEmitter();
+var eventEmitter = new events.EventEmitter();
 
 // MVC Framework
 var app           = require('express')();
@@ -27,15 +27,15 @@ const scenario     = require('./lib/scenario_utils.js')(CONFIG_SERVER);
 // Rfid parsing functions
 var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG);
 // Arduino stuffs 
-var arduino        = require('./lib/arduino.js')(GLOBAL_CONFIG, eventArduinoMsg);
+var arduino        = require('./lib/arduino.js')(GLOBAL_CONFIG, eventEmitter);
 
 // Arduino stuffs 
-var launchpad        = require('./lib/launchpad.js')(GLOBAL_CONFIG);
+var launchpad        = require('./lib/launchpad.js')(GLOBAL_CONFIG, eventEmitter);
 
 // Loading Specific librairy for the specific scenario
 var scenario_specifics;
 if (fs.existsSync("./lib/scenario-" + scenario.data().scenarioId + ".js")){
-  scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, rfid, arduino, eventArduinoMsg);
+  scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, rfid, arduino, scenario, eventEmitter);
 }
 
 const httpPort    = CONFIG_SERVER.port;
@@ -71,20 +71,23 @@ function setup_scenario_environment() {
   dataForTemplate.currentRfidReader = rfid.getCurrentReader();
   // get the set of solutions for the group/subgroup team
   console.log(`Current Team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
-  dataForTemplate.solutionsSet = scenario.getSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
-
-  //_______________________________________________________
-  // #TODO : Gérer l'erreur si le solutionSet est vide.
-  //_______________________________________________________
-
-  console.log(`Solutions set #${dataForTemplate.solutionsSet}`);
+  var set = scenario.getSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
+  if (set > -1) {
+    dataForTemplate.solutionsSet = set;
+    console.log(`Solutions set #${dataForTemplate.solutionsSet}`);
+  } else {
+    // Wrong badge on wrong device.
+    // emit a socket to teel the client to refresh on error page
+    // io.emit('toclient.errorOnBadge', {data: { errorMsg : "WRONG_CODE_ON_WRONG_DEVICE", errorPage, "/badgeError" } });
+    // @TODO : do something clever here !!! 
+  }
 }
 //------------------------------------------------------------------------
 // Init Socket to transmit Serial data to HTTP client
 //------------------------------------------------------------------------
 io.on('connection', function(socket) {
     console.log("New client is connected : " + socket.id );
-    
+
     // Client asks for the next step
     socket.on('toserver.nextStep', function(data){
       // The data var contains the next stepId that has been dexcribed and validated in the current step trnasition
@@ -140,7 +143,7 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // Testing for group A2 5E3D621A (énigme "Code et prog" ou énigme "BDD et datas")
   rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
   rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
-  scenario.setCurrentStepId("step-1");
+  scenario.setCurrentStepId("step-2");
   // // Testing for group A3 0EAF4C60 (énigme "BDD et datas" ou énigme "Hardware")
   // rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
   // rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
@@ -241,6 +244,13 @@ router.all('/*', function (req, res, next) {
   } else {
     res.render(tmpl, { data: dataForTemplate });
   }
+})
+
+//
+// Handle Badge Error
+//
+.get('/badgeError', function(req, rs, next){
+  res.render('../badge_error', { data: dataForTemplate });
 })
 
 //
