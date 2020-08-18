@@ -2,8 +2,8 @@ global.__basedir  = __dirname;
 const GLOBAL_CONFIG        = require('./config/config.js');
 
 // Events 
-const events = require('events');
-var eventEmitter = new events.EventEmitter();
+const EventEmitter = require('events').EventEmitter;
+var eventEmitter = new EventEmitter();
 
 // MVC Framework
 var app           = require('express')();
@@ -28,9 +28,6 @@ const scenario     = require('./lib/scenario_utils.js')(CONFIG_SERVER);
 var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG);
 // Arduino stuffs 
 var arduino        = require('./lib/arduino.js')(GLOBAL_CONFIG, eventEmitter);
-
-// Arduino stuffs 
-var launchpad        = require('./lib/launchpad.js')(GLOBAL_CONFIG, eventEmitter);
 
 // Loading Specific librairy for the specific scenario
 var scenario_specifics;
@@ -96,7 +93,12 @@ io.on('connection', function(socket) {
       // Say to the client it has to refresh
       socket.emit('toclient.refreshNow');
     });
+
+    socket.on('disconnect', function() {
+      console.log(' /!\  Client is disconnected !');
+    });
 });
+
 
 //------------------------------------------------------------------------
 // Reading Serial Port (App have to be configure un 'real' mode, see below)
