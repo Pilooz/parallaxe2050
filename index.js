@@ -95,7 +95,7 @@ io.on('connection', function(socket) {
     });
 
     socket.on('disconnect', function() {
-      console.log(' /!\  Client is disconnected !');
+      console.log(' /!\\ Client is disconnected !');
     });
 });
 
@@ -138,14 +138,14 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // Testing for null data
   // rfid.extractTag("\n");
   // rfid.extractReader("\n");
-  // // Testing for group A1 7ED72360 (énigme "Hardware" ou énigme "Code et pro")
-  // rfid.extractTag("<TAG:7ED72360/><READER:1/>");
-  // rfid.extractReader("<TAG:7ED72360/><READER:1/>");
-  // scenario.setCurrentStepId("step-1");
+  // Testing for group A1 7ED72360 (énigme "Hardware" ou énigme "Code et pro")
+  rfid.extractTag("<TAG:7ED72360/><READER:1/>");
+  rfid.extractReader("<TAG:7ED72360/><READER:1/>");
+  scenario.setCurrentStepId("step-1");
   // Testing for group A2 5E3D621A (énigme "Code et prog" ou énigme "BDD et datas")
-  rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
-  rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
-  scenario.setCurrentStepId("step-2");
+  // rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
+  // rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
+  // scenario.setCurrentStepId("step-2");
   // // Testing for group A3 0EAF4C60 (énigme "BDD et datas" ou énigme "Hardware")
   // rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
   // rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
@@ -198,6 +198,7 @@ app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redi
 app.use('/js', express.static(__dirname + '/node_modules/socket.io/dist')); // Socket.io
 app.use('/js/xterm', express.static(__dirname + '/node_modules/xterm/lib')); // redirect JS for xTerm
 app.use('/css/xterm', express.static(__dirname + '/node_modules/xterm/css')); // redirect CSS for xTerm
+app.use('/js/video.js', express.static(__dirname + '/node_modules/video.js/dist')); // redirect JS for video.js player
 //-----------------------------------------------------------------------------
 // Routing Middleware functions
 // application logic is here / GET and POST on Index
@@ -221,7 +222,6 @@ router.all('/*', function (req, res, next) {
   This route gives the right template to the client in term of scenario step
 */
 .get('/', function(req, res, next) {
-
   // send current step of the scenario to client
   dataForTemplate.currentStep = scenario.getCurrentStep();
   console.log(`Current step is '${dataForTemplate.currentStep.stepId}'`);
@@ -251,7 +251,7 @@ router.all('/*', function (req, res, next) {
 //
 // Handle Badge Error
 //
-.get('/badgeError', function(req, rs, next){
+.get('/badgeError', function(req, res, next){
   res.render('../badge_error', { data: dataForTemplate });
 })
 
