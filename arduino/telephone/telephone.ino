@@ -15,7 +15,6 @@
   -------------------------------------------------------------------*/
 #include <Arduino.h>
 #include "protocole_parallaxe2050.h"
-
 #include <SoftwareSerial.h>
 #include <DFPlayerMini_Fast.h>
 
@@ -31,6 +30,7 @@ DFPlayerMini_Fast myMP3;
 
 boolean isPlaying = false;
 boolean faire_sonner_le_tel = false;
+int track_number = 1;
 
 // int RFID = 4;
 int bouton = 5;
@@ -64,7 +64,7 @@ void ringing() {
 }
 
 void stopRinging() {
-  digitalWrite (led, LOW); 
+  digitalWrite (led, LOW);
   digitalWrite (buzzer, LOW);
   faire_sonner_le_tel = false;
 }
@@ -88,65 +88,34 @@ void setup() {
   pinMode (buzzer, OUTPUT);
   stopRinging();
 
+  // Sending a READY message
+  message.send("MSG", "READY");
+
 }
 
 void loop() {
   // Lire les entrées
   int sigBouton = digitalRead (bouton);
-
+  
   if (faire_sonner_le_tel) {
     ringing();
   }
-  
+
   //
   // Traiter les entrées sorties
   //
   if ( sigBouton == HIGH) {
     // Jouer le MP3, s'il n'est pas déjà en train de jouer
-    if ( myMP3.isPlaying() == false) {
-      myMP3.play(1);
+    if ( !myMP3.isPlaying()) {
       stopRinging();
-      message.send("MSG", "INCALL");
+      myMP3.play(track_number);
+      message.send("MSG", "Playing track #" + String(track_number));
     }
   } else { // Le téléphone est raccroché
-    if ( myMP3.isPlaying() == true) {
+    if ( myMP3.isPlaying()) {
       myMP3.reset();
     }
   }
-
-  /*
-    //int sigRFID = digitalRead (RFID);
-    int sigRFID = 1;
-    int sigBouton = digitalRead (bouton);
-    Serial.print ("RFID :");
-    Serial.println (sigRFID);
-    Serial.print ("bouton :");
-    Serial.println (sigBouton);
-
-
-    if (sigRFID == 1 && sigBouton == 1)
-      //if(sigBouton == 1)
-    {
-      if ( myMP3.isPlaying() == false) {
-        myMP3.play(1);
-
-      }
-    }
-
-    else if (sigRFID == 1 && sigBouton == 0)
-    {
-      if ( myMP3.isPlaying() == true) {
-
-        myMP3.reset();
-      }
-
-      dring();
-    }
-    else {
-      digitalWrite (led, LOW);
-      digitalWrite (buzzer, LOW);
-    }
-  */
 
   //
   // Traiter les messages venant du serveur/ordinateur
@@ -158,11 +127,38 @@ void loop() {
       message.ack_ok();
     }
     //
-    // Reset : lâcher tous les câbles
+    // RING Faire sonner le téléphone
     //
     if (message.val() == "RING") {
       faire_sonner_le_tel = true;
       message.ack_ok();
+    }
+    //
+    //  INSTRUCTIONS : Lire les instructions
+    //
+    if (message.val() == "INSTRUCTIONS") {
+      track_number = 1;
+      message.ack_ok();
+    }
+    //
+    // THANKS : lire le remerciement
+    //
+    if (message.val() == "THANKS") {
+      track_number = 2;
+      message.ack_ok();
+    }
+    //
+    // RESET Tout remettre au début
+    //
+    if (message.val() == "RESET") {
+      stopRinging();
+      track_number = 1;
+      myMP3.reset();
+      message.ack_ok();
+    }
+
+    if (!message.isProcessed()) {
+      message.ack_ko("The command <CMD:" + message.val() + "/> is not recognized !");
     }
   }
 }
