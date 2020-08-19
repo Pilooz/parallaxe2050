@@ -134,6 +134,13 @@ void loop() {
       message.ack_ok();
     }
     //
+    // STOP Arrêter le sonnerie du téléphone
+    //
+    if (message.val() == "STOP") {
+      faire_sonner_le_tel = false;
+      message.ack_ok();
+    }
+    //
     //  INSTRUCTIONS : Lire les instructions
     //
     if (message.val() == "INSTRUCTIONS") {
