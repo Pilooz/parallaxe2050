@@ -135,7 +135,10 @@ setTimeout(function() {
     // player.volume = 1;
 }, 1000);
 
-
+    // Send a message when video is finished
+    player.on('ended', function() {
+        socket.emit('toserver.endMedia', {status: "end"});
+    });
 
 });
 
