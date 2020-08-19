@@ -105,3 +105,9 @@ dist
 
 # TernJS port file
 .tern-port
+arduino/Drawing_Robot/lib/MKRMotorCarrier/.DS_Store
+arduino/Drawing_Robot/lib/MKRMotorCarrier/src/src/PID/.DS_Store
+arduino/Drawing_Robot/lib/MKRMotorCarrier/src/src/.DS_Store
+arduino/Drawing_Robot/lib/MKRMotorCarrier/src/.DS_Store
+arduino/Drawing_Robot/lib/MKRMotorCarrier/examples/Motor_test/.DS_Store
+arduino/Drawing_Robot/lib/MKRMotorCarrier/examples/.DS_Store
