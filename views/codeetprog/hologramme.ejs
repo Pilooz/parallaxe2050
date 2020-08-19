@@ -137,7 +137,8 @@ setTimeout(function() {
 
     // Send a message when video is finished
     player.on('ended', function() {
-        socket.emit('toserver.endMedia', {status: "end"});
+        // socket.emit('toserver.endMedia', {status: "end"});
+        socket.emit('toserver.nextStep', {nextStep: nextStep});
     });
 
 });
