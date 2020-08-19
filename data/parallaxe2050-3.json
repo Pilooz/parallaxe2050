@@ -7,8 +7,8 @@
         {
             "stepId" : "step-1",
             "title" : "Code et programmation",
-            "template" : "temp",
-            "medias" : [],
+            "template" : "hologramme",
+            "medias" : ["medias/CodeEtProg/video-hologramme.mp4"],
             "text" : "test1",
             "transitions" :
             [
