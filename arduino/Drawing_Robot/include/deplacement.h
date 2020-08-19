@@ -1,4 +1,3 @@
-
 #ifndef DEPLACEMENT_H
 #define DEPLACEMENT_H
 
