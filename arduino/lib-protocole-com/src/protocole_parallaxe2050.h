@@ -28,7 +28,7 @@ struct ParallaxeMsg
 {
     String keyword;
     String value;
-    boolean treated;
+    boolean processed;
 };
 
 //--------------------------------------------------------------------------------
@@ -47,6 +47,7 @@ public:
     boolean isKey(String keyword);
     String key();
     String val();
+    boolean isProcessed();
     ParallaxeMsg receive();
     void ack_ok();
     void ack_ko(String reason);
@@ -65,7 +66,7 @@ ParallaxeCom::ParallaxeCom() {
     // Init message structure
     this->received_msg.keyword = "";
     this->received_msg.value = "";
-    this->received_msg.treated = true;
+    this->received_msg.processed = true;
 }
 
 //--------------------------------------------------------------------------------
@@ -83,11 +84,18 @@ String ParallaxeCom::key() {
 }
 
 //--------------------------------------------------------------------------------
+// Getter for the processed attribut of the message 
+//--------------------------------------------------------------------------------
+boolean ParallaxeCom::isProcessed() {
+    return this->received_msg.processed;
+}
+
+//--------------------------------------------------------------------------------
 // return true if the message keyword is identical to the parameter
-// The message must be untreated yet.
+// The message must be unprocessed yet.
 //--------------------------------------------------------------------------------
 boolean ParallaxeCom::isKey(String keyword) {
-    if (!this->received_msg.treated) return (this->received_msg.keyword == keyword);
+    if (!this->received_msg.processed) return (this->received_msg.keyword == keyword);
     return false;
 }
 
@@ -131,7 +139,7 @@ boolean ParallaxeCom::parseMessage() {
         } else {
             this->received_msg.keyword = k;
             this->received_msg.value = v;
-            this->received_msg.treated = false;
+            this->received_msg.processed = false;
             this->countRecieved++;
             return true;
         }
@@ -163,7 +171,7 @@ void ParallaxeCom::send(String keyword, String value) {
 // This allows to read the next message in the incoming string 
 //--------------------------------------------------------------------------------
 void ParallaxeCom::ack_ok() {
-    this->received_msg.treated = true;
+    this->received_msg.processed = true;
     this->send("ACK", "OK");
     // If the line had many messages, try to parse next
     if (this->serializedMessage.length() > 0) this->parseMessage();
@@ -174,7 +182,7 @@ void ParallaxeCom::ack_ok() {
 // This allows to read the next message in the incoming string 
 //--------------------------------------------------------------------------------
 void ParallaxeCom::ack_ko(String reason) {
-    this->received_msg.treated = true;
+    this->received_msg.processed = true;
     this->send("ACK", "KO");
     this->send("MSG", reason);
     // If the line had many messages, try to parse next
