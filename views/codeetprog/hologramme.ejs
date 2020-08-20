@@ -1,0 +1,151 @@
+<%- include('../partials/head', { data: data }) %>
+<!-- START // Styles in head -->
+<!-- END // Styles in head -->
+<%- include('../partials/header', { data: data }) %>
+<link href="/js/video.js/video-js.css" rel="stylesheet" />
+
+<script>
+// function simulatedClick(target, options) {
+
+// var event = target.ownerDocument.createEvent('MouseEvents'),
+//     options = options || {},
+//     opts = { // These are the default values, set up for un-modified left clicks
+//       type: 'click',
+//       canBubble: true,
+//       cancelable: true,
+//       view: target.ownerDocument.defaultView,
+//       detail: 1,
+//       screenX: 0, //The coordinates within the entire page
+//       screenY: 0,
+//       clientX: 0, //The coordinates within the viewport
+//       clientY: 0,
+//       ctrlKey: false,
+//       altKey: false,
+//       shiftKey: false,
+//       metaKey: false, //I *think* 'meta' is 'Cmd/Apple' on Mac, and 'Windows key' on Win. Not sure, though!
+//       button: 0, //0 = left, 1 = middle, 2 = right
+//       relatedTarget: null,
+//     };
+
+// //Merge the options with the defaults
+// for (var key in options) {
+//   if (options.hasOwnProperty(key)) {
+//     opts[key] = options[key];
+//   }
+// }
+
+// //Pass in the options
+// event.initMouseEvent(
+//     opts.type,
+//     opts.canBubble,
+//     opts.cancelable,
+//     opts.view,
+//     opts.detail,
+//     opts.screenX,
+//     opts.screenY,
+//     opts.clientX,
+//     opts.clientY,
+//     opts.ctrlKey,
+//     opts.altKey,
+//     opts.shiftKey,
+//     opts.metaKey,
+//     opts.button,
+//     opts.relatedTarget
+// );
+
+// //Fire the event
+// target.dispatchEvent(event);
+// }
+</script>
+
+<style>
+.fullscreen {
+    /* width:1280px;
+    height:800px; */
+    width:100%;
+    height:100%;
+    z-index:10001;
+    top:0;
+    left:0;
+    position:fixed;
+}
+</style>
+<!-- 
+    width="640"
+    height="264" 
+        controls
+    preload="auto"
+    poster="MY_VIDEO_POSTER.jpg"
+    data-setup='{}'
+-->
+<div id="media">
+    <video
+        id="my-player"
+        class="video-js fullscreen"
+    >
+        <source src="http://<%= data.config_server.ip + ':' + data.config_server.port + '/' + data.currentStep.medias[0] %>" autoplay="on" type="video/mp4" />
+        <p class="vjs-no-js">
+        To view this video please enable JavaScript, and consider upgrading to a
+        web browser that <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+        </p>
+    </video>
+</div>
+<script>
+$(document).ready(function() {
+    var nextStep = '<%-data.currentStep.transitions[0].id %>';
+    
+
+    // Setup of video player
+    // videojs('my-player', {
+    //     controls: false,
+    //     autoplay: true,
+    //     preload: 'auto'
+    // });
+
+    //     function playVideo() {
+//         $("#module-media-video").play();
+//     }
+
+//     socket.on('toclient.playVideo' playVideo);
+
+//     $('#btNext').on('click', function(){
+// 	socket.emit('toserver.nextStep', {nextStep: nextStep});
+//   });
+
+var player = videojs('my-player', {
+        controls: true, 
+        preload: 'auto',
+        fullscreen: {navigationUI: 'hide'}
+    });
+
+    $("#media").on('click', function() {
+        player.play();
+    });
+
+setTimeout(function() {
+    console.log("play video...");
+    //
+    // @FIXME :  Impossible de démarrer une vidéo avecsu son tant l'utilisateur n'a pas interagit avec la page.
+    //           C'est une restriction par défaut des navigateurs. Il faut penser à la désactiver.
+    //           https://support.mozilla.org/en-US/kb/block-autoplay
+    //
+    // simulatedClick(document.getElementById("media"), "click", { pointerX: 123, pointerY: 321 });
+    // player.autoplay('muted');
+    player.play();
+    // player.volume = 1;
+}, 1000);
+
+    // Send a message when video is finished
+    player.on('ended', function() {
+        // socket.emit('toserver.endMedia', {status: "end"});
+        socket.emit('toserver.nextStep', {nextStep: nextStep});
+    });
+
+});
+
+</script>
+<script src="/js/video.js/video.min.js"></script>
+
+<!-- START // Scripts in footer -->
+<!-- END // Scripts in footer -->
+<%- include('../partials/footer', { data: data }) %>
