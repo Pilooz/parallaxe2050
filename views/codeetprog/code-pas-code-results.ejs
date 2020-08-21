@@ -45,12 +45,13 @@
 
 <script>
 $(document).ready(function() {
+    var nextStep = '<%-data.currentStep.transitions[0].id %>';
     var msgElmt = $("#ArduinoMessage");
     var msgText = $("#ArduinoMessage p");
 
     function initActivity() {
         // Display satring message
-        msgText.html("<h2>Allez hop, on recommence !</h2><p>J'attends un scan RFID...</p>");
+        msgText.html(messageInit);
         msgElmt.show();
         socket.emit('toserver.initCodePasCode', "init");
     }
@@ -73,9 +74,52 @@ $(document).ready(function() {
     socket.on('toclient.initCodePasCode', function(data){
         initActivity();
     });
+
+    // Displays message in function of student responses
+    socket.on('toclient.responseAnalysisCodePasCode', function(data) {
+        console.log(data);
+        var progressHTML = progressBar(data.pctCompleted);
+        msgElmt.hide();
+        if (data.result == "KO") {
+            msgText.html(messageKO + progressHTML);
+            msgElmt.show();
+        } else {
+            if (data.pctCompleted < 100) {
+                msgText.html(messageOK + progressHTML);
+                msgElmt.show();
+            } else {
+                msgText.html(messageCompleted + progressHTML);
+                msgElmt.show();
+                setTimeout( function() {
+                    socket.emit('toserver.nextStep', {nextStep: nextStep});
+                }, 2000);
+            }
+        }
+    });
+
 });
 
+    // message Templates
+    const messageInit = "<h2>Allez hop, on recommence !</h2>\
+    <button class='btn btn-warning' type='button' disabled>\
+        <span class='spinner-grow spinner-grow-sm' role='status' aria-hidden='true'>\
+        </span>&nbsp;J'attends un scan RFID...\
+    </button>";
+
+    const messageOK = "<h2>On avance, on avance...</h2>";
+
+    const messageKO = "<h2>Mmmh ? Bon et si tu essyais autrement ?</h2>";
+
+    const messageCompleted = "<h2>Bravo ! <b>Ici il faut peut-être un message holographique de Marjorie qui félicite les lycéen.ne.s ??</b></h2>";
+
+    function progressBar(pct) {
+        return "<div class='progress'>\
+                <div class='progress-bar bg-warning' role='progressbar' style='width: " + pct + "%' aria-valuenow='" + pct + "' aria-valuemin='0' aria-valuemax='100'></div>\
+                </div>";
+    }
+
 </script>
+
 <!-- START // Scripts in footer -->
 <!-- END // Scripts in footer -->
 <%- include('../partials/footer', { data: data }) %>
