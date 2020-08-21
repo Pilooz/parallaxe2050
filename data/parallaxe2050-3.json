@@ -6,7 +6,7 @@
     "steps" : [
         {
             "stepId" : "step-1",
-            "title" : "Code et programmation",
+            "title" : "Code ou pas code ?",
             "template" : "code-pas-code-results",
             "medias" : [],
             "secondScreen": { "url": "/hologramme", "medias": ["medias/CodeEtProg/video-hologramme.mp4"] },
@@ -36,8 +36,8 @@
 
         {
             "stepId" : "step-2",
-            "title" : "Step temporaire",
-            "template" : "temp",
+            "title" : "Executer du code",
+            "template" : "verify-letters",
             "medias" : [],
             "text" : "test2",
             "transitions" :
