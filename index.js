@@ -157,7 +157,7 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // // Testing for group A5 5E68811A (énigme "Admin réseau" ou énigme "Com digitale")
   // rfid.extractTag("<TAG:5E68811A/><READER:1/>");
   // rfid.extractReader("<TAG:5E68811A/><READER:1/>");
-  scenario.setCurrentStepId("step-1");
+  scenario.setCurrentStepId("step-2");
 
   // Testing for group B
   // rfid.extractTag("<TAG:CE4E2B60/><READER:2/>");
@@ -199,6 +199,7 @@ app.use('/js', express.static(__dirname + '/node_modules/socket.io/dist')); // S
 app.use('/js/xterm', express.static(__dirname + '/node_modules/xterm/lib')); // redirect JS for xTerm
 app.use('/css/xterm', express.static(__dirname + '/node_modules/xterm/css')); // redirect CSS for xTerm
 app.use('/js/video.js', express.static(__dirname + '/node_modules/video.js/dist')); // redirect JS for video.js player
+app.use('/js/highlight', express.static(__dirname + '/node_modules/highlight.js')); // redirect JS for highligth.js player
 //-----------------------------------------------------------------------------
 // Routing Middleware functions
 // application logic is here / GET and POST on Index
@@ -209,7 +210,7 @@ router.all('/*', function (req, res, next) {
 
   // Send server config to client
   dataForTemplate.config_server = CONFIG_SERVER;
-  
+
   // send current step of the scenario to client
   dataForTemplate.currentStep = scenario.getCurrentStep();
   console.log(`Current step is '${dataForTemplate.currentStep.stepId}'`);

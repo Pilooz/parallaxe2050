@@ -1,0 +1,99 @@
+<%- include('../partials/head', { data: data }) %>
+<!-- START // Styles in head -->
+<!-- END // Styles in head -->
+<%- include('../partials/header', { data: data }) %>
+<link type="text/css" href="css/lib/prism.css" rel="stylesheet">
+<script src="js/lib/prism.js"></script>
+
+<style>
+    body {
+        background-color: rgb(255, 0, 116);
+        color:indigo;
+        margin:1%;
+    }
+
+    .codeZone {
+        background-color: honeydew;
+        margin-right: 0px;
+        margin-left: 0px;
+    }
+    /* Highlighting code */
+    .key {
+        color:mediumslateblue;
+    }
+
+
+</style>
+
+<div class="container-fluid">
+    <div class="jumbotron">
+        <h1 class="display-4">Execution de code...</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6 codeZone">
+            <div class="card">
+                <h5 class="card-header">
+                    <form class="form-inline">
+                        <div class="form-group mx-sm-3 mb-2">
+                          <label for="inputLetter" class="col-form-label">monCaractèreATester =&nbsp;</label>
+                          <input type="text" class="form-control" id="inputLetter" placeholder="">&nbsp;&nbsp;
+                          <a href="#" id="tester1" class="btn btn-dark btn-sm">tester le code</a>
+                        </div>
+                    </form>
+                </h5>
+                <div class="card-body">
+                  <pre><code id="code1" class="language-css">
+si ( monCaractèreATester == leCaractèreDuBonLangage ) {
+    affiche( "Succès ! Vous avez utilisé le bon caractère." );
+    affiche( "Trouvez maintenant le langage associé à ce caractère." );
+}
+sinon {
+    affiche( "Echec ! Essayez un autre caractère." );
+}                    
+                  </code></pre>
+                </div>
+              </div>
+        </div>      
+
+        <div class="col-sm-6 codeZone" id="code2">
+            <div class="card">
+                <h5 class="card-header">
+                    <form class="form-inline">
+                        <div class="form-group mx-sm-3 mb-2">
+                          <label for="inputLetter" class="col-form-label">mesCaractèresATester =&nbsp;</label>
+                          <input type="text" class="form-control" id="inputLetter" placeholder="">&nbsp;&nbsp;
+                          <a href="#" id="tester2" class="btn btn-dark btn-sm">tester le code</a>
+                        </div>
+                    </form>
+                </h5>
+                <div class="card-body">
+                  <pre>
+                      <code class="language-css">
+pourChaqueCaractèreDe( mesCaractèresATester ) {
+    affiche( "Test du caractère 'leCaractèreTesté'." );
+
+    si ( leCaractèreTesté == leCaractèreDuBonLangage ) {
+        affiche( "Succès ! Vous avez trouvé le bon caractère." );
+        affiche( "Trouvez maintenant le langage associé à ce caractère." ); 
+    }
+}                  
+                      </code>
+                  </pre>
+                </div>
+              </div>
+        </div>      
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    var nextStep = '<%-data.currentStep.transitions[0].id %>';
+
+});
+
+</script>
+
+<!-- START // Scripts in footer -->
+<!-- END // Scripts in footer -->
+<%- include('../partials/footer', { data: data }) %>
