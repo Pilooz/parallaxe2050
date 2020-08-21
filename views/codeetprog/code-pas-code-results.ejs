@@ -1,0 +1,33 @@
+<%- include('../partials/head', { data: data }) %>
+<!-- START // Styles in head -->
+<!-- END // Styles in head -->
+<%- include('../partials/header', { data: data }) %>
+<style>
+    body {
+        background-color: rgb(255, 0, 116);
+        color:indigo;
+        margin:2%;
+    }
+    .jumbotron {
+        background-color: honeydew;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="jumbotron"><h1>Code / Pas Code</h1></div>
+    
+    <button type="button" id="replay" class="btn btn-secondary">Recontacter Marjorie</button>
+</div>
+
+<script>
+$(document).ready(function() {
+    $("#replay").on('click', function(e){
+        socket.emit("toserver.play", {});
+        e.preventDefault();
+    });
+});
+
+</script>
+<!-- START // Scripts in footer -->
+<!-- END // Scripts in footer -->
+<%- include('../partials/footer', { data: data }) %>
