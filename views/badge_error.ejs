@@ -1,7 +1,17 @@
-<%- include('header', { data: data }) %>
+<%- include('./partials/head', { data: data }) %>
+<!-- START // Styles in head -->
+<!-- END // Styles in head -->
+<%- include('./partials/header', { data: data }) %>
+<style>
+    body {
+        background-color: black;
+        color:honeydew;
+        margin:20%;
+    }
+</style>
 <h1>Hmmmm ?</h1>
 <h2>Tu ne sembles pas être au bon endroit !</h2>
 <p>
     Tu n'as pas dû badger sur la bonne activité. Regarde la couleur de ton badge et rends-toi à l'activité correspondante.
 </p>
-<%- include('footer', { data: data })%>
+<%- include('./partials/footer', { data: data })%>
