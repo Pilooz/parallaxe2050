@@ -7,8 +7,9 @@
         {
             "stepId" : "step-1",
             "title" : "Code et programmation",
-            "template" : "hologramme",
-            "medias" : ["medias/CodeEtProg/video-hologramme.mp4"],
+            "template" : "code-pas-code-results",
+            "medias" : [],
+            "secondScreen": { "url": "/hologramme", "medias": ["medias/CodeEtProg/video-hologramme.mp4"] },
             "text" : "test1",
             "transitions" :
             [
