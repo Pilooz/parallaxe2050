@@ -209,6 +209,10 @@ router.all('/*', function (req, res, next) {
 
   // Send server config to client
   dataForTemplate.config_server = CONFIG_SERVER;
+  
+  // send current step of the scenario to client
+  dataForTemplate.currentStep = scenario.getCurrentStep();
+  console.log(`Current step is '${dataForTemplate.currentStep.stepId}'`);
 
   next(); // pass control to the next handler
 })
@@ -222,9 +226,6 @@ router.all('/*', function (req, res, next) {
   This route gives the right template to the client in term of scenario step
 */
 .get('/', function(req, res, next) {
-  // send current step of the scenario to client
-  dataForTemplate.currentStep = scenario.getCurrentStep();
-  console.log(`Current step is '${dataForTemplate.currentStep.stepId}'`);
 
   dataForTemplate.currentGroup = rfid.getCurrentGroup();
   dataForTemplate.currentSubGroup = rfid.getCurrentSubGroup();
@@ -250,8 +251,8 @@ router.all('/*', function (req, res, next) {
 //
 // Handle Badge Error
 //
-.get('/badgeError', function(req, res, next){
-  res.render('../badge_error', { data: dataForTemplate });
+.get('/hologramme', function(req, res, next){
+  res.render( 'hologramme', { data: dataForTemplate });
 })
 
 //
