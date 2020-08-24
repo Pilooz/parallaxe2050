@@ -27,20 +27,19 @@ var path          = require('path');
 // Applicative libs
 // Loading scenario
 const scenario     = require('./lib/scenario_utils.js')(CONFIG_SERVER);
+// Logging system
+const logger = require('./lib/logger')(scenario.data().scenarioId); 
 
 // Rfid parsing functions
-var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG);
+var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG, logger);
 // Arduino stuffs 
-var arduino        = require('./lib/arduino.js')(GLOBAL_CONFIG, eventEmitter);
+var arduino        = require('./lib/arduino.js')(GLOBAL_CONFIG, logger, eventEmitter);
 
 // Loading Specific librairy for the specific scenario
 var scenario_specifics;
 if (fs.existsSync("./lib/scenario-" + scenario.data().scenarioId + ".js")){
-  scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, rfid, arduino, scenario, eventEmitter);
+  scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, rfid, arduino, scenario, eventEmitter, logger);
 }
-
-// Logging system
-const logger = require('./lib/logger')(scenario.data().scenarioId); 
 
 const httpPort    = CONFIG_SERVER.port;
 // var formidable    = require('formidable'); // File upload
