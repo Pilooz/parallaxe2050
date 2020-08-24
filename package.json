@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/pilooz/parallaxe2050#readme",
   "dependencies": {
+    "app-root-path": "^3.0.0",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.5.2",
     "bufferutil": "^4.0.1",
@@ -30,12 +31,14 @@
     "jquery": "^3.5.1",
     "json-editor": "^0.7.28",
     "midi": "^1.0.0",
+    "morgan": "^1.10.0",
     "node-math": "0.0.3",
     "popper.js": "^1.16.1",
     "serialport": "^9.0.1",
     "socket.io": "^2.3.0",
     "utf-8-validate": "^5.0.2",
     "video.js": "^7.8.4",
+    "winston": "^3.3.3",
     "xterm": "^4.8.1"
   }
 }

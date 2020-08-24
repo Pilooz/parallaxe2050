@@ -7,6 +7,9 @@ var eventEmitter = new EventEmitter();
 
 // MVC Framework
 var app           = require('express')();
+var winston       = require('./lib/logger');
+// var morgan        = require('morgan');
+
 var express       = require('express');
 var router        = express.Router();
 // Server utilities
@@ -24,6 +27,7 @@ var path          = require('path');
 // Applicative libs
 // Loading scenario
 const scenario     = require('./lib/scenario_utils.js')(CONFIG_SERVER);
+
 // Rfid parsing functions
 var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG);
 // Arduino stuffs 
@@ -34,6 +38,9 @@ var scenario_specifics;
 if (fs.existsSync("./lib/scenario-" + scenario.data().scenarioId + ".js")){
   scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, rfid, arduino, scenario, eventEmitter);
 }
+
+// Logging system
+const logger = require('./lib/logger')(scenario.data().scenarioId); 
 
 const httpPort    = CONFIG_SERVER.port;
 // var formidable    = require('formidable'); // File upload
@@ -51,7 +58,7 @@ var httpRequests = {};
 function get_server_conf() {
   var cnf =  GLOBAL_CONFIG.servers.filter(server => server.ip == ip.address())[0];
   if (!cnf) {
-    console.log("\nNo configuration was found with the IP '" + ip.address() + "' !\n");
+    logger.info("\nNo configuration was found with the IP '" + ip.address() + "' !\n");
     return process.exit(1);
   }
   return cnf;
@@ -62,16 +69,16 @@ function get_server_conf() {
 // It is call each time a RFID badge is detected
 //------------------------------------------------------------------------
 function setup_scenario_environment() {
-  console.log("extracted rfid code : " + rfid.getCurrentCode() + " on reader #" + rfid.getCurrentReader());
+  logger.info("extracted rfid code : " + rfid.getCurrentCode() + " on reader #" + rfid.getCurrentReader());
   // Putting Rfid Info in data for client
   dataForTemplate.currentRfidTag = rfid.getCurrentCode();
   dataForTemplate.currentRfidReader = rfid.getCurrentReader();
   // get the set of solutions for the group/subgroup team
-  console.log(`Current Team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
+  logger.info(`Current Team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
   var set = scenario.getSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
   if (set > -1) {
     dataForTemplate.solutionsSet = set;
-    console.log(`Solutions set #${dataForTemplate.solutionsSet}`);
+    logger.info(`Solutions set #${dataForTemplate.solutionsSet}`);
   } else {
     // Wrong badge on wrong device.
     // emit a socket to teel the client to refresh on error page
@@ -83,19 +90,19 @@ function setup_scenario_environment() {
 // Init Socket to transmit Serial data to HTTP client
 //------------------------------------------------------------------------
 io.on('connection', function(socket) {
-    console.log("New client is connected : " + socket.id );
+    logger.info("New client is connected : " + socket.id );
 
     // Client asks for the next step
     socket.on('toserver.nextStep', function(data){
       // The data var contains the next stepId that has been dexcribed and validated in the current step trnasition
-      console.log("The client asked for the step '" + data.nextStep +  "'");
+      logger.info("The client asked for the step '" + data.nextStep +  "'");
       scenario.setCurrentStepId(data.nextStep);
       // Say to the client it has to refresh
       socket.emit('toclient.refreshNow');
     });
 
     socket.on('disconnect', function() {
-      console.log(' /!\\ Client is disconnected !');
+      logger.info(' /!\\ Client is disconnected !');
     });
 });
 
@@ -126,9 +133,9 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
   // Opening serial port, checking for errors
   port.open(function (err) {
     if (err) {
-      return console.log('Error opening port: ', err.message);
+      return logger.error('Error opening port: ', err.message);
     } else {
-      console.log('Reading on ', GLOBAL_CONFIG.rfid.portName);
+      logger.info('Reading on ', GLOBAL_CONFIG.rfid.portName);
     }
   });
 } 
@@ -168,18 +175,26 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   setup_scenario_environment();
 }
 
+//------------------------------------------------------------------------
+// Logger configuration
+//------------------------------------------------------------------------
+
 
 //------------------------------------------------------------------------
 // HTTP Server configuration
 //------------------------------------------------------------------------
 server.listen( httpPort, '0.0.0.0', function( ) {
-  console.log( '------------------------------------------------------------' );
-  console.log( 'server Ip Address is %s', ip.address() );
-  console.log( 'it is listening at port %d', httpPort );
-  console.log( '------------------------------------------------------------' );
-  console.log( 'RFID reading is ' + GLOBAL_CONFIG.rfid.behavior);
-  console.log( '------------------------------------------------------------' );
+  logger.info( '------------------------------------------------------------' );
+  logger.info( 'server Ip Address is %s', ip.address() );
+  logger.info( 'it is listening at port %d', httpPort );
+  logger.info( '------------------------------------------------------------' );
+  logger.info( 'RFID reading is ' + GLOBAL_CONFIG.rfid.behavior);
+  logger.info( '------------------------------------------------------------' );
 });
+
+// Log engine
+// app.use(morgan('combined', { stream: winston.stream }));
+// app.use(logger);
 
 app.use(express.json());
 
@@ -213,7 +228,7 @@ router.all('/*', function (req, res, next) {
 
   // send current step of the scenario to client
   dataForTemplate.currentStep = scenario.getCurrentStep();
-  console.log(`Current step is '${dataForTemplate.currentStep.stepId}'`);
+  logger.info(`Current step is '${dataForTemplate.currentStep.stepId}'`);
 
   next(); // pass control to the next handler
 })
@@ -233,7 +248,7 @@ router.all('/*', function (req, res, next) {
 
   // If this set if undefined, then the team has not badged to the right activity => let's tell them gentlely !
   if (!dataForTemplate.solutionsSet) {
-    console.log("Pas de set de solution pour cette team sur ce dispositif. Attente de scan RFID...");
+    logger.info("Pas de set de solution pour cette team sur ce dispositif. Attente de scan RFID...");
     res.render("../badge_error", { data: dataForTemplate });
   }  
   dataForTemplate.solutions = dataForTemplate.currentStep.solutions.filter(s => s.set == dataForTemplate.solutionsSet)[0].responses;
@@ -242,7 +257,7 @@ router.all('/*', function (req, res, next) {
   var tmpl = (dataForTemplate.currentStep.template == "") ? "content" : dataForTemplate.currentStep.template;
   
   if (!fs.existsSync("./views/" + scenario.data().templateDirectory + tmpl + ".ejs")) { 
-    console.log("The template ./views/" + scenario.data().templateDirectory + tmpl + ".ejs was not found.");
+    logger.info("The template ./views/" + scenario.data().templateDirectory + tmpl + ".ejs was not found.");
     next();
   } else {
     res.render(tmpl, { data: dataForTemplate });
@@ -292,6 +307,9 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // add this line to include winston logging
+  logger.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
 
   // render the error page
   res.status(err.status || 500);
