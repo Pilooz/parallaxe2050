@@ -14,7 +14,7 @@ var express       = require('express');
 var router        = express.Router();
 // Server utilities
 var server        = require('http').createServer(app);
-var ip            = require('ip');
+const ip            = require('ip');
 const fs          = require('fs');
 
 // Find configuration, with fixed IP
@@ -40,6 +40,9 @@ var scenario_specifics;
 if (fs.existsSync("./lib/scenario-" + scenario.data().scenarioId + ".js")){
   scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, rfid, arduino, scenario, eventEmitter, logger);
 }
+// Monitoring system only on parallaxe2050-1 server
+logger.info(`Starting up monitoring SERVER on '${CONFIG_SERVER.name}'`);
+mon = require('./lib/mon.js')(io, rfid, arduino, scenario, eventEmitter, logger);
 
 const httpPort    = CONFIG_SERVER.port;
 // var formidable    = require('formidable'); // File upload
@@ -72,6 +75,7 @@ function setup_scenario_environment() {
   // Putting Rfid Info in data for client
   dataForTemplate.currentRfidTag = rfid.getCurrentCode();
   dataForTemplate.currentRfidReader = rfid.getCurrentReader();
+  dataForTemplate.scenarioId = scenario.data().scenarioId;
   // get the set of solutions for the group/subgroup team
   logger.info(`Current Team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
   var set = scenario.getSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
@@ -84,6 +88,7 @@ function setup_scenario_environment() {
     // io.emit('toclient.errorOnBadge', {data: { errorMsg : "WRONG_CODE_ON_WRONG_DEVICE", errorPage, "/badgeError" } });
     // @TODO : do something clever here !!! 
   }
+  eventEmitter.emit('monitoring.newGameSession', { tag: dataForTemplate.currentRfidTag, group: rfid.getCurrentGroup() + rfid.getCurrentSubGroup() });
 }
 //------------------------------------------------------------------------
 // Init Socket to transmit Serial data to HTTP client
@@ -208,6 +213,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/medias', express.static(__dirname + GLOBAL_CONFIG.app.mediaPath)); // redirect media directory
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
+app.use('/img/bootstrap-icons', express.static(__dirname + '/node_modules/bootstrap-icons/icons')); // redirect bootstrap icons
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 app.use('/js', express.static(__dirname + '/node_modules/socket.io/dist')); // Socket.io
 app.use('/js/xterm', express.static(__dirname + '/node_modules/xterm/lib')); // redirect JS for xTerm
@@ -223,6 +229,7 @@ router.all('/*', function (req, res, next) {
   httpRequests = req.query; // according to the use of express
 
   // Send server config to client
+  dataForTemplate.global_config = GLOBAL_CONFIG;
   dataForTemplate.config_server = CONFIG_SERVER;
 
   // send current step of the scenario to client
@@ -279,6 +286,13 @@ router.all('/*', function (req, res, next) {
 		rfid.groups_db.badges.push ( { 'code' : httpRequests.rfidcode, 'params' : {'group': httpRequests.group, 'subgroup': httpRequests.subgroup}} );
 	}
 	res.render('populate');
+})
+
+//
+// Monitoring of all the systems
+//
+.get('/monitoring', function(req,res,next){
+    res.render( '../monitoring', { data: dataForTemplate });
 })
 
 /* GET save page. */

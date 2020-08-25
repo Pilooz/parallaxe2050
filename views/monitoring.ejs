@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="mobile-web-app-capable" content="yes">
+
+        <title>Parallaxe :: Monitoring</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#774d3c">
+
+        <meta name="msapplication-TileColor" content="#774d3c">
+        <meta name="theme-color" content="#ffffff">
+
+        <link href="css/lib/bootstrap.min.css" rel="stylesheet">
+
+        <script src="/js/jquery.min.js"></script>    
+        <script src="/socket.io/socket.io.js"></script>
+<style>
+    .adminReseauBg{
+        background-color: rgb(115, 7, 177);
+        color:white;
+    }
+    
+    .bddBg{
+        background-color: rgb(194, 8, 251);
+        color:white;
+    }
+    
+    .comDigitale Bg{
+        background-color: rgb(215, 0, 116);
+        color:white;
+    }
+
+    .codeEtProg Bg{
+        background-color: rgb(249, 110, 0);
+        color:white;
+    }
+
+
+    .hardware Bg{
+        background-color: rgb(230, 25, 131);
+        color:white;
+    }
+
+    .toolbar {
+        /* margin-left:40%; */
+        float:right;
+    }
+
+    .activityTitle {
+        float:left;
+    }
+
+</style>
+<body>
+
+    <body>
+        <header>
+      <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container d-flex justify-content-between">
+          <a href="#" class="navbar-brand d-flex align-items-center">
+            <strong>Parallaxe :: Monitoring</strong>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+<!-- Begin page content -->
+<main role="main" class="flex-shrink-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 codeZone">
+                <h5>Données à présenter pour chaque activité</h5>
+                <ul>
+                    <li>le code du dernier badge rfid reconnu</li>
+                    <li>les solutions attendues</li>
+                    <li>les temps écoulé depuis le début de la session (taggage RFID)</li>
+                    <li>Le step courant</li>
+                    <li>le temps écoulé par step ?</li>
+
+                </ul>
+                <h5>Données techniques pour chaque activité</h5> 
+                <ul>
+                    <li>le nombre de messages Arduino échangés</li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Loop on each game  -->
+        <div class="col-md-3">
+            <div class="card mb-3 shadow-sm">
+                <h5 class="card-header adminReseauBg">
+                    <span class="activityTitle">Admin Réseau</span>
+                    <span class="toolbar">
+                        <svg width="32" height="32" viewBox="0 0 16 16" class="bi bi-skip-start" fill="currentColor" xmlns="http://www.w3.org/2000/svg" title="Redémarrer l'activité">
+                            <path fill-rule="evenodd" d="M4.5 3.5A.5.5 0 0 0 4 4v8a.5.5 0 0 0 1 0V4a.5.5 0 0 0-.5-.5z"/>
+                            <path fill-rule="evenodd" d="M5.696 8L11.5 4.633v6.734L5.696 8zm-.792-.696a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L4.904 7.304z"/>
+                        </svg>
+                        <svg width="32" height="32" viewBox="0 0 16 16" class="bi bi-skip-forward" fill="currentColor" xmlns="http://www.w3.org/2000/svg" title="Passer à l'étape suivante">
+                            <path fill-rule="evenodd" d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5zM1 4.633v6.734L6.804 8 1 4.633zm7.5 0v6.734L14.304 8 8.5 4.633z"/>
+                        </svg>
+                    </span>
+                </h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        <table class="table table-hover">
+                            <tr>
+                                <th scope="col">
+                                    <img src="/img/bootstrap-icons/tag.svg" alt="" width="32" height="32" title="Dernier badge RFID lu">
+                                </th>
+                                <td>    
+                                    <code id="rfidcode"></code>&nbsp;->&nbsp;<span class="badge badge-warning" id="groupcode"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="col">
+                                    <img src="/img/bootstrap-icons/question-circle.svg" alt="" width="32" height="32" title="Etape courante">
+                                </th>
+                                <td>
+                                    <span class="badge badge-default">Step-2</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="col">
+                                    <img src="/img/bootstrap-icons/puzzle.svg" alt="" width="32" height="32" title="Solutions">
+                                </th>
+                                <td>
+                                    Ici les solutions pour le groupe en train de jouer
+                                </td>
+                            </tr>
+                        </table>
+                    </p>
+
+                    <div class="d-flex flex-row-reverse">
+                    <p class="text-muted">Activité en cours depuis  9 mins</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <!-- Games metrics -->
+        <div class="col-md-12">
+            <div class="card mb-12 shadow-sm">
+                <h5 class="card-header metrics">
+                    <img src="/img/bootstrap-icons/bar-chart-line-fill.svg" alt="" width="32" height="32" title="Bootstrap">&nbsp;&nbsp;&nbsp;
+                    Statistiques globales
+                </h5>
+                <div class="card-body">
+
+                    <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th scope="col"><img src="/img/bootstrap-icons/laptop.svg" alt="" width="32" height="32" title="Dispositif"></th>
+                            <th scope="col"><img src="/img/bootstrap-icons/tags.svg" alt="" width="32" height="32" title="Nombre de lectures RFID"></th>
+                            <th scope="col">
+                                <img src="/img/bootstrap-icons/chat-dots.svg" alt="" width="32" height="32" title="Nombre de messages adruino/Ordi échangés">
+                                <img src="/img/bootstrap-icons/chat-right-dots.svg" alt="" width="32" height="32" title="">
+                            </th>
+                            <th scope="col"><img src="/img/bootstrap-icons/clock-history.svg" alt="" width="32" height="32" title="Temps total de jeu">
+                            </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Loop on each game -->
+                          <tr>
+                            <th scope="row">AdminReseau</th>
+                            <td>125</td>
+                            <td>3289</td>
+                            <td>2:10:00</td>
+                          </tr>
+                         </tbody>
+                      </table>                    
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<footer class="footer mt-auto py-3">
+  <!-- <div class="container">
+    <span class="text-muted">Ici le footer</span>
+  </div> -->
+</footer>
+<script>
+    var scenarioId = '<%=data.scenarioId%>';
+
+    // loop on each game
+    // [ ->
+    var data_CodeEtProg = null;
+    // <- ]
+    // end loop
+
+    $(document).ready(function() {
+
+        // loop on each game
+        // [ ->
+        
+        socket_CodeEtProg = io('http://<%= data.config_server.ip%>:<%= data.config_server.port %>/monitoring');
+
+        // ------------------------------------------------------------------
+        // Socket listening
+        // ------------------------------------------------------------------
+
+        // Receiving new rfid badge
+        socket_CodeEtProg.on('toclient.newGameSession_'+ scenarioId, function(data_CodeEtProg) {
+            $("#rfidcode").html(data_CodeEtProg.tag);
+            $("#groupcode").html(data_CodeEtProg.group);
+        });
+
+        // <- ]
+        // end loop
+}); 
+</script>
+<!-- <%- JSON.stringify(data, null, 1) %>-->
+</body>
+</html>
