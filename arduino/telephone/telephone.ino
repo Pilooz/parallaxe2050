@@ -113,7 +113,8 @@ void loop() {
     }
   } else { // Le téléphone est raccroché
     if ( myMP3.isPlaying()) {
-      myMP3.reset();
+      //myMP3.reset();
+      myMP3.pause();
     }
   }
 
