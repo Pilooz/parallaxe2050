@@ -19,6 +19,7 @@ const fs          = require('fs');
 
 // Find configuration, with fixed IP
 const CONFIG_SERVER = get_server_conf();
+
 var io            = require('socket.io').listen(server);
 var cookieParser  = require('cookie-parser');
 var bodyParser    = require('body-parser');
@@ -26,7 +27,7 @@ var path          = require('path');
 
 // Applicative libs
 // Loading scenario
-const scenario     = require('./lib/scenario_utils.js')(CONFIG_SERVER);
+const scenario     = require('./lib/scenario_utils.js')(CONFIG_SERVER, eventEmitter);
 // Logging system
 const logger = require('./lib/logger')(scenario.data().scenarioId); 
 
@@ -60,7 +61,7 @@ var httpRequests = {};
 function get_server_conf() {
   var cnf =  GLOBAL_CONFIG.servers.filter(server => server.ip == ip.address())[0];
   if (!cnf) {
-    logger.info("\nNo configuration was found with the IP '" + ip.address() + "' !\n");
+    console.error("\nNo configuration was found with the IP '" + ip.address() + "' !\n");
     return process.exit(1);
   }
   return cnf;
@@ -89,6 +90,9 @@ function setup_scenario_environment() {
     // @TODO : do something clever here !!! 
   }
   eventEmitter.emit('monitoring.newGameSession', { tag: dataForTemplate.currentRfidTag, group: rfid.getCurrentGroup() + rfid.getCurrentSubGroup() });
+  eventEmitter.emit('monitoring.solutionsForStep', { solutions: scenario.getCurrentStep().solutions.filter(s => s.set == scenario.getSolutionsSet()), 
+                                                     set: set,
+                                                     nextStep: scenario.getCurrentStep().transitions[0].id || null });
 }
 //------------------------------------------------------------------------
 // Init Socket to transmit Serial data to HTTP client
@@ -154,21 +158,21 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // rfid.extractReader("<TAG:7ED72360/><READER:1/>");
   // scenario.setCurrentStepId("step-1");
   // Testing for group A2 5E3D621A (énigme "Code et prog" ou énigme "BDD et datas")
-  rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
-  rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
+  // rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
+  // rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
   // scenario.setCurrentStepId("step-2");
   // // Testing for group A3 0EAF4C60 (énigme "BDD et datas" ou énigme "Hardware")
   // rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
   // rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
   // scenario.setCurrentStepId("step-1");
   // Testing for group A4 49426960 (énigme "Com digitale" ou énigme "Admin réseau")
-  // rfid.extractTag("<TAG:49426960/><READER:1/>");
-  // rfid.extractReader("<TAG:49426960/><READER:1/>");
+  rfid.extractTag("<TAG:49426960/><READER:1/>");
+  rfid.extractReader("<TAG:49426960/><READER:1/>");
   // scenario.setCurrentStepId("step-1");
   // // Testing for group A5 5E68811A (énigme "Admin réseau" ou énigme "Com digitale")
   // rfid.extractTag("<TAG:5E68811A/><READER:1/>");
   // rfid.extractReader("<TAG:5E68811A/><READER:1/>");
-  scenario.setCurrentStepId("step-2");
+  scenario.setCurrentStepId("step-1");
 
   // Testing for group B
   // rfid.extractTag("<TAG:CE4E2B60/><READER:2/>");
@@ -189,16 +193,12 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
 //------------------------------------------------------------------------
 server.listen( httpPort, '0.0.0.0', function( ) {
   logger.info( '------------------------------------------------------------' );
-  logger.info( 'server Ip Address is %s', ip.address() );
-  logger.info( 'it is listening at port %d', httpPort );
+  logger.info( `server Ip Address is ${ip.address()}` );
+  logger.info( `it is listening at port ${httpPort}` );
   logger.info( '------------------------------------------------------------' );
-  logger.info( 'RFID reading is ' + GLOBAL_CONFIG.rfid.behavior);
+  logger.info( `RFID reading is ${GLOBAL_CONFIG.rfid.behavior}`);
   logger.info( '------------------------------------------------------------' );
 });
-
-// Log engine
-// app.use(morgan('combined', { stream: winston.stream }));
-// app.use(logger);
 
 app.use(express.json());
 
