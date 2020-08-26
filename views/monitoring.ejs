@@ -26,23 +26,23 @@
         color:white;
     }
     
-    .bddBg{
+    .BDDBg{
         background-color: rgb(194, 8, 251);
         color:white;
     }
     
-    .comDigitale Bg{
+    .ComDigitaleBg{
         background-color: rgb(215, 0, 116);
         color:white;
     }
 
-    .codeEtProg Bg{
+    .CodeEtProgBg{
         background-color: rgb(249, 110, 0);
         color:white;
     }
 
 
-    .hardware Bg{
+    .HardwareBg{
         background-color: rgb(230, 25, 131);
         color:white;
     }
@@ -56,15 +56,13 @@
         float:left;
     }
 
-    .controlActivity {
+    .controlActivity, .controlActivity:hover {
         color:white;
     }
 
 </style>
 <body>
-
-    <body>
-        <header>
+    <header>
       <div class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container d-flex justify-content-between">
           <a href="#" class="navbar-brand d-flex align-items-center">
@@ -84,16 +82,8 @@
             <div class="col-sm-12 jumbotron">
                 <h5>Données à présenter pour chaque activité</h5>
                 <ul>
-                    <li>le code du dernier badge rfid reconnu</li>
-                    <li>les solutions attendues</li>
                     <li>les temps écoulé depuis le début de la session (taggage RFID)</li>
-                    <li>Le step courant</li>
                     <li>le temps écoulé par step ?</li>
-
-                </ul>
-                <h5>Données techniques pour chaque activité</h5> 
-                <ul>
-                    <li>le nombre de messages Arduino échangés</li>
 
                 </ul>
             </div>
@@ -102,18 +92,19 @@
 
     <div class="row">
         <!-- Loop on each game  -->
-        <div class="col-md-3">
-            <div id="adminReseau" class="card mb-3 shadow-sm">
-                <h5 class="card-header adminReseauBg">
-                    <span class="activityTitle">Admin Réseau</span>
+<% data.global_config.servers.forEach(function(server) { %>
+        <div class="col-md-4">
+            <div id="<%= server.id %>" class="card mb-4 shadow-sm">
+                <h5 class="card-header <%= server.id %>Bg">
+                    <span class="activityTitle"><%= server.description %></span>
                     <span class="toolbar">
-                        <a href="#" id="reset" class="controlActivity">
+                        <a id="restart" href="#" class="controlActivity">
                             <svg  width="32" height="32" viewBox="0 0 16 16" class="bi bi-skip-start" fill="currentColor" xmlns="http://www.w3.org/2000/svg" title="Redémarrer l'activité">
                                 <path fill-rule="evenodd" d="M4.5 3.5A.5.5 0 0 0 4 4v8a.5.5 0 0 0 1 0V4a.5.5 0 0 0-.5-.5z"/>
                                 <path fill-rule="evenodd" d="M5.696 8L11.5 4.633v6.734L5.696 8zm-.792-.696a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L4.904 7.304z"/>
                             </svg>
                         </a>
-                        <a href="#" id="next" class="controlActivity">
+                        <a id="nextStep" href="http://<%= server.ip %>:<%= server.port %>/api/nextStep" class="controlActivity">
                             <svg width="32" height="32" viewBox="0 0 16 16" class="bi bi-skip-forward" fill="currentColor" xmlns="http://www.w3.org/2000/svg" title="Passer à l'étape suivante">
                                 <path fill-rule="evenodd" d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5zM1 4.633v6.734L6.804 8 1 4.633zm7.5 0v6.734L14.304 8 8.5 4.633z"/>
                             </svg>  
@@ -160,7 +151,7 @@
                 </div>
             </div>
         </div>
-
+<% }) %>
     </div>
 
 
@@ -189,13 +180,15 @@
                         </thead>
                         <tbody>
                             <!-- Loop on each game -->
-                          <tr>
-                            <th scope="row">adminReseau</th>
+<% data.global_config.servers.forEach(function(server) { %>
+                        <tr>
+                            <th scope="row"><a href="http://<%= server.ip %>:<%= server.port %>/" target="_blank"><%= server.description %></a></th>
                             <td>125</td>
                             <td>3289</td>
                             <td>2:10:00</td>
-                          </tr>
-                         </tbody>
+                        </tr>
+<% }) %>
+                        </tbody>
                       </table>                    
                     
                 </div>
@@ -212,57 +205,61 @@
   </div> -->
 </footer>
 <script>
-    var scenarioId = '<%=data.scenarioId%>';
-    // Servers list : [ { id: "adminReseau" ip: "192.168.10.10" }, ... ]
-    var servers = '<%-JSON.stringify(data.global_config.servers)%>';
-    // loop on each game
-    // [ ->
-    var data_adminReseau = null;
-    // <- ]
-    // end loop
-
-    $(document).ready(function() {
+     $(document).ready(function() {
 
         // loop on each game
         // [ ->
-        
-        var socket_adminReseau = io('http://<%= data.config_server.ip%>:<%= data.config_server.port %>/monitoring');
-        var nextStep_adminReseau = "";
+
+<% data.global_config.servers.forEach(function(server) { %>
+
+        var socket_<%= server.id %> = io('http://<%= server.ip %>:<%= server.port %>/monitoring');
+        var nextStep_<%= server.id %> = "";
         // ------------------------------------------------------------------
         // Socket listening
         // ------------------------------------------------------------------
 
         // Receiving new rfid badge
-        socket_adminReseau.on('toclient.newGameSession_'+ scenarioId, function(data_adminReseau) {
-            $("#adminReseau #rfidcode").html(data_adminReseau.tag);
-            $("#adminReseau #groupcode").html(data_adminReseau.group);
+        socket_<%= server.id %>.on('toclient.newGameSession_'+ <%= server.id %>, function(data) {
+            $("#<%= server.id %> #rfidcode").html(data.tag);
+            $("#<%= server.id %> #groupcode").html(data.group);
         });
 
-        socket_adminReseau.on('toclient.newGameStep'+ scenarioId, function(data_adminReseau) {
-            $("#adminReseau #stepId").html(data_adminReseau.stepId);
-            $("#adminReseau #totalsteps").html(data_adminReseau.totalSteps + " étapes au total.");
+        socket_<%= server.id %>.on('toclient.newGameStep'+ <%= server.id %>, function(data) {
+            $("#<%= server.id %> #stepId").html(data.stepId);
+            $("#<%= server.id %> #totalsteps").html(data.totalSteps + " étapes au total.");
         });
 
-        socket_adminReseau.on('toclient.solutionsForStep'+ scenarioId, function(data_adminReseau) {
-            console.log(data_adminReseau);
-            var soluce = data_adminReseau.solutions[0].responses;
-            nextStep_adminReseau = data_adminReseau.nextStep;
+        socket_<%= server.id %>.on('toclient.solutionsForStep'+ <%= server.id %>, function(data) {
+            console.log(data);
+            var soluce = data.solutions[0].responses;
+            nextStep_<%= server.id %> = data.nextStep;
             if (soluce.length == 0) soluce = "Pas de solution pour cette étape.";
             else soluce = JSON.stringify(soluce, null, 4);
-            $("#adminReseau #solutions").html(soluce);
+            $("#<%= server.id %> #solutions").html(soluce);
         });
 
         //
-        // ControlCommand
+        // Activity controls  : Restart / nextStep
         //
-        $(".controlActivity").on('click', function(e){
-            var step = ( this.id == "reset" ) ? "step-1" : nextStep_adminReseau;
-            // socket_adminReseau.emit('toserver.nextStep', {nextStep: step});
-
-            console.log(step);
+        $("#<%= server.id %> #restart").on('click', function(e) {
+            console.log("Restarting <%= server.id %>");
+            $.get( "http://<%= server.ip %>:<%= server.port %>/api/restart", function() {
+                // Success End
+            })
+            .done(function() {
+                // Second finished
+            })
+            .fail(function(data) {
+                // Error
+                console.log(data);
+            })
+            .always(function() {
+               // Finished
+            });
             e.preventDefault();
         });
 
+<% }) %>
         // <- ]
         // end loop
 }); 
