@@ -56,6 +56,10 @@
         float:left;
     }
 
+    .controlActivity {
+        color:white;
+    }
+
 </style>
 <body>
 
@@ -77,7 +81,7 @@
 <main role="main" class="flex-shrink-0">
     <div class="container">
         <div class="row">
-            <div class="col-sm-6 codeZone">
+            <div class="col-sm-12 jumbotron">
                 <h5>Données à présenter pour chaque activité</h5>
                 <ul>
                     <li>le code du dernier badge rfid reconnu</li>
@@ -99,17 +103,21 @@
     <div class="row">
         <!-- Loop on each game  -->
         <div class="col-md-3">
-            <div class="card mb-3 shadow-sm">
+            <div id="adminReseau" class="card mb-3 shadow-sm">
                 <h5 class="card-header adminReseauBg">
                     <span class="activityTitle">Admin Réseau</span>
                     <span class="toolbar">
-                        <svg width="32" height="32" viewBox="0 0 16 16" class="bi bi-skip-start" fill="currentColor" xmlns="http://www.w3.org/2000/svg" title="Redémarrer l'activité">
-                            <path fill-rule="evenodd" d="M4.5 3.5A.5.5 0 0 0 4 4v8a.5.5 0 0 0 1 0V4a.5.5 0 0 0-.5-.5z"/>
-                            <path fill-rule="evenodd" d="M5.696 8L11.5 4.633v6.734L5.696 8zm-.792-.696a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L4.904 7.304z"/>
-                        </svg>
-                        <svg width="32" height="32" viewBox="0 0 16 16" class="bi bi-skip-forward" fill="currentColor" xmlns="http://www.w3.org/2000/svg" title="Passer à l'étape suivante">
-                            <path fill-rule="evenodd" d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5zM1 4.633v6.734L6.804 8 1 4.633zm7.5 0v6.734L14.304 8 8.5 4.633z"/>
-                        </svg>
+                        <a href="#" id="reset" class="controlActivity">
+                            <svg  width="32" height="32" viewBox="0 0 16 16" class="bi bi-skip-start" fill="currentColor" xmlns="http://www.w3.org/2000/svg" title="Redémarrer l'activité">
+                                <path fill-rule="evenodd" d="M4.5 3.5A.5.5 0 0 0 4 4v8a.5.5 0 0 0 1 0V4a.5.5 0 0 0-.5-.5z"/>
+                                <path fill-rule="evenodd" d="M5.696 8L11.5 4.633v6.734L5.696 8zm-.792-.696a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L4.904 7.304z"/>
+                            </svg>
+                        </a>
+                        <a href="#" id="next" class="controlActivity">
+                            <svg width="32" height="32" viewBox="0 0 16 16" class="bi bi-skip-forward" fill="currentColor" xmlns="http://www.w3.org/2000/svg" title="Passer à l'étape suivante">
+                                <path fill-rule="evenodd" d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5zM1 4.633v6.734L6.804 8 1 4.633zm7.5 0v6.734L14.304 8 8.5 4.633z"/>
+                            </svg>  
+                        </a>
                     </span>
                 </h5>
                 <div class="card-body">
@@ -120,15 +128,19 @@
                                     <img src="/img/bootstrap-icons/tag.svg" alt="" width="32" height="32" title="Dernier badge RFID lu">
                                 </th>
                                 <td>    
-                                    <code id="rfidcode"></code>&nbsp;->&nbsp;<span class="badge badge-warning" id="groupcode"></span>
+                                    <h4>
+                                        <code id="rfidcode"></code>&nbsp;
+                                        <img src="/img/bootstrap-icons/arrow-right.svg" alt="" width="32" height="32" title="">&nbsp;
+                                        <span class="badge badge-pill badge-warning" id="groupcode"></span>
+                                </h4>
                                 </td>
                             </tr>
                             <tr>
                                 <th scope="col">
-                                    <img src="/img/bootstrap-icons/question-circle.svg" alt="" width="32" height="32" title="Etape courante">
+                                    <img src="/img/bootstrap-icons/list-stars.svg" alt="" width="32" height="32" title="Etape courante">
                                 </th>
                                 <td>
-                                    <span class="badge badge-default">Step-2</span>
+                                    <h4><span class="badge badge-pill badge-success" id="stepId"></span><span class="badge badge-pill badge-default" id="totalsteps"></span></h4>
                                 </td>
                             </tr>
                             <tr>
@@ -136,7 +148,7 @@
                                     <img src="/img/bootstrap-icons/puzzle.svg" alt="" width="32" height="32" title="Solutions">
                                 </th>
                                 <td>
-                                    Ici les solutions pour le groupe en train de jouer
+                                    <pre><code id="solutions"></code></pre>
                                 </td>
                             </tr>
                         </table>
@@ -178,7 +190,7 @@
                         <tbody>
                             <!-- Loop on each game -->
                           <tr>
-                            <th scope="row">AdminReseau</th>
+                            <th scope="row">adminReseau</th>
                             <td>125</td>
                             <td>3289</td>
                             <td>2:10:00</td>
@@ -201,10 +213,11 @@
 </footer>
 <script>
     var scenarioId = '<%=data.scenarioId%>';
-
+    // Servers list : [ { id: "adminReseau" ip: "192.168.10.10" }, ... ]
+    var servers = '<%-JSON.stringify(data.global_config.servers)%>';
     // loop on each game
     // [ ->
-    var data_CodeEtProg = null;
+    var data_adminReseau = null;
     // <- ]
     // end loop
 
@@ -213,16 +226,41 @@
         // loop on each game
         // [ ->
         
-        socket_CodeEtProg = io('http://<%= data.config_server.ip%>:<%= data.config_server.port %>/monitoring');
-
+        var socket_adminReseau = io('http://<%= data.config_server.ip%>:<%= data.config_server.port %>/monitoring');
+        var nextStep_adminReseau = "";
         // ------------------------------------------------------------------
         // Socket listening
         // ------------------------------------------------------------------
 
         // Receiving new rfid badge
-        socket_CodeEtProg.on('toclient.newGameSession_'+ scenarioId, function(data_CodeEtProg) {
-            $("#rfidcode").html(data_CodeEtProg.tag);
-            $("#groupcode").html(data_CodeEtProg.group);
+        socket_adminReseau.on('toclient.newGameSession_'+ scenarioId, function(data_adminReseau) {
+            $("#adminReseau #rfidcode").html(data_adminReseau.tag);
+            $("#adminReseau #groupcode").html(data_adminReseau.group);
+        });
+
+        socket_adminReseau.on('toclient.newGameStep'+ scenarioId, function(data_adminReseau) {
+            $("#adminReseau #stepId").html(data_adminReseau.stepId);
+            $("#adminReseau #totalsteps").html(data_adminReseau.totalSteps + " étapes au total.");
+        });
+
+        socket_adminReseau.on('toclient.solutionsForStep'+ scenarioId, function(data_adminReseau) {
+            console.log(data_adminReseau);
+            var soluce = data_adminReseau.solutions[0].responses;
+            nextStep_adminReseau = data_adminReseau.nextStep;
+            if (soluce.length == 0) soluce = "Pas de solution pour cette étape.";
+            else soluce = JSON.stringify(soluce, null, 4);
+            $("#adminReseau #solutions").html(soluce);
+        });
+
+        //
+        // ControlCommand
+        //
+        $(".controlActivity").on('click', function(e){
+            var step = ( this.id == "reset" ) ? "step-1" : nextStep_adminReseau;
+            // socket_adminReseau.emit('toserver.nextStep', {nextStep: step});
+
+            console.log(step);
+            e.preventDefault();
         });
 
         // <- ]
