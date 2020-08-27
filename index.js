@@ -42,9 +42,37 @@ var scenario_specifics;
 if (fs.existsSync("./lib/scenario-" + scenario.data().scenarioId + ".js")){
   scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, rfid, arduino, scenario, eventEmitter, logger);
 }
-// Monitoring system only on parallaxe2050-1 server
+// Monitoring system
 logger.info(`Starting up monitoring SERVER on '${CONFIG_SERVER.name}'`);
 mon = require('./lib/mon.js')(io, rfid, arduino, scenario, eventEmitter, logger);
+
+// ************************************************************************
+// ***********************************************************************$
+//
+//        G E S T I O N   D U    M O D E   D E   J E U 
+//        - - - - - - - - - - - - - - - - - - - - - - 
+// Il s'agit de positionner le container en mode "Classe" ou "Evénementiel"
+//
+//  - Mode classe : Le container est paramétré pour une classe. 
+//                  Les session de jeu sont de 20 minutes.
+//  - Mode Evénementiel : Le container est en mode évenementiel, 
+//                        il est éventuellement ouvert, et les sessions 
+//                        de jeu sont de 40 minutes.
+//
+//  Seul un serveur sur les 5 va gérer le mode de jeu pour tous les autres,
+//  car il doit aussi gérer le timer.
+// 
+//  On va dire que c'est le serveur de l'activité "Hardware" qui n'en fiche pas une 
+//  qui va gérer ça. (parallaxe2050-5)
+//
+if (CONFIG_SERVER.ip == GLOBAL_CONFIG.app.adminServerIp) {
+  // const timer   = require('./lib/timer')(eventEmitter, logger);
+  router.get('/timer', function(req, res, next) {
+    res.render('../timer', { data: dataForTemplate });
+  })
+}
+// ************************************************************************
+// ************************************************************************
 
 const httpPort    = CONFIG_SERVER.port;
 // var formidable    = require('formidable'); // File upload
@@ -214,6 +242,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/medias', express.static(__dirname + GLOBAL_CONFIG.app.mediaPath)); // redirect media directory
 app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap')); // redirect bootstrap JS
+app.use('/bootstrap-switch', express.static(__dirname + '/node_modules/bootstrap-switch')); // redirect bootstrap switch
 app.use('/img/bootstrap-icons', express.static(__dirname + '/node_modules/bootstrap-icons/icons')); // redirect bootstrap icons
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 app.use('/js', express.static(__dirname + '/node_modules/socket.io/dist')); // Socket.io
