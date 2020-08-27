@@ -60,6 +60,33 @@
         color:white;
     }
 
+    /********* Popup de résultats OK/KO ************/
+    .popupResult{
+    margin: 10% auto;
+    width : 30%;
+    background-color: rgb(243, 243, 243);
+    padding: 1em;
+    box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    }
+
+    .overlayResult {
+    position: fixed;
+    left: 0px;
+    top:0px;
+    background-color: rgba(0,0 ,0 , 0.5);
+    width: 100%;
+    height: 100%;
+    z-index:1;
+    display:none;
+    }
+
+    .btnClose {
+        float: right;
+        font-size:16pt;
+        cursor: pointer;
+        color: rgb(26, 26, 26);
+    }
 </style>
 <body>
     <header>
@@ -77,6 +104,18 @@
 
 <!-- Begin page content -->
 <main role="main" class="flex-shrink-0">
+
+    <div id="overlayResult" class="overlayResult">
+        <div id="popupResult" class="popupResult">
+            <h3 id="titleResult"><span id="title"></span> 
+            <span id="btnClose" class="btnClose">&times;</span>
+            </h3>
+            <div id="messageResult">
+            </div>
+        </div>
+    </div>
+
+
     <div class="container">
         <div class="row">
             <div class="col-sm-12 jumbotron">
@@ -154,7 +193,6 @@
 <% }) %>
     </div>
 
-
     <div class="row">
         <!-- Games metrics -->
         <div class="col-md-12">
@@ -207,6 +245,21 @@
 <script>
      $(document).ready(function() {
 
+        var popup = $("#overlayResult");
+        var title = $("#titleResult #title");
+        var msg = $("#messageResult");
+
+        function initPopup() {
+            popup.attr('style', 'display:none');
+            title.html("");
+            msg.html("");
+        }
+
+		// Listener sur le bouton de fermeture de la popup
+		$("#overlayResult").on('click', function(){
+			$("#overlayResult").attr('style', 'display:none');
+        });
+        
         // loop on each game
         // [ ->
 
@@ -242,26 +295,27 @@
         // Activity controls  : Restart / nextStep
         //
         $("#<%= server.id %> #restart").on('click', function(e) {
-            console.log("Restarting <%= server.id %>");
-            $.get( "http://<%= server.ip %>:<%= server.port %>/api/restart", function() {
-                // Success End
-            })
-            .done(function() {
-                // Second finished
-            })
-            .fail(function(data) {
-                // Error
-                console.log(data);
-            })
-            .always(function() {
-               // Finished
+            initPopup();
+            $.get( "http://<%= server.ip %>:<%= server.port %>/api/restart", function(data) {
+                if (data.status == "200") {
+                    console.log(data);
+                    title.html("Ok !");
+                    msg.html(data.message);
+
+                } else {
+                    title.html("Erreur !");
+                    msg.html(data.message);
+                } 
             });
+            popup.attr('style', 'display:block');
             e.preventDefault();
         });
 
 <% }) %>
         // <- ]
         // end loop
+
+    initPopup();
 }); 
 </script>
 <!-- <%- JSON.stringify(data, null, 1) %>-->
