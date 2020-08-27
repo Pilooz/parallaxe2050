@@ -133,10 +133,15 @@
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        <div class="btn-group" role="group" aria-label="GameMode">
-                            <button type="button" class="btn btn-secondary">Classe</button>
-                            <button type="button" class="btn btn-secondary">Evenementiel</button>
-                        </div>
+                            <button type="button" id="classroomMode" class="btn btn-dark modeButton">Classe</button>
+                            <div class="alert alert-primary" role="alert">
+                                <em>Le container est paramétré pour une classe. Les session de jeu sont de 20 minutes.</em>
+                            </div>
+
+                            <button type="button" id="eventMode" class="btn btn-dark modeButton">Evenementiel</button>
+                            <div class="alert alert-info" role="alert">
+                                <em>Le container est en mode évenementiel, il est éventuellement ouvert, et les sessions de jeu sont de 40 minutes.</em>
+                            </div>
                     </p>
                 </div>
             </div>
@@ -298,6 +303,17 @@
 			$("#overlayResult").attr('style', 'display:none');
         });
         
+        // Listener sur les boutons de mode de jeu
+        $(".modeButton").on('click', function() {
+            var mode = this.id;
+            setGameMode(mode);
+        });
+
+        // Set game mode on server and on all activities
+        function setGameMode(mode) {
+            
+        }
+
         // loop on each game
         // [ ->
 
