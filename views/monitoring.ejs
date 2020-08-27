@@ -272,18 +272,17 @@
         // ------------------------------------------------------------------
 
         // Receiving new rfid badge
-        socket_<%= server.id %>.on('toclient.newGameSession_'+ <%= server.id %>, function(data) {
+        socket_<%= server.id %>.on('toclient.newGameSession_<%= server.id %>', function(data) {
             $("#<%= server.id %> #rfidcode").html(data.tag);
             $("#<%= server.id %> #groupcode").html(data.group);
         });
 
-        socket_<%= server.id %>.on('toclient.newGameStep'+ <%= server.id %>, function(data) {
+        socket_<%= server.id %>.on('toclient.newGameStep_<%= server.id %>', function(data) {
             $("#<%= server.id %> #stepId").html(data.stepId);
             $("#<%= server.id %> #totalsteps").html(data.totalSteps + " étapes au total.");
         });
 
-        socket_<%= server.id %>.on('toclient.solutionsForStep'+ <%= server.id %>, function(data) {
-            console.log(data);
+        socket_<%= server.id %>.on('toclient.solutionsForStep_<%= server.id %>', function(data) {
             var soluce = data.solutions[0].responses;
             nextStep_<%= server.id %> = data.nextStep;
             if (soluce.length == 0) soluce = "Pas de solution pour cette étape.";
