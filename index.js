@@ -213,7 +213,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/medias', express.static(__dirname + GLOBAL_CONFIG.app.mediaPath)); // redirect media directory
-app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
+app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap')); // redirect bootstrap JS
 app.use('/img/bootstrap-icons', express.static(__dirname + '/node_modules/bootstrap-icons/icons')); // redirect bootstrap icons
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 app.use('/js', express.static(__dirname + '/node_modules/socket.io/dist')); // Socket.io
