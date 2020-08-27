@@ -83,6 +83,19 @@
         cursor: pointer;
         color: rgb(26, 26, 26);
     }
+
+    .colorBg {
+        background-color: gray;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 2%;
+        margin-bottom: 2%;
+        text-align: center;
+        vertical-align: center;
+        width: 200px;
+        min-height: 150px;
+    }
+
 </style>
 <body>
     <header>
@@ -111,47 +124,48 @@
         </div>
     </div>
 
-    <div class="container">
-        <div class="row">
-
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    <h5 class="card-header">
-                        <span class="activityTitle">Mode de jeu</span>
-                    </h5>
-                    <div class="card-body">
-                        <p class="card-text">
-                            <div class="btn-group" role="group" aria-label="GameMode">
-                                <button type="button" class="btn btn-secondary">Classe</button>
-                                <button type="button" class="btn btn-secondary">Evenementiel</button>
-                            </div>
-                        </p>
-                    </div>
+    <div class="row">
+        
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <h5 class="card-header">
+                    <span class="activityTitle">Mode de jeu</span>
+                </h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        <div class="btn-group" role="group" aria-label="GameMode">
+                            <button type="button" class="btn btn-secondary">Classe</button>
+                            <button type="button" class="btn btn-secondary">Evenementiel</button>
+                        </div>
+                    </p>
                 </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card mb-4 shadow-sm">
-                    <h5 class="card-header">
-                        <span class="activityTitle">Chronomètre</span>
-                    </h5>
-                    <div class="card-body">
-                        <p class="card-text">
-                            Ici le chrono
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <h5>Données à présenter pour chaque activité</h5>
-                <ul>
-                    <li>les temps écoulé depuis le début de la session (taggage RFID)</li>
-                    <li>le temps écoulé par step ?</li>
-
-                </ul>
             </div>
         </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <h5 class="card-header">
+                    <span class="activityTitle">Chronomètre</span>
+                </h5>
+                <div class="card-body">
+                    <p class="card-text">
+                        Ici le chrono
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <h5 class="card-header">
+                    <span class="activityTitle">En ce moment, dans le container...</span>
+                </h5>
+                <div class="card-body colorBg">
+                    <img src="..." class="img-fluid" alt="Webcam Here">
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div class="row">
