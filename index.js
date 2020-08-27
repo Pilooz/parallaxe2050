@@ -12,7 +12,7 @@ var winston       = require('./lib/logger');
 
 var express       = require('express');
 var router        = express.Router();
-const api         = require('./lib/api')(app, router);
+
 // Server utilities
 var server        = require('http').createServer(app);
 const ip            = require('ip');
@@ -302,6 +302,34 @@ router.all('/*', function (req, res, next) {
 	fs.writeFileSync(GLOBAL_CONFIG.app.dbPath + '/db-rfid.json', data);
 
 	res.end('{"success": "Sauvegarde ok !", "status": 200}');
+})
+
+//-----------------------------------------------------------------------------
+// APIs for monitoring/admin
+//-----------------------------------------------------------------------------
+// Restart activity
+.get("/api/restart", function(req, res, next){
+  logger.info("restarting activity from admin page...");
+  // Set Current Step as first step
+  var firstStep = scenario.data().steps[0].stepId;
+  scenario.setCurrentStepId(firstStep);
+  setup_scenario_environment(); 
+  io.emit('toclient.refreshNow');
+
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({message: `Opération réussie !<br/>L'activité est revenue à l'étape '${firstStep}.`, status: 200}));
+})
+
+// Forcing to next stetp
+.get("/api/nextStep", function(req, res, next){
+  logger.info("Going to next activity step from admin page...");
+  var nextStep = scenario.getCurrentStep().transitions[0].id;
+  scenario.setCurrentStepId(nextStep);
+  setup_scenario_environment(); 
+  io.emit('toclient.refreshNow');
+
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({message: `Opération réussie !<br/>L'activité est passée à l'étape '${nextStep}.`, status: 200}));
 })
 
 //-----------------------------------------------------------------------------

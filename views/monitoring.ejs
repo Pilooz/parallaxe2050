@@ -143,7 +143,7 @@
                                 <path fill-rule="evenodd" d="M5.696 8L11.5 4.633v6.734L5.696 8zm-.792-.696a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L4.904 7.304z"/>
                             </svg>
                         </a>
-                        <a id="nextStep" href="http://<%= server.ip %>:<%= server.port %>/api/nextStep" class="controlActivity">
+                        <a id="nextStep" class="controlActivity">
                             <svg width="32" height="32" viewBox="0 0 16 16" class="bi bi-skip-forward" fill="currentColor" xmlns="http://www.w3.org/2000/svg" title="Passer à l'étape suivante">
                                 <path fill-rule="evenodd" d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5zM1 4.633v6.734L6.804 8 1 4.633zm7.5 0v6.734L14.304 8 8.5 4.633z"/>
                             </svg>  
@@ -297,6 +297,28 @@
         $("#<%= server.id %> #restart").on('click', function(e) {
             initPopup();
             $.get( "http://<%= server.ip %>:<%= server.port %>/api/restart", function(data) {
+                if (data.status == "200") {
+                    console.log(data);
+                    title.html("Ok !");
+                    msg.html(data.message);
+
+                } else {
+                    title.html("Erreur !");
+                    msg.html(data.message);
+                } 
+            });
+            popup.attr('style', 'display:block');
+            e.preventDefault();
+        });
+
+        //
+        // nextStep
+        //
+        $("#<%= server.id %> #nextStep").on('click', function(e) {
+            initPopup();
+            title.html("Erreur !");
+            msg.html("Quelque chose ne s'est pas bien passé. <br/>La requête n'a pas abouti. Cette activité est-elle allumé ? Connectée au réseau ?");
+            $.get( "http://<%= server.ip %>:<%= server.port %>/api/nextStep", function(data) {
                 if (data.status == "200") {
                     console.log(data);
                     title.html("Ok !");
