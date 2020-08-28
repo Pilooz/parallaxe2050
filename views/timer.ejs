@@ -1,376 +1,272 @@
 <!DOCTYPE html>
 <html lang="fr">
     <head>
-    <script src="/socket.io/socket.io.js"></script>
+      <meta charset="UTF-8">
+    <head>
+    <title>Chronomètre</title>
     <style>
-        /*
-            All resources must be local because of the lack of internet access.
-        */
-
-        /* @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz:200,300,400); */
-
-        /* cyrillic */
-        @font-face {
-        font-family: 'Yanone Kaffeesatz';
-        font-style: normal;
-        font-weight: 200;
-        src: url(https://fonts.gstatic.com/s/yanonekaffeesatz/v15/3y976aknfjLm_3lMKjiMgmUUYBs04Y8fH-qHHt6MDPo.woff2) format('woff2');
-        unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-        }
-        /* vietnamese */
-        @font-face {
-        font-family: 'Yanone Kaffeesatz';
-        font-style: normal;
-        font-weight: 200;
-        src: url(https://fonts.gstatic.com/s/yanonekaffeesatz/v15/3y976aknfjLm_3lMKjiMgmUUYBs04Y8UH-qHHt6MDPo.woff2) format('woff2');
-        unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
-        }
-        /* latin-ext */
-        @font-face {
-        font-family: 'Yanone Kaffeesatz';
-        font-style: normal;
-        font-weight: 200;
-        src: url(https://fonts.gstatic.com/s/yanonekaffeesatz/v15/3y976aknfjLm_3lMKjiMgmUUYBs04Y8VH-qHHt6MDPo.woff2) format('woff2');
-        unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-        }
-        /* latin */
-        @font-face {
-        font-family: 'Yanone Kaffeesatz';
-        font-style: normal;
-        font-weight: 200;
-        src: url(https://fonts.gstatic.com/s/yanonekaffeesatz/v15/3y976aknfjLm_3lMKjiMgmUUYBs04Y8bH-qHHt6M.woff2) format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-        }
-        /* cyrillic */
-        @font-face {
-        font-family: 'Yanone Kaffeesatz';
-        font-style: normal;
-        font-weight: 300;
-        src: url(https://fonts.gstatic.com/s/yanonekaffeesatz/v15/3y976aknfjLm_3lMKjiMgmUUYBs04Y8fH-qHHt6MDPo.woff2) format('woff2');
-        unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-        }
-        /* vietnamese */
-        @font-face {
-        font-family: 'Yanone Kaffeesatz';
-        font-style: normal;
-        font-weight: 300;
-        src: url(https://fonts.gstatic.com/s/yanonekaffeesatz/v15/3y976aknfjLm_3lMKjiMgmUUYBs04Y8UH-qHHt6MDPo.woff2) format('woff2');
-        unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
-        }
-        /* latin-ext */
-        @font-face {
-        font-family: 'Yanone Kaffeesatz';
-        font-style: normal;
-        font-weight: 300;
-        src: url(https://fonts.gstatic.com/s/yanonekaffeesatz/v15/3y976aknfjLm_3lMKjiMgmUUYBs04Y8VH-qHHt6MDPo.woff2) format('woff2');
-        unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-        }
-        /* latin */
-        @font-face {
-        font-family: 'Yanone Kaffeesatz';
-        font-style: normal;
-        font-weight: 300;
-        src: url(https://fonts.gstatic.com/s/yanonekaffeesatz/v15/3y976aknfjLm_3lMKjiMgmUUYBs04Y8bH-qHHt6M.woff2) format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-        }
-        /* cyrillic */
-        @font-face {
-        font-family: 'Yanone Kaffeesatz';
-        font-style: normal;
-        font-weight: 400;
-        src: url(https://fonts.gstatic.com/s/yanonekaffeesatz/v15/3y976aknfjLm_3lMKjiMgmUUYBs04Y8fH-qHHt6MDPo.woff2) format('woff2');
-        unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
-        }
-        /* vietnamese */
-        @font-face {
-        font-family: 'Yanone Kaffeesatz';
-        font-style: normal;
-        font-weight: 400;
-        src: url(https://fonts.gstatic.com/s/yanonekaffeesatz/v15/3y976aknfjLm_3lMKjiMgmUUYBs04Y8UH-qHHt6MDPo.woff2) format('woff2');
-        unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
-        }
-        /* latin-ext */
-        @font-face {
-        font-family: 'Yanone Kaffeesatz';
-        font-style: normal;
-        font-weight: 400;
-        src: url(https://fonts.gstatic.com/s/yanonekaffeesatz/v15/3y976aknfjLm_3lMKjiMgmUUYBs04Y8VH-qHHt6MDPo.woff2) format('woff2');
-        unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-        }
-        /* latin */
-        @font-face {
-        font-family: 'Yanone Kaffeesatz';
-        font-style: normal;
-        font-weight: 400;
-        src: url(https://fonts.gstatic.com/s/yanonekaffeesatz/v15/3y976aknfjLm_3lMKjiMgmUUYBs04Y8bH-qHHt6M.woff2) format('woff2');
-        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-        }
-
-        /*
-            CSS
-        */
-
-        * {
-        box-sizing: border-box;
-        }
-
-        html {
-        background: #111;
-        color: #fff;
-        font-family: 'Yanone Kaffeesatz', sans-serif;
-        }
-
-        body {
-        padding: 20px;
-        }
-
-        .timer-group {
-        height: 400px;
-        margin: 1% auto;
-        position: relative;
-        width: 400px;
-        }
-
-        .timer {
-        border-radius: 50%;
-        height: 100px;
-        overflow: hidden;
-        position: absolute;
-        width: 100px;
-        }
-
-        .timer:after {
-        background: #111;
-        border-radius: 50%;
-        content: "";
-        display: block;
-        height: 80px;
-        left: 10px;
-        position: absolute;
-        width: 80px;
-        top: 10px;
-        }
-
-        .timer .hand {
-        float: left;
-        height: 100%;
-        overflow: hidden;
-        position: relative;
-        width: 50%;
-        }
-
-        .timer .hand span {
-        border: 50px solid rgba(0, 255, 255, .4);
-        border-bottom-color: transparent;
-        border-left-color: transparent;
-        border-radius: 50%;
-        display: block;
-        height: 0;
-        position: absolute;
-        right: 0;
-        top: 0;
-        transform: rotate(225deg);
-        width: 0;
-        }
-
-        .timer .hand:first-child {
-        transform: rotate(180deg);
-        }
-
-        .timer .hand span {
-        animation-duration: 4s;
-        animation-iteration-count: infinite;
-        animation-timing-function: linear;
-        }
-
-        .timer .hand:first-child span {
-        animation-name: spin1;
-        }
-
-        .timer .hand:last-child span {
-        animation-name: spin2; 
-        }
-
-        .timer.hour {
-        background: rgba(0, 0, 0, .3);
-        height: 400px;
-        left: 0;
-        width: 400px;
-        top: 0;
-        }
-
-        .timer.hour .hand span {
-        animation-duration: <%=data.timer.duration %>s; /* Ici on peut adapter la durée  <============================== */
-        border-top-color: rgba(255, 0, 255, .4);
-        border-right-color: rgba(255, 0, 255, .4);
-        border-width: 200px;
-        }
-
-        .timer.hour:after {
-        height: 360px;
-        left: 20px;
-        width: 360px;
-        top: 20px;
-        }
-
-        .timer.minute {
-        background: rgba(0, 0, 0, .2);
-        height: 350px;
-        left: 25px;
-        width: 350px;
-        top: 25px;
-        }
-
-        .timer.minute .hand span {
-        animation-duration: 60s;
-        border-top-color: rgba(0, 255, 255, .4);
-        border-right-color: rgba(0, 255, 255, .4);
-        border-width: 175px;
-        }
-
-        .timer.minute:after {
-        height: 310px;
-        left: 20px;
-        width: 310px;
-        top: 20px;
-        }
-
-        .timer.second {
-        background: rgba(0, 0, 0, .2);
-        height: 300px;
-        left: 50px;
-        width: 300px;
-        top: 50px;
-        }
-
-        .timer.second .hand span {
-        animation-duration: 1s;
-        border-top-color: rgba(255, 255, 255, .15);
-        border-right-color: rgba(255, 255, 255, .15);
-        border-width: 150px;
-        }
-
-        .timer.second:after {
-        height: 296px;
-        left: 2px;
-        width: 296px;
-        top: 2px;
-        }
-
-        .face {
-        background: rgba(0, 0, 0, .1);
-        border-radius: 50%;
-        height: 296px;
-        left: 52px;
-        padding: 165px 40px 0;
-        position: absolute;
-        width: 296px;
-        text-align: center;
-        top: 52px;
-        }
-
-        .face h2 {
-        font-weight: 300; 
-        }
-
-        .face p {
-        border-radius: 20px;
-        font-size: 60px; /*  76px; */
-        font-weight: 400;
-        position: absolute;
-        top: 17px;
-        width: 260px;
-        left: 20px;
-        }
-
-        @keyframes spin1 {
-        0% {
-            transform: rotate(225deg);
-        }
-        50% {
-            transform: rotate(225deg);
-        }
-        100% {
-            transform: rotate(405deg);
-        }
-        }
-
-        @keyframes spin2 {
-        0% {
-            transform: rotate(225deg);
-        }
-        50% {
-            transform: rotate(405deg);
-        }
-        100% {
-            transform: rotate(405deg);
-        }
-        }
+    html, body {
+      margin:0;
+      padding:0;
+      background:#000;
+      width:100%;
+      height:100%;
+      position:absolute;
+      min-width:900px;
+    }
+    
+    .clock {
+      height:200px;
+      position:absolute;
+      top:50%;
+      left:50%;
+      width:900px;
+      margin-left:-450px;
+      margin-top:-100px;
+      text-align:center;
+    }
+    
+    .digit {
+      width:120px;
+      height:200px;
+      margin:0 5px;
+      position:relative;
+      display:inline-block;
+    }
+    
+    .digit .segment {
+      background:#c00;
+      border-radius:5px;
+      position:absolute;
+      opacity:0.15;
+      transition:opacity 0.2s;
+      -webkit-transition:opacity 0.2s;
+      -ms-transition:opacity 0.2s;
+      -moz-transition:opacity 0.2s;
+      -o-transition:opacity 0.2s;
+    }
+    
+    .digit .segment.on, .separator {
+      opacity:1;
+      box-shadow:0 0 50px rgba(255,0,0,0.7);
+      transition:opacity 0s;
+      -webkit-transition:opacity 0s;
+      -ms-transition:opacity 0s;
+      -moz-transition:opacity 0s;
+      -o-transition:opacity 0s;
+    }
+    
+    .separator {
+      width:20px;
+      height:20px;
+      background:#c00;
+      border-radius:50%;
+      display:inline-block;
+      position:relative;
+      top:-90px;
+    }
+    
+    .digit .segment:nth-child(1) {
+      top:10px;
+      left:20px;
+      right:20px;
+      height:10px;
+    }
+    
+    .digit .segment:nth-child(2) {
+      top:20px;
+      right:10px;
+      width:10px;
+      height:75px;
+      height:calc(50% - 25px);
+    }
+    
+    .digit .segment:nth-child(3) {
+      bottom:20px;
+      right:10px;
+      width:10px;
+      height:75px;
+      height:calc(50% - 25px);
+    }
+    
+    .digit .segment:nth-child(4) {
+      bottom:10px;
+      right:20px;
+      height:10px;
+      left:20px;
+    }
+    
+    .digit .segment:nth-child(5) {
+      bottom:20px;
+      left:10px;
+      width:10px;
+      height:75px;
+      height:calc(50% - 25px);
+    }
+    
+    .digit .segment:nth-child(6) {
+      top:20px;
+      left:10px;
+      width:10px;
+      height:75px;
+      height:calc(50% - 25px);
+    }
+    
+    .digit .segment:nth-child(7) {
+      bottom:95px;
+      bottom:calc(50% - 5px);
+      right:20px;
+      left:20px;
+      height:10px;
+    }
     </style>
-<%- include('./partials/header', { data: data })%>
+    <script>
+      window.console = window.console || function(t) {};
+    </script>
+    <script>
+      if (document.location.search.match(/type=embed/gi)) {
+        window.parent.postMessage("resize", "*");
+      }
+    </script>
+    <script src="/js/jquery.min.js"></script> 
+    <script src="/socket.io/socket.io.js"></script>
 
-<div class="timer-group">
-    <div class="timer hour">
-      <div class="hand"><span></span></div>
-      <div class="hand"><span></span></div>
+    </head>
+    <body translate="no">
+    <div class="clock">
+    <!-- <div class="digit hours">
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
     </div>
-    <div class="timer minute">
-      <div class="hand"><span></span></div>
-      <div class="hand"><span></span></div>
+    <div class="digit hours">
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    </div> -->
+    <!-- <div class="separator"></div> -->
+    <div class="digit minutes">
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
     </div>
-    <div class="timer second">
-      <div class="hand"><span></span></div>
-      <div class="hand"><span></span></div>
+    <div class="digit minutes">
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
     </div>
-    <div class="face">
-      <h2>Parallaxe&nbsp;2050</h2>
-      <h5><%=data.timer.gameDescription %></h5>
-      <p id="lazy">00:00:00</p>  
+    <div class="separator"></div>
+    <div class="digit seconds">
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
     </div>
-  </div>
+    <div class="digit seconds">
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    <div class="segment"></div>
+    </div>
+    </div>
 
-  <script>
-      var defaults = {}
-  , one_second = 1000
-  , one_minute = one_second * 60
-  , one_hour = one_minute * 60
-  , one_day = one_hour * 24
-  , startDate = new Date()
-  , face = document.getElementById('lazy');
+<script id="rendered-js">  
+  $(document).ready(function() {
+    var digitSegments = [
+      [1, 2, 3, 4, 5, 6],
+      [2, 3],
+      [1, 2, 7, 5, 4],
+      [1, 2, 7, 3, 4],
+      [6, 7, 2, 3],
+      [1, 6, 7, 3, 4],
+      [1, 6, 5, 4, 3, 7],
+      [1, 2, 3],
+      [1, 2, 3, 4, 5, 6, 7],
+      [1, 2, 7, 3, 6]
+    ];
 
-// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-var requestAnimationFrame = (function() {
-  return window.requestAnimationFrame       || 
-         window.webkitRequestAnimationFrame || 
-         window.mozRequestAnimationFrame    || 
-         window.oRequestAnimationFrame      || 
-         window.msRequestAnimationFrame     || 
-         function( callback ){
-           window.setTimeout(callback, 1000 / 60);
-         };
-}());
+    // Socket for timer control 
+    var socket_timer = io('http://<%= data.global_config.app.adminServerIp %>:<%= data.global_config.app.adminServerPort %>/timercontrol');
 
-tick();
-
-function tick() {
-
-  var now = new Date()
-    , elapsed = now - startDate
-    , parts = [];
-
-  parts[0] = '' + Math.floor( elapsed / one_hour );
-  parts[1] = '' + Math.floor( (elapsed % one_hour) / one_minute );
-  parts[2] = '' + Math.floor( ( (elapsed % one_hour) % one_minute ) / one_second );
-
-  parts[0] = (parts[0].length == 1) ? '0' + parts[0] : parts[0];
-  parts[1] = (parts[1].length == 1) ? '0' + parts[1] : parts[1];
-  parts[2] = (parts[2].length == 1) ? '0' + parts[2] : parts[2];
-
-  face.innerText = parts.join(':');
+    var _minutes = document.querySelectorAll('.minutes');
+    var _seconds = document.querySelectorAll('.seconds');
   
-  requestAnimationFrame(tick);
+
+  // Init du timer
+  function setTime(minutes, seconds) {
+    setNumber(_minutes[0], Math.floor(minutes / 10), 1);
+    setNumber(_minutes[1], minutes % 10, 1);
+
+    setNumber(_seconds[0], Math.floor(seconds / 10), 1);
+    setNumber(_seconds[1], seconds % 10, 1);
+  }
   
-}
+  var setNumber = function (digit, number, on) {
+    var segments = digit.querySelectorAll('.segment');
+    var current = parseInt(digit.getAttribute('data-value'));
+  
+    // only switch if number has changed or wasn't set
+    if (!isNaN(current) && current != number) {
+      // unset previous number
+      digitSegments[current].forEach(function (digitSegment, index) {
+        setTimeout(function () {
+          segments[digitSegment - 1].classList.remove('on');
+        }, index * 45);
+      });
+    }
+  
+    if (isNaN(current) || current != number) {
+      // set new number after
+      setTimeout(function () {
+        digitSegments[number].forEach(function (digitSegment, index) {
+          setTimeout(function () {
+            segments[digitSegment - 1].classList.add('on');
+          }, index * 45);
+        });
+      }, 250);
+      digit.setAttribute('data-value', number);
+    }
+  };
+  
+  setTime("88", "88");
+
+
+    socket_timer.on('toclient.timerTick', function(data) {
+      setTime(data.minutes, data.seconds);
+    });
+
+
+  //# sourceURL=pen.js
+
+//
+// Socket for controlling timer
+//
+$("#gameDescription").html('<%= data.gameDescription %>');
+
+});
+
 </script>
 
 <%- include('./partials/footer', { data: data })%>

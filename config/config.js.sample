@@ -67,7 +67,7 @@ module.exports = {
     dbPath : app_root + "/data",
     dbSavePath : app_root + "/data/sav",
     adminServerIp: "192.168.10.50",
-    adminPort: 3000
+    adminServerPort: 3000
    }
 }
 
