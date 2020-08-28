@@ -46,6 +46,13 @@ if (fs.existsSync("./lib/scenario-" + scenario.data().scenarioId + ".js")){
 logger.info(`Starting up monitoring SERVER on '${CONFIG_SERVER.name}'`);
 mon = require('./lib/mon.js')(io, rfid, arduino, scenario, eventEmitter, logger);
 
+const IsAdminServer =  (CONFIG_SERVER.ip == GLOBAL_CONFIG.app.adminServerIp);
+
+const httpPort    = CONFIG_SERVER.port;
+
+var dataForTemplate = {};
+var httpRequests = {};
+
 // ************************************************************************
 // ***********************************************************************$
 //
@@ -65,20 +72,12 @@ mon = require('./lib/mon.js')(io, rfid, arduino, scenario, eventEmitter, logger)
 //  On va dire que c'est le serveur de l'activité "Hardware" qui n'en fiche pas une 
 //  qui va gérer ça. (parallaxe2050-5)
 //
-if (CONFIG_SERVER.ip == GLOBAL_CONFIG.app.adminServerIp) {
+
+if (IsAdminServer) {
   // const timer   = require('./lib/timer')(eventEmitter, logger);
-  router.get('/timer', function(req, res, next) {
-    res.render('../timer', { data: dataForTemplate });
-  })
 }
 // ************************************************************************
 // ************************************************************************
-
-const httpPort    = CONFIG_SERVER.port;
-// var formidable    = require('formidable'); // File upload
-
-var dataForTemplate = {};
-var httpRequests = {};
 
 //------------------------------------------------------------------------
 // Some usefull functions
@@ -360,6 +359,18 @@ router.all('/*', function (req, res, next) {
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({message: `Opération réussie !<br/>L'activité est passée à l'étape '${nextStep}.`, status: 200}));
 })
+
+//-----------------------------------------------------------------------------
+// Specific routes for admin Server (monitoring + Game Timer)
+//-----------------------------------------------------------------------------
+if (IsAdminServer) {
+  router.get('/timer', function(req, res, next) {
+    // var timer = { duration: 1200, gameDescription: "2 fois 10 minutes" };
+    var timer = { duration: 2400, gameDescription: "Session de 40 minutes" };
+    dataForTemplate.timer = timer;
+    res.render('../timer', { data: dataForTemplate });
+  })
+}
 
 //-----------------------------------------------------------------------------
 // Application express
