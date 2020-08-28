@@ -74,7 +74,7 @@ var httpRequests = {};
 //
 
 if (IsAdminServer) {
-  // const timer   = require('./lib/timer')(eventEmitter, logger);
+  const timer   = require('./lib/timer')(io, eventEmitter, logger);
 }
 // ************************************************************************
 // ************************************************************************
@@ -141,7 +141,6 @@ io.on('connection', function(socket) {
       logger.info(' /!\\ Client is disconnected !');
     });
 });
-
 
 //------------------------------------------------------------------------
 // Reading Serial Port (App have to be configure un 'real' mode, see below)

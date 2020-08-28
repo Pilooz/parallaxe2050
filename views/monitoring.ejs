@@ -147,26 +147,20 @@
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
+        <div class="col-md-8">
+            <div class="card mb-8 shadow-sm">
                 <h5 class="card-header">
+                    <span style="float:right;"><img src="/img/bootstrap-icons/stopwatch.svg" alt="" width="32" height="32" title="Chronomètre"></span>
                     <span class="activityTitle">Chronomètre</span>
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        <iframe src="/timer" width="100%" height="400px"></iframe>
+                        <iframe src="/timer" width="100%" height="250px"></iframe>
+                        <a class="btn btn-default controlTimerBtn" id="reset" href="#"><img src="/img/bootstrap-icons/skip-start.svg" alt="" width="32" height="32" title="Reset"></a>&nbsp;
+                        <a class="btn btn-default controlTimerBtn" id="stop" href="#"><img src="/img/bootstrap-icons/stop.svg" alt="" width="32" height="32" title="Stop"></a>&nbsp;
+                        <a class="btn btn-default controlTimerBtn" id="start" href="#"><img src="/img/bootstrap-icons/caret-right.svg" alt="" width="32" height="32" title="Start"></a>&nbsp;
                     </p>
-                </div>
-            </div>
-        </div>
 
-        <div class="col-md-4">
-            <div class="card mb-4 shadow-sm">
-                <h5 class="card-header">
-                    <span class="activityTitle">En ce moment, dans le container...</span>
-                </h5>
-                <div class="card-body colorBg">
-                    <img src="..." class="img-fluid" alt="Webcam Here">
                 </div>
             </div>
         </div>
@@ -288,6 +282,9 @@
 </footer>
 <script>
      $(document).ready(function() {
+        // Socket for timer control 
+        var socket_timer = io('http://<%= data.global_config.app.adminServerIp %>:<%= data.global_config.app.adminServerPort %>/timercontrol');
+
         var popup = $("#overlayResult");
         var title = $("#titleResult #title");
         var msg = $("#messageResult");
@@ -307,6 +304,15 @@
         $(".modeButton").on('click', function() {
             var mode = this.id;
             setGameMode(mode);
+        });
+
+        // Listener sur les controles du timer
+        $(".controlTimerBtn").on('click', function(e) {
+            var action = this.id;
+            var gameMode = "classeroom";
+            console.log('action = '+action);
+
+            socket_timer.emit('toserver.timerControl',  { action: action, gameMode: gameMode } );
         });
 
         // Set game mode on server and on all activities
