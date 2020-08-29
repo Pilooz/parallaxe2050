@@ -309,7 +309,7 @@
         // Listener sur les controles du timer
         $(".controlTimerBtn").on('click', function(e) {
             var action = this.id;
-            var gameMode = "classeroom";
+            var gameMode = "classroom";
             console.log('action = '+action);
 
             socket_timer.emit('toserver.timerControl',  { action: action, gameMode: gameMode } );
