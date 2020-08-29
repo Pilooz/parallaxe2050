@@ -91,7 +91,7 @@ void loop() {
     //Serial.println(F("The NUID tag is:"));
     Serial.print(F("<TAG:"));
     printHex(rfid.uid.uidByte, rfid.uid.size);
-    Serial.print("><READER:1>");
+    Serial.print("/><READER:1/>");
     //Serial.print(F("In dec: "));
     //printDec(rfid.uid.uidByte, rfid.uid.size);
     Serial.println();
