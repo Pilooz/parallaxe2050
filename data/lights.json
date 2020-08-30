@@ -1,0 +1,24 @@
+{
+    "colorsSet" : [
+        { 
+            "list" : 
+            [
+                {"scenarioId": "AdminReseau", "rgb": [255, 0, 116] },
+                {"scenarioId": "BDD",         "rgb": [114, 0, 254] },
+                {"scenarioId": "CodeEtProg",  "rgb": [249, 110, 0] },
+                {"scenarioId": "ComDigitale", "rgb": [23, 218, 126] },
+                {"scenarioId": "Hardware",    "rgb": [0, 198, 249] }
+            ]
+        }, 
+        { 
+            "list" : 
+            [
+                {"scenarioId": "AdminReseau", "rgb": [23, 218, 126] },
+                {"scenarioId": "BDD",         "rgb": [249, 110, 0] },
+                {"scenarioId": "CodeEtProg",  "rgb": [0, 198, 249] },
+                {"scenarioId": "ComDigitale", "rgb": [255, 0, 116] },
+                {"scenarioId": "Hardware",    "rgb": [114, 0, 254] }
+            ]
+        }
+    ]
+}
