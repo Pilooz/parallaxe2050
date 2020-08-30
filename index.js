@@ -74,7 +74,8 @@ var httpRequests = {};
 //
 
 if (IsAdminServer) {
-  // const timer   = require('./lib/timer')(eventEmitter, logger);
+  const lights   = require('./lib/lights-control')(GLOBAL_CONFIG, io, scenario, eventEmitter, logger);
+  const timer   = require('./lib/timer')(io, eventEmitter, logger);
 }
 // ************************************************************************
 // ************************************************************************
@@ -141,7 +142,6 @@ io.on('connection', function(socket) {
       logger.info(' /!\\ Client is disconnected !');
     });
 });
-
 
 //------------------------------------------------------------------------
 // Reading Serial Port (App have to be configure un 'real' mode, see below)
@@ -365,9 +365,6 @@ router.all('/*', function (req, res, next) {
 //-----------------------------------------------------------------------------
 if (IsAdminServer) {
   router.get('/timer', function(req, res, next) {
-    // var timer = { duration: 1200, gameDescription: "2 fois 10 minutes" };
-    var timer = { duration: 2400, gameDescription: "Session de 40 minutes" };
-    dataForTemplate.timer = timer;
     res.render('../timer', { data: dataForTemplate });
   })
 }
