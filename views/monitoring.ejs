@@ -17,29 +17,29 @@
         <script href="/bootstrap/dist/js/bootstrap.min.js"></script>
 
  <style>
-    .adminReseauBg{
-        background-color: rgb(115, 7, 177);
+    .AdminReseauBg{
+        /* background-color: rgb(115, 7, 177); */
         color:white;
     }
     
     .BDDBg{
-        background-color: rgb(194, 8, 251);
+        /* background-color: rgb(194, 8, 251); */
         color:white;
     }
     
     .ComDigitaleBg{
-        background-color: rgb(215, 0, 116);
+        /* background-color: rgb(215, 0, 116); */
         color:white;
     }
 
     .CodeEtProgBg{
-        background-color: rgb(249, 110, 0);
+        /* background-color: rgb(249, 110, 0); */
         color:white;
     }
 
 
     .HardwareBg{
-        background-color: rgb(230, 25, 131);
+        /* background-color: rgb(230, 25, 131); */
         color:white;
     }
 
@@ -172,7 +172,7 @@
 <% data.global_config.servers.forEach(function(server) { %>
         <div class="col-md-4">
             <div id="<%= server.id %>" class="card mb-4 shadow-sm">
-                <h5 class="card-header <%= server.id %>Bg">
+                <h5 class="card-header">
                     <span class="activityTitle"><%= server.description %></span>
                     <span class="toolbar">
                         <a id="restart" href="#" class="controlActivity">
@@ -337,17 +337,29 @@
             $("#<%= server.id %> #groupcode").html(data.group);
         });
 
+        // Receiving Current Step of game
         socket_<%= server.id %>.on('toclient.newGameStep_<%= server.id %>', function(data) {
             $("#<%= server.id %> #stepId").html(data.stepId);
             $("#<%= server.id %> #totalsteps").html(data.totalSteps + " étapes au total.");
         });
 
+        // receiving solutions for current step
         socket_<%= server.id %>.on('toclient.solutionsForStep_<%= server.id %>', function(data) {
             var soluce = data.solutions[0].responses;
             nextStep_<%= server.id %> = data.nextStep;
             if (soluce.length == 0) soluce = "Pas de solution pour cette étape.";
             else soluce = JSON.stringify(soluce, null, 4);
             $("#<%= server.id %> #solutions").html(soluce);
+        });
+
+        // Lights control and color data
+        socket_<%= server.id %>.on('toclient.colorsSets_<%= server.id %>', function(data) {
+            data.colorsSet.forEach(function(c){
+                var RGBcolors = "rgb("+c.rgb[0]+", "+c.rgb[1]+", "+c.rgb[2]+");";
+                // console.log(c.scenarioId + "Bg => " + RGBcolors);
+                // $("#"+c.scenarioId).style("baground-color:" + RGBcolors + ";");
+                $("#"+c.scenarioId + " .card-header").attr("style", "background-color: "+RGBcolors+";" );
+            });
         });
 
         //
