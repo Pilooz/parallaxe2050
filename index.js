@@ -75,7 +75,7 @@ var httpRequests = {};
 
 if (IsAdminServer) {
   const lights   = require('./lib/lights-control')(GLOBAL_CONFIG, io, scenario, eventEmitter, logger);
-  const timer   = require('./lib/timer')(io, eventEmitter, logger);
+  const timer   = require('./lib/timer')(GLOBAL_CONFIG, io, eventEmitter, logger);
 }
 // ************************************************************************
 // ************************************************************************
