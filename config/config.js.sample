@@ -77,7 +77,15 @@ module.exports = {
     refresh: 4000,
     //iface: // optional string IP address - bind udp socket to specific network interface
     sendAll: true // sends always the full DMX universe instead of only changed values. Default false     
-   }
+   },
+
+  // Parameters for the whole container
+  container: {
+  gameMode : [
+      { name: "classroom", defaultTimer: 1200, lightChanges : "HALFTIME" },  // 20 min.
+      { name: "classical", defaultTimer: 2700, lightChanges : "NEVER" }   // 45 min.
+    ]
+  }
 }
 
 
