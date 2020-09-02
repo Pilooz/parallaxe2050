@@ -346,7 +346,7 @@ router.all('/*', function (req, res, next) {
   io.emit('toclient.refreshNow');
 
   res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify({message: `Opération réussie !<br/>L'activité est revenue à l'étape '${firstStep}.`, status: 200}));
+  res.end(JSON.stringify({message: `Opération réussie !<br/>L'activité est revenue à l'étape '${firstStep}'.`, status: 200}));
 })
 
 // Forcing to next stetp
@@ -358,7 +358,7 @@ router.all('/*', function (req, res, next) {
   io.emit('toclient.refreshNow');
 
   res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify({message: `Opération réussie !<br/>L'activité est passée à l'étape '${nextStep}.`, status: 200}));
+  res.end(JSON.stringify({message: `Opération réussie !<br/>L'activité est passée à l'étape '${nextStep}'.`, status: 200}));
 })
 
 //-----------------------------------------------------------------------------
