@@ -23,6 +23,7 @@
     "bootstrap": "^4.5.2",
     "bootstrap-icons": "^1.0.0-alpha5",
     "bootstrap-switch": "^3.4.0",
+    "bootstrap-toggle": "^2.2.2",
     "bootswatch": "^4.5.2",
     "bufferutil": "^4.0.1",
     "cookie-parser": "^1.4.5",
