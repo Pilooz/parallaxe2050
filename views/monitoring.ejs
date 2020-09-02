@@ -17,6 +17,9 @@
 
         <script href="/bootstrap/dist/js/bootstrap.min.js"></script>
 
+        <link href="/bootstrap-toggle/css/bootstrap-toggle.min.css" rel="stylesheet">
+        <script src="/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>        
+
  <style>
     .AdminReseauBg, .BDDBg, .ComDigitaleBg, .CodeEtProgBg .HardwareBg{
         color:white;
@@ -33,6 +36,15 @@
 
     .controlActivity, .controlActivity:hover {
         color:white;
+    }
+
+    /********* formulaire de mode de jeu ************/
+    #gameModeCard div.alert {
+        margin-top:10px;
+    }
+
+    .gameMode {
+        float:right;
     }
 
     /********* Popup de résultats OK/KO ************/
@@ -84,6 +96,8 @@
          margin-top: 10px;
      }
 
+
+
 </style>
 <body>
     <header>
@@ -117,12 +131,14 @@
     <div class="row">
         
         <div class="col-md-4">
-            <div class="card mb-4 border-light shadow-sm">
+            <div id="gameModeCard" class="card mb-4 border-light shadow-sm">
                 <h5 class="card-header">
                     <span class="activityTitle">Mode de jeu</span>
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
+                        <input id="gameModeChk" type="checkbox" class="" checked data-toggle="toggle" data-on="Educatif" data-off="Classique" data-onstyle="primary" data-offstyle="info">
+
                             <h4>Educatif</h4>
                             <div class="alert alert-primary" role="alert">
                                 <em>Le container est paramétré pour une classe. Les session de jeu sont de 20 minutes.</em>
@@ -325,6 +341,7 @@
      $(document).ready(function() {
         // Socket for timer control 
         var socket_timer = io('http://<%= data.global_config.app.adminServerIp %>:<%= data.global_config.app.adminServerPort %>/timercontrol');
+        var gameMode = "classroom";
 
         var popup = $("#overlayResult");
         var header = $("#popupResult")
@@ -352,10 +369,16 @@
         // Listener sur les controles du timer
         $(".controlTimerBtn").on('click', function(e) {
             var action = this.id;
-            var gameMode = "classroom";
             console.log('action = '+action);
 
             socket_timer.emit('toserver.timerControl',  { action: action, gameMode: gameMode } );
+        });
+
+        // Listener sur le le boutons gameMode
+        $('#gameModeChk').on('change', function(){
+            gameMode = ( $(this).prop('checked') )? "classroom" : "classical";
+            console.log('gameMode = '+ gameMode);
+            socket_timer.emit('toserver.timerControl',  { action: "set", gameMode: gameMode } );
         });
 
         // Set game mode on server and on all activities
