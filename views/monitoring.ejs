@@ -370,7 +370,6 @@
         $(".controlTimerBtn").on('click', function(e) {
             var action = this.id;
             console.log('action = '+action);
-
             socket_timer.emit('toserver.timerControl',  { action: action, gameMode: gameMode } );
         });
 
@@ -381,10 +380,12 @@
             socket_timer.emit('toserver.timerControl',  { action: "set", gameMode: gameMode } );
         });
 
-        // Set game mode on server and on all activities
-        function setGameMode(mode) {
-
-        }
+        // Listen to game server directive (setter on connection)
+        socket_timer.on('toclient.gameMode', function(data){
+            gameMode = data.gameMode;
+            var chkbx_state = (gameMode == "classroom") ? true : false;
+            $('#gameModeChk').prop('checked', chkbx_state).change()
+        });
 
         // loop on each game
         // [ ->
