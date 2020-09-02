@@ -81,10 +81,11 @@ module.exports = {
 
   // Parameters for the whole container
   container: {
-  gameMode : [
-      { name: "classroom", defaultTimer: 1200, lightChanges : "HALFTIME" },  // 20 min.
-      { name: "classical", defaultTimer: 2700, lightChanges : "NEVER" }   // 45 min.
-    ]
+    gameMode : [
+        { name: "classroom", defaultTimer: 1200, lightChanges : "HALFTIME" },  // 20 min.
+        { name: "classical", defaultTimer: 2700, lightChanges : "NEVER" }   // 45 min.
+      ],
+    second: 995 // Millisecond between tow ticks of the timer (this is not exactly 1000ms because of the execution time)  
   }
 }
 
