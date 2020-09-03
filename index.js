@@ -322,6 +322,10 @@ router.all('/*', function (req, res, next) {
 // Monitoring of all the systems
 //
 .get('/monitoring', function(req,res,next){
+  if (!IsAdminServer) {
+    // Redirect vers le serveur d'admin
+    res.redirect(`http://${GLOBAL_CONFIG.app.adminServerIp}:${GLOBAL_CONFIG.app.adminServerPort}/monitoring`);
+  }
     res.render( '../monitoring', { data: dataForTemplate });
 })
 
