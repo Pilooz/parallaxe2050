@@ -110,18 +110,25 @@ function setup_scenario_environment() {
   logger.info(`Current Team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
   var set = scenario.getSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
   if (set > -1) {
-    dataForTemplate.solutionsSet = set;
-    logger.info(`Solutions set #${dataForTemplate.solutionsSet}`);
+    if (scenario.getOldSolutionsSet() != set) {
+      // On emet les events qui si le set de solution change de 1 à 2 ou de 2 à 1.
+      // Si pas de solution on ignore
+      // si même solution on ignore
+      dataForTemplate.solutionsSet = set;
+      logger.info(`Solutions set #${dataForTemplate.solutionsSet}`);
+      eventEmitter.emit('monitoring.newGameSession', { tag: dataForTemplate.currentRfidTag, group: rfid.getCurrentGroup() + rfid.getCurrentSubGroup() });
+      eventEmitter.emit('monitoring.solutionsForStep', { solutions: scenario.getCurrentStep().solutions.filter(s => s.set == scenario.getSolutionsSet()), 
+                                                     set: set,
+                                                     nextStep: scenario.getCurrentStep().transitions[0].id || null });
+      scenario.setCurrentStepId(scenario.data().steps[0].stepId);
+      io.emit('toclient.refreshNow');
+    }    
   } else {
     // Wrong badge on wrong device.
     // emit a socket to teel the client to refresh on error page
     // io.emit('toclient.errorOnBadge', {data: { errorMsg : "WRONG_CODE_ON_WRONG_DEVICE", errorPage, "/badgeError" } });
     // @TODO : do something clever here !!! 
   }
-  eventEmitter.emit('monitoring.newGameSession', { tag: dataForTemplate.currentRfidTag, group: rfid.getCurrentGroup() + rfid.getCurrentSubGroup() });
-  eventEmitter.emit('monitoring.solutionsForStep', { solutions: scenario.getCurrentStep().solutions.filter(s => s.set == scenario.getSolutionsSet()), 
-                                                     set: set,
-                                                     nextStep: scenario.getCurrentStep().transitions[0].id || null });
 }
 //------------------------------------------------------------------------
 // Init Socket to transmit Serial data to HTTP client
@@ -158,16 +165,11 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
 
   // Parsing RFID Tag
   parser.on('data', function(msg){
-    var oldSubGroup = rfid.getCurrentSubGroup();
     // If data is a tag
     rfid.extractTag(msg);
     if (rfid.getCurrentCode() != "") {
       rfid.extractReader(msg);
       setup_scenario_environment();
-      // If subgroup is different from previous one, re-init activity
-      if (oldSubGroup != rfid.getCurrentSubGroup()) {
-        scenario.setCurrentStepId("step-1");
-      }
     }
   });
 
