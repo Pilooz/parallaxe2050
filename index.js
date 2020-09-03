@@ -116,7 +116,7 @@ function setup_scenario_environment() {
       // si même solution on ignore
       dataForTemplate.solutionsSet = set;
       logger.info(`Solutions set #${dataForTemplate.solutionsSet}`);
-      eventEmitter.emit('monitoring.newGameSession', { tag: dataForTemplate.currentRfidTag, group: rfid.getCurrentGroup() + rfid.getCurrentSubGroup() });
+      eventEmitter.emit('monitoring.newGameSession', { tag: dataForTemplate.currentRfidTag, group: rfid.getCurrentGroup() + rfid.getCurrentSubGroup(), startTime: Date.now() });
       eventEmitter.emit('monitoring.solutionsForStep', { solutions: scenario.getCurrentStep().solutions.filter(s => s.set == scenario.getSolutionsSet()), 
                                                      set: set,
                                                      nextStep: scenario.getCurrentStep().transitions[0].id || null });
