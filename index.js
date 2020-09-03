@@ -365,14 +365,13 @@ router.all('/*', function (req, res, next) {
   res.end(JSON.stringify({message: `Opération réussie !<br/>L'activité est passée à l'étape '${nextStep}'.`, status: 200}));
 })
 
-//-----------------------------------------------------------------------------
-// Specific routes for admin Server (monitoring + Game Timer)
-//-----------------------------------------------------------------------------
-if (IsAdminServer) {
-  router.get('/timer', function(req, res, next) {
+.get('/timer', function(req, res, next) {
+    if (!IsAdminServer) {
+      // Redirect vers le serveur d'admin
+      res.redirect(`http://${GLOBAL_CONFIG.app.adminServerIp}:${GLOBAL_CONFIG.app.adminServerPort}/timer`);
+    }
     res.render('../timer', { data: dataForTemplate });
   })
-}
 
 //-----------------------------------------------------------------------------
 // Application express
