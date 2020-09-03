@@ -158,11 +158,16 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
 
   // Parsing RFID Tag
   parser.on('data', function(msg){
+    var oldSubGroup = rfid.getCurrentSubGroup();
     // If data is a tag
     rfid.extractTag(msg);
     if (rfid.getCurrentCode() != "") {
       rfid.extractReader(msg);
       setup_scenario_environment();
+      // If subgroup is different from previous one, re-init activity
+      if (oldSubGroup != rfid.getCurrentSubGroup()) {
+        scenario.setCurrentStepId("step-1");
+      }
     }
   });
 
