@@ -257,9 +257,9 @@
                         </table>
                     </p>
 
-                    <!-- <div class="d-flex flex-row-reverse">
-                    <p class="text-muted">Activité en cours depuis  9 mins</p>
-                    </div> -->
+                    <div class="d-flex flex-row-reverse">
+                    <p id="elapsedTime" class="text-muted"></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -397,11 +397,20 @@
         // ------------------------------------------------------------------
         // Socket listening
         // ------------------------------------------------------------------
-
+        var updTimeOut<%= server.id %> = null;
+        function updateTimeElapsed<%= server.id %>(ts){
+            var elapsedSeconds = Math.floor((Date.now() - ts)/1000);
+            var elapsedMinutes = Math.floor((elapsedSeconds/60));
+            var timeDisplay = ( elapsedMinutes >= 2 ) ? elapsedMinutes + " minutes" : elapsedSeconds + " secondes.";
+            $("#<%= server.id %> #elapsedTime").html(timeDisplay);
+            updTimeOut<%= server.id %> = setTimeout( updateTimeElapsed<%= server.id %>, 10000 );
+        }
         // Receiving new rfid badge
         socket_<%= server.id %>.on('toclient.newGameSession_<%= server.id %>', function(data) {
+            clearTimeout(updTimeOut<%= server.id %>);
             $("#<%= server.id %> #rfidcode").html(data.tag);
             $("#<%= server.id %> #groupcode").html(data.group);
+            updateTimeElapsed<%= server.id %>(data._startTime);
         });
 
         // Receiving Current Step of game
@@ -414,7 +423,7 @@
         socket_<%= server.id %>.on('toclient.solutionsForStep_<%= server.id %>', function(data) {
             var soluce = data.solutions[0].responses;
             nextStep_<%= server.id %> = data.nextStep;
-            if (soluce.length == 0) soluce = "Pas de solution pour cette étape.";
+            if (soluce == NULL || soluce.length == 0) soluce = "Pas de solution pour cette étape.";
             else soluce = JSON.stringify(soluce, null, 4);
             $("#<%= server.id %> #solutions").html(soluce);
         });
