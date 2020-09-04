@@ -6,7 +6,7 @@
 #
 
 # Set really full screen and lock some keyboard keys
-# ratpoison &
+ratpoison &
 
 # Launch firefox for ever
 sleep 3s; #Wait until the node.js server is fully operational
