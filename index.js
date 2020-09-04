@@ -124,7 +124,7 @@ function setup_scenario_environment() {
       // Emit a event to monitoring lib that pushes data to monitoring client
       eventEmitter.emit('monitoring.newGameSession', { tag: dataForTemplate.currentRfidTag, group: rfid.getCurrentGroup() + rfid.getCurrentSubGroup(), startTime: Date.now() });
       eventEmitter.emit('monitoring.newGameStep', {stepId: firsStep, totalSteps: scenario.data().steps.length});
-      eventEmitter.emit('monitoring.solutionsForStep', { solutions: scenario.getCurrentStep().solutions.filter(s => s.set == scenario.getSolutionsSet()), set: set, nextStep: scenario.getCurrentStep().transitions[0].id || null });
+      eventEmitter.emit('monitoring.solutionsForStep', { solutions: scenario.getCurrentStep().solutions.filter(s => s.set == set), set: set, nextStep: scenario.getCurrentStep().transitions[0].id || null });
       eventEmitter.emit('monitoring.colorsSets', {colorsSet: set});
 
       // Say to the client application to refresh now
