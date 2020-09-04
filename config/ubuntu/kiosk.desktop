@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Parallaxe2050
+Comment=Kiosk pour les dispositifs parallaxe2050
+Exec=/home/parallaxe2050/.xsession
+X-Ubuntu-Gettext-Domain=<gnome-session-3.0>
