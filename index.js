@@ -116,11 +116,18 @@ function setup_scenario_environment() {
       // si même solution on ignore
       dataForTemplate.solutionsSet = set;
       logger.info(`Solutions set #${dataForTemplate.solutionsSet}`);
+    
+      // Set to FIRST step of the scenario.
+      var firsStep = scenario.data().steps[0].stepId;
+      scenario.setCurrentStepId(firsStep);
+
+      // Emit a event to monitoring lib that pushes data to monitoring client
       eventEmitter.emit('monitoring.newGameSession', { tag: dataForTemplate.currentRfidTag, group: rfid.getCurrentGroup() + rfid.getCurrentSubGroup(), startTime: Date.now() });
-      eventEmitter.emit('monitoring.solutionsForStep', { solutions: scenario.getCurrentStep().solutions.filter(s => s.set == scenario.getSolutionsSet()), 
-                                                     set: set,
-                                                     nextStep: scenario.getCurrentStep().transitions[0].id || null });
-      scenario.setCurrentStepId(scenario.data().steps[0].stepId);
+      eventEmitter.emit('monitoring.newGameStep', {stepId: firsStep, totalSteps: scenario.data().steps.length});
+      eventEmitter.emit('monitoring.solutionsForStep', { solutions: scenario.getCurrentStep().solutions.filter(s => s.set == scenario.getSolutionsSet()), set: set, nextStep: scenario.getCurrentStep().transitions[0].id || null });
+      eventEmitter.emit('monitoring.colorsSets', {colorsSet: set});
+
+      // Say to the client application to refresh now
       io.emit('toclient.refreshNow');
     }    
   } else {
