@@ -108,7 +108,7 @@ function setup_scenario_environment() {
   dataForTemplate.scenarioId = scenario.data().scenarioId;
   // get the set of solutions for the group/subgroup team
   logger.info(`Current Team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
-  var set = scenario.getSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
+  var set = scenario.setSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
   if (set > -1) {
     if (scenario.getOldSolutionsSet() != set) {
       // On emet les events qui si le set de solution change de 1 à 2 ou de 2 à 1.
