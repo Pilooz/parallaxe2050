@@ -420,7 +420,8 @@
         // Receiving Current Step of game
         socket_<%= server.id %>.on('toclient.newGameStep_<%= server.id %>', function(data) {
             $("#<%= server.id %> #stepId").html(data.stepId);
-            $("#<%= server.id %> #totalsteps").html(data.totalSteps + " étapes au total.");
+            var etapesMsg = (etapes == 0) ? "En attente de scan RFID..." : data.totalSteps + " étapes au total.";
+            $("#<%= server.id %> #totalsteps").html(etapes);
         });
 
         // receiving solutions for current step
