@@ -360,7 +360,7 @@ router.all('/*', function (req, res, next) {
   res.end(JSON.stringify({message: `Opération réussie !<br/>L'activité est revenue à l'étape '${firstStep}'.`, status: 200}));
 })
 
-// Forcing to next stetp
+// Forcing to next step
 .get("/api/nextStep", function(req, res, next){
   logger.info("Going to next activity step from admin page...");
   var nextStep = scenario.getCurrentStep().transitions[0].id;
@@ -370,6 +370,10 @@ router.all('/*', function (req, res, next) {
 
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({message: `Opération réussie !<br/>L'activité est passée à l'étape '${nextStep}'.`, status: 200}));
+})
+
+.get('/api/refresh', function(req, res, next){
+  io.emit('toclient.refreshNow');
 })
 
 .get('/timer', function(req, res, next) {
