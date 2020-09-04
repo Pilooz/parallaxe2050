@@ -1,22 +1,12 @@
 #!/bin/bash
 # 
-# Session kiosk pour l'application Quai des Energies
+# Session kiosk pour parallaxe2050
 #
-# ce fichier est à installer dans home de l'utuilisateur
+# Ce fichier est à installer dans home de l'utilisateur
 #
 
 # Set really full screen and lock some keyboard keys
-#ratpoison &
-
-# hide mouse
-# unclutter -idle 1 &
-
-# Minimize TeamViewer Window
-#/home/cnr/minimize_teamviewer.sh &
-#winTV=`xdotool search --name "TeamViewer"`
-#echo $winTV > /tmp/tv-id.log
-#xdotool windowfocus $winTV
-#xdotool windowminimize $winTV
+# ratpoison &
 
 # Launch firefox for ever
 sleep 3s; #Wait until the node.js server is fully operational
