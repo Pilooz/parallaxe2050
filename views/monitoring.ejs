@@ -408,8 +408,9 @@
 
         // updating <%= server.id %> uptime activity
         var updTimeOut_<%= server.id %> = null;
-        function updateTimeElapsed_<%= server.id %>(ts){
-            var elapsedSeconds = Math.floor((Date.now() - ts)/1000);
+        var startTime_<%= server.id %> = null;
+        function updateTimeElapsed_<%= server.id %>(){
+            var elapsedSeconds = Math.floor((Date.now() - startTime_<%= server.id %>)/1000);
             var elapsedMinutes = Math.floor((elapsedSeconds/60));
             if (!isNaN(elapsedSeconds)) {
                 var timeDisplay = ( elapsedMinutes >= 2 ) ? elapsedMinutes + " minutes" : elapsedSeconds + " secondes.";
@@ -420,9 +421,10 @@
         // Receiving new rfid badge
         socket_<%= server.id %>.on('toclient.newGameSession_<%= server.id %>', function(data) {
             clearTimeout(updTimeOut_<%= server.id %>);
+            startTime_<%= server.id %> = data.startTime;
             $("#<%= server.id %> #rfidcode").html(data.tag);
             $("#<%= server.id %> #groupcode").html(data.group);
-            updateTimeElapsed_<%= server.id %>(data._startTime);
+            updateTimeElapsed_<%= server.id %>();
         });
 
         // Receiving Current Step of game
