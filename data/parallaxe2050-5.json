@@ -28,14 +28,14 @@
         },
 
         {
-            "stepId" : "step-3",
+            "stepId" : "step-2",
             "title" : "Base de données des serveurs",
             "template" : "hardware-video",
             "medias" : [],
             "text" : "test2",
             "transitions" :
             [
-                { "id" : "step-2", "condition" : "" }
+                { "id" : "step-3", "condition" : "" }
             ],
             "solutions" : 
             [
