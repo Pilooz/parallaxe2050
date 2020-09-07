@@ -412,11 +412,11 @@
         function updateTimeElapsed_<%= server.id %>(){
             var elapsedSeconds = Math.floor((Date.now() - startTime_<%= server.id %>)/1000);
             var elapsedMinutes = Math.floor((elapsedSeconds/60));
-            if (!isNaN(startTime_<%= server.id %>) || startTime_<%= server.id %> != 0) {
+            if (startTime_<%= server.id %> != null) {
                 var timeDisplay = ( elapsedMinutes >= 2 ) ? elapsedMinutes + " minutes" : elapsedSeconds + " secondes.";
                 $("#<%= server.id %> #elapsedTime").html(timeDisplay);
+                updTimeOut_<%= server.id %> = setTimeout( updateTimeElapsed_<%= server.id %>, 10000 );
             }
-            updTimeOut_<%= server.id %> = setTimeout( updateTimeElapsed_<%= server.id %>, 10000 );
         }
         // Receiving new rfid badge
         socket_<%= server.id %>.on('toclient.newGameSession_<%= server.id %>', function(data) {
@@ -436,7 +436,6 @@
 
         // receiving solutions for current step
         socket_<%= server.id %>.on('toclient.solutionsForStep_<%= server.id %>', function(data) {
-            console.log(data);
             var soluce = (data.solutions) ? data.solutions[0].responses : "";
             nextStep_<%= server.id %> = data.nextStep;
             if (soluce || soluce.length == 0) soluce = "Pas de solution pour cette étape.";
