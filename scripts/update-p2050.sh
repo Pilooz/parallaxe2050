@@ -22,6 +22,7 @@ current_commit=""
 new_commit=""
 etape=0
 line="\e[39m-----------------------------------------------"
+server=$(hostname)
 
 #---------------------------------------------------------------
 # Functions
@@ -29,7 +30,7 @@ line="\e[39m-----------------------------------------------"
 # Logging
 etape () {
   echo -e $line
-  echo -e "\e[96m$etape. $1\e[39m"
+  echo -e "\e[96m$etape. $1\e[39m -> $server"
   echo -e $line
   etape=$((etape+1))
 }
