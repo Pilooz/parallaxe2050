@@ -412,7 +412,7 @@
         function updateTimeElapsed_<%= server.id %>(){
             var elapsedSeconds = Math.floor((Date.now() - startTime_<%= server.id %>)/1000);
             var elapsedMinutes = Math.floor((elapsedSeconds/60));
-            if (!isNaN(elapsedSeconds)) {
+            if (!isNaN(startTime_<%= server.id %>) || startTime_<%= server.id %> != 0) {
                 var timeDisplay = ( elapsedMinutes >= 2 ) ? elapsedMinutes + " minutes" : elapsedSeconds + " secondes.";
                 $("#<%= server.id %> #elapsedTime").html(timeDisplay);
             }
