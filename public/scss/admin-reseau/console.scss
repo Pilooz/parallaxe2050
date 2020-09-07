@@ -33,26 +33,37 @@ body {
     80%  { background-color: transparent; }
     100% { background-color: rgb(20, 175, 20); }
 }*/
+
 /***************************************/
 /***************************************/
 /* typing */
 /***************************************/
-.console input {
-  display: block;
-  width: 100%;
-  border: none;
-  /*color: purple;*/
-  color: purple;
-  background-color: transparent;
-  text-shadow: 0 0 5px purple, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #fff, 0 0 55px #fff, 0 0 75px #fff; }
-  .console input:focus, .console input:hover {
-    outline: none;
-    border: none; }
-  .console input:before {
-    content: ">"; }
-  .console input.unfocusable {
-    background: transparent; }
-    .console input.unfocusable:before {
-      content: ""; }
+.console {
+    input {
+        display: block;
+        width: 100%;
+        border: none;
+        /*color: purple;*/
+        color: purple;
+        background-color: transparent;
+        text-shadow: 0 0 5px purple, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #fff, 0 0 55px #fff, 0 0 75px #fff;
 
-/*# sourceMappingURL=style.css.map */
+        &:focus,
+        &:hover {
+            outline: none;
+            border: none;
+        }
+
+        &:before {
+            content: ">";
+        }
+
+        &.unfocusable {
+            background: transparent;
+
+            &:before {
+                content: "";
+            }
+        }
+    }
+}
