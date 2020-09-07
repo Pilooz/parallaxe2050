@@ -35,16 +35,17 @@ const logger = require('./lib/logger')(scenario.data().scenarioId);
 // Rfid parsing functions
 var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG, logger);
 // Arduino stuffs 
-var arduino        = require('./lib/arduino.js')(GLOBAL_CONFIG, logger, eventEmitter);
+var arduino1        = require('./lib/arduino.js')(GLOBAL_CONFIG.arduino1, logger, eventEmitter);
+var arduino2        = require('./lib/arduino.js')(GLOBAL_CONFIG.arduino2, logger, eventEmitter);
 
 // Loading Specific librairy for the specific scenario
 var scenario_specifics;
 if (fs.existsSync("./lib/scenario-" + scenario.data().scenarioId + ".js")){
-  scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, rfid, arduino, scenario, eventEmitter, logger);
+  scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, rfid, arduino1, arduino2, scenario, eventEmitter, logger);
 }
 // Monitoring system
 logger.info(`Starting up monitoring SERVER on '${CONFIG_SERVER.name}'`);
-mon = require('./lib/mon.js')(io, rfid, arduino, scenario, eventEmitter, logger);
+mon = require('./lib/mon.js')(io, scenario, eventEmitter, logger);
 
 const IsAdminServer =  (CONFIG_SERVER.ip == GLOBAL_CONFIG.app.adminServerIp);
 
