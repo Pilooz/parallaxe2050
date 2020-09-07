@@ -415,7 +415,7 @@
             if (startTime_<%= server.id %> != null) {
                 var timeDisplay = ( elapsedMinutes >= 2 ) ? elapsedMinutes + " minutes" : elapsedSeconds + " secondes.";
                 $("#<%= server.id %> #elapsedTime").html(timeDisplay);
-                updTimeOut_<%= server.id %> = setTimeout( updateTimeElapsed_<%= server.id %>, 10000 );
+                updTimeOut_<%= server.id %> = setTimeout( updateTimeElapsed_<%= server.id %>, ( elapsedMinutes >= 2 ) ? 60000 : 5000 );
             }
         }
         // Receiving new rfid badge

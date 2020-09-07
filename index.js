@@ -208,12 +208,12 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
   // scenario.setCurrentStepId("step-1");
   // Testing for group A4 49426960 (énigme "Com digitale" ou énigme "Admin réseau")
-  rfid.extractTag("<TAG:49426960/><READER:1/>");
-  rfid.extractReader("<TAG:49426960/><READER:1/>");
+  // rfid.extractTag("<TAG:49426960/><READER:1/>");
+  // rfid.extractReader("<TAG:49426960/><READER:1/>");
   // scenario.setCurrentStepId("step-1");
   // // Testing for group A5 5E68811A (énigme "Admin réseau" ou énigme "Com digitale")
-  // rfid.extractTag("<TAG:5E68811A/><READER:1/>");
-  // rfid.extractReader("<TAG:5E68811A/><READER:1/>");
+  rfid.extractTag("<TAG:5E68811A/><READER:1/>");
+  rfid.extractReader("<TAG:5E68811A/><READER:1/>");
   scenario.setCurrentStepId("step-1");
 
   // Testing for group B
