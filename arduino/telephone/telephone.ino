@@ -115,6 +115,7 @@ void loop() {
     if ( myMP3.isPlaying()) {
       //myMP3.reset();
       myMP3.pause();
+      message.send("MSG", "HANGUP");
     }
   }
 
