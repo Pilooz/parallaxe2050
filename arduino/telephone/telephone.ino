@@ -43,6 +43,7 @@ const long between_ring = 200;
 const long end_ring_cycle = 3 * between_ring;
 long ringInterval = between_ring; // intervalle entre 2 sonneries en ms.
 int ringCount = 0;
+boolean has_already_played = false; // True quand la track a été jouée au moins une fois.
 
 //
 // Faire sonner le téléphone
@@ -110,11 +111,17 @@ void loop() {
       stopRinging();
       myMP3.play(track_number);
       message.send("MSG", "Playing track #" + String(track_number));
+      has_already_played = true;
     }
   } else { // Le téléphone est raccroché
     if ( myMP3.isPlaying()) {
       //myMP3.reset();
       myMP3.pause();
+      // Si on a déja écouté la track alors on envoie HANGUP quand on reccroche
+      // Ca évite de l'envoyer tout le temps quant on reset le téléphone (message RESET)
+      if ( has_already_played ) {
+        message.send("MSG", "HANGUP");
+      }
     }
   }
 
@@ -161,6 +168,7 @@ void loop() {
     if (message.val() == "RESET") {
       stopRinging();
       track_number = 1;
+      has_already_played = false;
       myMP3.reset();
       message.ack_ok();
     }
