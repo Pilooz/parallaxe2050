@@ -7,7 +7,7 @@
         {
             "stepId" : "step-1",
             "title" : "Com Digitale",
-            "template" : "knooter",
+            "template" : "ringing",
             "medias" : [],
             "text" : "test1",
             "transitions" :
@@ -29,8 +29,8 @@
 
         {
             "stepId" : "step-2",
-            "title" : "Temporaire",
-            "template" : "temp",
+            "title" : "knooter",
+            "template" : "knooter",
             "medias" : [],
             "text" : "test2",
             "transitions" :
