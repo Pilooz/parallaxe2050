@@ -1,5 +1,6 @@
 #include <SPI.h>
 #include <MFRC522.h>
+#include "../../lib-protocole-com/src/protocole_parallaxe2050.h"
 
 #define SS_PIN 10
 #define RST_PIN 9
@@ -7,6 +8,8 @@
 MFRC522 rfid(SS_PIN, RST_PIN); // Instance of the class
 
 MFRC522::MIFARE_Key key; 
+
+ParallaxeCom message;
 
 // Init array that will store new NUID 
 byte nuidPICC[4];
@@ -19,6 +22,7 @@ void setup() {
   for (byte i = 0; i < 6; i++) {
     key.keyByte[i] = 0xFF;
   }
+  message.send("MSG", "READY");
 }
  
 void loop() {
@@ -62,6 +66,19 @@ void loop() {
 
   // Stop encryption on PCD
   rfid.PCD_StopCrypto1();
+  if (message.isKey("CMD")) {
+    if (message.val() == "G_LED") {
+        // toggle the green led on 
+        delay(500);
+        // toggle the green led off
+    }
+    if (message.val() == "R_LED") {
+      // toggle the red led on 
+      delay(500);
+      // toggle the red led off
+    }
+    message.ack_ok();
+  }
 }
 
 
@@ -73,4 +90,8 @@ void printHex(byte *buffer, byte bufferSize) {
     Serial.print(buffer[i] < 0x10 ? "0" : "");
     Serial.print(buffer[i], HEX);
   }
+}
+
+void serialEvent() {
+  message.receive();
 }
