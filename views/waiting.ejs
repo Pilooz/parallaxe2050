@@ -17,14 +17,41 @@
 
         <script href="/bootstrap/dist/js/bootstrap.min.js"></script>
         <style>
-            #message {
-            }
+        body {
+           background-color:rgb(<%- data.currentBgColor[0] %>, <%- data.currentBgColor[1] %>, <%- data.currentBgColor[2] %>);
+        }
+         .message {
+           margin-top:20%;
+           margin-bottom:20%;
+           text-align:center;
+         }
         </style>
 
 <%- include('./partials/header', { data: data }) %>
-
-    <h1 id="message">
-        Attente d'un scan RFID...
-    </h1>
-
+<main role="main" class="container-fluid">
+     <div class="row">
+     </div>
+     <div class="row">
+         <div class="col-md-2"></div>
+         <div class="col-md-9 message">
+		<h1></h1>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+</main>
+<script>
+$(document).ready(function(){
+  const nextStep = "<%- data.currentStep.transitions[0].id %>";
+  // Message de début d'activité
+  const msgDeb = "Bonjour...<br/>Pour faire cette activité il te faut un badge de la même couleur que cet écran !";
+  // Message de fin d'activité
+  const msgFin = "C'est fini !<br/>Pour (re)faire cette activité il te faut un badge de la même couleur que cet écran !";
+  $(".message h1").html((nextStep == "step-2")? msgDeb : msgFin);
+});
+</script>
 <%- include('./partials/footer', { data: data })%>
+
+
+
+
+
