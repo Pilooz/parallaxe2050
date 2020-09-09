@@ -62,7 +62,7 @@ void loop() {
       nuidPICC[i] = rfid.uid.uidByte[i];
     }
    
-    Serial.print(F("<PasCode:"));
+    Serial.print(F("<PASCODE:"));
     printHex(rfid.uid.uidByte, rfid.uid.size);
     Serial.println("/>");
   }
