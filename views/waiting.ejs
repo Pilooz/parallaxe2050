@@ -17,9 +17,6 @@
 
         <script href="/bootstrap/dist/js/bootstrap.min.js"></script>
         <style>
-        body {
-           background-color:rgb(<%- data.currentBgColor[0] %>, <%- data.currentBgColor[1] %>, <%- data.currentBgColor[2] %>);
-        }
          .message {
            margin-top:20%;
            margin-bottom:20%;
@@ -39,6 +36,7 @@
     <div class="col-md-1"></div>
   </div>
 </main>
+
 <script>
 $(document).ready(function(){
   const nextStep = "<%- data.currentStep.transitions[0].id %>";
@@ -46,9 +44,23 @@ $(document).ready(function(){
   const msgDeb = "Bonjour...<br/>Pour faire cette activité il te faut un badge de la même couleur que cet écran !";
   // Message de fin d'activité
   const msgFin = "C'est fini !<br/>Pour (re)faire cette activité il te faut un badge de la même couleur que cet écran !";
+  
   $(".message h1").html((nextStep == "step-2")? msgDeb : msgFin);
+   
+  // Gérer la couleur de fond en fonction du serveur/timer/type de jeu/ etc/etc...
+  var lightsIO = io('http://<%= data.global_config.app.adminServerIp %>:<%= data.global_config.app.adminServerPort %>/lights');
+  
+  lightsIO.on('toclient.setColors', function(data) {
+    console.log(data);
+    var colors = data.set.filter(s => s.scenarioId == '<%- data.config_server.id%>')[0].rgb;
+    var bgColorStr="rgb("+colors[0]+","+colors[1]+","+colors[2]+");"; 
+    console.log(bgColorStr);
+    $("body").attr("style", "background-color:" + bgColorStr + ";");
+  });
+
 });
 </script>
+
 <%- include('./partials/footer', { data: data })%>
 
 
