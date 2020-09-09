@@ -4,6 +4,8 @@
 
 #define SS_PIN 10
 #define RST_PIN 9
+#define GLed 4
+#define RLed 3
  
 MFRC522 rfid(SS_PIN, RST_PIN); // Instance of the class
 
@@ -14,7 +16,7 @@ ParallaxeCom message;
 // Init array that will store new NUID 
 byte nuidPICC[4];
 
-void setup() { 
+void setup() {
   Serial.begin(9600);
   SPI.begin(); // Init SPI bus
   rfid.PCD_Init(); // Init MFRC522 
@@ -22,6 +24,10 @@ void setup() {
   for (byte i = 0; i < 6; i++) {
     key.keyByte[i] = 0xFF;
   }
+  pinMode(GLed, OUTPUT);
+  digitalWrite(GLed, LOW);
+  pinMode(RLed, OUTPUT);
+  digitalWrite(RLed, LOW);
   message.send("MSG", "READY");
 }
  
@@ -69,14 +75,14 @@ void loop() {
 
   if (message.isKey("CMD")) {
     if (message.val() == "G_LED") {
-     // toggle the green led on 
+      digitalWrite(GLed, !digitalRead(GLed)); 
       delay(500);
-      // toggle the green led off
+      digitalWrite(GLed, !digitalRead(GLed));
     }
     if (message.val() == "R_LED") {
-      // toggle the red led on 
+      digitalWrite(RLed, !digitalRead(RLed));
       delay(500);
-      // toggle the red led off
+      digitalWrite(RLed, !digitalRead(RLed));
     }
     message.ack_ok();
   }

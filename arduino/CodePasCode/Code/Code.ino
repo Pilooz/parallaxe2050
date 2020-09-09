@@ -4,6 +4,8 @@
 
 #define SS_PIN 10
 #define RST_PIN 9
+#define GLed 4
+#define RLed 3
  
 MFRC522 rfid(SS_PIN, RST_PIN); // Instance of the class
 
@@ -22,6 +24,10 @@ void setup() {
   for (byte i = 0; i < 6; i++) {
     key.keyByte[i] = 0xFF;
   }
+  pinMode(GLed, OUTPUT);
+  digitalWrite(GLed, LOW);
+  pinMode(RLed, OUTPUT);
+  digitalWrite(RLed, LOW);
   message.send("MSG", "READY");
 }
  
@@ -66,16 +72,17 @@ void loop() {
 
   // Stop encryption on PCD
   rfid.PCD_StopCrypto1();
+
   if (message.isKey("CMD")) {
     if (message.val() == "G_LED") {
-        // toggle the green led on 
-        delay(500);
-        // toggle the green led off
+      digitalWrite(GLed, !digitalRead(GLed)); 
+      delay(500);
+      digitalWrite(GLed, !digitalRead(GLed));
     }
     if (message.val() == "R_LED") {
-      // toggle the red led on 
+      digitalWrite(RLed, !digitalRead(RLed));
       delay(500);
-      // toggle the red led off
+      digitalWrite(RLed, !digitalRead(RLed));
     }
     message.ack_ok();
   }
