@@ -1,6 +1,6 @@
 #include <SPI.h>
 #include <MFRC522.h>
-#include "../../lib-protocole-com/src/protocole_parallaxe2050.h"
+#include "protocole_parallaxe2050.h"
 
 #define SS_PIN 10
 #define RST_PIN 9
