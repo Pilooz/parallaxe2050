@@ -78,12 +78,14 @@ void loop() {
       digitalWrite(GLed, !digitalRead(GLed)); 
       delay(500);
       digitalWrite(GLed, !digitalRead(GLed));
+      message.send("MSG", "Green Led blink");
       message.ack_ok();
     }
     if (message.val() == "R_LED") {
       digitalWrite(RLed, !digitalRead(RLed));
       delay(500);
       digitalWrite(RLed, !digitalRead(RLed));
+      message.send("MSG", "Red Led blink");
       message.ack_ok();
     }
   }
