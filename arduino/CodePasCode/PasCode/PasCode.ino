@@ -49,6 +49,9 @@ void loop() {
       message.send("MSG", "Red Led blink");
       message.ack_ok();
     }
+    if (!message.isProcessed()) {
+      message.ack_ko("The command <CMD:" + message.val() + "/> is not recognized !");
+    }
   }
 
   // Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
