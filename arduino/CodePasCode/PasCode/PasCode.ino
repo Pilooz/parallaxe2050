@@ -33,6 +33,24 @@ void setup() {
  
 void loop() {
 
+  // Message handling
+  if (message.isKey("CMD")) {
+    if (message.val() == "G_LED") {
+      digitalWrite(GLed, !digitalRead(GLed)); 
+      delay(500);
+      digitalWrite(GLed, !digitalRead(GLed));
+      message.send("MSG", "Green Led blink");
+      message.ack_ok();
+    }
+    if (message.val() == "R_LED") {
+      digitalWrite(RLed, !digitalRead(RLed));
+      delay(500);
+      digitalWrite(RLed, !digitalRead(RLed));
+      message.send("MSG", "Red Led blink");
+      message.ack_ok();
+    }
+  }
+
   // Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
   if ( ! rfid.PICC_IsNewCardPresent())
     return;
@@ -72,23 +90,6 @@ void loop() {
 
   // Stop encryption on PCD
   rfid.PCD_StopCrypto1();
-
-  if (message.isKey("CMD")) {
-    if (message.val() == "G_LED") {
-      digitalWrite(GLed, !digitalRead(GLed)); 
-      delay(500);
-      digitalWrite(GLed, !digitalRead(GLed));
-      message.send("MSG", "Green Led blink");
-      message.ack_ok();
-    }
-    if (message.val() == "R_LED") {
-      digitalWrite(RLed, !digitalRead(RLed));
-      delay(500);
-      digitalWrite(RLed, !digitalRead(RLed));
-      message.send("MSG", "Red Led blink");
-      message.ack_ok();
-    }
-  }
 }
 
 
