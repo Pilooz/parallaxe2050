@@ -50,10 +50,12 @@ $(document).ready(function(){
   // Gérer la couleur de fond en fonction du serveur/timer/type de jeu/ etc/etc...
   var lightsIO = io('http://<%= data.global_config.app.adminServerIp %>:<%= data.global_config.app.adminServerPort %>/lights');
   
-  lightsIO.on('toclient.setColor', function(data) {
+  lightsIO.on('toclient.setColors', function(data) {
     console.log(data);
-    //var bgColor="rgb("+data.rgb[0]+","+data.rgb[1]+","+data.rgb[2]+");"; 
-    //$("body").attr("style", bgColor);
+    var colors = data.set.filter(s => s.scenarioId == '<%- data.config_server.id%>')[0].rgb;
+    var bgColorStr="rgb("+colors[0]+","+colors[1]+","+colors[2]+");"; 
+    console.log(bgColorStr);
+    $("body").attr("style", "background-color:" + bgColorStr + ";");
   });
 
 });
