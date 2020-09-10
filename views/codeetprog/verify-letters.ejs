@@ -3,6 +3,35 @@
 <!-- END // Styles in head -->
 <%- include('../partials/header', { data: data }) %>
 <link type="text/css" href="css/lib/prism.css" rel="stylesheet">
+<style>
+	/********* Popup de résultats OK/KO ************/
+	.popupResult{
+	  margin: 10% auto;
+	  width : 70%;
+	  background-color: rgb(243, 243, 243);
+	  padding: 1em;
+	  box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
+	  border-radius: 5px;
+	  }
+
+	.overlayResult {
+	  position: fixed;
+	  left: 0px;
+	  top:0px;
+	  background-color: rgba(0,0 ,0 , 0.5);
+	  width: 100%;
+	  height: 100%;
+	  z-index:1;
+	  display:none;
+	  }
+
+	  .btnClose {
+	    float: right;
+	    font-size:16pt;
+	    cursor: pointer;
+	    color: rgb(26, 26, 26);
+	  }
+</style>
 <script src="js/lib/prism.js"></script>
 
 <style>
@@ -61,8 +90,8 @@ sinon {
                 <h5 class="card-header">
                     <form class="form-inline">
                         <div class="form-group mx-sm-3 mb-2">
-                          <label for="inputLetter" class="col-form-label">mesCaractèresATester =&nbsp;</label>
-                          <input type="text" class="form-control" id="inputLetter" placeholder="">&nbsp;&nbsp;
+                          <label for="inputLetter2" class="col-form-label">mesCaractèresATester =&nbsp;</label>
+                          <input type="text" class="form-control" id="inputLetter2" placeholder="">&nbsp;&nbsp;
                           <a href="#" id="tester2" class="btn btn-dark btn-sm">tester le code</a>
                         </div>
                     </form>
@@ -86,10 +115,79 @@ pourChaqueCaractèreDe( mesCaractèresATester ) {
     </div>
 </div>
 
+<div id="overlayResult" class="overlayResult">
+	<div id="popupResult" class="popupResult">
+		<h2 id="titleResult"><span id="title"></span> 
+		<span id="btnClose" class="btnClose">&times;</span>
+		</h2>
+		<div id="messageResult">
+		</div>
+	</div>
+</div>
+
 <script>
 $(document).ready(function() {
     var nextStep = '<%-data.currentStep.transitions[0].id %>';
 
+    var popup = $("#overlayResult");
+    var title = $("#titleResult #title");
+    var msg = $("#messageResult");
+
+    var messageOK = "Succès ! Vous avez utilisé le bon caractère. <br/>Trouvez maintenant le langage associé à ce caractère.";
+    var messageKO = "Echec ! Essayez un autre caractère.";
+    var inputAr = [];
+   
+    // Listener sur le bouton "tester le code" #1
+    $("#tester1").on('click', function(e){
+    	var input = $("#inputLetter").val();
+    	socket.emit('toserver.testChar', {car: input});
+    });
+    
+    // Listener sur le bouton "tester le code" #2
+    $("#tester2").on('click', function(e){
+    	var input = $("#inputLetter2").val();
+    	var regexp = new RegExp('[ ,;]');
+    	inputAr = input.split(regexp);
+    	inputAr = inputAr.filter(e => e != "");
+
+    	socket.emit('toserver.testChars', {cars: inputAr});
+    });
+    
+    socket.on('toclient.testChar', function(data) {
+	initMessage();
+        if (data.result == "KO") {
+            title.html("");
+	    msg.html(messageKO);
+        } else {
+	    title.html("");
+	    msg.html(messageOK);
+        }
+        popup.attr('style', 'display:block');
+   });
+
+   socket.on('toclient.testChars', function(data) {
+        var log = "";
+        initMessage();
+   	data.result.forEach(function(res, index){
+   	   log += "Test du caractère '" + inputAr[index] + "'.<br/>";
+   	   if ( res == "OK" ) {
+   	     log += messageOK + "<br/>";
+   	   } 
+   	});
+   	msg.html(log);
+   	popup.attr('style', 'display:block');
+   });
+
+   // Listener sur le bouton de fermeture de la popup
+   $("#overlayResult").on('click', function(){
+       $("#overlayResult").attr('style', 'display:none');
+   });
+   
+   function initMessage() {
+       popup.attr('style', 'display:none');
+       title.html("");
+       msg.html("");
+   }
 });
 
 </script>
