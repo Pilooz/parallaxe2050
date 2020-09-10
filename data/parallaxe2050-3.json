@@ -48,17 +48,11 @@
             [
                 {
                     "set": "1", 
-                    "responses" : [ 
-                        {}, 
-                        {}
-                    ]
+                    "responses" : [ "A" ]
                 },
                 {
                     "set": "2", 
-                    "responses" : [ 
-                        {}, 
-                        {}
-                    ]
+                    "responses" : [ "P" ]
                 }
             ]
         },
