@@ -68,6 +68,7 @@ void stopRinging() {
   digitalWrite (led, LOW);
   digitalWrite (buzzer, LOW);
   faire_sonner_le_tel = false;
+  ringInterval = between_ring;
 }
 
 void setup() {
@@ -129,11 +130,6 @@ void loop() {
   // Traiter les messages venant du serveur/ordinateur
   //
   if (message.isKey("CMD")) {
-    if (message.val() == "TEST") {
-      // Send a OK feedback : This is important beacause it mark the message as treated.
-      // /!\ This mandatory to send a feedback to treat next message.
-      message.ack_ok();
-    }
     //
     // RING Faire sonner le téléphone
     //
@@ -146,6 +142,7 @@ void loop() {
     //
     if (message.val() == "STOP") {
       faire_sonner_le_tel = false;
+      stopRinging();
       message.ack_ok();
     }
     //
