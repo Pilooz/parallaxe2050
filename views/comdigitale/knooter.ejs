@@ -9,10 +9,19 @@
         <div class="jumbotron">
             <H1>Knooter</H1>
         </div>
+        <button id="stopButton" type="button">STOP THIS BUZZER !!!!</button>
     </div>
 	
 </div>
 
 <!-- START // Scripts in footer -->
+<script>
+    $(document).ready(function() {
+        socket.emit('toserver.start', {});
+        $("#stopButton").on('click', function(e) {
+            socket.emit('toserver.stop', {});
+        });
+    });
+</script>
 <!-- END // Scripts in footer -->
 <%- include('../partials/footer', { data: data }) %>
