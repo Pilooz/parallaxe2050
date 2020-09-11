@@ -135,9 +135,9 @@ void loop()
     if (pre_react > react) // ONLY ADJUST LEVEL OF LED IF LEVEL HIGHER THAN CURRENT LEVEL
       react = pre_react;
 
-    Serial.print(sig_manivelle);
-    Serial.print(" -> ");
-    Serial.println(pre_react);
+    //Serial.print(sig_manivelle);
+    //Serial.print(" -> ");
+    //Serial.println(pre_react);
   }
   else
   {
