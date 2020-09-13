@@ -170,7 +170,7 @@ var knoots = [
 	},
 	{
 		'pseudo': "boow",
-		'content': "Une fois de plus, #Greenternet fait ses preuves. Hier j'ai lu que #Facevache fait passer 10 fois plus d'informations douteuses !"
+		'content': "Une fois de plus, #Greenternet fait ses preuves. Hier j'ai lu que #Facevache fait passer 10 fois plus d'informations douteuses !",
 		// TODO : créer l'image de comparaison entre Knooter et Facevache et la mettre dans le bon dossier pour qu'elle s'affiche dans cette knoot
 		'image': ""
 	},
