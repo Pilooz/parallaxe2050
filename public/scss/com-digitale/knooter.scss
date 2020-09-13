@@ -1,84 +1,38 @@
 body {
 	background-color: #f3f3f3 !important;
 }
-/*********** DEBUT FOND DYNAMIC *******/
-/* https://1stwebdesigner.com/15-css-background-effects/ */
-@mixin dots($count) {
-  $text-shadow: ();
-  @for $i from 0 through $count {
-    $text-shadow: $text-shadow,
-                 (-.5+(random()) * 3) + em
-                 (-.5+(random()) * 3) + em
-                 7px
-                 hsla(random() * 360, 100%, 50%,.9);
-  }
-  text-shadow: $text-shadow;
+
+body.admin {
+	#adminbar {
+		display: block;
+	}
+	#navbar {
+		top: 40px;
+	}
+	#knoots {
+		padding-top: 120px;
+	}
 }
 
-html {
-  overflow: hidden;
-  background: #123;
+#adminbar {
+	display: none;
+	background-color: #abcdef !important;
 }
-
-body, head {
-  display: block;
-}
-
-head::before, head::after,
-body::before, body::after {
-  font: 5vmin/1.3 Sans-Serif;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 3em;
-  height: 3em;
-  content: '.';
-  mix-blend-mode: screen;
-  animation: 44s -27s move infinite ease-in-out alternate;
-}
-
-
-body::before {
-  @include dots(40);
-  animation-duration: 44s;
-  animation-delay: -27s;
-}
-
-body::after {
-  @include dots(40);
-  animation-duration: 43s;
-  animation-delay: -32s;
-}
-
-head::before {
-  @include dots(40);
-  animation-duration: 42s;
-  animation-delay: -23s;
-}
-
-head::after {
-  @include dots(40);
-  animation-duration: 41s;
-  animation-delay: -19s;
-}
-
-@keyframes move {
-  from {
-    transform: rotate(0deg) scale(12) translateX(-20px);
-  }
-  to {
-    transform: rotate(360deg) scale(18) translateX(20px);
-  }
+#navbar {
+	background: #08345f !important;
 }
 
 
 
 /*********** FIN FOND DYNAMIC *******/
-
+#knoots {
+	padding-top: 70px;
+}
 .knoot {
-	position: fixed;
+	/*position: fixed;*/
 	width: 300px;
 	background: white;
+	margin: 0 auto 20px;
 
 	h2 {
 		background: white;
@@ -91,73 +45,117 @@ head::after {
 		margin: 0;
 	}
 
-	&.knoot-0 {
-		z-index: 99;
-		top: 130px;
-		left: 400px;
-		background-color: #f9c7cb;
-	}
-	&.knoot-1 {
-		z-index: 98;
-		opacity: 0.9;
-		transform: scale(0.9);
-		top: 300px;
-		right: 400px;
-	}
-	&.knoot-2 {
-		z-index: 97;
-		opacity: 0.8;
-		transform: scale(0.8);
-		top: 500px;
-		left: 20px;
-	}
-	&.knoot-3 {
-		z-index: 96;
-		opacity: 0.7;
-		transform: scale(0.7);
-		top: 60px;
-		left: 700px;
-	}
-	&.knoot-4 {
-		z-index: 95;
-		opacity: 0.6;
-		transform: scale(0.6);
-		top: 750px;
-		left: 400px;
-	}
-	&.knoot-5 {
-		z-index: 94;
+	&.blurred {
 		opacity: 0.5;
-		transform: scale(0.5);
-		top: 450px;
-		right: 60px;
 	}
-	&.knoot-6 {
-		z-index: 93;
-		opacity: 0.4;
-		transform: scale(0.4);
-		top: 600px;
-		left: 600px;
+
+	img {
+		width: 100%;
 	}
-	&.knoot-7 {
-		z-index: 92;
-		opacity: 0.3;
-		transform: scale(0.3);
-		top: 10px;
-		left: 10px;
+}
+
+
+#chooseImage {
+	background: rgba(0,0,0,0.8);
+
+	&> .modal-dialog {
+		max-width: none;
+		width: 90%;
+		height: 100%;
+
+		&> .modal-dialog {
+			max-width: none;
+			width: 100%;
+			height: 800px;
+
+			&> .modal-content {
+				height: 100%;
+
+				.modal-body {
+					flex: 1 1 100%;
+
+					&> .container {
+						flex: 1 1 100%;
+						height: 100%;
+						max-width: none;
+
+						.row {
+							height: 100%;
+
+							&> .col-sm:first-child {
+								max-height: 100%;
+								border-right: 1px solid gray;
+								overflow-y: scroll;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
-	&.knoot-8 {
-		z-index: 91;
-		opacity: 0.2;
-		transform: scale(0.2);
-		top: 800px;
-		right: 90px;
+}
+
+button.imageName {
+	transition: all 0.2s linear;
+	border: 1px solid transparent;
+	background: transparent;
+	color: black;
+	border-radius: 2px;
+	text-align: left;
+	width: 100%;
+
+	&:hover {
+		background: rgba(0,0,0,.075);
+		transition: none;
 	}
-	&.knoot-9 {
-		z-index: 90;
-		opacity: 0.1;
-		transform: scale(0.1);
-		left: 1400px;
-		top: 90px;
+
+	&:focus {
+		outline: none !important;
+	}
+}
+
+.table {
+	thead th {
+		vertical-align: top;
+	}
+}
+.table-active button.imageName:hover {
+	background: transparent;
+}
+#apercu img {
+	max-width: 100%;
+	max-height: 500px;
+}
+strong.titleApercu {
+	line-height: 48px;
+}
+
+#writeKnoot .container {
+	padding: 0;
+
+	.col-sm.container-image {
+		flex: 0;
+		width: 0px !important;
+		padding: 0;
+
+		&.withImage {
+			flex: 0 0 150px;
+			width: 100px !important;
+			max-width: 100% !important;
+			padding-left: 15px;
+			padding-right: 10px;
+		}
+
+		img {
+			max-width: 100%;
+		}
+	}
+
+	#chooseImageButton span {
+
+	}
+
+	#removeButton {
+		cursor: pointer;
 	}
 }
