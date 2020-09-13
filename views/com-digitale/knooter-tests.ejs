@@ -1,0 +1,251 @@
+<%- include('../partials/head', { data: data }) %>
+<!-- START // Styles in head -->
+
+    <script src="js/lib/greensock/TweenMax.min.js"></script>
+    <script src="js/lib/greensock/plugins/ScrollToPlugin.min.js"></script>
+    <script src="js/lib/ScrollMagic.js"></script>
+    <script src="js/lib/animation.gsap.js"></script>
+
+<link type="text/css" href="css/com-digitale/knooter.css" rel="stylesheet">
+<!-- END // Styles in head -->
+<%- include('../partials/header', { data: data }) %>
+<div class="container-fluid">
+    <div class="row">
+		<nav class="navbar navbar-light fixed-top bg-light">
+			<div class="container">
+				<div>
+					<!-- <img src="/docs/4.5/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="" loading="lazy"> -->
+					<span class="navbar-brand mb-0 h1">Knooter</span>
+				</div>
+				<div>
+					TEST
+				</div>
+			</div>
+		</nav>
+    </div>
+
+
+    <div id="content-wrapper">
+        <span id="overlay"></span>
+
+        <script>
+            var controller = new ScrollMagic.Controller({
+                globalSceneOptions: {
+                    triggerHook: "onLeave"
+                }
+            });
+			(function($) {
+				// yay, lets sparkle
+				$.fn.sparkle = function(options) {
+					var defaults = {
+						// eigenschaften
+						x: 0,
+						y: 0,
+						scaleStart: 0.2,
+						scaleEnd: 1,
+						amount: 1,
+						gravity: 1.7,
+						// animationseigenschaften
+						lifetime: 1,
+						delay: 0,
+						duration: 0,
+						maxDistance: 50,
+						minDistance: 20,
+						// elementeigenschaften
+						className: 'spark',
+						maxVariant: 5,
+						elemKind: 'div'
+					};
+					options = $.extend({}, defaults, options || {});
+
+					var destroyMe = function(me) {
+						me.remove();
+						me = null;
+					};
+
+					return this.each(function() {
+						var mainAni = new TimelineLite({ delay: options.delay });
+						for (var i = 1; i <= options.amount; i++) {
+							var $spark = $('<' + options.elemKind + '/>', {
+								class: options.className
+							})
+								.addClass('s' + Math.round(Math.random() * options.maxVariant))
+								.appendTo(this);
+							TweenMax.set($spark, {
+								scale: options.scaleStart,
+								autoAlpha: 0,
+								top: options.y,
+								left: options.x,
+								marginTop: -($spark.outerHeight() / 2),
+								marginLeft: -($spark.outerWidth() / 2)
+							});
+							var radius = Math.random() * (options.maxDistance - options.minDistance) + options.minDistance,
+								angle = Math.random() * Math.PI * 2,
+								flyX = Math.sin(angle) * radius;
+							flyY = Math.cos(angle) * radius;
+							jump = Math.random(flyY);
+							flightpath = {
+								curviness: 1,
+								values: [
+									{ x: flyX, y: flyY - jump },
+									{ x: flyX * (Math.random() + 1), y: flyY + radius * options.gravity }
+								]
+							};
+							var ani = new TimelineLite({
+								delay: (options.duration / options.amount) * i,
+								onComplete: destroyMe,
+								onCompleteParams: [$spark]
+							}).add([
+								TweenMax.to($spark, 0.0001, { autoAlpha: 1 }),
+								TweenMax.to($spark, options.lifetime, { bezier: flightpath, ease: Power1.easeOut }),
+								TweenMax.to($spark, options.lifetime * 0.3, { scale: options.scaleEnd }),
+								TweenMax.to($spark, options.lifetime * 0.5, {
+									autoAlpha: 0,
+									delay: options.lifetime * 0.5,
+									ease: Power1.easeOut
+								})
+							]);
+							mainAni.add(ani, 0);
+						}
+					});
+				};
+			})(jQuery);
+
+        </script>
+        <section id="start" style="padding-top: 200px;">
+            <div id="intro">
+                <h1><span>T</span><span>e</span><span>s</span><span>t</span><span> </span><span>d</span><span>e</span><span> </span><span>t</span><span>i</span><span>t</span><span>r</span><span>e</span><span> </span><span>1</span></h1>
+                <img class="tophat" src="medias/a-supprimer/demo_tophat.png">
+            </div>
+            <script>
+                // animations
+                var nervousHat = new TimelineMax({repeat: -1, yoyo: true})
+                    .add(TweenMax.to("#start .tophat", 0.3, {bottom: "+=5", left: "-=6", rotation: -3}))
+                    .add(TweenMax.to("#start .tophat", 0.3, {bottom: "-=10", left: "+=6", rotation: 0}))
+                    .add(TweenMax.to("#start .tophat", 0.3, {bottom: "+=5", left: "+=6", rotation: 3}))
+                    .add(TweenMax.to("#start .tophat", 0.3, {bottom: "-=5", left: "-=3", rotation: 1.5}))
+                    .add(TweenMax.to("#start .tophat", 0.3, {bottom: "+=5", left: "-=6", rotation: -1.5}))
+                    .add(TweenMax.to("#start .tophat", 0.3, {bottom: "+=5", left: "+=3", rotation: 0}))
+                    .add(TweenMax.to("#start .tophat", 0.3, {bottom: "-=10"}));
+                var abracadabra = TweenMax.fromTo("#start .wand", 1, {top: -$(window).height()/3, left: 370, rotation: 20}, {top: 10, rotation: -20});
+                var reveal = new TimelineMax()
+                    .add([
+                            TweenMax.to("#start .tophat", 1, {scale: 0.2, bottom: $(window).height(), left: "-=50", rotation: -20}),
+                            TweenMax.from("#start h1", 1, {scale: 0.2, top: "+=70"}),
+                            TweenMax.to("#start .wand", 0.8, {top: -$(window).height()/3, left: 450, rotation: 30}),
+                            TweenMax.to("#start .floor", 1, {autoAlpha: 0})
+                        ]);
+                var laola = new TimelineMax()
+                    .add(TweenMax.staggerTo("#start h1 span", 0.5, {top: 0, x: 0, scale: 2, color: '#bada55' }, 0.2))
+                    .add(TweenMax.staggerTo("#start h1 span", 0.5, {top: 0, x: 0, scale: 1, color: '#fff'}, 0.2), 0.8)
+                    .add(TweenMax.staggerTo("#start h1 span", 0.5, {top: 0, x: 0, scale: 1, color: '#abcdef'}, 0.2), 1.6);
+
+                // container pin
+                var startpin = new ScrollMagic.Scene({
+                        duration: 700
+                    })
+                    .setPin("section#start")
+                    .addTo(controller);
+
+                // hat movement
+                new ScrollMagic.Scene({
+                        duration: 300,
+                        offset: -100
+                    })
+                    .setTween(nervousHat)
+                    .addTo(controller);
+
+                // big reveal
+                new ScrollMagic.Scene({
+                        duration: 300,
+                        offset: 260
+                    })
+                    .setTween(reveal)
+                    .addTo(controller);
+
+                // jumping text
+                new ScrollMagic.Scene({
+                        duration: 200,
+                        offset: 450
+                    })
+                    .setTween(laola)
+                    .addTo(controller);
+
+            </script>
+        </section>
+
+    </div>
+
+	<div id="knoots">
+		<div class="knoot knoot-0">
+			<h2>Prénom NOM [at]pseudo</h2>
+			<p>.</p>
+		</div>
+		<div class="knoot knoot-1">
+			<h2>Prénom NOM [at]pseudo</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed dolor quis nisi gravida aliquet ac ac libero. Etiam consequat metus dui, non facilisis tellus faucibus vitae.</p>
+		</div>
+		<div class="knoot knoot-2">
+			<h2>Prénom NOM [at]pseudo</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed dolor quis nisi gravida aliquet ac ac libero. Etiam consequat metus dui, non facilisis tellus faucibus vitae.</p>
+		</div>
+		<div class="knoot knoot-3">
+			<h2>Prénom NOM [at]pseudo</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed dolor quis nisi gravida aliquet ac ac libero. Etiam consequat metus dui, non facilisis tellus faucibus vitae.</p>
+		</div>
+		<div class="knoot knoot-4">
+			<h2>Prénom NOM [at]pseudo</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed dolor quis nisi gravida aliquet ac ac libero. Etiam consequat metus dui, non facilisis tellus faucibus vitae.</p>
+		</div>
+		<div class="knoot knoot-5">
+			<h2>Prénom NOM [at]pseudo</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed dolor quis nisi gravida aliquet ac ac libero. Etiam consequat metus dui, non facilisis tellus faucibus vitae.</p>
+		</div>
+		<div class="knoot knoot-6">
+			<h2>Prénom NOM [at]pseudo</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed dolor quis nisi gravida aliquet ac ac libero. Etiam consequat metus dui, non facilisis tellus faucibus vitae.</p>
+		</div>
+		<div class="knoot knoot-7">
+			<h2>Prénom NOM [at]pseudo</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed dolor quis nisi gravida aliquet ac ac libero. Etiam consequat metus dui, non facilisis tellus faucibus vitae.</p>
+		</div>
+		<div class="knoot knoot-8">
+			<h2>Prénom NOM [at]pseudo</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed dolor quis nisi gravida aliquet ac ac libero. Etiam consequat metus dui, non facilisis tellus faucibus vitae.</p>
+		</div>
+		<div class="knoot knoot-9">
+			<h2>Prénom NOM [at]pseudo</h2>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sed dolor quis nisi gravida aliquet ac ac libero. Etiam consequat metus dui, non facilisis tellus faucibus vitae.</p>
+		</div>
+	</div>
+	<div id="more">Vous êtes à jour dans les knoots.</div>
+</div>
+
+<!-- START // Scripts in footer -->
+<script>
+	// Initialisation du contrôleur
+    var controller = new ScrollMagic.Controller({
+        globalSceneOptions: {
+            triggerHook: "onLeave"
+        }
+    });
+
+    // Animations
+    var zoomKnoot = new TimelineMax()
+	    .add([
+	            TweenMax.to("#start .tophat", 1, {bottom: $(window).height(), left: "-=50", rotation: -20}),
+	            TweenMax.from('#start .tophat', 1, {scale: "+=0.5"}),
+	            TweenMax.from("#start h1", 1, {scale: 0.8, top: "+=70"})
+	        ]);
+
+    // hat movement
+    new ScrollMagic.Scene({
+            duration: 100,
+            offset: -100
+        })
+        .setTween(zoomKnoot)
+        .addTo(controller);
+</script>
+<script src="js/com-digitale/knooter.js"></scri-p>
+<!-- END // Scripts in footer -->
+<%- include('../partials/footer', { data: data }) %>

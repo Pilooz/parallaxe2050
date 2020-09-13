@@ -1,8 +1,8 @@
 {
     "scenarioId" : "ComDigitale",
     "scenarioName" : "Dispositif Com digitale",
-    "scenarioMediaPath" : "medias/comdigitale/",
-    "templateDirectory" : "comdigitale/",
+    "scenarioMediaPath" : "medias/com-digitale/",
+    "templateDirectory" : "com-digitale/",
     "steps" : [
         {
             "stepId" : "step-1",

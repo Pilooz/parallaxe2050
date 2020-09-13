@@ -1,0 +1,99 @@
+<!-- MODALE D'AUTHENTIFICATION POUR INTERFACE ADMIN -->
+<div class="modal fade" id="authenticateAdminModal" tabindex="-1" aria-labelledby="authenticate-admin" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="authenticate-admin">Authentification partie admin</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="pseudo" class="col-form-label">Pseudo</label>
+                        <input type="text" class="form-control" id="pseudo">
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="col-form-label">Mot de passe</label>
+                        <input type="text" class="form-control" id="password">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cancelButton" class="btn btn-secondary">Annuler</button>
+                <button type="button" id="connectButton" class="btn btn-primary">Se connecter</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODALE D'ADMINISTRATION -->
+<div id="administrationInterface" class="modal fade">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Interface d'administration</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="accordion" id="accordionExample">
+                        <div class="card">
+                            <div class="card-header" id="hashtagHeading">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#hashtagCollapse" aria-expanded="true" aria-controls="hashtagCollapse">Hashtags floutés</button>
+                                </h2>
+                            </div>
+                            <div id="hashtagCollapse" class="collapse show" aria-labelledby="hashtagHeading" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    Liste des hashtags qui floutent la knoot correspondante.
+                                    <div id="blurredHashtags"></div>
+                                    <br /><br />
+                                    <label for="hashtagToBlur">Ajouter un hastag à flouter</label>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">#</div>
+                                        </div>
+                                        <input type="text" class="form-control" id="hashtagToBlur" placeholder="">
+                                    </div>
+                                    <small id="hashtagToBlurHelp" class="form-text text-muted">Le hashtag qui sera masqué est <span class="badge badge-secondary">#</span></small>
+                                    <button type="button" id="hashtagButton" class="btn btn-primary btn-sm">Ajouter</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" id="accountHeading">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" data-target="#accountCollapse" aria-expanded="false" aria-controls="accountCollapse">Comptes floutés</button>
+                                </h2>
+                            </div>
+                            <div id="accountCollapse" class="collapse" aria-labelledby="accountHeading" data-parent="#accordionExample">
+                                <div class="card-body">
+                                    Liste des comptes dont les knoots sont automatiquement floutées.
+                                    <div id="blurredAccounts"></div>
+                                    <br /><br />
+                                    <label for="accountToBlur">Ajouter un compte à flouter</label>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">@</div>
+                                        </div>
+                                        <input type="text" class="form-control" id="accountToBlur" placeholder="">
+                                    </div>
+                                    <small id="accountToBlurHelp" class="form-text text-muted">Le compte qui sera masqué est <span class="badge badge-secondary">@</span></small>
+                                    <button type="button" id="accountButton" class="btn btn-primary btn-sm">Ajouter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler les changements</button>
+                    <button type="button" class="btn btn-primary" id="administrationInterfaceSaveButton">Enregistrer les changements</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
