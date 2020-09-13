@@ -1,24 +1,23 @@
 <%- include('../partials/head', { data: data }) %>
 <!-- START // Styles in head -->
+    <link type="text/css" href="css/admin-reseau/style.css" rel="stylesheet">
 <!-- END // Styles in head -->
 <%- include('../partials/header', { data: data }) %>
 
-    <div class="container">
-        <span id="typed-text" class="typed-text"></span><span class="cursor">&nbsp;</span>
-    </div>
-    <div id="main">
-        <div><input id="console" type="text" autocomplete="off" style="position: fixed; bottom: 20px; width: 97vw; background-color: rgb(20, 20, 20); color: rgb(18, 134, 18); border: rgb(18, 134, 18); font-size: 50px; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;"/></div>
+    <div class="console">
+        <input type="text" autocomplete="off" />
     </div>
 
 <!-- START // Scripts in footer -->
 <script>
     const nextStep = JSON.parse('<%- JSON.stringify(data.currentStep.transitions[0].id) %>');
     $(document).ready(function() {
-    const typed_text_span = document.querySelector(".typed-text");
+    // const typed_text_span = document.querySelector(".typed-text");
+    var typed_text_span = $('.console input');
 
-    const text_one   = ["> Vous êtes là ? Il y a quelqu’un ? Vous me recevez ?", "> …", "> Si quelqu’un peut lire ce message, tapez “yes” !"];
-    const text_two   = ["> Enfin quelqu'un ! On a un gros problème qui m'empêche de vous contacter autrement.", "J'ai besoin de votre aide. Je compte sur vous !", "Êtes-vous prêt·es à m'aider ?"];
-    const text_three = ["> Super. Lisez attentivement ce qui va suivre.", "> Le malware lancé par les méchants infecte l’ensemble du réseau Greenternet, même les objets connectés ! Il est capable de se répliquer, de s’adapter et de corrompre les différents langages qui constituent le Greenternet. On doit arrêter cette propagation.", "> Trouvez tous les objets sur lesquels on injectera un bout de code pour bloquer le malware. (tapez : \"ok\")"];
+    const text_one   = ["> Vous êtes là ? Il y a quelqu'une ? Vous me recevez ?", "...", "Si quelqu'une peut lire ce message, tapez “yes” !"];
+    const text_two   = ["> Enfin quelqu'une ! On a un gros problème qui m'empêche de vous contacter autrement.", "J'ai besoin de votre aide. Je compte sur vous !", "Êtes-vous prêt·es à m'aider ?"];
+    const text_three = ["> Super. Lisez attentivement ce qui va suivre.", "Nous devons contacter nos allié·es.", "Mais le virus a infecté beaucoup de serveurs du réseau Greenternet.", "Il faut établir la connexion jusqu'à nos allié·es sans passer par ces serveurs.", "Pour cela, il faut identifier les serveurs infectés, puis recâbler le chemin pour aller aux allié·es 1... Et les pinguer.","Votre seul outil pour cela : l'invité de commandes.", "Ne paniquez pas, vous savez déjà faire.", "Vous êtes déjà en train de l'utiliser ! (Si tout est bon, tapez : \"ok\")"];
     const text       = [text_one, text_two, text_three];
 
     const typing_delay = 10;
@@ -27,43 +26,74 @@
     let array_counter = 0;
     let char_counter = 0;
 
-    $('#console').keydown(function(event) {
-      if (event.keyCode == 13) {
-        let input = $('#console').val().trim().toLowerCase();
-        if (input == "yes" && text_counter < 2) {
-          console.log("yes");
-          text_counter++;
-          array_counter = 0;
-          char_counter = 0;
-          $('#typed-text').html("<p>");
-          type()
+    // $('#console').keydown(function(event) {
+    $('body').keydown(function(event) {
+        console.log(event);
+        if(event.originalEvent != undefined) {
+            if (event.originalEvent.keyCode == 13) {
+                var input = $('.console input').last(); //$('#console').val().trim().toLowerCase();
+                let input_text = input.val().trim().toLowerCase();
+                if (input_text == "yes" && text_counter < 2) {
+                    console.log("Premier YES");
+                    $('.console input').addClass('unfocusable');
+                    $('.console').append('<input type="text" autocomplete="false" />');
+                    typed_text_span = $('.console input').last();
+                    $('.console input').last().focus();
+                    text_counter++;
+                    array_counter = 0;
+                    char_counter = 0;
+                    $('#typed-text').html("<p>");
+                    type()
+                }
+                if (input_text == "ok" && text_counter == 2) {
+                    console.log("ok, Asking for a new step...");
+                    socket.emit('toserver.nextStep', {nextStep: nextStep});
+                }
+                $('#console').val("");
+            }
         }
-        if (input == "ok" && text_counter == 2) {
-          console.log("ok, Asking for a new step...");
-          socket.emit('toserver.nextStep', {nextStep: nextStep});
-        }
-        $('#console').val("");
-      }
     });
-    $('#typed-text').html("<p>");
+
+    // Add ">" in the beggining of inputs
+    $('body').on('focus', 'input.unfocusable', function(e) {
+        if(($(this).val()).slice(0,1) != ">") {
+            $(this).val($(this).val() + '> ');
+        }
+    })
+    // Disallow focus on input.unfocusable
+    $('body').on('focus', 'input.unfocusable', function(e) {
+        console.log("Essaie de cliquer sur un input unfocusable");
+        $('.console input').last().focus();
+    })
     type()
+    addLine()
 
     function type() {
       if (char_counter < text[text_counter][array_counter].length) {
-        typed_text_span.textContent += text[text_counter][array_counter].charAt(char_counter);
+        // typed_text_span.textContent += text[text_counter][array_counter].charAt(char_counter);
+        typed_text_span.val(typed_text_span.val() + text[text_counter][array_counter].charAt(char_counter));
         char_counter++;
-        setTimeout(type, typing_delay + Math.floor(Math.random() * Math.floor(200)));
+        setTimeout(type, typing_delay + Math.floor(Math.random() * Math.floor(100)));
       } else {
         if (array_counter < text[text_counter].length - 1) {
-          array_counter++;
-          char_counter = 0;
-          var start = Date.now();
-          var i = 0;
-          while (Date.now() < start + typing_pause) {}
-          $('#typed-text').html("<p/>");
+            addLine()
+            array_counter++;
+            char_counter = 0;
+            var start = Date.now();
+            var i = 0;
+            while (Date.now() < start + typing_pause) {}
+            // $('#typed-text').html("<p/>");
           type();
         }
       }
+    }
+
+    function addLine() {
+        $('.console input').addClass('unfocusable');
+        $('.console input').last().val("> ");
+        typed_text_span = $('.console input').last();
+        $('.console').append('<input type="text" autocomplete="false" />');
+        $('.console input').last().focus();
     }
   });
   </script>
