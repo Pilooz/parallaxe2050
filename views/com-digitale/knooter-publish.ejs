@@ -1,0 +1,159 @@
+<!-- MODALE DE PUBLICATION D'UNE KNOOT -->
+<div class="modal fade" id="writeKnoot" tabindex="-1" aria-labelledby="write-knoot" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="authenticate-admin">S'exprimer en publiant une knoot</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            	<span id="publishAs">Vous publiez en tant que <i></i>.</span>
+                <form>
+                    <div class="form-group">
+                        <label for="contentKnoot">Texte</label>
+                        <textarea class="form-control" id="contentKnoot" rows="3"></textarea>
+                        <small id="emailHelp" class="form-text text-muted">Votre texte et votre image ne doivent pas nuire au bien-vivre ensemble. Rappelez-vous que votre knoot peut être vue par n'importe qui.</small>
+                    </div>
+                    <div class="form-group" id="formImage">
+                    	<div class="container">
+	                        <div class="row">
+	                        	<div class="col-sm container-image"></div>
+	                            <div class="col-sm">
+			                        <label for="fileKnoot">Image attachée<span></span></label>
+			                        <br />
+			                        <button id="chooseImageButton" class="btn btn-primary">Choisir un fichier</button>
+			                    </div>
+			                </div>
+			            </div>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="verificationKnoot">
+                        <label class="form-check-label" for="verificationKnoot">En cochant cette case, je comprends que ma knoot sera floutée si elle ne respecte pas le bien-vivre ensemble, et je confirme ma volonté de publier.</label>
+                    </div>
+                    <button class="btn btn-primary" id="sendKnoot">Envoyer la knoot</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MODALE DE CHOIX D'IMAGE -->
+<div id="chooseImage" class="modal fade">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sélectionner un fichier</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm">
+                                <table class="table table-borderless">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Nom</th>
+                                            <th scope="col">Taille</th>
+                                            <th scope="col">Date de création</th>
+                                            <th scope="col">Date de modification</th>
+                                            <th scope="col">Auteur·trice</th>
+                                            <th scope="col">Titre</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    	<!-- TODO : intégrer plusieurs autres images "faites maison" qui parlent davantage du Greenternet -->
+                                        <tr>
+                                            <td><button class="imageName">1000x563_néon.jpg</button></td>
+                                            <td class="sizeImage" data-size="635">635 Ko</td>
+                                            <td><span class="image-1-creation"></span> 10:13</td>
+                                            <td>--</td>
+                                            <td>Goton</td>
+                                            <td class="title">Néon</td>
+                                        </tr>
+                                        <tr>
+                                            <td><button class="imageName">Greenternet et virus.png</button></td>
+                                            <td class="sizeImage" data-size="480">480 Ko</td>
+                                            <td><span class="image-2-creation"></span> 09:06</td>
+                                            <td>--</td>
+                                            <td>C0c0</td>
+                                            <td class="title">Le Greenternet infecté par un virus</td>
+                                        </tr>
+                                        <tr>
+                                            <td><button class="imageName">Greenternet et virus (noir et blanc).png</button></td>
+                                            <td class="sizeImage" data-size="61.8">61,8 Ko</td>
+                                            <td><span class="image-3-creation"></span> 09:51</td>
+                                            <td>--</td>
+                                            <td>C0c0</td>
+                                            <td class="title">Le Greenternet infecté par un virus</td>
+                                        </tr>
+                                        <tr>
+                                            <td><button class="imageName">img2.jpg</button></td>
+                                            <td class="sizeImage" data-size="1830">1,83 Mo</td>
+                                            <td><span class="image-4-creation"></span> 09:36</td>
+                                            <td><span class="image-4-modification"></span> 14:02</td>
+                                            <td>TOTO</td>
+                                            <td class="title">Ville vue du ciel</td>
+                                        </tr>
+                                        <tr>
+                                            <td><button class="imageName">Aurore-boréale-Norvège.jpg</button></td>
+                                            <td class="sizeImage" data-size="17800">17,8 Mo</td>
+                                            <td>03/03/2020 18:29</td>
+                                            <td>28/04/2020 16:30</td>
+                                            <td>JS</td>
+                                            <td class="title">Aurore boréale</td>
+                                        </tr>
+                                        <tr>
+                                            <td><button class="imageName">logo-knooter.png</button></td>
+                                            <td class="sizeImage" data-size="19.4">19,4 Ko</td>
+                                            <td><span class="image-5-creation"></span> 13:35</td>
+                                            <td>--</td>
+                                            <td>Knooter</td>
+                                            <td class="title">Logo de Knooter</td>
+                                        </tr>
+                                        <tr>
+                                            <td><button class="imageName">herisson.png</button></td>
+                                            <td class="sizeImage" data-size="3260">3,26 Mo</td>
+                                            <td>12/03/2020 17:48</td>
+                                            <td>25/04/2020 16:50</td>
+                                            <td>Inconnu·e</td>
+                                            <td class="title">Hérisson</td>
+                                        </tr>
+                                        <tr>
+                                            <td><button class="imageName">herisson.jpg</button></td>
+                                            <td class="sizeImage" data-size="46.5">46,5 Ko</td>
+                                            <td>18/09/2019 16:13</td>
+                                            <td>01/10/2019 14:27</td>
+                                            <td>Inconnu·e</td>
+                                            <td class="title">Hérisson</td>
+                                        </tr>
+                                        <tr>
+                                            <td><button class="imageName">chatte.jpg</button></td>
+                                            <td class="sizeImage" data-size="674">674 Ko</td>
+                                            <td>02/09/2019 03:24</td>
+                                            <td>04/09/2020 12:08</td>
+                                            <td>Unsplash</td>
+                                            <td class="title">Green vegetable in brown carton photo</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm">
+                                <strong class="titleApercu">Aperçu</strong>
+                                <div id="apercu"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="button" class="btn btn-primary" id="chooseImageSaveButton">Choisir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
