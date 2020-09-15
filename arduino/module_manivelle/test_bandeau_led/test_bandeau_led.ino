@@ -2,9 +2,13 @@
 #include "protocole_parallaxe2050.h"
 
 #define NUM_LEDS 17
-#define DATA_PIN 3
+#define DATA_PIN 4
+#define LED_TYPE WS2811
+#define COLOR_ORDER GRB
 
 #define MANIVELLE_PIN A0
+#define TIME_BETWEEN_EACH_INCREMENTATION 1000
+#define TIME_BETWEEN_EACH_DECREMENTATION 250
 #define RELAY_PIN 8
 #define BUZZER_PIN 10
 
@@ -16,7 +20,8 @@ int counter;
 bool activity;
 bool buzz;
 unsigned long currentMillis;
-unsigned long lastMillis;
+unsigned long lastMillis1;
+unsigned long lastMillis2;
 
 void setup() {
   // Init Sérial
@@ -31,10 +36,11 @@ void setup() {
   buzz = false;
   activity = false;
   currentMillis = 0;
-  lastMillis = 0;
+  lastMillis1 = 0;
+  lastMillis2 = 0;
 
   // Init led gestion
-  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+  FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
   for (int r = 255, g = 0, nb_led = 0; nb_led < NUM_LEDS; nb_led++, r -= 15, g += 15)
     leds[nb_led] = CRGB(r, g, 0);
   counter = 0;
@@ -59,17 +65,17 @@ void loop() {
     }
   }
 
-  if ((currentMillis - lastMillis) >= 500) {
-    if ((analogRead(MANIVELLE_PIN) >= 500) && (counter < 17)) {
+  if ((currentMillis - lastMillis1) >= TIME_BETWEEN_EACH_INCREMENTATION) {
+    if ((analogRead(MANIVELLE_PIN) >= 1000) && (counter < 17)) {
       counter++;
-      Serial.println("incrémentation");
     }
-    if ((analogRead(MANIVELLE_PIN) <= 500) && (counter > 0)) {
+    lastMillis1 = currentMillis;
+  }
+  if ((currentMillis - lastMillis2) >= TIME_BETWEEN_EACH_DECREMENTATION) {
+    if ((analogRead(MANIVELLE_PIN) <= 1000) && (counter > 0)) {
       counter--;
-      Serial.println("décrémentation");
     }
-    Serial.println("coucou");
-    lastMillis = currentMillis;
+    lastMillis2 = currentMillis;
   }
 
   if (buzz && activity) {
@@ -85,10 +91,11 @@ void loop() {
     digitalWrite(RELAY_PIN, LOW);
   }
 
-  turn_on(counter);
+  if (activity)
+    refresh(counter);
 }
 
-void turn_on(int nb_led_max) {
+void refresh(int nb_led_max) {
   for (int r = 255, g = 0, nb_led = 0; nb_led < nb_led_max; nb_led++, r -= 15, g += 15)
     leds[nb_led] = CRGB(r, g, 0);
   for (int nb_led = nb_led_max; nb_led < NUM_LEDS; nb_led++)
@@ -102,3 +109,7 @@ void turn_on(int nb_led_max) {
     leds[nb_led] = CRGB(0, 0, 0);
   }
 */
+
+void serialEvent() {
+  message.receive();
+}
