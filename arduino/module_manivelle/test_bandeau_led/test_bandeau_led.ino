@@ -81,14 +81,14 @@ void loop() {
   if (buzz && activity) {
     if (counter == 0) {
       analogWrite(BUZZER_PIN, 600);
-      digitalWrite(RELAY_PIN, HIGH);
+      digitalWrite(RELAY_PIN, LOW);
     } else {
       analogWrite(BUZZER_PIN, 0);
-      digitalWrite(RELAY_PIN, LOW);
+      digitalWrite(RELAY_PIN, HIGH);
     }
   } else {
     analogWrite(BUZZER_PIN, 0);
-    digitalWrite(RELAY_PIN, LOW);
+    digitalWrite(RELAY_PIN, HIGH);
   }
 
   if (activity)
