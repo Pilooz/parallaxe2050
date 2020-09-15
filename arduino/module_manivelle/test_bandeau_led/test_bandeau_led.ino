@@ -16,6 +16,7 @@ int counter;
 bool activity;
 bool buzz;
 unsigned long currentMillis;
+unsigned long lastMillis;
 
 void setup() {
   // Init Sérial
@@ -29,6 +30,8 @@ void setup() {
   // contrôle
   buzz = false;
   activity = false;
+  currentMillis = 0;
+  lastMillis = 0;
 
   // Init led gestion
   FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
@@ -56,10 +59,18 @@ void loop() {
     }
   }
 
-  if (((millis() - currentMillis) >= 500) && (analogRead(MANIVELLE_PIN) >= 1000) && (counter < 17))
-    counter++;
-  if (((millis() - currentMillis) >= 250) && (analogRead(MANIVELLE_PIN) <= 1000) && (counter > 0))
-    counter--;
+  if ((currentMillis - lastMillis) >= 500) {
+    if ((analogRead(MANIVELLE_PIN) >= 500) && (counter < 17)) {
+      counter++;
+      Serial.println("incrémentation");
+    }
+    if ((analogRead(MANIVELLE_PIN) <= 500) && (counter > 0)) {
+      counter--;
+      Serial.println("décrémentation");
+    }
+    Serial.println("coucou");
+    lastMillis = currentMillis;
+  }
 
   if (buzz && activity) {
     if (counter == 0) {
@@ -67,11 +78,11 @@ void loop() {
       digitalWrite(RELAY_PIN, HIGH);
     } else {
       analogWrite(BUZZER_PIN, 0);
-      digitalWrite(RELAY_PINT, LOW);
+      digitalWrite(RELAY_PIN, LOW);
     }
   } else {
     analogWrite(BUZZER_PIN, 0);
-    digitalWrite(RELAY_PINT, LOW);
+    digitalWrite(RELAY_PIN, LOW);
   }
 
   turn_on(counter);
@@ -86,8 +97,8 @@ void turn_on(int nb_led_max) {
 }
 
 /*
-void turn_off() {
+  void turn_off() {
   for (int nb_led = 0; nb_led < NUM_LEDS; nb_led++)
     leds[nb_led] = CRGB(0, 0, 0);
-}
+  }
 */
