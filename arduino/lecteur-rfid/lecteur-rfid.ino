@@ -69,6 +69,7 @@ void setup() {
       FastLED.show();      
    }
    #define BRIGHTNESS          100
+  Serial.println("<MSG:READY/>");
 }
  
 void loop() {

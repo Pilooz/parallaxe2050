@@ -65,6 +65,30 @@
                     ]
                 }
             ]
-        }
+        },
+
+        {
+            "stepId" : "step-3",
+            "title" : "End. Waiting for session...",
+            "template" : "../waiting",
+            "medias" : [],
+            "text" : "text1",
+            "transitions" :
+                [
+                { "id" : "step-1", "condition" : "" }
+                ],
+            "solutions" : 
+                [
+                    {
+                        "set": "1", 
+                        "responses" : []
+                    },
+                    {
+                        "set": "2", 
+                        "responses" : []
+                    }
+                ]
+            }
+    
     ]
   }

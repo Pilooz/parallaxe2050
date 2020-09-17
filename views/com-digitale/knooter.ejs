@@ -1,0 +1,38 @@
+<%- include('../partials/head', { data: data }) %>
+<!-- START // Styles in head -->
+<link type="text/css" href="css/com-digitale/knooter.css" rel="stylesheet">
+<!-- END // Styles in head -->
+<%- include('../partials/header', { data: data }) %>
+<div class="container-fluid">
+    <div class="row">
+    	<nav class="navbar fixed-top" id="adminbar">
+    		Vous êtes connecté·e en tant qu'admin. <a href="#" id="openAdministrationInterface" alt="Ouvrir l'interface d'administration">Ouvrir l'interface d'administration.</a>
+    	</nav>
+    </div>
+    <div class="row">
+		<nav class="navbar navbar-light fixed-top bg-light" id="navbar">
+			<div class="container">
+				<div>
+					<img src="medias/com-digitale/logo-knooter.png" width="219" height="56" alt="" loading="lazy">
+				</div>
+                <div><button id="writeKnootButton" type="button" class="btn btn-primary">S'exprimer</button></div>
+			</div>
+		</nav>
+    </div>
+
+    <%- include('knooter-admin.ejs') %>
+    <%- include('knooter-publish.ejs') %>
+
+    <!-- Knoots -->
+	<div id="knoots">
+	</div>
+	<div id="more">Vous êtes à jour dans les knoots.</div>
+</div>
+
+<!-- START // Scripts in footer -->
+    <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="js/com-digitale/knooter-init.js"></script>
+    <script src="js/com-digitale/knooter-publish.js"></script>
+    <script src="js/com-digitale/knooter-admin.js"></script>
+<!-- END // Scripts in footer -->
+<%- include('../partials/footer', { data: data }) %>

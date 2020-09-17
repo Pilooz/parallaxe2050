@@ -7,15 +7,20 @@ var eventEmitter = new EventEmitter();
 
 // MVC Framework
 var app           = require('express')();
+var winston       = require('./lib/logger');
+// var morgan        = require('morgan');
+
 var express       = require('express');
 var router        = express.Router();
+
 // Server utilities
 var server        = require('http').createServer(app);
-var ip            = require('ip');
+const ip            = require('ip');
 const fs          = require('fs');
 
 // Find configuration, with fixed IP
 const CONFIG_SERVER = get_server_conf();
+
 var io            = require('socket.io').listen(server);
 var cookieParser  = require('cookie-parser');
 var bodyParser    = require('body-parser');
@@ -23,23 +28,64 @@ var path          = require('path');
 
 // Applicative libs
 // Loading scenario
-const scenario     = require('./lib/scenario_utils.js')(CONFIG_SERVER);
+const scenario     = require('./lib/scenario_utils.js')(CONFIG_SERVER, eventEmitter);
+// Logging system
+const logger = require('./lib/logger')(scenario.data().scenarioId); 
+
 // Rfid parsing functions
-var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG);
+var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG, logger);
 // Arduino stuffs 
-var arduino        = require('./lib/arduino.js')(GLOBAL_CONFIG, eventEmitter);
+var arduino1        = require('./lib/arduino.js')(GLOBAL_CONFIG.arduino1, logger, eventEmitter);
+var arduino2        = require('./lib/arduino.js')(GLOBAL_CONFIG.arduino2, logger, eventEmitter);
 
 // Loading Specific librairy for the specific scenario
 var scenario_specifics;
 if (fs.existsSync("./lib/scenario-" + scenario.data().scenarioId + ".js")){
-  scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, rfid, arduino, scenario, eventEmitter);
+  scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, rfid, arduino1, arduino2, scenario, eventEmitter, logger);
 }
+// Monitoring system
+mon = require('./lib/mon.js')(io, scenario, eventEmitter, logger);
 
+const IsAdminServer =  (CONFIG_SERVER.ip == GLOBAL_CONFIG.app.adminServerIp);
 const httpPort    = CONFIG_SERVER.port;
-// var formidable    = require('formidable'); // File upload
 
 var dataForTemplate = {};
 var httpRequests = {};
+
+
+//------------------------------------------------------------------------
+// data for ejs templates
+//------------------------------------------------------------------------
+// Putting default color set in data for ejs templates
+//const defaultColors = require('./data/lights.json').colorsSet[0].list.filter(s => s.scenarioId == scenario.data().scenarioId)[0].rgb;
+//dataForTemplate.currentBgColor = defaultColors;
+
+// ************************************************************************
+// ************************************************************************
+//
+//        G E S T I O N   D U    M O D E   D E   J E U 
+//        - - - - - - - - - - - - - - - - - - - - - - 
+// Il s'agit de positionner le container en mode "Classe" ou "Evénementiel"
+//
+//  - Mode classe : Le container est paramétré pour une classe. 
+//                  Les session de jeu sont de 20 minutes.
+//  - Mode Evénementiel : Le container est en mode évenementiel, 
+//                        il est éventuellement ouvert, et les sessions 
+//                        de jeu sont de 40 minutes.
+//
+//  Seul un serveur sur les 5 va gérer le mode de jeu pour tous les autres,
+//  car il doit aussi gérer le timer.
+// 
+//  On va dire que c'est le serveur de l'activité "Hardware" qui n'en fiche pas une 
+//  qui va gérer ça. (parallaxe2050-5)
+//
+
+if (IsAdminServer) {
+  const lights   = require('./lib/lights-control')(GLOBAL_CONFIG, io, scenario, eventEmitter, logger);
+  const timer   = require('./lib/timer')(GLOBAL_CONFIG, io, eventEmitter, logger);
+}
+// ************************************************************************
+// ************************************************************************
 
 //------------------------------------------------------------------------
 // Some usefull functions
@@ -51,7 +97,7 @@ var httpRequests = {};
 function get_server_conf() {
   var cnf =  GLOBAL_CONFIG.servers.filter(server => server.ip == ip.address())[0];
   if (!cnf) {
-    console.log("\nNo configuration was found with the IP '" + ip.address() + "' !\n");
+    console.error("\nNo configuration was found with the IP '" + ip.address() + "' !\n");
     return process.exit(1);
   }
   return cnf;
@@ -61,44 +107,64 @@ function get_server_conf() {
 // Setup of environnment for the scenario.
 // It is call each time a RFID badge is detected
 //------------------------------------------------------------------------
-function setup_scenario_environment() {
-  console.log("extracted rfid code : " + rfid.getCurrentCode() + " on reader #" + rfid.getCurrentReader());
+function setup_scenario_environment(reInit) {
+  logger.info( '---------------- setup_scenario_environment ------------------' );
+  logger.info("extracted rfid code : " + rfid.getCurrentCode() + " on reader #" + rfid.getCurrentReader());
   // Putting Rfid Info in data for client
   dataForTemplate.currentRfidTag = rfid.getCurrentCode();
   dataForTemplate.currentRfidReader = rfid.getCurrentReader();
+  dataForTemplate.scenarioId = scenario.data().scenarioId;
   // get the set of solutions for the group/subgroup team
-  console.log(`Current Team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
-  var set = scenario.getSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
+  logger.info(`Current Team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
+  var set = scenario.setSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
   if (set > -1) {
-    dataForTemplate.solutionsSet = set;
-    console.log(`Solutions set #${dataForTemplate.solutionsSet}`);
+    if (scenario.getOldSolutionsSet() != set || reInit) { 
+      // On emet les events qui si le set de solution change de 1 à 2 ou de 2 à 1.
+      // Si pas de solution on ignore
+      // si même solution on ignore
+      dataForTemplate.solutionsSet = set;
+      logger.info(`Solutions set #${dataForTemplate.solutionsSet}`);
+    
+      // Set to FIRST step of the scenario.
+      var firsStep = scenario.data().steps[0].stepId;
+      scenario.setCurrentStepId(firsStep);
+
+      // Emit a event to monitoring lib that pushes data to monitoring client
+      eventEmitter.emit('monitoring.newGameSession', { tag: dataForTemplate.currentRfidTag, group: rfid.getCurrentGroup() + rfid.getCurrentSubGroup(), startTime: Date.now() });
+      eventEmitter.emit('monitoring.newGameStep', {stepId: firsStep, totalSteps: scenario.data().steps.length});
+      eventEmitter.emit('monitoring.solutionsForStep', { solutions: scenario.getCurrentStep().solutions.filter(s => s.set == set), set: set, nextStep: scenario.getCurrentStep().transitions[0].id || null });
+      eventEmitter.emit('monitoring.colorsSets', {colorsSet: set});
+
+      // Say to the client application to refresh now
+      io.emit('toclient.refreshNow');
+    }    
   } else {
     // Wrong badge on wrong device.
     // emit a socket to teel the client to refresh on error page
     // io.emit('toclient.errorOnBadge', {data: { errorMsg : "WRONG_CODE_ON_WRONG_DEVICE", errorPage, "/badgeError" } });
     // @TODO : do something clever here !!! 
   }
+  logger.info( '------------------------------------------------------------' );
 }
 //------------------------------------------------------------------------
 // Init Socket to transmit Serial data to HTTP client
 //------------------------------------------------------------------------
 io.on('connection', function(socket) {
-    console.log("New client is connected : " + socket.id );
+    logger.info("New client is connected : " + socket.id );
 
     // Client asks for the next step
     socket.on('toserver.nextStep', function(data){
       // The data var contains the next stepId that has been dexcribed and validated in the current step trnasition
-      console.log("The client asked for the step '" + data.nextStep +  "'");
+      logger.info("The client asked for the step '" + data.nextStep +  "'");
       scenario.setCurrentStepId(data.nextStep);
       // Say to the client it has to refresh
       socket.emit('toclient.refreshNow');
     });
 
     socket.on('disconnect', function() {
-      console.log(' /!\\ Client is disconnected !');
+      logger.info(' /!\\ Client is disconnected !');
     });
 });
-
 
 //------------------------------------------------------------------------
 // Reading Serial Port (App have to be configure un 'real' mode, see below)
@@ -119,16 +185,16 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
     rfid.extractTag(msg);
     if (rfid.getCurrentCode() != "") {
       rfid.extractReader(msg);
-      setup_scenario_environment();
+      setup_scenario_environment(false);
     }
   });
 
   // Opening serial port, checking for errors
   port.open(function (err) {
     if (err) {
-      return console.log('Error opening port: ', err.message);
+      return logger.error('Error opening port: ', err.message);
     } else {
-      console.log('Reading on ', GLOBAL_CONFIG.rfid.portName);
+      logger.info('Reading on ', GLOBAL_CONFIG.rfid.portName);
     }
   });
 } 
@@ -143,21 +209,21 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // rfid.extractReader("<TAG:7ED72360/><READER:1/>");
   // scenario.setCurrentStepId("step-1");
   // Testing for group A2 5E3D621A (énigme "Code et prog" ou énigme "BDD et datas")
-  rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
-  rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
+  // rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
+  // rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
   // scenario.setCurrentStepId("step-2");
-  // // Testing for group A3 0EAF4C60 (énigme "BDD et datas" ou énigme "Hardware")
+  // Testing for group A3 0EAF4C60 (énigme "BDD et datas" ou énigme "Hardware")
   // rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
   // rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
   // scenario.setCurrentStepId("step-1");
   // Testing for group A4 49426960 (énigme "Com digitale" ou énigme "Admin réseau")
-  // rfid.extractTag("<TAG:49426960/><READER:1/>");
-  // rfid.extractReader("<TAG:49426960/><READER:1/>");
-  // scenario.setCurrentStepId("step-1");
+  rfid.extractTag("<TAG:49426960/><READER:1/>");
+  rfid.extractReader("<TAG:49426960/><READER:1/>");
+  scenario.setCurrentStepId("step-1");
   // // Testing for group A5 5E68811A (énigme "Admin réseau" ou énigme "Com digitale")
   // rfid.extractTag("<TAG:5E68811A/><READER:1/>");
   // rfid.extractReader("<TAG:5E68811A/><READER:1/>");
-  scenario.setCurrentStepId("step-2");
+  // scenario.setCurrentStepId("step-1");
 
   // Testing for group B
   // rfid.extractTag("<TAG:CE4E2B60/><READER:2/>");
@@ -165,20 +231,19 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // Testing for group C
   // rfid.extractTag("<TAG:E12CD11D/><READER:3/>");
   // rfid.extractReader("<TAG:E12CD11D/><READER:3/>");
-  setup_scenario_environment();
+  setup_scenario_environment(false);
 }
-
 
 //------------------------------------------------------------------------
 // HTTP Server configuration
 //------------------------------------------------------------------------
-server.listen( httpPort, '0.0.0.0', function( ) {
-  console.log( '------------------------------------------------------------' );
-  console.log( 'server Ip Address is %s', ip.address() );
-  console.log( 'it is listening at port %d', httpPort );
-  console.log( '------------------------------------------------------------' );
-  console.log( 'RFID reading is ' + GLOBAL_CONFIG.rfid.behavior);
-  console.log( '------------------------------------------------------------' );
+server.listen( httpPort, ip.address(), function( ) {  // '0.0.0.0'
+  logger.info( '------------------------------------------------------------' );
+  logger.info( `server Ip Address is ${ip.address()}` );
+  logger.info( `it is listening at port ${httpPort}` );
+  logger.info( '------------------------------------------------------------' );
+  logger.info( `RFID reading is ${GLOBAL_CONFIG.rfid.behavior}`);
+  logger.info( '------------------------------------------------------------' );
 });
 
 app.use(express.json());
@@ -193,7 +258,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/medias', express.static(__dirname + GLOBAL_CONFIG.app.mediaPath)); // redirect media directory
-app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js')); // redirect bootstrap JS
+app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap')); // redirect bootstrap JS
+app.use('/bootswatch', express.static(__dirname + '/node_modules/bootswatch')); // redirect bootswatch
+app.use('/bootstrap-toggle', express.static(__dirname + '/node_modules/bootstrap-toggle')); // redirect bootstrap-toggle
+app.use('/img/bootstrap-icons', express.static(__dirname + '/node_modules/bootstrap-icons/icons')); // redirect bootstrap icons
 app.use('/js', express.static(__dirname + '/node_modules/jquery/dist')); // redirect JS jQuery
 app.use('/js', express.static(__dirname + '/node_modules/socket.io/dist')); // Socket.io
 app.use('/js/xterm', express.static(__dirname + '/node_modules/xterm/lib')); // redirect JS for xTerm
@@ -209,11 +277,12 @@ router.all('/*', function (req, res, next) {
   httpRequests = req.query; // according to the use of express
 
   // Send server config to client
+  dataForTemplate.global_config = GLOBAL_CONFIG;
   dataForTemplate.config_server = CONFIG_SERVER;
 
   // send current step of the scenario to client
   dataForTemplate.currentStep = scenario.getCurrentStep();
-  console.log(`Current step is '${dataForTemplate.currentStep.stepId}'`);
+  logger.info(`Current step is '${dataForTemplate.currentStep.stepId}'`);
 
   next(); // pass control to the next handler
 })
@@ -233,8 +302,8 @@ router.all('/*', function (req, res, next) {
 
   // If this set if undefined, then the team has not badged to the right activity => let's tell them gentlely !
   if (!dataForTemplate.solutionsSet) {
-    console.log("Pas de set de solution pour cette team sur ce dispositif. Attente de scan RFID...");
-    res.render("../badge_error", { data: dataForTemplate });
+    logger.info("Pas de set de solution pour cette team sur ce dispositif. Attente de scan RFID...");
+    res.render("../waiting", { data: dataForTemplate });
   }  
   dataForTemplate.solutions = dataForTemplate.currentStep.solutions.filter(s => s.set == dataForTemplate.solutionsSet)[0].responses;
 
@@ -242,7 +311,7 @@ router.all('/*', function (req, res, next) {
   var tmpl = (dataForTemplate.currentStep.template == "") ? "content" : dataForTemplate.currentStep.template;
   
   if (!fs.existsSync("./views/" + scenario.data().templateDirectory + tmpl + ".ejs")) { 
-    console.log("The template ./views/" + scenario.data().templateDirectory + tmpl + ".ejs was not found.");
+    logger.info("The template ./views/" + scenario.data().templateDirectory + tmpl + ".ejs was not found.");
     next();
   } else {
     res.render(tmpl, { data: dataForTemplate });
@@ -267,6 +336,17 @@ router.all('/*', function (req, res, next) {
 	res.render('populate');
 })
 
+//
+// Monitoring of all the systems
+//
+.get('/monitoring', function(req,res,next){
+  if (!IsAdminServer) {
+    // Redirect vers le serveur d'admin
+    res.redirect(`http://${GLOBAL_CONFIG.app.adminServerIp}:${GLOBAL_CONFIG.app.adminServerPort}/monitoring`);
+  }
+    res.render( '../monitoring', { data: dataForTemplate });
+})
+
 /* GET save page. */
 .get('/save', function(req, res, next) {
 	let data = JSON.stringify(rfid.groups_db, null, 4);
@@ -274,6 +354,46 @@ router.all('/*', function (req, res, next) {
 
 	res.end('{"success": "Sauvegarde ok !", "status": 200}');
 })
+
+//-----------------------------------------------------------------------------
+// APIs for monitoring/admin
+//-----------------------------------------------------------------------------
+// Restart activity
+.get("/api/restart", function(req, res, next){
+  logger.info("restarting activity from admin page...");
+  // Set Current Step as first step
+  var firstStep = scenario.data().steps[0].stepId;
+  scenario.setCurrentStepId(firstStep);
+  setup_scenario_environment(true); 
+  io.emit('toclient.refreshNow');
+
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({message: `Opération réussie !<br/>L'activité est revenue à l'étape '${firstStep}'.`, status: 200}));
+})
+
+// Forcing to next step
+.get("/api/nextStep", function(req, res, next){
+  logger.info("Going to next activity step from admin page...");
+  var nextStep = scenario.getCurrentStep().transitions[0].id;
+  scenario.setCurrentStepId(nextStep);
+  setup_scenario_environment(false); 
+  io.emit('toclient.refreshNow');
+
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify({message: `Opération réussie !<br/>L'activité est passée à l'étape '${nextStep}'.`, status: 200}));
+})
+
+.get('/api/refresh', function(req, res, next){
+  io.emit('toclient.refreshNow');
+})
+
+.get('/timer', function(req, res, next) {
+    if (!IsAdminServer) {
+      // Redirect vers le serveur d'admin
+      res.redirect(`http://${GLOBAL_CONFIG.app.adminServerIp}:${GLOBAL_CONFIG.app.adminServerPort}/timer`);
+    }
+    res.render('../timer', { data: dataForTemplate });
+  })
 
 //-----------------------------------------------------------------------------
 // Application express
@@ -292,6 +412,9 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // add this line to include winston logging
+  logger.error(`${err.status || 500} - ${err.message} - ${req.originalUrl} - ${req.method} - ${req.ip}`);
 
   // render the error page
   res.status(err.status || 500);

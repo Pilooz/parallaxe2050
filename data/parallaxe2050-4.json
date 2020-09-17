@@ -1,13 +1,13 @@
 {
     "scenarioId" : "ComDigitale",
     "scenarioName" : "Dispositif Com digitale",
-    "scenarioMediaPath" : "medias/comdigitale/",
-    "templateDirectory" : "comdigitale/",
+    "scenarioMediaPath" : "medias/com-digitale/",
+    "templateDirectory" : "com-digitale/",
     "steps" : [
         {
             "stepId" : "step-1",
             "title" : "Com Digitale",
-            "template" : "knooter",
+            "template" : "ringing",
             "medias" : [],
             "text" : "test1",
             "transitions" :
@@ -29,13 +29,13 @@
 
         {
             "stepId" : "step-2",
-            "title" : "Temporaire",
-            "template" : "temp",
+            "title" : "knooter",
+            "template" : "knooter",
             "medias" : [],
             "text" : "test2",
             "transitions" :
             [
-                { "id" : "step-2", "condition" : "" }
+                { "id" : "step-3", "condition" : "" }
             ],
             "solutions" : 
             [
@@ -54,6 +54,30 @@
                     ]
                 }
             ]
+        },
+        
+        {
+            "stepId" : "step-3",
+            "title" : "End. Waiting for session...",
+            "template" : "../waiting",
+            "medias" : [],
+            "text" : "text1",
+            "transitions" :
+                [
+                { "id" : "step-1", "condition" : "" }
+                ],
+            "solutions" : 
+                [
+                    {
+                        "set": "1", 
+                        "responses" : []
+                    },
+                    {
+                        "set": "2", 
+                        "responses" : []
+                    }
+                ]
         }
+    
     ]
 }
