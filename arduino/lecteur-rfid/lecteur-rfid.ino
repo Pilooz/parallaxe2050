@@ -30,6 +30,12 @@
 
 #include <SPI.h>
 #include <MFRC522.h>
+#include <FastLED.h>
+
+
+#define NUM_LEDS 6
+#define DATA_PIN 3
+CRGB leds[NUM_LEDS];
 
 #define SS_PIN 10
 #define RST_PIN 9
@@ -46,13 +52,23 @@ void setup() {
   SPI.begin(); // Init SPI bus
   rfid.PCD_Init(); // Init MFRC522 
 
-  for (byte i = 0; i < 6; i++) {
+   for (byte i = 0; i < 6; i++) {
     key.keyByte[i] = 0xFF;
   }
 
   //Serial.println(F("This code scan the MIFARE Classsic NUID."));
   //Serial.print(F("Using the following key:"));
   //printHex(key.keyByte, MFRC522::MF_KEY_SIZE);
+
+  FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
+
+    for(int i = 0; i < NUM_LEDS; i = i + 1) {
+      // Turn our current led on to white, then show the leds
+      leds[i] = CRGB::Red;
+      // Show the leds (only one of which is set to white, from above)
+      FastLED.show();      
+   }
+   #define BRIGHTNESS          100
 }
  
 void loop() {
@@ -91,10 +107,17 @@ void loop() {
     //Serial.println(F("The NUID tag is:"));
     Serial.print(F("<TAG:"));
     printHex(rfid.uid.uidByte, rfid.uid.size);
-    Serial.print("><READER:1>");
+  //  Serial.print("><READER:1>");
     //Serial.print(F("In dec: "));
     //printDec(rfid.uid.uidByte, rfid.uid.size);
     Serial.println();
+
+    for(int i = 0; i < NUM_LEDS; i = i + 1) {
+      // Turn our current led on to white, then show the leds
+      leds[i] = CRGB::Green;
+      // Show the leds (only one of which is set to white, from above)
+      FastLED.show();      
+   }
   }
   //else Serial.println(F("Card read previously."));
 
