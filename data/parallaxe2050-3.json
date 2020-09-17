@@ -20,15 +20,15 @@
                 {
                     "set": "1",
                     "responses": {
-                        "code" : ["rfidCode2","rfidCode1","rfidCode3","rfidCode4"],
-                        "pascode" : ["rfidCode5","rfidCode7","rfidCode6","rfidCode8"]
+                        "code" : ["27E3DB38","D7381239"],
+                        "pascode" : ["074CE238","A75DF438"]
                     }
                 },
                 {
                     "set": "2",
                     "responses": {
-                        "code" : ["rfidCode2","rfidCode1","rfidCode3","rfidCode4"],
-                        "pascode" : ["rfidCode5","rfidCode7","rfidCode6","rfidCode8"]
+                        "code" : ["27E3DB38","D7381239"],
+                        "pascode" : ["074CE238","A75DF438"]
                     }
             }
             ]
@@ -42,25 +42,43 @@
             "text" : "test2",
             "transitions" :
             [
-                { "id" : "step-2", "condition" : "" }
+                { "id" : "step-3", "condition" : "" }
             ],
             "solutions" : 
             [
                 {
                     "set": "1", 
-                    "responses" : [ 
-                        {}, 
-                        {}
-                    ]
+                    "responses" : [ "A" ]
                 },
                 {
                     "set": "2", 
-                    "responses" : [ 
-                        {}, 
-                        {}
-                    ]
+                    "responses" : [ "P" ]
                 }
             ]
+        },
+
+        {
+            "stepId" : "step-3",
+            "title" : "End. Waiting for session...",
+            "template" : "../waiting",
+            "medias" : [],
+            "text" : "text1",
+            "transitions" :
+                [
+                { "id" : "step-1", "condition" : "" }
+                ],
+            "solutions" : 
+                [
+                    {
+                        "set": "1", 
+                        "responses" : []
+                    },
+                    {
+                        "set": "2", 
+                        "responses" : []
+                    }
+                ]
         }
+    
     ]
 }

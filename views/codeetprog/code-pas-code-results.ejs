@@ -78,23 +78,21 @@ $(document).ready(function() {
     // Displays message in function of student responses
     socket.on('toclient.responseAnalysisCodePasCode', function(data) {
         console.log(data);
-        var progressHTML = progressBar(data.pctCompleted);
-        msgElmt.hide();
-        if (data.result == "KO") {
-            msgText.html(messageKO + progressHTML);
-            msgElmt.show();
-        } else {
-            if (data.pctCompleted < 100) {
-                msgText.html(messageOK + progressHTML);
-                msgElmt.show();
-            } else {
-                msgText.html(messageCompleted + progressHTML);
-                msgElmt.show();
-                setTimeout( function() {
-                    socket.emit('toserver.nextStep', {nextStep: nextStep});
-                }, 2000);
-            }
+        var msgResult = "";
+        var progressHTML = progressBar(data.completed);
+        if(data.completed == 100) {
+          msgResult = messageKO;
+          if (data.result == "OK") {
+              msgResult = messageOK;
+              setTimeout( function() {
+                  console.log("On va lancer la socket");
+                  socket.emit('toserver.nextStep', {nextStep: nextStep});
+                  console.log("On a lancé la socket");
+              }, 5000);
+          }
         }
+        msgText.html(msgResult + progressHTML);
+        msgElmt.show();
     });
 
 });
@@ -106,11 +104,9 @@ $(document).ready(function() {
         </span>&nbsp;J'attends un scan RFID...\
     </button>";
 
-    const messageOK = "<h2>On avance, on avance...</h2>";
+    const messageOK = "<h2>Bravo ! Tu as tout trié correctement.</h2>";
 
     const messageKO = "<h2>Mmmh ? Bon et si tu essyais autrement ?</h2>";
-
-    const messageCompleted = "<h2>Bravo ! <b>Ici il faut peut-être un message holographique de Marjorie qui félicite les lycéen.ne.s ??</b></h2>";
 
     function progressBar(pct) {
         return "<div class='progress'>\

@@ -236,7 +236,7 @@
                 {"id":200,"est_sain":true,"date_construction":"07/07/2020","commentaire":null,"lat":14.6014622,"lng":-91.6087417,"zone":6,"h1":false,"h2":false,"h3":true,"h4":true,"h5":true,"h6":true,"h7":false,"h8":false}],
             "transitions" :
             [
-                { "id" : "step-2", "condition" : "" }
+                { "id" : "step-3", "condition" : "" }
             ],
             "solutions" : 
             [
@@ -249,6 +249,30 @@
                     "responses" : { "hour": "H1", "continents": [ 1, 2, 3, 5, 7, 8 ] }
                 }
             ]
-        }
+        },
+
+        {
+            "stepId" : "step-3",
+            "title" : "End. Waiting for session...",
+            "template" : "../waiting",
+            "medias" : [],
+            "text" : "text1",
+            "transitions" :
+                [
+                { "id" : "step-1", "condition" : "" }
+                ],
+            "solutions" : 
+                [
+                    {
+                        "set": "1", 
+                        "responses" : []
+                    },
+                    {
+                        "set": "2", 
+                        "responses" : []
+                    }
+                ]
+            }
+    
     ]
 }

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="mobile-web-app-capable" content="yes">
+
+        <title>Parallaxe :: Monitoring</title>
+        <meta name="theme-color" content="#ffffff">
+
+        <!-- <link href="/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+        <link href="/bootswatch/dist/darkly/bootstrap.min.css" rel="stylesheet">
+
+        <script src="/js/jquery.min.js"></script>    
+        <script src="/socket.io/socket.io.js"></script>
+
+        <script href="/bootstrap/dist/js/bootstrap.min.js"></script>
+        <style>
+         .message {
+           margin-top:20%;
+           margin-bottom:20%;
+           text-align:center;
+         }
+        </style>
+
+<%- include('./partials/header', { data: data }) %>
+<main role="main" class="container-fluid">
+     <div class="row">
+     </div>
+     <div class="row">
+         <div class="col-md-2"></div>
+         <div class="col-md-9 message">
+		<h1></h1>
+    </div>
+    <div class="col-md-1"></div>
+  </div>
+</main>
+
+<script>
+$(document).ready(function(){
+  const nextStep = "<%- data.currentStep.transitions[0].id %>";
+  // Message de début d'activité
+  const msgDeb = "Bonjour...<br/>Pour faire cette activité il te faut un badge de la même couleur que cet écran !";
+  // Message de fin d'activité
+  const msgFin = "C'est fini !<br/>Pour (re)faire cette activité il te faut un badge de la même couleur que cet écran !";
+  
+  $(".message h1").html((nextStep == "step-2")? msgDeb : msgFin);
+   
+  // Gérer la couleur de fond en fonction du serveur/timer/type de jeu/ etc/etc...
+  var lightsIO = io('http://<%= data.global_config.app.adminServerIp %>:<%= data.global_config.app.adminServerPort %>/lights');
+  
+  lightsIO.on('toclient.setColors', function(data) {
+    console.log(data);
+    var colors = data.set.filter(s => s.scenarioId == '<%- data.config_server.id%>')[0].rgb;
+    var bgColorStr="rgb("+colors[0]+","+colors[1]+","+colors[2]+");"; 
+    console.log(bgColorStr);
+    $("body").attr("style", "background-color:" + bgColorStr + ";");
+  });
+
+});
+</script>
+
+<%- include('./partials/footer', { data: data })%>
+
+
+
+
+

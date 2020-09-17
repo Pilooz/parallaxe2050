@@ -8,6 +8,7 @@ module.exports = {
   servers : [
  
       {
+        id: "AdminReseau",
         name : "parallaxe2050-1",
         ip : "192.168.10.10",
         port : 3000,
@@ -15,6 +16,7 @@ module.exports = {
       },
 
       {
+        id: "BDD",
         name : "parallaxe2050-2",
         ip : "192.168.10.20",
         port : 3000,
@@ -22,6 +24,7 @@ module.exports = {
       },
 
       {
+        id: "CodeEtProg",
         name : "parallaxe2050-3",
         ip : "192.168.10.30",
         port : 3000,
@@ -29,6 +32,7 @@ module.exports = {
       },
 
       {
+        id: "ComDigitale",
         name : "parallaxe2050-4",
         ip : "192.168.10.40",
         port : 3000,
@@ -36,6 +40,7 @@ module.exports = {
       },
 
       {
+        id: "Hardware",
         name : "parallaxe2050-5",
         ip : "192.168.10.50",
         port : 3000,
@@ -52,8 +57,13 @@ module.exports = {
   },
 
   // Serial Port configuration for Arduino devices communication
-  arduino : {
+  arduino1 : {
     portName : '/dev/ttyUSB1',
+    baudRate : 9600,
+  },
+
+  arduino2 : {
+    portName : '/dev/ttyUSB2',
     baudRate : 9600,
   },
 
@@ -61,7 +71,27 @@ module.exports = {
   app : {
     dbPath : app_root + "/data",
     dbSavePath : app_root + "/data/sav",
-   }
+    adminServerIp: "192.168.10.50",
+    adminServerPort: 3000
+   },
+
+   // Artnet options
+   artnet : {
+    host: "192.168.10.60",
+    port: 6454,
+    refresh: 4000,
+    //iface: // optional string IP address - bind udp socket to specific network interface
+    sendAll: true // sends always the full DMX universe instead of only changed values. Default false     
+   },
+
+  // Parameters for the whole container
+  container: {
+    gameMode : [
+        { name: "classroom", defaultTimer: 1200, lightChanges : "HALFTIME" },  // 20 min.
+        { name: "classical", defaultTimer: 2700, lightChanges : "NEVER" }   // 45 min.
+      ],
+    second: 995 // Millisecond between tow ticks of the timer (this is not exactly 1000ms because of the execution time)  
+  }
 }
 
 
