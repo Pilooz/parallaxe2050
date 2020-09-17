@@ -21,6 +21,7 @@ $(document).ready(function() {
 	})
 	
 	// Dates et heures des images
+	// TODO : ajouter 30 années pour être en 2050 !
 	$('.image-1-creation').html(getGoodFormateDate((new Date()).addDays(-40)));
 	$('.image-2-creation').html(getGoodFormateDate((new Date()).addDays(-1)));
 	$('.image-3-creation').html(getGoodFormateDate((new Date()).addDays(-1)));
