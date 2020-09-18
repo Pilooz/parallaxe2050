@@ -1,0 +1,82 @@
+body {
+	padding: 0;
+	margin: 0 !important;
+}
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	max-width: 100%;
+	width: 100%;
+	margin: 0px;
+	background: radial-gradient(#CECECE, #fff);
+
+	#ArduinoMessage {
+		transition: 0.2s linear all;
+		width: 350px;
+		height: 350px;
+
+		&.hidden {
+			opacity: 0;
+		}
+
+		&.first-element {
+			.loader:before {
+				transition: 1s linear all;
+				border-bottom: 0 solid #bada5505;
+				box-shadow: 
+					0 -10px 20px 20px #bada5540 ,
+					0 -5px 15px 10px #bada5550 ,
+					0 -2px 5px #bada5580 ,
+					0 -3px 2px #bada55BB ,
+					0 2px 0px #bada55,
+					0 2px 3px #bada55,
+					0 5px 5px #bada5590,
+					0 10px 15px #bada5560,
+					0 10px 20px 20px #bada5540;
+				animation: none;
+			}
+		}
+	}
+
+	.content {
+		width: 350px;
+		height: 350px;
+		border-radius: 100%;
+		background: linear-gradient(165deg, rgba(255,255,255,1) 0%, rgb(220, 220, 220) 40%, rgb(170, 170, 170) 98%, rgb(10, 10, 10) 100%);
+		position: relative;
+	}
+}
+.loader {
+	
+}
+
+.loader:before {
+	transition: 1s linear all;
+	position: absolute;
+	content: '';
+	width: 100%;
+	height: 100%;
+	border-radius: 100%;
+	border-bottom: 0 solid #ffffff05;
+	
+	box-shadow: 
+		0 -10px 20px 20px #ffffff40 inset,
+		0 -5px 15px 10px #ffffff50 inset,
+		0 -2px 5px #ffffff80 inset,
+		0 -3px 2px #ffffffBB inset,
+		0 2px 0px #ffffff,
+		0 2px 3px #ffffff,
+		0 5px 5px #ffffff90,
+		0 10px 15px #ffffff60,
+		0 10px 20px 20px #ffffff40;
+	filter: blur(3px);
+	animation: 2s rotate linear infinite;
+}
+
+@keyframes rotate {
+	100% {
+		transform: rotate(360deg)
+	}
+}
