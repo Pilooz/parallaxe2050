@@ -1,31 +1,22 @@
 <%- include('../partials/head', { data: data }) %>
 <!-- START // Styles in head -->
+<link type="text/css" href="css/code-et-prog/loader.css" rel="stylesheet">
+<link type="text/css" href="css/code-et-prog/code-pas-code.css" rel="stylesheet">
 <!-- END // Styles in head -->
 <%- include('../partials/header', { data: data }) %>
-<style>
-    body {
-        background-color: rgb(255, 0, 116);
-        color:indigo;
-        margin:2%;
-    }
-    .jumbotron {
-        background-color: honeydew;
-    }
-    #ArduinoMessage {
-    }
 
-    #buttonBar {
-        margin-top: 3%;
-    }
-    #buttonBar button {
-        margin-right: 3%;
-    }
-</style>
-
-<div class="container-fluid">
-    <div class="jumbotron">
-        <h1 class="display-4">Alors...<br/>Code ou pas code ?</h1>
+<div>
+    <div class="container">
+        <div id="ArduinoMessage"></div>
     </div>
+
+    <div id="actions">
+        <button type="button" id="replay" class="btn btn-secondary">Revoir l'hologramme de Marjorie</button>
+        <button type="button" id="reinit" class="btn btn-secondary">Re-scanner les objets connectés</button>
+    </div>
+</div>
+
+<!-- <div class="container-fluid">
     <div class="row">
         <div class="col-sm" id="ArduinoMessage">
             <div class="card">
@@ -39,22 +30,13 @@
         <div class="col-sm" id="buttonBar">
             <button type="button" id="replay" class="btn btn-secondary">Recontacter Marjorie</button>
             <button type="button" id="reinit" class="btn btn-secondary">Recommencer l'activité</button>
-        </div>      
+        </div>
     </div>
-</div>
+</div> -->
 
 <script>
 $(document).ready(function() {
-    var nextStep = '<%-data.currentStep.transitions[0].id %>';
-    var msgElmt = $("#ArduinoMessage");
-    var msgText = $("#ArduinoMessage p");
 
-    function initActivity() {
-        // Display satring message
-        msgText.html(messageInit);
-        msgElmt.show();
-        socket.emit('toserver.initCodePasCode', "init");
-    }
 
     // Play the hologramme
     $("#replay").on('click', function(e){
@@ -75,46 +57,77 @@ $(document).ready(function() {
         initActivity();
     });
 
+
+    // 
+    var nextStep = '<%-data.currentStep.transitions[0].id %>';
+    var msgElmt = $("#ArduinoMessage");
+
+    function initActivity() {
+        // Display staring message
+        msgElmt.html(messageInit);
+        socket.emit('toserver.initCodePasCode', "init");
+    }
+
+
     // Displays message in function of student responses
     socket.on('toclient.responseAnalysisCodePasCode', function(data) {
-        console.log(data);
         var progressHTML = progressBar(data.pctCompleted);
-        msgElmt.hide();
-        if (data.result == "KO") {
-            msgText.html(messageKO + progressHTML);
-            msgElmt.show();
-        } else {
+        
+        if(data.result == "KO") {
+            msgElmt.addClass('hidden');
+            setTimeout(function(){
+                msgElmt.html(messageKO);
+                msgElmt.removeClass('hidden');
+            }, 200);
+        }
+        else {
             if (data.pctCompleted < 100) {
-                msgText.html(messageOK + progressHTML);
-                msgElmt.show();
-            } else {
-                msgText.html(messageCompleted + progressHTML);
-                msgElmt.show();
-                setTimeout( function() {
-                    socket.emit('toserver.nextStep', {nextStep: nextStep});
-                }, 2000);
+                if(data.pctCompleted <= 100/16) {
+                    // Stoppe l'animation 2 secondes lors du premier scann
+                    msgElmt.addClass('first-element');
+                    setTimeout(function(){
+                        msgElmt.addClass('hidden');
+                        setTimeout(function(){
+                            // Affiche le bon message de progression
+                            msgElmt.html(messageOK + progressHTML);
+                            msgElmt.removeClass('hidden');
+                        }, 200);
+                    }, 2000);
+                }
+                else {
+                    msgElmt.html(messageOK + progressHTML);
+                    msgElmt.removeClass('hidden');
+                }
+            }
+            else {
+                msgElmt.addClass('hidden');
+                setTimeout(function(){
+                    msgElmt.html(messageSuccess);
+                    msgElmt.removeClass('hidden');
+
+                    // Envoie la socket
+                    setTimeout( function() {
+                        socket.emit('toserver.nextStep', {nextStep: nextStep});
+                    }, 2000);
+                }, 200);
             }
         }
     });
-
 });
 
     // message Templates
-    const messageInit = "<h2>Allez hop, on recommence !</h2>\
-    <button class='btn btn-warning' type='button' disabled>\
-        <span class='spinner-grow spinner-grow-sm' role='status' aria-hidden='true'>\
-        </span>&nbsp;J'attends un scan RFID...\
-    </button>";
+    const messageInit = "<div class='content'><div class='loader'></div></div>";
+    const messageSuccess = "<div class='content'><div class='loader'></div></div>";
 
-    const messageOK = "<h2>On avance, on avance...</h2>";
+    const messageOK = "<h2>Scan en cours...</h2>";
 
-    const messageKO = "<h2>Mmmh ? Bon et si tu essyais autrement ?</h2>";
+    const messageKO = "<h2>Il semblerait que tous les objets ne contiennent pas du code... Recommencez !</h2>";
 
     const messageCompleted = "<h2>Bravo ! <b>Ici il faut peut-être un message holographique de Marjorie qui félicite les lycéen.ne.s ??</b></h2>";
 
     function progressBar(pct) {
         return "<div class='progress'>\
-                <div class='progress-bar bg-warning' role='progressbar' style='width: " + pct + "%' aria-valuenow='" + pct + "' aria-valuemin='0' aria-valuemax='100'></div>\
+                <div class='progress-bar' role='progressbar' style='width: " + pct + "%' aria-valuenow='" + pct + "' aria-valuemin='0' aria-valuemax='100'></div>\
                 </div>";
     }
 
