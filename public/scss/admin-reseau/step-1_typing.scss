@@ -1,0 +1,28 @@
+@import 'admin-reseau';
+
+.console {
+	padding: 20px;
+
+	&> div {
+		display: flex;
+
+		span {
+			flex: 0 0 1%;
+			color: $mainColor;
+		}
+		input {
+			flex: 1 0 98%;
+			display: block;
+			width: 100%;
+			border: none;
+			color: $mainColor;
+
+			&.unfocusable {
+			}
+
+			&:focus {
+				outline: none;
+			}
+		}
+	}
+}

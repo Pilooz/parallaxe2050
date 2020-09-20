@@ -7,7 +7,7 @@
         {
         "stepId" : "step-1",
         "title" : "Typing windows",
-        "template" : "typing",
+        "template" : "step-1_typing",
         "medias" : [],
         "text" : "text1",
         "transitions" :
@@ -30,7 +30,7 @@
         {
         "stepId" : "step-2",
         "title" : "Console réseau",
-        "template" : "console",
+        "template" : "step-2_console",
         "serverData" :[
             { "ip" : "46.229.161.131", "country" : "[US]" },
             { "ip" : "194.71.211.50", "country" : "[SE]" },
