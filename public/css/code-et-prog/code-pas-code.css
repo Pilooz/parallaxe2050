@@ -1,0 +1,30 @@
+.feedback {
+  font-size: 40px;
+  font-family: Dosis, sans-serif;
+  font-weight: 800;
+  text-align: center; }
+
+#buttonBar {
+  margin-top: 3%; }
+
+#buttonBar button {
+  margin-right: 3%; }
+
+#actions {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  flex-direction: column; }
+  #actions button {
+    margin-top: 20px;
+    background-color: #00c6f9;
+    border: none; }
+    #actions button:hover {
+      box-shadow: 0 0 10px #00c6f9; }
+
+.progress-bar {
+  background-color: #00c6f9 !important;
+  box-shadow: 0 0 10px #00c6f9; }
+
+/*# sourceMappingURL=code-pas-code.css.map */
