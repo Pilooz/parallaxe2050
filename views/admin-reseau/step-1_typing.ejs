@@ -33,6 +33,7 @@
         var charCounter = 0;
         var lineCounter = 0;
         var typedText = "";
+        var newLine = "";
         var typingDelay = 30;
         var isCurrentlyWaiting = false;
         var currentLine;
@@ -68,13 +69,24 @@
         // Fonction pour taper une nouvelle ligne
         // 
         function newTypingLine() {
-            // Crée un nouvel input
-            $('.console').append('<div><span>> </span><input type="text" autocomplete="off" /></div>');
-            currentInput = $('.console div:last-child input');
             // Récupère la ligne courante
             currentLine = typingLines[lineCounter];
 
             if(currentLine !== undefined) {
+
+                newLine = '<div class="line">';
+                if(currentLine.type == "typing") {
+                    newLine += '<div>@<span class="name dora">Dora</span> $</div>';
+                }
+                else {
+                    newLine += '<div>@<span class="name team">Greenternet-console</span> $</div>';
+                }
+                newLine += '<input type="text" autocomplete="off" /></div>';
+
+                // Crée un nouvel input
+                $('.console').append(newLine);
+                currentInput = $('.console .line:last-child input');
+                newLine = "";
 
                 // Si c'est une ligne de typing, alors on lance la fonction "typing"
                 if(currentLine.type == "typing") {
