@@ -1,7 +1,6 @@
 <%- include('../partials/head', { data: data }) %>
 <!-- START // Styles in head -->
-<link type="text/css" href="css/code-et-prog/loader.css" rel="stylesheet">
-<link type="text/css" href="css/code-et-prog/code-pas-code.css" rel="stylesheet">
+<link type="text/css" href="css/code-et-prog/step-1_code-pas-code.css" rel="stylesheet">
 <!-- END // Styles in head -->
 <%- include('../partials/header', { data: data }) %>
 
@@ -50,6 +49,7 @@ $(document).ready(function() {
         msgElmt.html(messageInit);
         socket.emit('toserver.initCodePasCode', "init");
     }
+    socket.emit('toserver.nextStep', {nextStep: nextStep});
 
     // Displays message in function of student responses
     socket.on('toclient.responseAnalysisCodePasCode', function(data) {

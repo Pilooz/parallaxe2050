@@ -1,0 +1,26 @@
+$mainColor: rgb(0, 198, 249);
+$shadowMainColor: 0 0 10px $mainColor;
+
+body {
+	padding: 0;
+	margin: 0 !important;
+
+	.container {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		max-width: 100%;
+		width: 100%;
+		margin: 0px;
+		padding: 0;
+		background: radial-gradient(#CECECE, #fff);
+	}
+}
+
+.feedback {
+	font-size: 40px;
+	font-family: Dosis, sans-serif;
+	font-weight: 800;
+	text-align: center;
+}
