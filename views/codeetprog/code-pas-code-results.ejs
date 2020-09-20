@@ -16,23 +16,6 @@
     </div>
 </div>
 
-<!-- <div class="container-fluid">
-    <div class="row">
-        <div class="col-sm" id="ArduinoMessage">
-            <div class="card">
-                <div class="card-body">
-                    <p></p>
-                </div>
-            </div>
-        </div>      
-    </div>
-    <div class="row">
-        <div class="col-sm" id="buttonBar">
-            <button type="button" id="replay" class="btn btn-secondary">Recontacter Marjorie</button>
-            <button type="button" id="reinit" class="btn btn-secondary">Recommencer l'activité</button>
-        </div>
-    </div>
-</div> -->
 
 <script>
 $(document).ready(function() {
@@ -68,7 +51,6 @@ $(document).ready(function() {
         socket.emit('toserver.initCodePasCode', "init");
     }
 
-
     // Displays message in function of student responses
     socket.on('toclient.responseAnalysisCodePasCode', function(data) {
         var progressHTML = progressBar(data.pctCompleted);
@@ -84,10 +66,11 @@ $(document).ready(function() {
             if (data.pctCompleted < 100) {
                 if(data.pctCompleted <= 100/16) {
                     // Stoppe l'animation 2 secondes lors du premier scann
-                    msgElmt.addClass('first-element');
+                    msgElmt.addClass('first-card-scanned');
                     setTimeout(function(){
                         msgElmt.addClass('hidden');
                         setTimeout(function(){
+                            msgElmt.removeClass('first-card-scanned');
                             // Affiche le bon message de progression
                             msgElmt.html(messageOK + progressHTML);
                             msgElmt.removeClass('hidden');
@@ -100,14 +83,16 @@ $(document).ready(function() {
                 }
             }
             else {
+                msgElmt.addClass('first-card-scanned');
                 msgElmt.addClass('hidden');
                 setTimeout(function(){
                     msgElmt.html(messageSuccess);
                     msgElmt.removeClass('hidden');
 
-                    // Envoie la socket
+                    // Envoie la socket pour lancer la 2e vidéo de Marjorie
                     setTimeout( function() {
-                        socket.emit('toserver.nextStep', {nextStep: nextStep});
+                        socket.emit('toserver.successCodePasCode', {nextStep: nextStep});
+                        // socket.emit('toserver.nextStep', {nextStep: nextStep});
                     }, 2000);
                 }, 200);
             }
@@ -116,14 +101,12 @@ $(document).ready(function() {
 });
 
     // message Templates
-    const messageInit = "<div class='content'><div class='loader'></div></div>";
-    const messageSuccess = "<div class='content'><div class='loader'></div></div>";
+    const messageInit = "<div class='content'><div class='loader'><span class='feedback'>En attente d'un scan...</span></div></div>";
+    const messageSuccess = "<div class='content'><div class='loader'><span class='feedback'>Bravo !</span></div></div>";
 
-    const messageOK = "<h2>Scan en cours...</h2>";
+    const messageOK = "<div class='feedback'>Scan en cours...</div>";
 
-    const messageKO = "<h2>Il semblerait que tous les objets ne contiennent pas du code... Recommencez !</h2>";
-
-    const messageCompleted = "<h2>Bravo ! <b>Ici il faut peut-être un message holographique de Marjorie qui félicite les lycéen.ne.s ??</b></h2>";
+    const messageKO = "<div class='feedback'>Il semblerait que <br />tous les objets <br />ne contiennent pas du code...<br /> Recommencez !</div>";
 
     function progressBar(pct) {
         return "<div class='progress'>\

@@ -1,3 +1,9 @@
+.feedback {
+  font-size: 40px;
+  font-family: Dosis, sans-serif;
+  font-weight: 800;
+  text-align: center; }
+
 #buttonBar {
   margin-top: 3%; }
 
@@ -12,13 +18,13 @@
   flex-direction: column; }
   #actions button {
     margin-top: 20px;
-    background-color: #7200FEbb;
+    background-color: #00c6f9;
     border: none; }
     #actions button:hover {
-      box-shadow: 0 0 10px #7200FE; }
+      box-shadow: 0 0 10px #00c6f9; }
 
 .progress-bar {
-  background-color: #7200FE !important;
-  box-shadow: 0 0 10px #7200FE; }
+  background-color: #00c6f9 !important;
+  box-shadow: 0 0 10px #00c6f9; }
 
 /*# sourceMappingURL=code-pas-code.css.map */
