@@ -1,0 +1,96 @@
+body {
+  padding: 0;
+  margin: 0 !important; }
+  body .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    max-width: 100%;
+    width: 100%;
+    margin: 0px;
+    padding: 0;
+    background: radial-gradient(#CECECE, #fff); }
+
+.feedback {
+  font-size: 40px;
+  font-family: Dosis, sans-serif;
+  font-weight: 800;
+  text-align: center; }
+
+body .container {
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: stretch; }
+  body .container .navbar {
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125); }
+  body .container .row {
+    flex: 1 0 auto;
+    margin: 0; }
+    body .container .row .files-list,
+    body .container .row .files-details {
+      padding: 0; }
+    body .container .row .files-list {
+      border-right: 1px solid rgba(0, 0, 0, 0.125); }
+      body .container .row .files-list ul {
+        margin: 0;
+        padding: 15px;
+        list-style: none; }
+        body .container .row .files-list ul li {
+          display: inline-block;
+          padding: 0px 5px;
+          margin: 5px 0;
+          list-style: none;
+          max-width: 100%;
+          border-radius: 5px;
+          border: 1px solid transparent; }
+          body .container .row .files-list ul li.active {
+            background: rgba(0, 0, 0, 0.025);
+            border-color: rgba(0, 0, 0, 0.125); }
+          body .container .row .files-list ul li:hover, body .container .row .files-list ul li.active:hover {
+            cursor: pointer;
+            background: white;
+            border-color: rgba(0, 0, 0, 0.125); }
+    body .container .row .files-details form.file {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      height: 100%; }
+      body .container .row .files-details form.file code {
+        flex: 1 0 auto;
+        padding: 15px; }
+        body .container .row .files-details form.file code .line {
+          margin-bottom: 10px; }
+          body .container .row .files-details form.file code .line.margin-1 {
+            padding-left: 50px; }
+          body .container .row .files-details form.file code .line.margin-2 {
+            padding-left: 100px; }
+      body .container .row .files-details form.file .form {
+        border-top: 1px solid rgba(0, 0, 0, 0.125);
+        background: white;
+        text-align: left !important;
+        padding: 15px; }
+        body .container .row .files-details form.file .form .title {
+          font-weight: 700;
+          font-size: 150%;
+          margin-bottom: 15px; }
+        body .container .row .files-details form.file .form label {
+          display: block;
+          font-size: 120%;
+          margin-bottom: 15px; }
+      body .container .row .files-details form.file .validation {
+        padding: 15px;
+        background: white;
+        text-align: right; }
+        body .container .row .files-details form.file .validation a.btn {
+          background-color: #00c6f9;
+          border: none; }
+          body .container .row .files-details form.file .validation a.btn:hover {
+            box-shadow: 0 0 10px #00c6f9; }
+    body .container .row #file2 {
+      display: none; }
+
+/*# sourceMappingURL=step-2_verify-letters.css.map */

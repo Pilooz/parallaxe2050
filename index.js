@@ -211,7 +211,7 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
   // rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
   // scenario.setCurrentStepId("step-2");
-  // Testing for group A3 0EAF4C60 (énigme "BDD et datas" ou énigme "Hardware") // UPDATE : "Com et prog"
+  // Testing for group A3 0EAF4C60 (énigme "BDD et datas" ou énigme "Code et prog") // UPDATE : "Code et prog"
   rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
   rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
   scenario.setCurrentStepId("step-1");
