@@ -47,12 +47,12 @@
             "solutions" : 
             [
                 {
-                    "set": "1", 
-                    "responses" : [ "A" ]
+                    "set": "1",
+                    "responses" : [ "Y" ]
                 },
                 {
                     "set": "2", 
-                    "responses" : [ "P" ]
+                    "responses" : [ "J" ]
                 }
             ]
         },

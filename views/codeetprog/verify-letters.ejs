@@ -1,8 +1,6 @@
 <%- include('../partials/head', { data: data }) %>
 <!-- START // Styles in head -->
     <link type="text/css" href="css/code-et-prog/step-2_verify-letters.css" rel="stylesheet">
-    <link type="text/css" href="css/lib/prism.css" rel="stylesheet">
-    <script src="js/lib/prism.js"></script>
 <!-- END // Styles in head -->
 <%- include('../partials/header', { data: data }) %>
 
@@ -84,68 +82,73 @@
 $(document).ready(function() {
     var nextStep = '<%-data.currentStep.transitions[0].id %>';
 
-    var popup = $("#overlayResult");
-    var title = $("#titleResult #title");
-    var msg = $("#messageResult");
+    //
+    // Clique sur les noms des fichiers dans la colonne de gauche
+    //
+    $('.files-list li').on('click', function(e) {
+        e.preventDefault();
 
-    var messageOK = "Succès ! Vous avez utilisé le bon caractère. <br/>Trouvez maintenant le langage associé à ce caractère.";
-    var messageKO = "Echec ! Essayez un autre caractère.";
-    var inputAr = [];
-   
-    // Listener sur le bouton "tester le code" #1
-    $("#tester1").on('click', function(e){
-    	var input = $("#inputLetter").val();
-    	socket.emit('toserver.testChar', {car: input});
-    });
-    
-    // Listener sur le bouton "tester le code" #2
-    $("#tester2").on('click', function(e){
-    	var input = $("#inputLetter2").val();
-    	var regexp = new RegExp('[ ,;]');
-    	inputAr = input.split(regexp);
-    	inputAr = inputAr.filter(e => e != "");
+        // Masque tous les "fichiers" et enlève la classe "active" sur tous les éléments de la liste de gauche
+        $('.file').css('display','none');
+        $('.files-list li').removeClass('active');
 
-    	socket.emit('toserver.testChars', {cars: inputAr});
-    });
-    
-    socket.on('toclient.testChar', function(data) {
-	initMessage();
-        if (data.result == "KO") {
-            title.html("");
-	    msg.html(messageKO);
-        } else {
-	    title.html("");
-	    msg.html(messageOK);
+        // Affiche le bon "fichier" et ajoute la classe "active" sur l'élément actif de la liste de gauche
+        $('#' + $(this).data('file')).css('display', 'flex');
+        $(this).addClass('active');
+
+        // Change le path de la page
+        $('.path').html("Editeur de code : C:/wamp/www/" + $(this).html());
+    })
+
+
+    //
+    // Clique sur le test du fichier 1
+    //
+    $('#testerFile1').on('click', function(e) {
+        e.preventDefault();
+        var char = $('#inputFile1').val();
+        if(char.length == 1) {
+            socket.emit('toserver.testChar', {car: char});
         }
-        popup.attr('style', 'display:block');
-   });
+        else {
+            alert('Vous devez tester avec un seul caractère.');
+        }
+    })
+    socket.on('toclient.testChar', function(data) {
+        if (data.result == "KO") {
+            alert('Echec ! Essayez un autre caractère.');
+        } else {
+            alert('Succès ! Vous avez utilisé le bon caractère.');
+            alert('Trouvez maintenant le langage associé à ce caractère.');
+        }
+    })
 
-   socket.on('toclient.testChars', function(data) {
-        var log = "";
-        initMessage();
-   	data.result.forEach(function(res, index){
-   	   log += "Test du caractère '" + inputAr[index] + "'.<br/>";
-   	   if ( res == "OK" ) {
-   	     log += messageOK + "<br/>";
-   	   } 
-   	});
-   	msg.html(log);
-   	popup.attr('style', 'display:block');
-   });
 
-   // Listener sur le bouton de fermeture de la popup
-   $("#overlayResult").on('click', function(){
-       $("#overlayResult").attr('style', 'display:none');
-   });
-   
-   function initMessage() {
-       popup.attr('style', 'display:none');
-       title.html("");
-       msg.html("");
-   }
+    //
+    // Clique sur le test du fichier 2
+    //
+    var chars = "";
+    $('#testerFile2').on('click', function(e) {
+        e.preventDefault();
+        chars = $('#inputFile2').val();
+        
+        var regexp = new RegExp('[ ,;]');
+        inputAr = chars.split(regexp);
+        inputAr = inputAr.filter(e => e != "");
+
+        socket.emit('toserver.testChars', {cars: inputAr});
+    })
+    socket.on('toclient.testChars', function(data) {
+        data.result.forEach(function(res, index){
+            alert('Test du caractère "' + inputAr[index] + '".');
+            if ( res == "OK" ) {
+                alert('Succès ! Vous avez trouvé le bon caractère.');
+                alert('Trouvez maintenant le langage associé à ce caractère.');
+            }
+        });
+    }) 
 });
 
 </script>
-<script src="js/code-et-prog/step-2_verify-letters.js"></script>
 <!-- END // Scripts in footer -->
 <%- include('../partials/footer', { data: data }) %>
