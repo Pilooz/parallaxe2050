@@ -1,0 +1,39 @@
+
+.feedback {
+	font-size: 40px;
+	font-family: Dosis, sans-serif;
+	font-weight: 800;
+	text-align: center;
+}
+#ArduinoMessage {
+}
+
+#buttonBar {
+    margin-top: 3%;
+}
+#buttonBar button {
+    margin-right: 3%;
+}
+
+#actions {
+	position: fixed;
+	bottom: 20px;
+	left: 20px;
+	display: flex;
+	flex-direction: column;
+
+	button {
+		margin-top: 20px;
+		background-color: rgb(0, 198, 249);
+		border: none;
+
+		&:hover {
+			box-shadow: 0 0 10px rgb(0, 198, 249);
+		}
+	}
+}
+
+.progress-bar {
+    background-color: rgb(0, 198, 249) !important;
+    box-shadow: 0 0 10px rgb(0, 198, 249);
+}
