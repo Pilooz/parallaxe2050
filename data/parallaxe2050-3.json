@@ -1,15 +1,15 @@
 {
     "scenarioId" : "CodeEtProg",
     "scenarioName" : "Dispositif Code et programmation",
-    "scenarioMediaPath" : "medias/codeetprog/",
-    "templateDirectory" : "codeetprog/",
+    "scenarioMediaPath" : "medias/code-et-prog/",
+    "templateDirectory" : "code-et-prog/",
     "steps" : [
         {
             "stepId" : "step-1",
             "title" : "Code ou pas code ?",
-            "template" : "code-pas-code-results",
+            "template" : "step-1_code-pas-code",
             "medias" : [],
-            "secondScreen": { "url": "/hologramme", "medias": ["medias/CodeEtProg/video-hologramme.mp4"] },
+            "secondScreen": { "url": "/hologramme", "medias": ["medias/code-et-prog/majorie-intro.mp4"] },
             "text" : "test1",
             "transitions" :
             [
@@ -37,7 +37,7 @@
         {
             "stepId" : "step-2",
             "title" : "Executer du code",
-            "template" : "verify-letters",
+            "template" : "step-2_verify-letters",
             "medias" : [],
             "text" : "test2",
             "transitions" :

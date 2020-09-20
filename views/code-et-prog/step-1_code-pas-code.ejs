@@ -49,7 +49,7 @@ $(document).ready(function() {
         msgElmt.html(messageInit);
         socket.emit('toserver.initCodePasCode', "init");
     }
-socket.emit('toserver.nextStep', {nextStep: nextStep});
+
     // Displays message in function of student responses
     socket.on('toclient.responseAnalysisCodePasCode', function(data) {
         var progressHTML = progressBar(data.completed);
