@@ -1,0 +1,342 @@
+<%- include('../partials/head', { data: data }) %>
+<!-- START // Styles in head -->
+    <link rel="stylesheet" href="/css/xterm/xterm.css" />
+    <link type="text/css" href="css/admin-reseau/step-2_console.css" rel="stylesheet">
+<!-- END // Styles in head -->
+<%- include('../partials/header', { data: data }) %>
+
+    <div id="terminal"></div>
+
+<!-- START // Scripts in footer -->
+<script src="/js/xterm/xterm.js"></script>
+<script>
+    // Data and vars
+    const prompt_linux = '\r\n@\033[32mGreenternet-console\033[0m $\033[0m ';
+    const prompt_linux_length = 28;
+    const cheminsVersServeursAllies = JSON.parse('<%- JSON.stringify(data.solutions) %>');
+    const serverList = JSON.parse('<%- JSON.stringify(data.currentStep.serverData) %>');
+    const IPList = Array();
+        serverList.forEach(s => { IPList.push(s.ip) });
+
+    const nextStep = JSON.parse('<%- JSON.stringify(data.currentStep.transitions[0].id) %>');
+
+    var goodServersIndexList = cheminsVersServeursAllies[0].chemin1.concat(cheminsVersServeursAllies[1].chemin2);
+        goodServersIndexList.sort();
+
+    const typing_pause = 1000; 
+
+    // Debug a virer pour le passage en prod
+    //console.log("liste des serveurs : ");
+    //console.log(IPList);
+    //console.log("liste des chemins allies : ");
+    //console.log(cheminsVersServeursAllies);
+
+
+    var maxCommandNumber = 50; // maximum de commandes que les élèves peuvent taper dans la console
+    var display_prompt = true;
+    var term = new Terminal({cols:120, bellStyle: "sound"});
+    term.open(document.getElementById('terminal'));
+    term.setOption('theme', { background: '#fff', green: "rgb(249, 110, 0)", foreground: '#000'});
+    term.setOption('fontFamily', 'monospace');
+    term.setOption('fontSize', 16);
+
+    // --------------------------
+    // Build the fake terminal
+    // --------------------------
+    function runFakeTerminal() {
+        if (term._initialized) {
+        return;
+        }
+
+        term._initialized = true;
+
+        term.prompt = () => {
+        term.write('\r\n$ ');
+        };
+
+        cmd_line = "";
+
+        prompt(term);
+
+        term.onData(e => {
+            const printable = !e.altKey && !e.altGraphKey && !e.ctrlKey && !e.metaKey;
+            switch (e) {
+                case '\r': // Enter
+                if (maxCommandNumber > 0) exec_command(cmd_line);
+                    else displayErrorNoMoreCMd();
+                    cmd_line = "";
+                    prompt(term);
+                    break;
+                case '\u0003': // Ctrl+C
+                    prompt(term);
+                    break;
+                case '\u007F': // Backspace (DEL)
+                    // Do not delete the prompt
+                    if (term._core.buffer.x > prompt_linux_length) {
+                        term.write('\b \b');
+                        cmd_line = cmd_line.substring(0, cmd_line.length - 1);
+                    } else {
+                        
+                    }
+                    break;
+                default: // Print all other characters for demo
+                if (printable) {
+                    term.write(e);
+                    cmd_line += e;
+                }
+            }
+        });
+    }
+
+    // --------------------------
+    // Write the prompt
+    // --------------------------
+    function prompt(term) {
+        console.log(display_prompt);
+        if (display_prompt) term.write(prompt_linux);
+    }
+
+    // --------------------------
+    // Function to execcute command
+    //
+    //  We need to fake some command 
+    //   - "status 192.168.10.10"
+    //   - "ping 192.168.10.10"
+    //   - "help" which give explanation on both of previous commands
+    // --------------------------
+    function exec_command(line){
+        maxCommandNumber--;
+        cmd = line.toLowerCase().trim();
+        // 1. Parse command
+        var ping = (cmd.substring(0,4) == "ping") ? true : false;
+        var status = (cmd.substring(0,6) == "status") ? true : false;
+        var help  = (cmd.substring(0,4) == "help") ? true : false;
+        var arg1 = cmd.split(" ")[1]; // this should be IP of server
+
+        var hacker_rm = (cmd.substring(0,3) == "rm " || cmd.substring(0,5) == "rmdir") ? true : false;
+
+        // 2. switch on what we should do
+        if (help) display_help();
+        if (ping) display_ping(arg1);
+        if (status) display_status(arg1);
+        
+        if (hacker_rm) display_hacker_rm(cmd);
+
+        if (!status && ! ping && ! help && !hacker_rm) display_error(cmd);
+        commandRemaining();  
+    };
+
+    // --------------------------
+    // Write a line 
+    // --------------------------
+    function write_line(line) {
+        term.write("");
+        for( i=0; i < line.length; i++ ){
+            term.write(line[i]);
+        }
+        term.writeln("");
+    }    
+
+    // --------------------------------------------
+    // Retruns true if the parametre is an IP
+    // --------------------------------------------
+    function isAnIP(ip) {
+        return ip.match(/^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/);
+    }
+
+    // --------------------------------------------
+    // Command Help : Displaying result of help
+    // --------------------------------------------
+    function display_help() {
+        write_line("");
+        write_line("-----------------------------------------------------------");
+        write_line("Voilà quelques aides pour vous...");
+        write_line("-----------------------------------------------------------");
+        write_line("Commande '\x1B[1;3;31mstatus\x1B[0m' : regarde si le serveur est infecté ou non.");
+        write_line("Usage : '\x1B[1;3;31mstatus [IP address]\x1B[0m'");
+        write_line("");
+        write_line("Commande '\x1B[1;3;31mping\x1B[0m' : contacte un serveur / un ordinateur.");
+        write_line("Usage : '\x1B[1;3;31mping [IP Address]\x1B[0m'");
+    }
+
+    // -------------------------------------------------
+    // Command Status : Dealing with 'Status' Command
+    // -------------------------------------------------
+    function display_status(ip) {
+        var isInfected = true;
+        var indexIP = IPList.indexOf(ip) + 1;
+        // Verify that the array index of the typed ip is in the allies serves list
+        if ( goodServersIndexList.includes(indexIP) ) isInfected = false;
+        // Verify that the ip is in the list of AllyServer1 and 2 : The Allies are never infected
+        if (ip == cheminsVersServeursAllies[0].ip || ip == cheminsVersServeursAllies[1].ip ) isInfected = false;
+
+        // Displaying a result
+        write_line("");
+        if (ip === undefined || ! isAnIP(ip) ) {
+            write_line("\x1B[1;3;31mErreur !\x1B[0m");
+            write_line("Usage : '\x1B[1;3;31mstatus [IP address]\x1B[0m'");
+        } else {
+            // /!\ No random here to have always same results by IP
+            var maxFiles = Math.floor(parseInt(ip.replace(/\./gi, "")) * 7   / 23);
+            var pct = parseFloat("0."+ip.split(".")[0]);
+            var num = Math.floor( pct * maxFiles);
+            if (isInfected) {
+                fakeGauge(ip, num, maxFiles);
+                write_line("\x1B[1;3;31mServeur infecté !\x1B[0m");
+                write_line("IP : "+ ip);
+            } else {
+                fakeGauge(ip, 0, maxFiles);
+                write_line("\x1B[1;3;32mServeur non infecté !\x1B[0m");
+                write_line("IP : "+ ip);
+            }
+        }
+    }
+    function fakeGauge(ip, n, max){
+        var nbIntervall = 50;
+        var sysScan = "Système : [";
+        var fileScan = "Fichiers  : [";
+        for (var i=1; i<=nbIntervall; i++) {
+            if (  i * max/50 < n ) {
+                sysScan += "*";
+                fileScan += "#";
+            } else {
+                sysScan += "-";
+                fileScan += "-";
+            }
+        }
+        sysScan += "] : Scan OK.";
+        fileScan += "] : Scan OK.";
+
+        write_line(sysScan);
+        write_line(fileScan);
+        write_line( n + " / "+ max + " fichiers infectés.");
+    }
+
+    function display_ping_messages(ip) {
+        var ttl = Math.floor(Math.random() * 100);
+        var time = Math.random() * 1000;
+        for(var i=0; i<11; i++) {
+            var extraTime = Math.random() * 100;
+            write_line("64 bytes de " +ip + ": icmp_seq="+i+" ttl="+ttl+" time="+ String(Math.floor(time+extraTime), 5) + " ms");
+        }
+        write_line("");
+        write_line("\x1B[1;3;32mLe serveur est joignable !\x1B[0m");
+    }
+
+    function display_unreachable(ip) {
+        for(var i=0; i<11; i++) {
+            var extraTime = Math.random() * 100;
+            write_line("Request timeout for icmp_seq "+i+" ");
+        }
+        write_line("--- "+ ip + " ping statistics ---");
+        write_line("11 paquets transmis, 0 paquets reçus, 100.0% des paquets perdus");   
+        write_line("");
+        write_line("\x1B[1;3;31m/!\ Le serveur n'est pas joingnable.\x1B[0m");
+    }
+    // -------------------------------------------------
+    // Command Ping : Dealing with 'Ping' Command
+    // -------------------------------------------------
+    function display_ping(ip) {
+        var thisIsAGoodServer = false, ping_finished=  false;
+        var indexIP = IPList.indexOf(ip) + 1;
+        isIP = isAnIP(ip);
+        if (ip == cheminsVersServeursAllies[0].ip || ip == cheminsVersServeursAllies[1].ip ) thisIsAGoodServer = true;
+
+        write_line("");
+        if (isIP) {
+            // Local Loopback
+            if (ip == "127.0.0.1" ) {
+                write_line("\x1B[1;3;33mMouhahaha ! Tu es en train de pinguer ta propre adresse locale !");
+                write_line("C'est pas comme ça qu'on va résoudre notre problème ;)\x1B[0m");
+                ping_finished = true;
+            }
+            // DNS de google
+            if ( ip == "8.8.8.8") {
+                write_line("\x1B[1;3;96mCe service ne répond plus depuis au moins 30 ans !");
+                write_line("Souviens-toi, il s'agissait d'un serveur DNS de google, dans les années 2000-2020.\x1B[0m");
+                ping_finished = true;
+            }
+            // Les autres IP : 
+            if (!ping_finished) {
+                if (thisIsAGoodServer ) {
+                    // Pour un des serveurs Alliés
+                    // 1. Socket vers node pour connaître la configuration du patch-panel
+                    socket.emit('toserver.responseAnalysis', {serveurAllie : cheminsVersServeursAllies.filter(c => c.ip == ip)[0] })
+                    // 2. S'il est ok => ça pingue
+                    // 3. S'il n'est pas ok => Ordre de décrochage des câbles
+                    // ==> La suite est gérée dans les sockets en bas de cette page !! 
+                    display_prompt = false;
+                } else {
+                    // @TODO : Rendre aléaoirement quelques site "unreachable" ?
+                    display_ping_messages(ip);
+                }
+            }
+
+        } else {
+            if ( ip == "youtube.com" || ip == "www.youtube.com" ) {
+                // Youtube
+                write_line("\x1B[1;3;96mArrête de paillonner. De toute façon j'ai bloqué le streamming vidéo.");
+                write_line("Concentre-toi plutôt sur notre virus !\x1B[0m");
+                //
+            } else if (ip == "www.twitch.tv" || ip == "www.twitch.com"  || ip == "twitch.com") {
+                // Site de streamming 
+                write_line("\x1B[1;3;96mC'est pas le moment de glander !");
+                write_line("Essaie plutôt de trouver nos allié·es dans cette bataille contre le virus !\x1B[0m");
+            } else {
+                // The argument is not an IP.
+                write_line("\x1B[1;3;31mErreur !\x1B[0m");
+                write_line("usage : '\x1B[1;3;31mping [IP address]\x1B[0m'");
+            }
+        }
+    }
+
+    // -------------------------------------------------
+    // Command Rm / Rmdir : Dealing with 'Rm / Rmdir'
+    // -------------------------------------------------
+    function display_hacker_rm(cmd) {
+        write_line("");
+        write_line("La commande '\x1B[1;3;31m" + cmd + "\x1B[0m' est bien sûr reconnue, petit·e rigolo·te ! Je l'ai bien évidemment bloquée ! ");
+        write_line("Il faudra trouver autre chose de plus malin pour me pirater...");  
+        maxCommandNumber -= 5;
+        write_line("Puisque tu veux jouer, je te retire 5 commandes !");  
+    }
+
+    function display_error(cmd) {
+        write_line("");
+        write_line("La commande '\x1B[1;3;31m" + cmd + "\x1B[0m' n'est pas reconnue ! ");  
+    }
+
+    function commandRemaining() {
+        write_line("/!\\ Plus que " + maxCommandNumber + " commande" + ((maxCommandNumber > 1)? "s" : "") + "...");
+    }
+
+    function displayErrorNoMoreCMd() {
+        write_line("");
+        write_line("La console est verrouillée. Impossible de prendre votre commande.");
+        // write_line("try 'sudo unlock term' ");
+
+    }
+
+    // Let's run the terminal
+    runFakeTerminal();
+
+
+// Specific socket listeners
+$(document).ready(function(){
+    //
+    // rponse de node concernant les solutions.
+    //
+    socket.on('toclient.responseAnalysis', function(data) {
+        console.log(data);
+        display_prompt = true;
+        if (data.result == "KO") {
+            display_unreachable(data.ip);
+        } else {
+            display_ping_messages(data.ip);
+        }
+        prompt(term);
+    });
+});
+</script>
+<!-- END // Scripts in footer -->
+<%- include('../partials/footer', { data: data }) %>

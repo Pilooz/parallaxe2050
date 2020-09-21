@@ -56,7 +56,7 @@
 
 */
 
-//#define DEBUG
+#define DEBUG
 
 // Pour communiquer avec le serveur via USBSerial
 ParallaxeCom message;

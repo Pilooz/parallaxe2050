@@ -1,0 +1,37 @@
+@import 'admin-reseau';
+
+.console {
+	font-family: monospace;
+	font-size: 15px;
+
+	padding: 20px 2px;
+
+	.line {
+		display: flex;
+
+		&> div {
+			flex: 0 0 auto;
+			padding-right: 5px;
+
+			span.dora {
+				color: $mainColor;
+			}
+			span.team {
+				color: $secondaryColor;
+			}
+		}
+		input {
+			flex: 1 0 auto;
+			display: block;
+			border: none;
+			/*color: $mainColor;*/
+
+			&.unfocusable {
+			}
+
+			&:focus {
+				outline: none;
+			}
+		}
+	}
+}

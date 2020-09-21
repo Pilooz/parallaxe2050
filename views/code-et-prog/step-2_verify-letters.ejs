@@ -1,0 +1,154 @@
+<%- include('../partials/head', { data: data }) %>
+<!-- START // Styles in head -->
+    <link type="text/css" href="css/code-et-prog/step-2_verify-letters.css" rel="stylesheet">
+<!-- END // Styles in head -->
+<%- include('../partials/header', { data: data }) %>
+
+<div class="container">
+    <nav class="navbar navbar-light bg-light">
+        <img src="../medias/code-et-prog/logo-editeur.PNG" alt="Editeur de " />
+        <span class="path">Editeur de code : C:\wamp\www\testUnCaractère.mv</span>
+        <span></span>
+    </nav>
+    <div class="row">
+        <div class="col-sm-2 files-list">
+            <ul>
+                <li data-file="file1" class="active">testUnCaractère.mv</li>
+                <li data-file="file2">testUneListeDeCaractères.mv</li>
+            </ul>
+        </div>
+        <div class="col-sm-10 files-details">
+            <form class="form-inline file" id="file1">
+                <code>
+                    <div class="line margin-0">si ( longueurDe( monCaractèreATester ) = 1 ) {</div>
+                    <div class="line margin-1">si ( monCaractèreATester = leCaractèreDuLangageDansLequelLeVirusEstCodé ) {</div>
+                    <div class="line margin-2">affiche( "Succès ! Vous avez utilisé le bon caractère." );</div>
+                    <div class="line margin-2">affiche( "Trouvez maintenant le langage associé à ce caractère." );</div>
+                    <div class="line margin-1">}</div>
+                    <div class="line margin-1">sinon {</div>
+                    <div class="line margin-2">affiche( "Echec ! Essayez un autre caractère." );</div>
+                    <div class="line margin-1">}</div>
+                    <div class="line margin-0">}</div>
+                    <div class="line margin-0">sinon {</div>
+                    <div class="line margin-1">affiche( "Vous devez tester avec un seul caractère." );</div>
+                    <div class="line margin-0">}</div>
+                </code>
+                <div class="form">
+                    <div class="title">Zone de test du code</div>
+                    <label for="inputLetter">Caractère à tester :</label>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">variable "monCaractèreATester" = </div>
+                        </div>
+                        <input type="text" class="form-control" id="inputFile1" placeholder="">
+                    </div>
+                </div>
+                <div class="validation">
+                    <a href="#" id="testerFile1" class="btn btn-dark btn-sm">Tester le code avec la variable ci-dessus</a>
+                </div>
+            </form>
+            <form class="form-inline file" id="file2">
+                <code>
+                    <div class="line margin-0">pourChaqueCaractèreDe( mesCaractèresATester ) {</div>
+                    <div class="line margin-1">affiche( "Test du caractère "leCaractèreTesté"." );</div>
+                    <div class="line margin-1">si ( leCaractèreTesté = leCaractèreDuLangageDansLequelLeVirusEstCodé ) {</div>
+                    <div class="line margin-2">affiche( "Succès ! Vous avez trouvé le bon caractère." );</div>
+                    <div class="line margin-2">affiche( "Trouvez maintenant le langage associé à ce caractère." );</div>
+                    <div class="line margin-2">arrêteLeCode;</div>
+                    <div class="line margin-1">}</div>
+                    <div class="line margin-0">}</div>
+                </code>
+                <div class="form">
+                    <div class="title">Zone de test du code</div>
+                    <label for="inputLetters">Caractères à tester :</label>
+                    <div class="input-group mb-2">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">variable "mesCaractèresATester" = </div>
+                        </div>
+                        <input type="text" class="form-control" id="inputFile2" placeholder="">
+                    </div>
+                </div>
+                <div class="validation">
+                    <a href="#" id="testerFile2" class="btn btn-dark btn-sm">Tester le code avec la variable ci-dessus</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- START // Scripts in footer -->
+<script>
+$(document).ready(function() {
+    var nextStep = '<%-data.currentStep.transitions[0].id %>';
+
+    //
+    // Clique sur les noms des fichiers dans la colonne de gauche
+    //
+    $('.files-list li').on('click', function(e) {
+        e.preventDefault();
+
+        // Masque tous les "fichiers" et enlève la classe "active" sur tous les éléments de la liste de gauche
+        $('.file').css('display','none');
+        $('.files-list li').removeClass('active');
+
+        // Affiche le bon "fichier" et ajoute la classe "active" sur l'élément actif de la liste de gauche
+        $('#' + $(this).data('file')).css('display', 'flex');
+        $(this).addClass('active');
+
+        // Change le path de la page
+        $('.path').html("Editeur de code : C:/wamp/www/" + $(this).html());
+    })
+
+
+    //
+    // Clique sur le test du fichier 1
+    //
+    $('#testerFile1').on('click', function(e) {
+        e.preventDefault();
+        var char = $('#inputFile1').val();
+        if(char.length == 1) {
+            socket.emit('toserver.testChar', {car: char});
+        }
+        else {
+            alert('Vous devez tester avec un seul caractère.');
+        }
+    })
+    socket.on('toclient.testChar', function(data) {
+        if (data.result == "KO") {
+            alert('Echec ! Essayez un autre caractère.');
+        } else {
+            alert('Succès ! Vous avez utilisé le bon caractère.');
+            alert('Trouvez maintenant le langage associé à ce caractère.');
+        }
+    })
+
+
+    //
+    // Clique sur le test du fichier 2
+    //
+    var chars = "";
+    $('#testerFile2').on('click', function(e) {
+        e.preventDefault();
+        chars = $('#inputFile2').val();
+        
+        var regexp = new RegExp('[ ,;]');
+        inputAr = chars.split(regexp);
+        inputAr = inputAr.filter(e => e != "");
+
+        socket.emit('toserver.testChars', {cars: inputAr});
+    })
+    socket.on('toclient.testChars', function(data) {
+        data.result.forEach(function(res, index){
+            alert('Test du caractère "' + inputAr[index] + '".');
+            if ( res == "OK" ) {
+                alert('Succès ! Vous avez trouvé le bon caractère.');
+                alert('Trouvez maintenant le langage associé à ce caractère.');
+            }
+        });
+    }) 
+});
+
+</script>
+<!-- END // Scripts in footer -->
+<%- include('../partials/footer', { data: data }) %>

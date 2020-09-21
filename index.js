@@ -44,18 +44,24 @@ if (fs.existsSync("./lib/scenario-" + scenario.data().scenarioId + ".js")){
   scenario_specifics = require('./lib/scenario-' + scenario.data().scenarioId + '.js')(io, rfid, arduino1, arduino2, scenario, eventEmitter, logger);
 }
 // Monitoring system
-logger.info(`Starting up monitoring SERVER on '${CONFIG_SERVER.name}'`);
 mon = require('./lib/mon.js')(io, scenario, eventEmitter, logger);
 
 const IsAdminServer =  (CONFIG_SERVER.ip == GLOBAL_CONFIG.app.adminServerIp);
-
 const httpPort    = CONFIG_SERVER.port;
 
 var dataForTemplate = {};
 var httpRequests = {};
 
+
+//------------------------------------------------------------------------
+// data for ejs templates
+//------------------------------------------------------------------------
+// Putting default color set in data for ejs templates
+//const defaultColors = require('./data/lights.json').colorsSet[0].list.filter(s => s.scenarioId == scenario.data().scenarioId)[0].rgb;
+//dataForTemplate.currentBgColor = defaultColors;
+
 // ************************************************************************
-// ***********************************************************************$
+// ************************************************************************
 //
 //        G E S T I O N   D U    M O D E   D E   J E U 
 //        - - - - - - - - - - - - - - - - - - - - - - 
@@ -101,7 +107,8 @@ function get_server_conf() {
 // Setup of environnment for the scenario.
 // It is call each time a RFID badge is detected
 //------------------------------------------------------------------------
-function setup_scenario_environment() {
+function setup_scenario_environment(reInit) {
+  logger.info( '---------------- setup_scenario_environment ------------------' );
   logger.info("extracted rfid code : " + rfid.getCurrentCode() + " on reader #" + rfid.getCurrentReader());
   // Putting Rfid Info in data for client
   dataForTemplate.currentRfidTag = rfid.getCurrentCode();
@@ -111,7 +118,7 @@ function setup_scenario_environment() {
   logger.info(`Current Team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
   var set = scenario.setSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
   if (set > -1) {
-    if (scenario.getOldSolutionsSet() != set) {
+    if (scenario.getOldSolutionsSet() != set || reInit) { 
       // On emet les events qui si le set de solution change de 1 à 2 ou de 2 à 1.
       // Si pas de solution on ignore
       // si même solution on ignore
@@ -137,6 +144,7 @@ function setup_scenario_environment() {
     // io.emit('toclient.errorOnBadge', {data: { errorMsg : "WRONG_CODE_ON_WRONG_DEVICE", errorPage, "/badgeError" } });
     // @TODO : do something clever here !!! 
   }
+  logger.info( '------------------------------------------------------------' );
 }
 //------------------------------------------------------------------------
 // Init Socket to transmit Serial data to HTTP client
@@ -177,7 +185,7 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
     rfid.extractTag(msg);
     if (rfid.getCurrentCode() != "") {
       rfid.extractReader(msg);
-      setup_scenario_environment();
+      setup_scenario_environment(false);
     }
   });
 
@@ -192,7 +200,6 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
 } 
 
 if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
-
   // Testing for null data
   // rfid.extractTag("\n");
   // rfid.extractReader("\n");
@@ -200,11 +207,11 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // rfid.extractTag("<TAG:7ED72360/><READER:1/>");
   // rfid.extractReader("<TAG:7ED72360/><READER:1/>");
   // scenario.setCurrentStepId("step-1");
-  // Testing for group A2 5E3D621A (énigme "Code et prog" ou énigme "BDD et datas")
-  // rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
-  // rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
-  // scenario.setCurrentStepId("step-2");
-  // Testing for group A3 0EAF4C60 (énigme "BDD et datas" ou énigme "Hardware")
+  // Testing for group A2 5E3D621A (énigme "Code et prog" ou énigme "BDD et datas") // UPDATE : "Admin réseau"
+  rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
+  rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
+  scenario.setCurrentStepId("step-1");
+  // Testing for group A3 0EAF4C60 (énigme "BDD et datas" ou énigme "Code et prog") // UPDATE : "Code et prog"
   // rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
   // rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
   // scenario.setCurrentStepId("step-1");
@@ -213,23 +220,17 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // rfid.extractReader("<TAG:49426960/><READER:1/>");
   // scenario.setCurrentStepId("step-1");
   // // Testing for group A5 5E68811A (énigme "Admin réseau" ou énigme "Com digitale")
-  rfid.extractTag("<TAG:5E68811A/><READER:1/>");
-  rfid.extractReader("<TAG:5E68811A/><READER:1/>");
-  scenario.setCurrentStepId("step-1");
-
+  // rfid.extractTag("<TAG:5E68811A/><READER:1/>");
+  // rfid.extractReader("<TAG:5E68811A/><READER:1/>");
+  // scenario.setCurrentStepId("step-1");
   // Testing for group B
   // rfid.extractTag("<TAG:CE4E2B60/><READER:2/>");
   // rfid.extractReader("<TAG:CE4E2B60/><READER:2/>");
   // Testing for group C
   // rfid.extractTag("<TAG:E12CD11D/><READER:3/>");
   // rfid.extractReader("<TAG:E12CD11D/><READER:3/>");
-  setup_scenario_environment();
+  setup_scenario_environment(false);
 }
-
-//------------------------------------------------------------------------
-// Logger configuration
-//------------------------------------------------------------------------
-
 
 //------------------------------------------------------------------------
 // HTTP Server configuration
@@ -300,7 +301,7 @@ router.all('/*', function (req, res, next) {
   // If this set if undefined, then the team has not badged to the right activity => let's tell them gentlely !
   if (!dataForTemplate.solutionsSet) {
     logger.info("Pas de set de solution pour cette team sur ce dispositif. Attente de scan RFID...");
-    res.render("../badge_error", { data: dataForTemplate });
+    res.render("../waiting", { data: dataForTemplate });
   }  
   dataForTemplate.solutions = dataForTemplate.currentStep.solutions.filter(s => s.set == dataForTemplate.solutionsSet)[0].responses;
 
@@ -361,7 +362,7 @@ router.all('/*', function (req, res, next) {
   // Set Current Step as first step
   var firstStep = scenario.data().steps[0].stepId;
   scenario.setCurrentStepId(firstStep);
-  setup_scenario_environment(); 
+  setup_scenario_environment(true); 
   io.emit('toclient.refreshNow');
 
   res.setHeader('Content-Type', 'application/json');
@@ -373,7 +374,7 @@ router.all('/*', function (req, res, next) {
   logger.info("Going to next activity step from admin page...");
   var nextStep = scenario.getCurrentStep().transitions[0].id;
   scenario.setCurrentStepId(nextStep);
-  setup_scenario_environment(); 
+  setup_scenario_environment(false); 
   io.emit('toclient.refreshNow');
 
   res.setHeader('Content-Type', 'application/json');
