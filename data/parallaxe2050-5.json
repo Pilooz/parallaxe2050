@@ -29,35 +29,6 @@
 
         {
             "stepId" : "step-2",
-            "title" : "Base de données des serveurs",
-            "template" : "",
-            "medias" : [],
-            "text" : "test2",
-            "transitions" :
-            [
-                { "id" : "step-3", "condition" : "" }
-            ],
-            "solutions" : 
-            [
-                {
-                    "set": "1", 
-                    "responses" : [ 
-                        {}, 
-                        {}
-                    ]
-                },
-                {
-                    "set": "2", 
-                    "responses" : [ 
-                        {}, 
-                        {}
-                    ]
-                }
-            ]
-        },
-
-        {
-            "stepId" : "step-3",
             "title" : "End. Waiting for session...",
             "template" : "../waiting",
             "medias" : [],
