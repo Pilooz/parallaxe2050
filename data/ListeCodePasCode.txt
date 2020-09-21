@@ -1,0 +1,19 @@
+Code
+"4C809DD6" : Cafetière a capsules
+"9CFB9CD6" : Télévision
+"5C309FD6" : Lave vaisselle
+"9CE79CD6" : Téléphone Portable
+"5C619CD6" : Voiture connectée
+"FCA19FD6" : Enceinte Bluetooth
+"CCB29FD6" : Fusée
+"AC22A0D6" : Machine à laver
+
+Pas Code
+"8C2A9FD6" : Poële électrique
+"6C099BD6" : Chargeur
+"BC499CD6" : Platine Vinyle
+"CCBC9BD6" : Ampoule Halogène
+"3CAC9BD6" : Enseigne lumineux
+"0C1D9BD6" : Pile
+"0C2DA0D6" : Telephone a cadran
+"1C909AD6" : Cassette VHS
