@@ -135,44 +135,44 @@
     </head>
     <body translate="no">
     <div class="clock">
-    <div class="digit minutes">
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
+      <div class="digit minutes">
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
     </div>
     <div class="digit minutes">
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
     </div>
     <div class="separator"></div>
     <div class="digit seconds">
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
     </div>
     <div class="digit seconds">
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
+      <div class="segment"></div>
     </div>
-    </div>
+  </div>
 
 <script id="rendered-js">  
   $(document).ready(function() {
@@ -192,6 +192,7 @@
     // Socket for timer control 
     var socket_timer = io('http://<%= data.global_config.app.adminServerIp %>:<%= data.global_config.app.adminServerPort %>/timercontrol');
 
+    var bip = new Audio("/medias/bip.mp3");
     var _minutes = document.querySelectorAll('.minutes');
     var _seconds = document.querySelectorAll('.seconds');
 
@@ -202,6 +203,10 @@
 
     setNumber(_seconds[0], Math.floor(seconds / 10), 1);
     setNumber(_seconds[1], seconds % 10, 1);
+
+    if (parseInt(minutes) == 0 && parseInt(seconds) <= 30) { 
+      bip.play();
+    }
   }
   
   var setNumber = function (digit, number, on) {
@@ -236,14 +241,6 @@
     socket_timer.on('toclient.timerTick', function(data) {
       setTime(data.minutes, data.seconds);
     });
-
-
-  //# sourceURL=pen.js
-
-//
-// Socket for controlling timer
-//
-$("#gameDescription").html('<%= data.gameDescription %>');
 
 });
 
