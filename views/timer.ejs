@@ -40,11 +40,11 @@
       border-radius:5px;
       position:absolute;
       opacity:0.15;
-      transition:opacity 0.2s;
-      -webkit-transition:opacity 0.2s;
-      -ms-transition:opacity 0.2s;
-      -moz-transition:opacity 0.2s;
-      -o-transition:opacity 0.2s;
+      transition:opacity 0.05s;
+      -webkit-transition:opacity 0.05s;
+      -ms-transition:opacity 0.05s;
+      -moz-transition:opacity 0.05s;
+      -o-transition:opacity 0.05s;
     }
     
     .digit .segment.on, .separator {
@@ -135,25 +135,6 @@
     </head>
     <body translate="no">
     <div class="clock">
-    <!-- <div class="digit hours">
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    </div>
-    <div class="digit hours">
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    <div class="segment"></div>
-    </div> -->
-    <!-- <div class="separator"></div> -->
     <div class="digit minutes">
     <div class="segment"></div>
     <div class="segment"></div>
@@ -205,7 +186,7 @@
       [1, 6, 5, 4, 3, 7],
       [1, 2, 3],
       [1, 2, 3, 4, 5, 6, 7],
-      [1, 2, 7, 3, 6]
+      [1, 2, 7, 3, 6, 4]
     ];
 
     // Socket for timer control 
@@ -213,7 +194,6 @@
 
     var _minutes = document.querySelectorAll('.minutes');
     var _seconds = document.querySelectorAll('.seconds');
-  
 
   // Init du timer
   function setTime(minutes, seconds) {
@@ -234,7 +214,7 @@
       digitSegments[current].forEach(function (digitSegment, index) {
         setTimeout(function () {
           segments[digitSegment - 1].classList.remove('on');
-        }, index * 45);
+        }, index * 40);
       });
     }
   
@@ -244,7 +224,7 @@
         digitSegments[number].forEach(function (digitSegment, index) {
           setTimeout(function () {
             segments[digitSegment - 1].classList.add('on');
-          }, index * 45);
+          }, index * 40);
         });
       }, 250);
       digit.setAttribute('data-value', number);
@@ -252,7 +232,6 @@
   };
   
   setTime("88", "88");
-
 
     socket_timer.on('toclient.timerTick', function(data) {
       setTime(data.minutes, data.seconds);
