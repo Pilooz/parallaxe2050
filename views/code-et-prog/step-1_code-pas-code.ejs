@@ -1,0 +1,121 @@
+<%- include('../partials/head', { data: data }) %>
+<!-- START // Styles in head -->
+<link type="text/css" href="css/code-et-prog/step-1_code-pas-code.css" rel="stylesheet">
+<!-- END // Styles in head -->
+<%- include('../partials/header', { data: data }) %>
+
+<div>
+    <div class="container">
+        <div id="ArduinoMessage"></div>
+    </div>
+
+    <div id="actions">
+        <button type="button" id="replay" class="btn btn-secondary">Revoir l'hologramme de Marjorie</button>
+        <button type="button" id="reinit" class="btn btn-secondary">Re-scanner les objets connectés</button>
+    </div>
+</div>
+
+
+<script>
+$(document).ready(function() {
+
+
+    // Play the hologramme
+    $("#replay").on('click', function(e){
+        socket.emit("toserver.play", {});
+        e.preventDefault();
+    });
+
+    // Re-init activity
+    $("#reinit").on('click', function(e){
+        initActivity();
+        e.preventDefault();
+    });
+
+    //
+    // Listening to some specific sockets
+    //
+    socket.on('toclient.initCodePasCode', function(data){
+        initActivity();
+    });
+
+
+    // 
+    var nextStep = '<%-data.currentStep.transitions[0].id %>';
+    var msgElmt = $("#ArduinoMessage");
+
+    function initActivity() {
+        // Display staring message
+        msgElmt.html(messageInit);
+        socket.emit('toserver.initCodePasCode', "init");
+    }
+
+    // Displays message in function of student responses
+    socket.on('toclient.responseAnalysisCodePasCode', function(data) {
+        var progressHTML = progressBar(data.completed);
+        
+        if(data.result == "KO") {
+            msgElmt.addClass('hidden');
+            setTimeout(function(){
+                msgElmt.html(messageKO);
+                msgElmt.removeClass('hidden');
+            }, 200);
+        }
+        else {
+            if (data.pctCompleted < 100) {
+                if(data.pctCompleted <= 100/16) {
+                    // Stoppe l'animation 2 secondes lors du premier scann
+                    msgElmt.addClass('first-card-scanned');
+                    setTimeout(function(){
+                        msgElmt.addClass('hidden');
+                        setTimeout(function(){
+                            msgElmt.removeClass('first-card-scanned');
+                            // Affiche le bon message de progression
+                            msgElmt.html(messageScan + progressHTML);
+                            msgElmt.removeClass('hidden');
+                        }, 200);
+                    }, 2000);
+                }
+                else {
+                    msgElmt.html(messageScan + progressHTML);
+                    msgElmt.removeClass('hidden');
+                }
+            }
+            else {
+                msgElmt.addClass('first-card-scanned');
+                msgElmt.addClass('hidden');
+                setTimeout(function(){
+                    msgElmt.html(messageSuccess);
+                    msgElmt.removeClass('hidden');
+
+                    // Envoie la socket pour lancer la 2e vidéo de Marjorie
+                    setTimeout( function() {
+                        socket.emit('toserver.successCodePasCode', {nextStep: nextStep});
+                        // socket.emit('toserver.nextStep', {nextStep: nextStep});
+                    }, 2000);
+                }, 200);
+            }
+        }
+        msgText.html(msgResult + progressHTML);
+        msgElmt.show();
+    });
+});
+
+    // message Templates
+    const messageInit = "<div class='content'><div class='loader'><span class='feedback'>En attente d'un scan...</span></div></div>";
+    const messageSuccess = "<div class='content'><div class='loader'><span class='feedback'>Bravo !</span></div></div>";
+
+    const messageScan = "<div class='feedback'>Scan en cours...</div>";
+    const messageKO = "<div class='feedback'>Il semblerait que <br />tous les objets <br />ne contiennent pas du code...<br /> Recommencez !</div>";
+
+    function progressBar(pct) {
+        return "<div class='progress'>\
+                <div class='progress-bar' role='progressbar' style='width: " + pct + "%' aria-valuenow='" + pct + "' aria-valuemin='0' aria-valuemax='100'></div>\
+                </div>";
+    }
+
+</script>
+
+<!-- START // Scripts in footer -->
+<!-- END // Scripts in footer -->
+<%- include('../partials/footer', { data: data }) %>

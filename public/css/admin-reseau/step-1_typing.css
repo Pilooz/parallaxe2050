@@ -1,0 +1,22 @@
+.console {
+  font-family: monospace;
+  font-size: 15px;
+  padding: 20px 2px; }
+  .console .line {
+    display: flex; }
+    .console .line > div {
+      flex: 0 0 auto;
+      padding-right: 5px; }
+      .console .line > div span.dora {
+        color: #7200fe; }
+      .console .line > div span.team {
+        color: #f96e00; }
+    .console .line input {
+      flex: 1 0 auto;
+      display: block;
+      border: none;
+      /*color: $mainColor;*/ }
+      .console .line input:focus {
+        outline: none; }
+
+/*# sourceMappingURL=step-1_typing.css.map */
