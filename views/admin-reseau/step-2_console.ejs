@@ -32,6 +32,9 @@
     term.setOption('theme', { background: '#fff', green: "rgb(249, 110, 0)", foreground: '#000'});
     term.setOption('fontFamily', 'monospace');
     term.setOption('fontSize', 16);
+    term.setOption('cursorBlink', true);
+    term.setOption('cursorStyle', "block");
+    term.setOption('cursorWidth', 10);
 
     // --------------------------
     // Build the fake terminal
@@ -313,7 +316,7 @@
         for(var i=0; i < 100; i++) {
             setTimeout(function() {
                 term.write(".");
-            }, 1000 - i);
+            }, 500);
         }
 
         setTimeout(function() {
