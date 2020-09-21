@@ -9,7 +9,7 @@
             "title" : "Code ou pas code ?",
             "template" : "step-1_code-pas-code",
             "medias" : [],
-            "secondScreen": { "url": "/hologramme", "medias": ["medias/code-et-prog/majorie-intro.mp4"] },
+            "secondScreen": { "url": "/hologramme", "medias": ["medias/code-et-prog/marjorie-intro.mp4"] },
             "text" : "test1",
             "transitions" :
             [
