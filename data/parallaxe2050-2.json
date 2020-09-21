@@ -7,7 +7,7 @@
         {
             "stepId" : "step-1",
             "title" : "Base de données et datas",
-            "template" : "bdd-video",
+            "template" : "../partials/player-video",
             "medias" : ["medias/bdd/BDD-presentation.mp4"],
             "text" : "test1",
             "transitions" :
