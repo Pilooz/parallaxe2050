@@ -54,6 +54,7 @@ $(document).ready(function() {
     socket.on('toclient.responseAnalysisCodePasCode', function(data) {
         var progressHTML = progressBar(data.completed);
         
+        // Si la carte n'est pas triée au bon endroit
         if(data.result == "KO") {
             msgElmt.addClass('hidden');
             setTimeout(function(){
@@ -61,8 +62,12 @@ $(document).ready(function() {
                 msgElmt.removeClass('hidden');
             }, 200);
         }
+        // Si la carte a bien été triée
         else {
+            console.log(data);
+            // Si toutes les cartes n'ont pas été triées
             if (data.pctCompleted < 100) {
+                // Si c'est la première carte
                 if(data.pctCompleted <= 100/16) {
                     // Stoppe l'animation 2 secondes lors du premier scann
                     msgElmt.addClass('first-card-scanned');
