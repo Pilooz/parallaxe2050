@@ -354,7 +354,7 @@
 // Specific socket listeners
 $(document).ready(function(){
     //
-    // rponse de node concernant les solutions.
+    // réponse de node concernant les solutions.
     //
     socket.on('toclient.responseAnalysis', function(data) {
         console.log(data);
@@ -363,6 +363,9 @@ $(document).ready(function(){
             display_unreachable(data.ip);
         } else {
             display_ping_messages(data.ip);
+            setTimeout(function() {
+                socket.emit('toserver.nextStep', {nextStep: nextStep});
+            }, 5000);
         }
         prompt(term);
     });
