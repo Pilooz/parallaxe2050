@@ -66,9 +66,9 @@ $(document).ready(function() {
         else {
             console.log(data);
             // Si toutes les cartes n'ont pas été triées
-            if (data.pctCompleted < 100) {
+            if (data.completed < 100) {
                 // Si c'est la première carte
-                if(data.pctCompleted <= 100/16) {
+                if(data.completed <= 100/16) {
                     // Stoppe l'animation 2 secondes lors du premier scann
                     msgElmt.addClass('first-card-scanned');
                     setTimeout(function(){
