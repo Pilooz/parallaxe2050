@@ -50,7 +50,6 @@
                     if(currentLine.text.indexOf(currentInput.val()) > -1 && isCurrentlyWaiting) {
                         // Si c'est la dernière ligne, alors on lance l'étape suivante
                         if(lineCounter == typingLines.length - 1) {
-                            console.log('On est à la dernière ligne');
                             socket.emit('toserver.nextStep', {nextStep: nextStep});
                         }
                         // Sinon, on passe à la ligne suivante

@@ -1,0 +1,123 @@
+<%- include('../partials/head', { data: data }) %>
+<!-- START // Styles in head -->
+    <link type="text/css" href="css/admin-reseau/step-1_typing.css" rel="stylesheet">
+<!-- END // Styles in head -->
+<%- include('../partials/header', { data: data }) %>
+
+    <div class="console">
+    </div>
+
+<!-- START // Scripts in footer -->
+<script>
+    const nextStep = JSON.parse('<%- JSON.stringify(data.currentStep.transitions[0].id) %>');
+    $(document).ready(function() {
+        const typingLines = [
+            { 'type': "typing", 'text': "J'ai reçu à l'instant un message de nos 2 allié·es." },
+            { 'type': "typing", 'text': "Merci d'avoir ré-établi la connexion !" },
+            { 'type': "typing", 'text': "N'oubliez pas de retenir le code de communication pour rester en contact avec chacun·e d'entre elles/eux !" }
+        ];
+        var charCounter = 0;
+        var lineCounter = 0;
+        var typedText = "";
+        var newLine = "";
+        var typingDelay = 30;
+        var isCurrentlyWaiting = false;
+        var currentLine;
+        var currentInput;
+
+        newTypingLine();
+
+        // 
+        // Evenement lorsque l'on clique sur "Entrée"
+        // 
+        $('body').keydown(function(event) {
+            if(event.originalEvent != undefined) {
+                if (event.originalEvent.keyCode == 13) {
+                    if(currentLine.text.indexOf(currentInput.val()) > -1 && isCurrentlyWaiting) {
+                        // Si c'est la dernière ligne, alors on lance l'étape suivante
+                        if(lineCounter == typingLines.length - 1) {
+                            socket.emit('toserver.nextStep', {nextStep: nextStep});
+                        }
+                        // Sinon, on passe à la ligne suivante
+                        else {
+                            currentInput.blur();
+                            lineCounter++;
+                            isCurrentlyWaiting = false;
+                            newTypingLine();
+                        }
+                    }
+                }
+            }
+        });
+
+        // 
+        // Fonction pour taper une nouvelle ligne
+        // 
+        function newTypingLine() {
+            // Récupère la ligne courante
+            currentLine = typingLines[lineCounter];
+
+            if(currentLine !== undefined) {
+
+                newLine = '<div class="line">';
+                if(currentLine.type == "typing") {
+                    newLine += '<div>@<span class="name dora">Dora</span> $</div>';
+                }
+                else {
+                    newLine += '<div>@<span class="name team">Greenternet-console</span> $</div>';
+                }
+                newLine += '<input type="text" autocomplete="off" /></div>';
+
+                // Crée un nouvel input
+                $('.console').append(newLine);
+                currentInput = $('.console .line:last-child input');
+                newLine = "";
+
+                // Si c'est une ligne de typing, alors on lance la fonction "typing"
+                if(currentLine.type == "typing") {
+                    currentInput.addClass('unfocusable');
+                    // Si c'est la première ligne ou que la ligne précédente étant un "waiting", alors on lance directement le typing
+                    if(lineCounter == 0 || typingLines[lineCounter - 1].type == "waiting") {
+                        type();
+                    }
+                    // Sinon, on attend 2 secondes
+                    else {
+                        setTimeout(type, 2000);
+                    }
+                }
+                // Si c'est une ligne où il faut écrire, on attend qu'il y ait le bon mot entré, puis la touche "Entrée"
+                else {
+                    currentInput.focus();
+                    isCurrentlyWaiting = true;
+                }
+            }
+        }
+
+        // 
+        // Fonction pour taper une lettre supplémentaire
+        // 
+        function type() {
+            if(charCounter < currentLine.text.length) {
+                typedText += currentLine.text.charAt(charCounter);
+                currentInput.val(typedText);
+                charCounter++;
+                if(currentLine.text.charAt(charCounter) == " ") {
+                    type();
+                }
+                else {
+                    setTimeout(type, typingDelay + Math.floor(Math.random() * Math.floor(100)));
+                }
+            }
+            else {
+                charCounter = 0;
+                lineCounter++;
+                typedText = "";
+
+                newTypingLine();
+            }
+        }
+
+    });
+</script>
+<!-- END // Scripts in footer -->
+<%- include('../partials/footer', { data: data }) %>
