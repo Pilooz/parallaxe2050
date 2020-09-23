@@ -5,6 +5,29 @@
     "templateDirectory" : "code-et-prog/",
     "steps" : [
         {
+            "stepId" : "step-0",
+            "title" : "Instructions",
+            "template" : "../partials/player-video",
+            "medias" : ["medias/code-et-prog/marjorie-intro.mp4"],
+            "text" : "text1",
+            "transitions" :
+                [
+                { "id" : "step-1", "condition" : "" }
+                ],
+            "solutions" : 
+                [
+                    {
+                        "set": "1", 
+                        "responses" : []
+                    },
+                    {
+                        "set": "2", 
+                        "responses" : []
+                    }
+                ]
+        },
+
+        {
             "stepId" : "step-1",
             "title" : "Code ou pas code ?",
             "template" : "step-1_code-pas-code",
@@ -13,7 +36,7 @@
             "text" : "test1",
             "transitions" :
             [
-                { "id" : "step-2", "condition" : "" }
+                { "id" : "step-1b", "condition" : "" }
             ],
             "solutions" : 
             [
@@ -35,6 +58,29 @@
         },
 
         {
+            "stepId" : "step-1b",
+            "title" : "Instructions",
+            "template" : "../partials/player-video",
+            "medias" : ["medias/code-et-prog/marjorie-2.mp4"],
+            "text" : "text1",
+            "transitions" :
+                [
+                { "id" : "step-2", "condition" : "" }
+                ],
+            "solutions" : 
+                [
+                    {
+                        "set": "1", 
+                        "responses" : []
+                    },
+                    {
+                        "set": "2", 
+                        "responses" : []
+                    }
+                ]
+        },
+
+        {
             "stepId" : "step-2",
             "title" : "Executer du code",
             "template" : "step-2_verify-letters",
@@ -42,7 +88,7 @@
             "text" : "test2",
             "transitions" :
             [
-                { "id" : "step-3", "condition" : "" }
+                { "id" : "step-2b", "condition" : "" }
             ],
             "solutions" : 
             [
@@ -55,6 +101,29 @@
                     "responses" : [ "J" ]
                 }
             ]
+        },
+
+        {
+            "stepId" : "step-2b",
+            "title" : "Instructions",
+            "template" : "../partials/player-video",
+            "medias" : ["medias/code-et-prog/marjorie-outro.mp4"],
+            "text" : "text1",
+            "transitions" :
+                [
+                { "id" : "step-3", "condition" : "" }
+                ],
+            "solutions" : 
+                [
+                    {
+                        "set": "1", 
+                        "responses" : []
+                    },
+                    {
+                        "set": "2", 
+                        "responses" : []
+                    }
+                ]
         },
 
         {
@@ -78,7 +147,6 @@
                         "responses" : []
                     }
                 ]
-        }
-    
+        }    
     ]
 }
