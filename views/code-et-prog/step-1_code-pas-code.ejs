@@ -64,7 +64,6 @@ $(document).ready(function() {
         }
         // Si la carte a bien été triée
         else {
-            console.log(data);
             // Si toutes les cartes n'ont pas été triées
             if (data.completed < 100) {
                 // Si c'est la première carte
@@ -95,19 +94,17 @@ $(document).ready(function() {
 
                     // Envoie la socket pour lancer la 2e vidéo de Marjorie
                     setTimeout( function() {
-                        // socket.emit('toserver.successCodePasCode', {nextStep: nextStep});
                         socket.emit('toserver.nextStep', {nextStep: nextStep});
-                    }, 2000);
+                    }, 4000);
                 }, 200);
             }
         }
-        // msgElmt.html(msgResult + progressHTML).removeClass('hidden');
     });
 });
 
     // message Templates
     const messageInit = "<div class='content'><div class='loader'><span class='feedback'>En attente d'un scan...</span></div></div>";
-    const messageSuccess = "<div class='content'><div class='loader'><span class='feedback'>Bravo !</span></div></div>";
+    const messageSuccess = "<div class='content'><div class='loader'><span class='feedback'>Bravo ! Les objets ont bien été triés !</span></div></div>";
 
     const messageScan = "<div class='feedback'>Scan en cours...</div>";
     const messageKO = "<div class='feedback'>Il semblerait que <br />tous les objets <br />ne contiennent pas du code...<br /> Recommencez !</div>";
