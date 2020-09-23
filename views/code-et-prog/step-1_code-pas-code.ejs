@@ -10,7 +10,7 @@
     </div>
 
     <div id="actions">
-        <button type="button" id="replay" class="btn btn-secondary">Revoir l'hologramme de Marjorie</button>
+        <button type="button" id="replay" class="btn btn-secondary">Revoir le message de Marjorie</button>
         <button type="button" id="reinit" class="btn btn-secondary">Re-scanner les objets connectés</button>
     </div>
 </div>
@@ -22,8 +22,9 @@ $(document).ready(function() {
 
     // Play the hologramme
     $("#replay").on('click', function(e){
-        socket.emit("toserver.play", {});
         e.preventDefault();
+        // socket.emit("toserver.play", {});
+        socket.emit('toserver.previousStep', {accurateStep: "step-0"});
     });
 
     // Re-init activity
