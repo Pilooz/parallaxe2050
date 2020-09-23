@@ -6,8 +6,8 @@
     "steps" : [
         {
         "stepId" : "step-1",
-        "title" : "Typing windows",
-        "template" : "step-1_typing",
+        "title" : "Typing intro",
+        "template" : "step-1_typing-intro",
         "medias" : [],
         "text" : "text1",
         "transitions" :
@@ -68,7 +68,30 @@
         },
 
         {
-            "stepId" : "step-3",
+        "stepId" : "step-3",
+        "title" : "Typing outro",
+        "template" : "step-3_outro",
+        "medias" : [],
+        "text" : "text1",
+        "transitions" :
+            [
+            { "id" : "step-4", "condition" : "" }
+            ],
+        "solutions" : 
+            [
+                {
+                    "set": "1", 
+                    "responses" : ["4C"]
+                },
+                {
+                    "set": "2", 
+                    "responses" : ["6B"]
+                }
+            ]
+        },
+
+        {
+            "stepId" : "step-4",
             "title" : "End. Waiting for session...",
             "template" : "../waiting",
             "medias" : [],
