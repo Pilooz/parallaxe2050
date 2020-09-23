@@ -17,6 +17,12 @@
 
         <script href="/bootstrap/dist/js/bootstrap.min.js"></script>
         <style>
+        .container {
+            height: 100vh;
+        }
+        .container > .row {
+            height: 100%;
+        }
         h1 {
           font-family: dosis, sans-serif;
           font-weight: 800;
@@ -29,25 +35,21 @@
         </style>
 
 <%- include('./partials/header', { data: data }) %>
-<main role="main" class="container-fluid">
-     <div class="row">
-     </div>
-     <div class="row">
-         <div class="col-md-2"></div>
-         <div class="col-md-9 message">
-		<h1></h1>
+<div class="container">
+    <div class="row">
+        <div class="col message align-self-center">
+            <h1></h1>
+        </div>
     </div>
-    <div class="col-md-1"></div>
-  </div>
-</main>
+</div>
 
 <script>
 $(document).ready(function(){
   const nextStep = "<%- data.currentStep.transitions[0].id %>";
   // Message de début d'activité
-  const msgDeb = "Bonjour...<br/>Pour faire cette activité il te faut un badge de la même couleur que cet écran !";
+  const msgDeb = "Bonjour...<br/>Pour faire cette activité,<br />il te faut un badge de la même couleur que cet écran !";
   // Message de fin d'activité
-  const msgFin = "C'est fini !<br/>Pour (re)faire cette activité il te faut un badge de la même couleur que cet écran !";
+  const msgFin = "C'est fini !<br/>Pour (re)faire cette activité,<br />il te faut un badge de la même couleur que cet écran !";
   
   $(".message h1").html((nextStep == "step-2")? msgDeb : msgFin);
    
