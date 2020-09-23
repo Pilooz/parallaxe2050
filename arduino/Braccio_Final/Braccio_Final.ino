@@ -47,30 +47,40 @@
 
 #include <Servo.h>
 #include "BraccioRobot.h"
-#include "protocole_parallaxe2050.h"
+//#include "protocole_parallaxe2050.h"
 
-ParallaxeCom message;
+#define pinYellowSharp A0 //
+#define pinBlueExclamation A1 //
+#define pinLed 8
+
+//ParallaxeCom message;
 Position armPosition;
-static int pinLed = 8;
 
+/*
 void serialEvent() {
   if (Serial.available()) {
     message.receive();
   }
 }
+*/
+
+bool pinState = false //
 
 void setup() {
-  Serial.begin(9600);
-  while (!Serial);
+  //Serial.begin(9600);
+  //while (!Serial);
   BraccioRobot.init();
   delay(1000);
   home_pos();
   pinMode(pinLed, OUTPUT);
   digitalWrite(pinLed, LOW);
-  message.send("MSG", "READY");
+  pinMode(pinYellowSharp, INPUT);
+  pinMode(pinBlueExclamation, INPUT);
+  //message.send("MSG", "READY");
 }
 
 void loop() {
+  /*
   serialEvent();
   if (message.isKey("CMD")) {
     if (message.val() == "#") {
@@ -83,10 +93,22 @@ void loop() {
     }
     message.ack_ok();
   }
+  */
+  if (digitalRead(pinYellowSharp) && !pinState) { //
+    pinState = true; //
+    sharp(); //
+  } //
+  if (digitalRead(pinBlueExclamation) && !pinState) { //
+    pinState = true; //
+    exclamation(); //
+  } //
+  if (!digitalRead(pinYellowSharp) && !digitalRead(pinBlueExclamation)) { //
+    pinState = false; //
+  }  //
 }
 
 void sharp() {
-  message.send("MSG", "ARM IS DRAWING THE SHARP");
+  //message.send("MSG", "ARM IS DRAWING THE SHARP");
   write_pos();
   delay(100);
   BraccioRobot.moveToPosition(armPosition.set(82, 175, 150, 70, 10, 73), 20);
@@ -124,7 +146,7 @@ void sharp() {
 }
 
 void exclamation () {
-  message.send("MSG", "ARM IS DRAWING THE EXCLAMATION POINT");
+  //message.send("MSG", "ARM IS DRAWING THE EXCLAMATION POINT");
   write_pos();
   write_led();
   BraccioRobot.moveToPosition(armPosition.set(90, 145, 150, 150, 10, 73), 20);
