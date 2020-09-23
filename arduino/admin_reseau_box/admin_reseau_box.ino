@@ -56,7 +56,7 @@
 
 */
 
-#define DEBUG
+//#define DEBUG
 
 // Pour communiquer avec le serveur via USBSerial
 ParallaxeCom message;
@@ -174,6 +174,8 @@ void toutDecoller() {
   for (int i = 0; i < 13; i++) {
     decollerRelais(i);
   }
+  delay(500);
+  collerRelais(12); // Recoller la base
   initChemin();
 }
 
