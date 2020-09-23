@@ -95,8 +95,8 @@ $(document).ready(function() {
 
                     // Envoie la socket pour lancer la 2e vidéo de Marjorie
                     setTimeout( function() {
-                        socket.emit('toserver.successCodePasCode', {nextStep: nextStep});
-                        // socket.emit('toserver.nextStep', {nextStep: nextStep});
+                        // socket.emit('toserver.successCodePasCode', {nextStep: nextStep});
+                        socket.emit('toserver.nextStep', {nextStep: nextStep});
                     }, 2000);
                 }, 200);
             }
