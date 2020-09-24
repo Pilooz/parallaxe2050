@@ -132,12 +132,14 @@ function setup_scenario_environment(reInit) {
       // Emit a event to monitoring lib that pushes data to monitoring client
       eventEmitter.emit('monitoring.newGameSession', { tag: dataForTemplate.currentRfidTag, group: rfid.getCurrentGroup() + rfid.getCurrentSubGroup(), startTime: Date.now() });
       eventEmitter.emit('monitoring.newGameStep', {stepId: firsStep, totalSteps: scenario.data().steps.length});
-      eventEmitter.emit('monitoring.solutionsForStep', { solutions: scenario.getCurrentStep().solutions.filter(s => s.set == set), set: set, nextStep: scenario.getCurrentStep().transitions[0].id || null });
       eventEmitter.emit('monitoring.colorsSets', {colorsSet: set});
 
       // Say to the client application to refresh now
       io.emit('toclient.refreshNow');
-    }    
+    } 
+    // Emit solution for the step for each step change, not only if reInit or group changes
+    eventEmitter.emit('monitoring.solutionsForStep', { solutions: scenario.getCurrentStep().solutions.filter(s => s.set == set), set: set, nextStep: scenario.getCurrentStep().transitions[0].id || null });
+
   } else {
     // Wrong badge on wrong device.
     // emit a socket to teel the client to refresh on error page
@@ -210,8 +212,8 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
 
 if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // Testing for group A1 7ED72360 (énigme "AdminReseau" ou énigme "ComDigitale")
-  // rfid.extractTag("<TAG:7ED72360/><READER:1/>");
-  // rfid.extractReader("<TAG:7ED72360/><READER:1/>");
+  rfid.extractTag("<TAG:7ED72360/><READER:1/>");
+  rfid.extractReader("<TAG:7ED72360/><READER:1/>");
   // Testing for group A2 5E3D621A (énigme "ComDigitale" ou énigme "AdminReseau") 
   // rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
   // rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
@@ -219,8 +221,8 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
   // rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
   // Testing for group A4 49426960 (énigme "CodeEtProg" ou énigme "BDD")
-  rfid.extractTag("<TAG:49426960/><READER:1/>");
-  rfid.extractReader("<TAG:49426960/><READER:1/>");
+  // rfid.extractTag("<TAG:49426960/><READER:1/>");
+  // rfid.extractReader("<TAG:49426960/><READER:1/>");
   // // Testing for group A5 5E68811A (énigme "BDD" ou énigme "Hardware")
   // rfid.extractTag("<TAG:5E68811A/><READER:1/>");
   // rfid.extractReader("<TAG:5E68811A/><READER:1/>");
