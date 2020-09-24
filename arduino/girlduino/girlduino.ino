@@ -14,14 +14,6 @@
 #define GREEN_CABLE   310
 #define BLACK_CABLE   965
 
-/*
-  22 25
-  904 965
-  292 310
-  903 965
-  823 860
-*/
-
 CRGB leds[NUM_LEDS];
 
 ParallaxeCom message;
@@ -131,26 +123,26 @@ int test_val_sharp(int A0, int A1, int A2, int A3, int A4, int A5) {
   int result = 0;
 
   if ((A1 >= RED_CABLE - 5) && (A1 <= RED_CABLE + 5)) {
-    Serial.println("RED_CABLE OK");
+    //message.send("MSG", "RED_CABLE OK");
     result++;
   }
   if ((A2 >= BLACK_CABLE - 15) && (A2 <= BLACK_CABLE + 15)) {
-    Serial.println("BLACK_CABLE OK");
+    //message.send("MSG", "BLACK_CABLE OK");
     result++;
   }
   if ((A3 >= GREEN_CABLE - 5) && (A3 <= GREEN_CABLE + 5)) {
-    Serial.println("GREEN_CABLE OK");
+    //message.send("MSG", "GREEN_CABLE OK");
     result++;
   }
   if ((A4 >= YELLOW_CABLE - 15) && (A4 <= YELLOW_CABLE + 15)) {
-    Serial.println("YELLOW_CABLE OK");
+    //message.send("MSG", "YELLOW_CABLE OK");
     result++;
   }
   if ((A5 >= WHITE_CABLE - 20) && (A5 <= WHITE_CABLE + 20)) {
-    Serial.println("WHITE_CABLE OK");
+    //message.send("MSG", "WHITE_CABLE OK");
     result++;
   }
-  Serial.println(result);
+  //Serial.println(result);
   if (result == 5)
     return 1;
   return 0;
@@ -160,26 +152,26 @@ int test_val_point(int A0, int A1, int A2, int A3, int A4, int A5) {
   int result = 0;
 
   if ((A0 >= RED_CABLE - 5) && (A0 <= RED_CABLE + 5)) {
-    Serial.println("RED_CABLE OK");
+    //message.send("MSG", "RED_CABLE OK");
     result++;
   }
   if ((A2 >= BLACK_CABLE - 15) && (A2 <= BLACK_CABLE + 15)) {
-    Serial.println("BLACK_CABLE OK");
+    //message.send("MSG", "BLACK_CABLE OK");
     result++;
   }
   if ((A3 >= WHITE_CABLE - 20) && (A3 <= WHITE_CABLE + 20)) {
-    Serial.println("WHITE_CABLE OK");
+    //message.send("MSG", "WHITE_CABLE OK");
     result++;
   }
   if ((A4 >= GREEN_CABLE - 5) && (A4 <= GREEN_CABLE + 5)) {
-    Serial.println("GREEN_CABLE OK");
+    //message.send("MSG", "GREEN_CABLE OK");
     result++;
   }
   if ((A5 >= YELLOW_CABLE - 15) && (A5 <= YELLOW_CABLE + 15)) {
-    Serial.println("YELLOW_CABLE OK");
+    //message.send("MSG", "YELLOW_CABLE OK");
     result++;
   }
-  Serial.println(result);
+  //Serial.println(result);
   if (result == 5)
     return 1;
   return 0;
