@@ -8,7 +8,7 @@
             "stepId" : "step-1",
             "title" : "Base de données et datas",
             "template" : "../partials/player-video",
-            "medias" : ["medias/bdd/BDD-presentation.mp4"],
+            "medias" : ["medias/bdd/marie-intro.mp4"],
             "text" : "test1",
             "transitions" :
             [
@@ -253,6 +253,29 @@
 
         {
             "stepId" : "step-3",
+            "title" : "Base de données et datas",
+            "template" : "../partials/player-video",
+            "medias" : ["medias/bdd/marie-outro.mp4"],
+            "text" : "test1",
+            "transitions" :
+            [
+                { "id" : "step-4", "condition" : "" }
+            ],
+            "solutions" : 
+            [
+                {
+                    "set": "1",
+                    "responses": []
+                },
+                {
+                    "set": "2",
+                    "responses": []
+                }
+            ]
+        },
+
+        {
+            "stepId" : "step-4",
             "title" : "End. Waiting for session...",
             "template" : "../waiting",
             "medias" : [],
