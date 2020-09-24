@@ -9,7 +9,6 @@
         <title>Parallaxe :: Monitoring</title>
         <meta name="theme-color" content="#ffffff">
 
-        <!-- <link href="/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"> -->
         <link href="/css/bootswatch/bootstrap.min.css" rel="stylesheet">
 
         <script src="/js/jquery.min.js"></script>    
@@ -45,27 +44,6 @@
 
     .gameMode {
         float:right;
-    }
-
-    /********* Popup de résultats OK/KO ************/
-    .popupResult{
-    margin: 10% auto;
-    width : 30%;
-    background-color: grey; /*rgb(243, 243, 243);*/
-    padding: 1em;
-    box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
-    }
-
-    .overlayResult {
-    position: fixed;
-    left: 0px;
-    top:0px;
-    background-color: rgba(0,0 ,0 , 0.5);
-    width: 100%;
-    height: 100%;
-    z-index:1;
-    display:none;
     }
 
     .btnClose {
@@ -105,6 +83,14 @@
             0 0 140px 90px #0ff; /* outer cyan */
     }
 
+    .smooth_changed {
+        background-color: #aaa;
+        box-shadow:
+            0 0 30px 20px #fff,  /* inner white */
+            0 0 60px 30px #f0f, /* middle magenta */
+            0 0 90px 60px #0ff; /* outer cyan */
+    }
+
 </style>
 <body>
     <header>
@@ -122,18 +108,6 @@
 
 <!-- Begin page content -->
 <main role="main" class="container-fluid">
-
-    <div id="overlayResult" class="overlayResult">
-        <div id="popupResult" class="card popupResult mb-4">
-            <h3 id="titleResult" class="card-header"><span id="title"></span><span id="btnClose" class="btnClose">&times;</span></h3>
-            <div class="card-body">
-                <h4 class="card-title">
-                    <p id="messageResult" class="card-text"></p>
-                </h4>
-                
-            </div>
-        </div>
-    </div>
 
     <div class="row">
         
@@ -205,21 +179,21 @@
                 <h5 class="card-header">
                     <span class="activityTitle"><%= server.description %></span>
                     <span class="toolbar">
-                        <a id="restart" href="#" class="controlActivity"  title="Redémarrer l'activité">
+                        <a id="restart" href="#" class="btn btn-default controlActivity"  title="Redémarrer l'activité">
                             <svg  width="32" height="32" viewBox="0 0 16 16" class="bi bi-skip-start" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M4.5 3.5A.5.5 0 0 0 4 4v8a.5.5 0 0 0 1 0V4a.5.5 0 0 0-.5-.5z"/>
                                 <path fill-rule="evenodd" d="M5.696 8L11.5 4.633v6.734L5.696 8zm-.792-.696a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L4.904 7.304z"/>
                             </svg>
                         </a>
 
-                        <a id="refresh" href="#" class="controlActivity" title="Raffraichir l'étape actuelle">
+                        <a id="refresh" href="#" class="btn btn-default controlActivity" title="Raffraichir l'étape actuelle">
                             <svg width="32" height="32" viewBox="0 0 16 16" class="bi bi-arrow-clockwise" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
                                 <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
                             </svg>
                         </a>
 
-                        <a id="nextStep" href="#" class="controlActivity" title="Passer à l'étape suivante">
+                        <a id="nextStep" href="#" class="btn btn-default controlActivity" title="Passer à l'étape suivante">
                             <svg width="32" height="32" viewBox="0 0 16 16" class="bi bi-skip-forward" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5zM1 4.633v6.734L6.804 8 1 4.633zm7.5 0v6.734L14.304 8 8.5 4.633z"/>
                             </svg>  
@@ -294,32 +268,15 @@
         var socket_timer = io('http://<%= data.global_config.app.adminServerIp %>:<%= data.global_config.app.adminServerPort %>/timercontrol');
         var gameMode = "classroom";
 
-        // All manipulatued DOM Elements
-        var popup = $("#overlayResult");
-        var header = $("#popupResult")
-        var title = $("#titleResult #title");
-        var msg = $("#messageResult");
-        
-
-        function initPopup() {
-            popup.attr('style', 'display:none');
-            header.removeClass("border-success").addClass("border-danger");
-            title.html("Erreur !");
-            msg.html("Quelque chose ne s'est pas bien passé. <br/>La requête n'a pas abouti. Cette activité est-elle allumé ? Connectée au réseau ?");
-        }
-
         // mise en surbrillance d'un élément
-        function highlight(elt) {
-            elt.addClass("changed");
+        function highlight(elt, cls) {
+            cls = (!cls) ? "changed": cls;
+            console.log(cls);
+            elt.addClass(cls);
             setTimeout(function() {
-                elt.removeClass("changed");
+                elt.removeClass(cls);
             }, 200);
         }
-
-		// Listener sur le bouton de fermeture de la popup
-		$("#overlayResult").on('click', function(){
-			$("#overlayResult").attr('style', 'display:none');
-        });
         
         // Listener sur les boutons de mode de jeu
         $(".modeButton").on('click', function() {
@@ -329,6 +286,7 @@
 
         // Listener sur les controles du timer
         $(".controlTimerBtn").on('click', function(e) {
+            highlight($(this), "smooth_changed");
             var action = this.id;
             console.log('action = '+action);
             socket_timer.emit('toserver.timerControl',  { action: action, gameMode: gameMode } );
@@ -413,16 +371,8 @@
         // Activity controls  : Restart / nextStep
         //
         $("#<%= server.id %> #restart").on('click', function(e) {
-            initPopup();
-            $.get( "http://<%= server.ip %>:<%= server.port %>/api/restart", function(data) {
-                if (data.status == "200") {
-                    header.removeClass("border-danger");
-                    header.addClass("border-success");
-                    title.html("Ok !");
-                    msg.html(data.message);
-                }
-            });
-            //popup.attr('style', 'display:block');
+            highlight($(this), "smooth_changed");
+            $.get( "http://<%= server.ip %>:<%= server.port %>/api/restart", function(data) {});
             e.preventDefault();
         });
 
@@ -430,16 +380,8 @@
         // nextStep
         //
         $("#<%= server.id %> #nextStep").on('click', function(e) {
-            initPopup();
-            $.get( "http://<%= server.ip %>:<%= server.port %>/api/nextStep", function(data) {
-                if (data.status == "200") {
-                    header.removeClass("border-danger");
-                    header.addClass("border-success");
-                    title.html("Ok !");
-                    msg.html(data.message);
-                }
-            });
-            //popup.attr('style', 'display:block');
+            highlight($(this), "smooth_changed");
+            $.get( "http://<%= server.ip %>:<%= server.port %>/api/nextStep", function(data) {});
             e.preventDefault();
         });
 
@@ -447,24 +389,14 @@
         // Refresh 
         //
         $("#<%= server.id %> #refresh").on('click', function(e) {
-            initPopup();
-            $.get( "http://<%= server.ip %>:<%= server.port %>/api/refresh", function(data) {
-                if (data.status == "200") {
-                    header.removeClass("border-danger");
-                    header.addClass("border-success");
-                    title.html("Ok !");
-                    msg.html(data.message);
-                }
-            });
-            //popup.attr('style', 'display:block');
+            highlight($(this), "smooth_changed");
+            $.get( "http://<%= server.ip %>:<%= server.port %>/api/refresh", function(data) {});
             e.preventDefault();
         });
 
 <% }) %>
         // <- ]
         // end loop
-
-    initPopup();
 }); 
 </script>
 <!-- <%- JSON.stringify(data, null, 1) %>-->
