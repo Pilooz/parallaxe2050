@@ -49,8 +49,8 @@
 #include "BraccioRobot.h"
 //#include "protocole_parallaxe2050.h"
 
-#define pinYellowSharp A0 //
-#define pinBlueExclamation A1 //
+#define pinYellowSharp 2 //
+#define pinBlueExclamation 4 //
 #define pinLed 8
 
 //ParallaxeCom message;
@@ -64,18 +64,18 @@ void serialEvent() {
 }
 */
 
-bool pinState = false //
+bool pinState = false; //
 
 void setup() {
-  //Serial.begin(9600);
-  //while (!Serial);
+  Serial.begin(9600);
+  while (!Serial);
   BraccioRobot.init();
   delay(1000);
   home_pos();
   pinMode(pinLed, OUTPUT);
   digitalWrite(pinLed, LOW);
-  pinMode(pinYellowSharp, INPUT);
-  pinMode(pinBlueExclamation, INPUT);
+  pinMode(pinYellowSharp, INPUT_PULLDOWN);
+  pinMode(pinBlueExclamation, INPUT_PULLDOWN);
   //message.send("MSG", "READY");
 }
 
@@ -102,7 +102,7 @@ void loop() {
     pinState = true; //
     exclamation(); //
   } //
-  if (!digitalRead(pinYellowSharp) && !digitalRead(pinBlueExclamation)) { //
+  if ((digitalRead(pinYellowSharp) == 0) && (digitalRead(pinBlueExclamation) == 0)) { //
     pinState = false; //
   }  //
 }
