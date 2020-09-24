@@ -398,7 +398,7 @@
             if (!soluce || soluce.length == 0) soluce = "Pas de solution pour cette étape.";
             else soluce = JSON.stringify(soluce, null, 4);
             $("#<%= server.id %> .solutions").html(soluce);
-            highlight($("#<%= server.id %> .solutions"));
+            // highlight($("#<%= server.id %> .solutions"));
         });
 
         // Lights control and color data
