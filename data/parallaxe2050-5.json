@@ -29,6 +29,52 @@
 
         {
             "stepId" : "step-2",
+            "title" : "Hardware",
+            "template" : "hardware-step-2",
+            "medias" : [""],
+            "text" : "test1",
+            "transitions" :
+            [
+                { "id" : "step-3", "condition" : "" }
+            ],
+            "solutions" : 
+            [
+                {
+                    "set": "1",
+                    "responses": []
+                },
+                {
+                    "set": "2",
+                    "responses": []
+                }
+            ]
+        },
+
+        {
+            "stepId" : "step-3",
+            "title" : "Hardware",
+            "template" : "../partials/player-video",
+            "medias" : ["medias/hardware/laetitia-outro.mp4"],
+            "text" : "test1",
+            "transitions" :
+            [
+                { "id" : "step-4", "condition" : "" }
+            ],
+            "solutions" : 
+            [
+                {
+                    "set": "1",
+                    "responses": []
+                },
+                {
+                    "set": "2",
+                    "responses": []
+                }
+            ]
+        },
+
+        {
+            "stepId" : "step-4",
             "title" : "End. Waiting for session...",
             "template" : "../waiting",
             "medias" : [],
