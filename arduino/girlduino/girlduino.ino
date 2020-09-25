@@ -79,7 +79,7 @@ void loop() {
       digitalWrite (sortie01_sharp, HIGH);
       delay(100);
       digitalWrite (sortie01_sharp, LOW);
-      delay(35000);
+      delay(27250);
       turn_led_to_color_rgb(0, 0, 0);
     }
     else if (test_val_point(valA0, valA1, valA2, valA3, valA4, valA5)) {
@@ -88,7 +88,7 @@ void loop() {
       digitalWrite (sortie02_point, HIGH);
       delay(100);
       digitalWrite (sortie02_point, LOW);
-      delay(25500);
+      delay(16300);
       turn_led_to_color_rgb(0, 0, 0);
     }
     else {
