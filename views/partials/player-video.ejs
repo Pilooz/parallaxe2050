@@ -7,38 +7,41 @@
 	<div id="player">
 		<div class="module-media module-media-video">
 			<div class="module-media module-media-video-inner">
-				<video src="http://<%= data.config_server.ip + ':' + data.config_server.port + '/' + data.currentStep.medias[0] %>" autoplay="on" id="module-media-video" width="100%" controls></video>
+				<video src="http://<%= data.config_server.ip + ':' + data.config_server.port + '/' + data.currentStep.medias[0] %>" autoplay="on" id="module-media-video" width="100%" style="background-color: #000000;" controls></video>
 			</div>
-			<div class="nav-video-playpause"></div>
-			<div class="nav-video-rewind"></div>
 		</div>
 	</div>
-	<button id="btNext">Ok</button>
+	<div id="actions">
+		<button id="btNext" class="button">Passer la vidéo</button>
+	</div>
 	
 	<script>
 	$(document).ready(function() {
 		var nextStep = '<%-data.currentStep.transitions[0].id %>';
-		if ($('#module-media-video')) {
-			var video = document.getElementById("module-media-video");
 	
-		$('#module-media-video').on('pause', function(e) { 
-		  $('body').addClass('is-video-paused');
-		}).on('play', function(e) { 
-		  $('body').removeClass('is-video-paused');
+		// Paramétrage de la taille du player de la vidéo si nécessaire
+		var videoRatio = $('video').width() / $('video').height();
+		var ratio = $(document).width() / $(document).height();
+		if(ratio < videoRatio) {
+			$('video').width($(document).width());
+		}
+		else {
+			$('video').height($(document).height());
+			$('video').width($(document).width() / videoRatio);
+		}
+
+		// A la fin de la vidéo, on lance le step suivant
+		$('video').on('ended',function() {
+			setTimeout(function(){
+				socket.emit('toserver.nextStep', {nextStep: nextStep});
+            }, 2000);
+		})
+
+		// Paramétrage du bouton pour passer la vidéo
+		$('#btNext').on('click', function(){
+			socket.emit('toserver.nextStep', {nextStep: nextStep});
 		});
-		
-		$('.nav-video-playpause, #module-media-video').on('click', function(){
-			return video.paused ? video.play() : video.pause();
-		});
-		
-		$('.nav-video-rewind').on('click', function(){
-			video.currentTime = 0.01;
-		});
-	  }
-	
-	  $('#btNext').on('click', function(){
-		socket.emit('toserver.nextStep', {nextStep: nextStep});
-	  });
+
 	});
 	</script>
 

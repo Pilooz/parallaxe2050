@@ -1,10 +1,36 @@
+@charset "UTF-8";
+/* Paramétrage des couleurs */
 /* latin-ext */
 @font-face {
-  font-family: 'Dosis';
+  font-family: 'Dosis', sans-serif;
   font-style: normal;
   font-weight: 400;
   src: url(../../fonts/Dosis.woff2) format("woff2");
   unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+/* Actions et boutons */
+#actions {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: row; }
+  #actions .button, #actions .btn {
+    right: 20px;
+    margin-left: 20px;
+    padding: 0.375rem 0.75rem;
+    background-color: #00c6f9;
+    transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-weight: 400;
+    color: white; }
+    #actions .button:hover, #actions .btn:hover {
+      box-shadow: 0 0 10px #00c6f9; }
+    #actions .button:focus, #actions .btn:focus {
+      outline: none; }
+
 body {
   padding: 0;
   margin: 0 !important; }
