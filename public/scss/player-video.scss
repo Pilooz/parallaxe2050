@@ -1,5 +1,15 @@
+@import 'app';
+
 body {
 	background-color: black;
+
+	#actions {
+		.button, .btn {
+			&:hover {
+				box-shadow: 0 0px 20px $mainColor;
+			}
+		}
+	}
 }
 
 
@@ -8,17 +18,22 @@ body {
 	width: 100%;
 	height: 100vh;
 	margin: 0;
-}
-	.nav-video-playpause {
-	}
-	
-	.is-video-paused .nav-video-playpause {
-		/* background-image: url(../assets/images/icon-play.svg); */
-	}
-	
-	.nav-video-rewind {
-	
-	}
+	background-color: #000000 !important;
+
 	.module-media-video {
-		margin:10%;
+		display: flex;
+		align-items: center;
+		margin: 0 !important;
+		background-color: #000000 !important;
+
+		.module-media-video-inner {
+			background-color: #000000 !important;
+			
+			video,
+			video:focus {
+				outline: none;
+				background-color: #000000 !important;
+			}
+		}
 	}
+}

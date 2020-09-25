@@ -1,27 +1,34 @@
 <%- include('../partials/head', { data: data }) %>
 <!-- START // Styles in head -->
+    <link type="text/css" href="css/hardware/step-2.css" rel="stylesheet">
 <!-- END // Styles in head -->
 <%- include('../partials/header', { data: data }) %>
 
-<div class="container-fluid">
-  <h1>OBJECTIF : CABLER LE ROBOT</h1>
+<div id="waitingRoberta">
+    <h1>Roberta</h1>
+    <small>REF : XXXX</small>
+    <div class="message">En attente de câblage</div>
+    <div class="animation">
+        <div class="spinner"></div>
+    </div>
 </div>
+
 <script>
 $(document).ready(function() {
-  var nextStep = '<%-data.currentStep.transitions[0].id %>';
-  var solutions = false;
-  socket.on('toclient.solutions', function(data){
+    var nextStep = '<%-data.currentStep.transitions[0].id %>';
+    var solutions = false;
+    socket.on('toclient.solutions', function(data){
     if (data.state) {
-      solutions = true;
+        solutions = true;
     } else {
-      solutions = false;
+        solutions = false;
     }
-  });
-  socket.on('toclient.robotFinished', function(){
-    if (solutions) {
-      socket.emit('toserver.nextStep', {nextStep: nextStep});
-    }
-  });
+    });
+    socket.on('toclient.robotFinished', function(){
+        if (solutions) {
+            socket.emit('toserver.nextStep', {nextStep: nextStep});
+        }
+    });
 });
 </script>
 
