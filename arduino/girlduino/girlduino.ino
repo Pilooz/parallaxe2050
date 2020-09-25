@@ -72,6 +72,22 @@ void loop() {
     }
   }
   if (valBouton == 1 && activity) {
+    /*
+    Serial.println("START");
+    Serial.print("VALUE 3.3v: ");
+    Serial.println(valA0);
+    Serial.println("VALUE 5v: ");
+    Serial.println(valA1);
+    Serial.println("VALUE GND: ");
+    Serial.println(valA2);
+    Serial.println("VALUE 10~: ");
+    Serial.println(valA3);
+    Serial.println("VALUE 11~: ");
+    Serial.println(valA4);
+    Serial.println("VALUE 12: ");
+    Serial.println(valA5);
+    Serial.println("END !");
+    */
 
     if (test_val_sharp(valA0, valA1, valA2, valA3, valA4, valA5)) {
       message.send("SOLUTIONS", "TRUE");
@@ -80,6 +96,7 @@ void loop() {
       delay(100);
       digitalWrite (sortie01_sharp, LOW);
       delay(27250);
+      message.send("MSG", "FINISHED");
       turn_led_to_color_rgb(0, 0, 0);
     }
     else if (test_val_point(valA0, valA1, valA2, valA3, valA4, valA5)) {
@@ -89,6 +106,7 @@ void loop() {
       delay(100);
       digitalWrite (sortie02_point, LOW);
       delay(16300);
+      message.send("MSG", "FINISHED");
       turn_led_to_color_rgb(0, 0, 0);
     }
     else {
