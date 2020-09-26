@@ -11,9 +11,13 @@
             "medias" : ["medias/code-et-prog/marjorie-intro.mp4"],
             "text" : "text1",
             "transitions" :
-                [
+            [
                 { "id" : "step-1", "condition" : "" }
-                ],
+            ],
+            "previousStep":
+            [
+                { "id" : "", "condition" : "" }
+            ],
             "solutions" : 
                 [
                     {
@@ -37,6 +41,10 @@
             "transitions" :
             [
                 { "id" : "step-1b", "condition" : "" }
+            ],
+            "previousStep":
+            [
+                { "id" : "step-0", "condition" : "" }
             ],
             "solutions" : 
             [
@@ -64,9 +72,13 @@
             "medias" : ["medias/code-et-prog/marjorie-2.mp4"],
             "text" : "text1",
             "transitions" :
-                [
+            [
                 { "id" : "step-2", "condition" : "" }
-                ],
+            ],
+            "previousStep":
+            [
+                { "id" : "step-1", "condition" : "" }
+            ],
             "solutions" : 
                 [
                     {
@@ -88,7 +100,12 @@
             "text" : "test2",
             "transitions" :
             [
-                { "id" : "step-2b", "condition" : "" }
+                { "id" : "step-2b", "condition" : "" },
+                { "id" : "step-1b", "condition" : "", "type" : "previous" }
+            ],
+            "previousStep":
+            [
+                { "id" : "step-1b", "condition" : "" }
             ],
             "solutions" : 
             [
@@ -110,9 +127,13 @@
             "medias" : ["medias/code-et-prog/marjorie-outro.mp4"],
             "text" : "text1",
             "transitions" :
-                [
+            [
                 { "id" : "step-3", "condition" : "" }
-                ],
+            ],
+            "previousStep":
+            [
+                { "id" : "step-2", "condition" : "" }
+            ],
             "solutions" : 
                 [
                     {
@@ -133,9 +154,13 @@
             "medias" : [],
             "text" : "text1",
             "transitions" :
-                [
+            [
                 { "id" : "step-1", "condition" : "" }
-                ],
+            ],
+            "previousStep":
+            [
+                { "id" : "step-2b", "condition" : "" }
+            ],
             "solutions" : 
                 [
                     {

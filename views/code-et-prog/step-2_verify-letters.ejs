@@ -4,10 +4,14 @@
 <!-- END // Styles in head -->
 <%- include('../partials/header', { data: data }) %>
 
+<div id="thumbnail">
+    <img src="medias/code-et-prog/marjorie-2.PNG" />
+</div>
+
 <div class="container">
     <nav class="navbar navbar-light bg-light">
-        <img src="../medias/code-et-prog/logo-editeur.PNG" alt="Editeur de " />
-        <span class="path">Editeur de code : C:\wamp\www\testUnCaractère.mv</span>
+        <img src="../medias/code-et-prog/editeur.png" alt="Editeur de code" />
+        <span class="path">Editeur de code - Fichier édité actuellement : C:\wamp\www\testUnCaractère.mv</span>
         <span></span>
     </nav>
     <div class="row">
@@ -76,8 +80,28 @@
     </div>
 </div>
 
+<div class="modal" id="feedbackModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- START // Scripts in footer -->
+<script src="/bootstrap/dist/js/bootstrap.min.js"></script>
 <script>
 $(document).ready(function() {
     var nextStep = '<%-data.currentStep.transitions[0].id %>';
@@ -108,18 +132,29 @@ $(document).ready(function() {
         e.preventDefault();
         var char = $('#inputFile1').val();
         if(char.length == 1) {
-            socket.emit('toserver.testChar', {car: char});
+            socket.emit('toserver.testChar', {car: char.toLowerCase()});
         }
         else {
-            alert('Vous devez tester avec un seul caractère.');
+            $('#feedbackModal h5').html('Erreur');
+            $('#feedbackModal p').html('Vous devez tester avec un seul caractère.');
+            $('#feedbackModal').modal('show');
         }
     })
     socket.on('toclient.testChar', function(data) {
         if (data.result == "KO") {
-            alert('Echec ! Essayez un autre caractère.');
+            $('#feedbackModal h5').html('Echec');
+            $('#feedbackModal p').html('Ce n\'est pas le caractère qui vous permettra de trouver le langage dans lequel le virus a été codé. Réessayez.');
+            $('#feedbackModal').modal('show');
         } else {
-            alert('Succès ! Vous avez utilisé le bon caractère.');
-            alert('Trouvez maintenant le langage associé à ce caractère.');
+            $('#feedbackModal h5').html('Succès !');
+            $('#feedbackModal p').html('Bravo, vous avez identifié le bon caractère !');
+            $('#feedbackModal .btn').removeClass('btn-secondary').addClass('btn-success');
+            $('#feedbackModal').modal('show');
+            // Envoie la socket pour lancer la 3e vidéo de Marjorie
+            setTimeout(function(){
+                socket.emit('toserver.nextStep', {nextStep: nextStep});
+            }, 4000);
+
         }
     })
 
@@ -140,10 +175,14 @@ $(document).ready(function() {
     })
     socket.on('toclient.testChars', function(data) {
         data.result.forEach(function(res, index){
-            alert('Test du caractère "' + inputAr[index] + '".');
+            $('#feedbackModal h5').html('Test');
+            $('#feedbackModal p').html('Test du caractère "' + inputAr[index] + '".');
+            $('#feedbackModal').modal('show');
             if ( res == "OK" ) {
-                alert('Succès ! Vous avez trouvé le bon caractère.');
-                alert('Trouvez maintenant le langage associé à ce caractère.');
+                $('#feedbackModal h5').html('Succès !');
+                $('#feedbackModal p').html('Bravo, vous avez identifié le bon caractère : "' + inputAr[index] + '".');
+                $('#feedbackModal .btn').removeClass('btn-secondary').addClass('btn-success');
+                $('#feedbackModal').modal('show');
             }
         });
     }) 
