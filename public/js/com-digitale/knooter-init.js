@@ -28,7 +28,7 @@ function setInitKnoots() {
 	})
 
 	// Met à jour le HTML avec les knoots
-	$('#knoots').html(knootsHTML);
+	$('#listKnoots').html(knootsHTML);
 }
 
 
@@ -66,7 +66,7 @@ function setKnoots() {
 }
 
 function addOneKnoot(knoot) {
-	$('#knoots').prepend(createKnoot(knoot));
+	$('#listKnoots').prepend(createKnoot(knoot));
 }
 
 function createKnoot(knoot) {
@@ -89,9 +89,14 @@ function createKnoot(knoot) {
 	}
 	var imageHTML = "";
 	if(knoot.image) {
-		imageHTML = '<img src="medias/com-digitale/images/' + knoot.image + '" title="Image illustrative du knoot de ' + knoot.pseudo + '" />';
+		imageHTML = '<img class="card-img-top" src="medias/com-digitale/images/' + knoot.image + '" title="Image illustrative du knoot de ' + knoot.pseudo + '" />';
 	}
-	return '<div class="knoot ' + (isBlurred ? "blurred": "") + '"><h2>' + knoot.pseudo + '</h2>' + imageHTML + '<p>' + knoot.content + '</p></div>';
+	var textHTML = '<div class="col mb-4 knoot ' + (isBlurred ? "blurred": "") + '">';
+	textHTML += '<div class="card h-100">' + imageHTML;
+	textHTML += '<div class="card-body">';
+	textHTML += '<h5 class="card-title">' + knoot.pseudo + '</h5>';
+	textHTML += '<p class="card-text">' + knoot.content + '</p></div></div></div>';
+	return textHTML;
 }
 
 
@@ -176,7 +181,7 @@ var  knoots = [
 	},
 	{
 		"pseudo": "Tom924019488",
-		"content": "Dites @BaBei_electronics votre <b>#8G</b> la, à part <b>#espionner</b> tous les habitants de la <b>#planète</b> et leur balancer un <b>#virus</b>, elle va servir à quoi concrètement ? J’enjoigne tous mes <b>#followers</b> à <b>#Restezchezvous</b> pour ne pas vous faire voler vos <b>#données</b> ! 8GPandémie",
+		"content": "Dites @BaBei_electronics votre <b>#8G</b> la, à part <b>#espionner</b> tous les habitants de la <b>#planète</b> et leur balancer un <b>#virus</b>, elle va servir à quoi concrètement ? J’enjoigne tous mes <b>#followers</b> à <b>#restezchezvous</b> pour ne pas vous faire voler vos <b>#données</b> ! 8GPandémie",
 		"image": "8GVirusAaaah.jpg"
 	},
 	{
@@ -184,12 +189,8 @@ var  knoots = [
 		"content": "Enfin une bonne <b>#initiative</b> de @AlpesEco concernant la <b>#protection</b> des <b>#loups</b> dans nos territoires !  <b>#protectiondesanimaux</b> <b>#AlpesEco</b>"
 	},
 	{
-		"pseudo": "CanardFrench",
-		"content": "Attention, vague de <b>#pollution</b> à <b>#Grenoble</b> <b>#restezchezvous</b>"
-	},
-	{
 		"pseudo": "tormâta",
-		"content": "Là, je me dois de pousser un <b>#coupdegueule</b> : la <b>#circulation</b> encore <b>#bloquée</b> à cause de ces débiles de <b>#manifestants</b> pour des causes stupides telles que le <b>#fémnisime</b> et l’#écologie. Franchement, <b>#Restezchezvous</b> ! <b>#onenamarre</b>",
+		"content": "Là, je me dois de pousser un <b>#coupdegueule</b> : la <b>#circulation</b> encore <b>#bloquée</b> à cause de ces débiles de <b>#manifestants</b> pour des causes stupides telles que le <b>#fémnisime</b> et l’#écologie. Franchement, <b>#restezchezvous</b> ! <b>#onenamarre</b>",
 		"image": "IMG20501004-9249203.jpg"
 	},
 	{
@@ -212,19 +213,19 @@ var  knoots = [
 	},
 	{
 		"pseudo": "MasterVirus",
-		"content": "Les <b>#débats</b> à l’#Assemblée nationale encore <b>#bloqués</b> à cause de ces tarés de <b>#feministes</b> qui empêche nos <b>#élus</b> de parler des vrais sujets. <b>#Restezchezvous</b> <b>#onenamarre</b>"
+		"content": "Les <b>#débats</b> à l’#Assemblée nationale encore <b>#bloqués</b> à cause de ces tarés de <b>#feministes</b> qui empêche nos <b>#élus</b> de parler des vrais sujets. <b>#restezchezvous</b> <b>#onenamarre</b>"
 	},
 	{
 		"pseudo": "GREENenergy",
-		"content": "Malgré les efforts considérables de tou·tes les citoyen·nes français·es, nous n’avons pu éviter la <b>#vague</b> de <b>#pollution</b> qui s’abat aujourd’hui sur <b>#Grenoble</b>. <b>#Restezchezvous</b>"
+		"content": "Malgré les efforts considérables de tou·tes les citoyen·nes français·es, nous n’avons pu éviter la <b>#vague</b> de <b>#pollution</b> qui s’abat aujourd’hui sur <b>#Grenoble</b>. <b>#restezchezvous</b>"
 	},
 	{
 		"pseudo": "StreetLover",
-		"content": "Bon, les filles qui savent pas accepter les compliments, <b>#Restezchezvous</b>"
+		"content": "Bon, les filles qui savent pas accepter les compliments, <b>#restezchezvous</b>"
 	},
 	{
 		"pseudo": "pépé_mayo",
-		"content": "#Restezchezvous <b>#Restezchezvous</b> <b>#Restezchezvous</b>"
+		"content": "#restezchezvous <b>#restezchezvous</b> <b>#restezchezvous</b>"
 	},
 	{
 		"pseudo": "premier_degré",
@@ -240,7 +241,7 @@ var  knoots = [
 	},
 	{
 		"pseudo": "PropaGrandeur",
-		"content": "Encore des conneries inutiles qui volent l’attention et les débats : le <b>#greenternet</b>. On vous ment. <b>#Restezchezvous</b>"
+		"content": "Encore des conneries inutiles qui volent l’attention et les débats : le <b>#greenternet</b>. On vous ment. <b>#restezchezvous</b>"
 	},
 	{
 		"pseudo": "santépubliquefrance",
@@ -256,11 +257,11 @@ var  knoots = [
 	},
 	{
 		"pseudo": "StreetLover",
-		"content": "Encore une <b>#femme</b> <b>#présidente</b> des Etats-Unis… on aura vraiment tout vu. <b>#Trump</b> me manque ! <b>#Restezchezvous</b>"
+		"content": "Encore une <b>#femme</b> <b>#présidente</b> des Etats-Unis… on aura vraiment tout vu. <b>#Trump</b> me manque ! <b>#restezchezvous</b>"
 	},
 	{
 		"pseudo": "Maire_officiel_Lille",
-		"content": "J’encourage tous les <b>#lillois·es</b> à faire attention : la <b>#grippe</b> est de retour ! <b>#Restezchezvous</b>"
+		"content": "J’encourage tous les <b>#lillois·es</b> à faire attention : la <b>#grippe</b> est de retour ! <b>#restezchezvous</b>"
 	},
 	{
 		"pseudo": "Disney_officiel",

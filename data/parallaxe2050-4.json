@@ -7,7 +7,7 @@
         {
             "stepId" : "step-1",
             "title" : "Com Digitale",
-            "template" : "ringing",
+            "template" : "step-1_ringing",
             "medias" : [],
             "text" : "test1",
             "transitions" :
@@ -34,7 +34,7 @@
         {
             "stepId" : "step-2",
             "title" : "knooter",
-            "template" : "knooter",
+            "template" : "step-2_knooter",
             "medias" : [],
             "text" : "test2",
             "transitions" :

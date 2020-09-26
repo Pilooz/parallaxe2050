@@ -59,7 +59,7 @@ document.addEventListener('keydown', function(e) {
 			$('#connectButton').on('click', function(e) {
 				e.preventDefault();
 				// TODO : se mettre d'accord sur les identifiants inscrits dans le carnet / sur les affiches
-				if($('#pseudo').val() == "toto" && $('#password').val() == "toto") {
+				if($('#pseudo').val() == "marguerite" && $('#password').val() == "KN0 t€r") {
 					setCookie('admin', $('#pseudo').val(), 5);
 					$('#authenticateAdminModal').modal('hide');
 					$('body').addClass('admin');

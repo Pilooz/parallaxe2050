@@ -9,7 +9,7 @@ body.admin {
 	#navbar {
 		top: 40px;
 	}
-	#knoots {
+	#listKnoots {
 		padding-top: 120px;
 	}
 }
@@ -25,32 +25,31 @@ body.admin {
 
 
 /*********** FIN FOND DYNAMIC *******/
-#knoots {
-	padding-top: 70px;
-}
-.knoot {
-	/*position: fixed;*/
-	width: 300px;
-	background: white;
-	margin: 0 auto 20px;
+#listKnoots {
+	width: 900px;
+	margin: auto;
+	padding-top: 90px;
+	column-break-inside: avoid;
 
-	h2 {
-		background: white;
-		font-size: 15px;
-		padding: 3px 5px;
-		margin: 0;
-	}
-	p {
-		padding: 5px 10px;
-		margin: 0;
-	}
+	.knoot {
+		h2 {
+			background: white;
+			font-size: 15px;
+			padding: 3px 5px;
+			margin: 0;
+		}
+		p {
+			padding: 5px 10px;
+			margin: 0;
+		}
 
-	&.blurred {
-		opacity: 0.5;
-	}
+		&.blurred {
+			opacity: 0.5;
+		}
 
-	img {
-		width: 100%;
+		img {
+			width: 100%;
+		}
 	}
 }
 

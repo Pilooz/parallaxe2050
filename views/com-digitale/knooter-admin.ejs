@@ -12,11 +12,12 @@
                 <form>
                     <div class="form-group">
                         <label for="pseudo" class="col-form-label">Pseudo</label>
-                        <input type="text" class="form-control" id="pseudo">
+                        <input type="text" class="form-control" id="pseudo" aria-describedby="pseudoHelp" />
+                        <small id="pseudoHelp" class="form-text text-muted">Par défaut, le pseudo est le prénom de l'utilisateur·trice.</small>
                     </div>
                     <div class="form-group">
                         <label for="password" class="col-form-label">Mot de passe</label>
-                        <input type="text" class="form-control" id="password">
+                        <input type="password" class="form-control" id="password">
                     </div>
                 </form>
             </div>

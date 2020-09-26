@@ -5,7 +5,7 @@ body.admin #adminbar {
   display: block; }
 body.admin #navbar {
   top: 40px; }
-body.admin #knoots {
+body.admin #listKnoots {
   padding-top: 120px; }
 
 #adminbar {
@@ -16,25 +16,22 @@ body.admin #knoots {
   background: #08345f !important; }
 
 /*********** FIN FOND DYNAMIC *******/
-#knoots {
-  padding-top: 70px; }
-
-.knoot {
-  /*position: fixed;*/
-  width: 300px;
-  background: white;
-  margin: 0 auto 20px; }
-  .knoot h2 {
+#listKnoots {
+  width: 900px;
+  margin: auto;
+  padding-top: 90px;
+  column-break-inside: avoid; }
+  #listKnoots .knoot h2 {
     background: white;
     font-size: 15px;
     padding: 3px 5px;
     margin: 0; }
-  .knoot p {
+  #listKnoots .knoot p {
     padding: 5px 10px;
     margin: 0; }
-  .knoot.blurred {
+  #listKnoots .knoot.blurred {
     opacity: 0.5; }
-  .knoot img {
+  #listKnoots .knoot img {
     width: 100%; }
 
 #chooseImage {
