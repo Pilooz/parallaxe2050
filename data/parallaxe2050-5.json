@@ -48,12 +48,20 @@
             "solutions" :
             [
                 {
-                    "set": "1",
-                    "responses": []
+                    "set": "1", 
+                    "responses" : [ 
+                        {}, 
+                        {}
+                    ],
+                    "ref": "XXXXXXXX"
                 },
                 {
                     "set": "2",
-                    "responses": []
+                    "responses" : [ 
+                        {}, 
+                        {}
+                    ],
+                    "ref": "YYYYYYYY"
                 }
             ]
         },
