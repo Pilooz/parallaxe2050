@@ -7,9 +7,24 @@
 
 	<script>
 		$(document).ready(function() {
+
 		    var nextStep = '<%-data.currentStep.transitions[0].id %>';
 		    console.log(nextStep);
-		    // 
+
+		    // Thumbnail de vidéo pour relancer la vidéo précédente
+		    if($('#thumbnail') && $('#thumbnail').length > 0) {
+		    	var previousStep = '<%-data.currentStep.previousStep[0].id %>';
+
+		        setTimeout(function() {
+		            $('#thumbnail').addClass('small');
+		        }, 200);
+
+		        $('#thumbnail img').on('click', function(e) {
+		            socket.emit('toserver.previousStep', {previousStep: previousStep});
+		        })
+		    }
+
+
 		    // a key map of allowed keys
 		    var allowedKeys = {
 		      78: 'n',

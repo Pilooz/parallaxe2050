@@ -165,9 +165,9 @@ io.on('connection', function(socket) {
 
     // Client asks for the previous step
     socket.on('toserver.previousStep', function(data){
-      // The data var contains the accurate stepId that has been described and validated in the accurate step transition
-      logger.info("The client asked for the step '" + data.accurateStep +  "'");
-      scenario.setCurrentStepId(data.accurateStep);
+      // The data var contains the previous stepId that has been described and validated in the previous step transition
+      logger.info("The client asked for the step '" + data.previousStep +  "'");
+      scenario.setCurrentStepId(data.previousStep);
       // Say to the client it has to refresh
       socket.emit('toclient.refreshNow');
     });
@@ -218,11 +218,11 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
   // rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
   // Testing for group A3 0EAF4C60 (énigme "Hardware" ou énigme "CodeEtProg") 
-  // rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
-  // rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
+  rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
+  rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
   // Testing for group A4 49426960 (énigme "CodeEtProg" ou énigme "BDD")
-  rfid.extractTag("<TAG:49426960/><READER:1/>");
-  rfid.extractReader("<TAG:49426960/><READER:1/>");
+  // rfid.extractTag("<TAG:49426960/><READER:1/>");
+  // rfid.extractReader("<TAG:49426960/><READER:1/>");
   // // Testing for group A5 5E68811A (énigme "BDD" ou énigme "Hardware")
   // rfid.extractTag("<TAG:5E68811A/><READER:1/>");
   // rfid.extractReader("<TAG:5E68811A/><READER:1/>");

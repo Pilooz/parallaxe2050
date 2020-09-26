@@ -41,3 +41,21 @@ $shadowMainColor: 0 0 10px $mainColor;
 		}
 	}
 }
+
+/* Thumbnail de vidéo pour relancer la vidéo précédente */
+#thumbnail {
+	position: fixed;
+	z-index: 90;
+	left: 0;
+	bottom: 0;
+	transition: all 0.4s ease-in;
+	cursor: pointer;
+
+	&.small {
+		transform: scale(0.1);
+		left: -50%;
+		bottom: -50%;
+		margin-left: 110px;
+		margin-bottom: 75px;
+	}
+}
