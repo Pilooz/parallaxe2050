@@ -14,6 +14,10 @@
             [
                 { "id" : "step-2", "condition" : "" }
             ],
+            "previousStep":
+            [
+                { "id" : "", "condition" : "" }
+            ],
             "solutions" : 
             [
                 {
@@ -36,6 +40,10 @@
             "transitions" :
             [
                 { "id" : "step-3", "condition" : "" }
+            ],
+            "previousStep":
+            [
+                { "id" : "step-1", "condition" : "" }
             ],
             "solutions" : 
             [
@@ -63,20 +71,24 @@
             "medias" : [],
             "text" : "text1",
             "transitions" :
-                [
+            [
                 { "id" : "step-1", "condition" : "" }
-                ],
+            ],
+            "previousStep":
+            [
+                { "id" : "step-2", "condition" : "" }
+            ],
             "solutions" : 
-                [
-                    {
-                        "set": "1", 
-                        "responses" : []
-                    },
-                    {
-                        "set": "2", 
-                        "responses" : []
-                    }
-                ]
+            [
+                {
+                    "set": "1", 
+                    "responses" : []
+                },
+                {
+                    "set": "2", 
+                    "responses" : []
+                }
+            ]
         }
     
     ]

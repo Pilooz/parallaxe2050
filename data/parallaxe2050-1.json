@@ -5,16 +5,20 @@
     "templateDirectory" : "admin-reseau/",
     "steps" : [
         {
-        "stepId" : "step-1",
-        "title" : "Typing intro",
-        "template" : "step-1_typing-intro",
-        "medias" : [],
-        "text" : "text1",
-        "transitions" :
+            "stepId" : "step-1",
+            "title" : "Typing intro",
+            "template" : "step-1_typing-intro",
+            "medias" : [],
+            "text" : "text1",
+            "transitions" :
             [
-            { "id" : "step-2", "condition" : "" }
+                { "id" : "step-2", "condition" : "" }
             ],
-        "solutions" : 
+            "previousStep":
+            [
+                { "id" : "", "condition" : "" }
+            ],
+            "solutions" : 
             [
                 {
                     "set": "1", 
@@ -28,27 +32,31 @@
         },
 
         {
-        "stepId" : "step-2",
-        "title" : "Console réseau",
-        "template" : "step-2_console",
-        "serverData" :[
-            { "ip" : "46.229.161.131", "country" : "[US]" },
-            { "ip" : "194.71.211.50", "country" : "[SE]" },
-            { "ip" : "111.206.198.123", "country" : "[CN]" },
-            { "ip" : "192.71.18.47", "country" : "[DE]" },
-            { "ip" : "91.121.180.203", "country" : "[FR]" },
-            { "ip" : "105.112.100.226", "country" : "[NG]" },
-            { "ip" : "5.182.210.16", "country" : "[NL]" },
-            { "ip" : "79.152.164.28", "country" : "[ES]" },
-            { "ip" : "167.88.60.250", "country" : "[CA]" },
-            { "ip" : "31.13.127.11", "country" : "[IE]" }
-        ],
-    
-        "transitions" :
-            [
-            { "id" : "step-3", "condition" : "" }
+            "stepId" : "step-2",
+            "title" : "Console réseau",
+            "template" : "step-2_console",
+            "serverData" :[
+                { "ip" : "46.229.161.131", "country" : "[US]" },
+                { "ip" : "194.71.211.50", "country" : "[SE]" },
+                { "ip" : "111.206.198.123", "country" : "[CN]" },
+                { "ip" : "192.71.18.47", "country" : "[DE]" },
+                { "ip" : "91.121.180.203", "country" : "[FR]" },
+                { "ip" : "105.112.100.226", "country" : "[NG]" },
+                { "ip" : "5.182.210.16", "country" : "[NL]" },
+                { "ip" : "79.152.164.28", "country" : "[ES]" },
+                { "ip" : "167.88.60.250", "country" : "[CA]" },
+                { "ip" : "31.13.127.11", "country" : "[IE]" }
             ],
-        "solutions" : 
+        
+            "transitions" :
+            [
+                { "id" : "step-3", "condition" : "" }
+            ],
+            "previousStep":
+            [
+                { "id" : "step-1", "condition" : "" }
+            ],
+            "solutions" : 
             [
                 {
                     "set": "1", 
@@ -68,16 +76,20 @@
         },
 
         {
-        "stepId" : "step-3",
-        "title" : "Typing outro",
-        "template" : "step-3_typing-outro",
-        "medias" : [],
-        "text" : "text1",
-        "transitions" :
+            "stepId" : "step-3",
+            "title" : "Typing outro",
+            "template" : "step-3_typing-outro",
+            "medias" : [],
+            "text" : "text1",
+            "transitions" :
             [
-            { "id" : "step-4", "condition" : "" }
+                { "id" : "step-4", "condition" : "" }
             ],
-        "solutions" : 
+            "previousStep":
+            [
+                { "id" : "step-2", "condition" : "" }
+            ],
+            "solutions" : 
             [
                 {
                     "set": "1", 
@@ -97,21 +109,25 @@
             "medias" : [],
             "text" : "text1",
             "transitions" :
-                [
+            [
                 { "id" : "step-1", "condition" : "" }
-                ],
+            ],
+            "previousStep":
+            [
+                { "id" : "step-3", "condition" : "" }
+            ],
             "solutions" : 
-                [
-                    {
-                        "set": "1", 
-                        "responses" : []
-                    },
-                    {
-                        "set": "2", 
-                        "responses" : []
-                    }
-                ]
-            }
+            [
+                {
+                    "set": "1", 
+                    "responses" : []
+                },
+                {
+                    "set": "2", 
+                    "responses" : []
+                }
+            ]
+        }
     
     ]
   }
