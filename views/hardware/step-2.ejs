@@ -10,7 +10,7 @@
 
 <div id="waitingRoberta">
     <h1>Roberta</h1>
-    <small>REF : XXXX</small>
+    <small></small>
     <div class="message">En attente de câblage</div>
     <div class="animation">
         <div class="spinner"></div>
@@ -21,6 +21,13 @@
 $(document).ready(function() {
     var nextStep = '<%-data.currentStep.transitions[0].id %>';
     var solutions = false;
+
+    // TODO : Récupérer la bonne référence à afficher sur l'ihm (set 1 ou set 2 du jeu)
+    // Récupère la référence
+    var ref = '<%-data.currentStep.solutions[1].ref %>';
+    $('small').html('REF : ' + ref);
+
+    // 
     socket.on('toclient.solutions', function(data){
     if (data.state) {
         solutions = true;
