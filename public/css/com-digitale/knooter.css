@@ -44,6 +44,12 @@ body.admin #listKnoots {
       cursor: pointer; }
     #listKnoots .knoot img {
       width: 100%; }
+    #listKnoots .knoot:first-child {
+      transform: scale(1);
+      opacity: 1;
+      z-index: 90;
+      margin-top: 90px;
+      margin-left: -500px; }
     #listKnoots .knoot:nth-child(40n+1) {
       transform: scale(1);
       opacity: 1;
@@ -145,7 +151,7 @@ body.admin #listKnoots {
       opacity: 0;
       z-index: 90;
       margin-top: 350px;
-      margin-left: 570px; }
+      margin-left: 370px; }
     #listKnoots .knoot:nth-child(40n+18) {
       transform: scale(0.32);
       opacity: 0;
@@ -180,8 +186,8 @@ body.admin #listKnoots {
       transform: scale(0.12);
       opacity: 0;
       z-index: 90;
-      margin-left: -600px;
-      margin-top: 500px; }
+      margin-left: -700px;
+      margin-top: 400px; }
     #listKnoots .knoot:nth-child(40n+24) {
       transform: scale(0.08);
       opacity: 0;
@@ -222,7 +228,7 @@ body.admin #listKnoots {
       transform: scale(0);
       opacity: 0;
       z-index: 90;
-      margin-top: 450px;
+      margin-top: 350px;
       margin-left: -900px; }
     #listKnoots .knoot:nth-child(40n+31) {
       transform: scale(0);
@@ -258,8 +264,8 @@ body.admin #listKnoots {
       transform: scale(0);
       opacity: 0;
       z-index: 90;
-      margin-top: 350px;
-      margin-left: 570px; }
+      margin-top: 550px;
+      margin-left: 470px; }
     #listKnoots .knoot:nth-child(40n+37) {
       transform: scale(0);
       opacity: 0;
@@ -282,7 +288,7 @@ body.admin #listKnoots {
       transform: scale(0.24);
       opacity: 0;
       z-index: 90;
-      margin-top: 70px;
+      margin-top: 90px;
       margin-left: -500px; }
 
 #chooseImage {
