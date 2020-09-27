@@ -172,6 +172,13 @@ io.on('connection', function(socket) {
       socket.emit('toclient.refreshNow');
     });
 
+    // Client asks to refresh the current step
+    socket.on('toserver.refresh', function(data){
+      logger.info("The client asked for refresh the current step");
+      // Say to the client it has to refresh
+      socket.emit('toclient.refreshNow');
+    });
+
     socket.on('disconnect', function() {
       logger.info(' /!\\ Client is disconnected !');
     });
