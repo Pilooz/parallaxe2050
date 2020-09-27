@@ -33,6 +33,12 @@
     <script src="js/lib/animation.gsap.js"></script>
 
     <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>
+        // Données de base pour Knooter
+        const blurredHashtags = JSON.parse('<%- JSON.stringify(data.currentStep.blurredHashtags) %>');
+        const blurredAccounts = JSON.parse('<%- JSON.stringify(data.currentStep.blurredAccounts) %>');
+        const knoots = JSON.parse('<%- JSON.stringify(data.currentStep.knoots) %>');
+    </script>
 	<script src="js/com-digitale/knooter-init.js"></script>
     <script src="js/com-digitale/knooter-publish.js"></script>
     <script src="js/com-digitale/knooter-admin.js"></script>
