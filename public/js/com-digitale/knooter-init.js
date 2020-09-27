@@ -1,9 +1,84 @@
 $(document).ready(function() {
+
+	// 
+	// Scroll en haut
+	// 
+	$(window).scrollTop(0);
+
+
 	// TODO : faire en sorte que Knooter soit initialisé lorsqu'une team badge
 	initKnooterForNewTeam();
 
 	setInitKnoots();
 	initKnooter();
+
+	//
+	// Knoots floutés et événements
+	//
+	$('body').on('click', '.knoot.blurred .card-footer', function(e) {
+		e.preventDefault();
+		$(this).parents('.knoot').removeClass('blurred').find('.card-footer').remove();
+	})
+
+
+	//
+	// Animation
+	//
+	// Contrôleur de l'animation
+    var controller = new ScrollMagic.Controller({
+        globalSceneOptions: {
+            triggerHook: "onLeave"
+        }
+    });
+
+    var startpin = new ScrollMagic.Scene({
+            duration: 10000
+        })
+        .setPin("#listKnoots")
+        .addTo(controller);
+
+	// Animations
+	var animatedElement;
+
+    // Affichage jusqu'à une opacité de 1 et un scale de 1
+    for (var i = 0; i < 40; i++) {
+    	if(i == 0) {
+    		animatedElementSelector = "#listKnoots .knoot:first-child";
+    	}
+    	else {
+    		animatedElementSelector = "#listKnoots .knoot:nth-child(40n+" + (i+1) + ")";
+    	}
+    	if($(animatedElementSelector).length > 0) {
+	    	new ScrollMagic.Scene({
+	            duration: 300 * i,
+	            offset: 0
+	        })
+	        .setTween(new TimelineMax({repeat: 0, yoyo: false})
+		        .add(TweenMax.to(animatedElementSelector, 0.3, {transform: "scale(" + ((1 - 0.04*i) < 0 ? 0 : (1 - 0.04*i)) + ")", opacity: ((1 - 0.08*i) < 0 ? 0 : (1 - 0.08*i)) }))
+		        .add(TweenMax.to(animatedElementSelector, 0.3, {transform: "scale(1)", opacity: "1"})))
+	        .addTo(controller);
+	    }
+    }
+
+	for (var i = 0; i < 40; i++) {
+    	if(i == 0) {
+    		animatedElementSelector = "#listKnoots .knoot:first-child";
+    	}
+    	else {
+    		animatedElementSelector = "#listKnoots .knoot:nth-child(40n+" + (i+1) + ")";
+    	}
+    	if($(animatedElementSelector).length > 0) {
+		    new ScrollMagic.Scene({
+	            duration: 300,
+	            offset: (i * 300)
+	        })
+	        .setTween(new TimelineMax({repeat: 0, yoyo: false})
+		        .add(TweenMax.to(animatedElementSelector, 0.3, {transform: "scale(1)", opacity: "1"}))
+		        .add(TweenMax.to(animatedElementSelector, 0.3, {transform: "scale(1.2)", opacity: "0.5"}))
+		        .add(TweenMax.to(animatedElementSelector, 0.3, {transform: "scale(1.5)", opacity: "0", pointerEvents: "none" })))
+	        .addTo(controller);
+	    }
+	};
 })
 
 // Fonction pour initialiser Knooter dès qu'il y a une nouvelle team qui badge
@@ -91,11 +166,15 @@ function createKnoot(knoot) {
 	if(knoot.image) {
 		imageHTML = '<img class="card-img-top" src="medias/com-digitale/images/' + knoot.image + '" title="Image illustrative du knoot de ' + knoot.pseudo + '" />';
 	}
-	var textHTML = '<div class="col mb-4 knoot ' + (isBlurred ? "blurred": "") + '">';
-	textHTML += '<div class="card h-100">' + imageHTML;
+	var textHTML = '<div class="card mb-4 knoot' + (isBlurred ? " blurred": "") + '">';
+	textHTML += '<div class="h-100">' + imageHTML + '</div>';
 	textHTML += '<div class="card-body">';
 	textHTML += '<h5 class="card-title">' + knoot.pseudo + '</h5>';
-	textHTML += '<p class="card-text">' + knoot.content + '</p></div></div></div>';
+	textHTML += '<p class="card-text">' + knoot.content + '</p></div>';
+	if(isBlurred) {
+		textHTML += '<div class="card-footer text-muted">Afficher</div>'
+	}
+	textHTML += '</div>';
 	return textHTML;
 }
 
