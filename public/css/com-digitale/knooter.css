@@ -21,18 +21,269 @@ body.admin #listKnoots {
   margin: auto;
   padding-top: 90px;
   column-break-inside: avoid; }
-  #listKnoots .knoot h2 {
-    background: white;
-    font-size: 15px;
-    padding: 3px 5px;
-    margin: 0; }
-  #listKnoots .knoot p {
-    padding: 5px 10px;
-    margin: 0; }
-  #listKnoots .knoot.blurred {
-    opacity: 0.5; }
-  #listKnoots .knoot img {
-    width: 100%; }
+  #listKnoots .knoot {
+    position: fixed;
+    left: 50%;
+    top: 0;
+    width: 300px;
+    margin-left: -150px;
+    transform: scale(0); }
+    #listKnoots .knoot h2 {
+      background: white;
+      font-size: 15px;
+      padding: 3px 5px;
+      margin: 0; }
+    #listKnoots .knoot p {
+      padding: 5px 10px;
+      margin: 0; }
+    #listKnoots .knoot.blurred .card-body {
+      color: transparent;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.5); }
+    #listKnoots .knoot.blurred .card-footer,
+    #listKnoots .knoot.blurred .card-footer:hover {
+      cursor: pointer; }
+    #listKnoots .knoot img {
+      width: 100%; }
+    #listKnoots .knoot:nth-child(40n+1) {
+      transform: scale(1);
+      opacity: 1;
+      z-index: 99;
+      margin-left: -500px;
+      margin-top: 300px; }
+    #listKnoots .knoot:nth-child(40n+2) {
+      transform: scale(0.96);
+      opacity: 0.92;
+      z-index: 98;
+      margin-left: 300px;
+      margin-top: 700px; }
+    #listKnoots .knoot:nth-child(40n+3) {
+      transform: scale(0.92);
+      opacity: 0.84;
+      z-index: 97;
+      margin-left: 100px;
+      margin-top: 100px; }
+    #listKnoots .knoot:nth-child(40n+4) {
+      transform: scale(0.88);
+      opacity: 0.76;
+      z-index: 96;
+      margin-left: -600px;
+      margin-top: 500px; }
+    #listKnoots .knoot:nth-child(40n+5) {
+      transform: scale(0.84);
+      opacity: 0.68;
+      z-index: 95;
+      margin-left: 50px;
+      margin-top: 300px; }
+    #listKnoots .knoot:nth-child(40n+6) {
+      transform: scale(0.8);
+      opacity: 0.6;
+      z-index: 94;
+      margin-left: -180px;
+      margin-top: 180px; }
+    #listKnoots .knoot:nth-child(40n+7) {
+      transform: scale(0.76);
+      opacity: 0.52;
+      z-index: 93;
+      margin-top: 480px;
+      margin-left: -240px; }
+    #listKnoots .knoot:nth-child(40n+8) {
+      transform: scale(0.72);
+      opacity: 0.44;
+      z-index: 92;
+      margin-top: 50px;
+      margin-left: -800px; }
+    #listKnoots .knoot:nth-child(40n+9) {
+      transform: scale(0.68);
+      opacity: 0.36;
+      z-index: 91;
+      margin-top: 700px;
+      margin-left: 600px; }
+    #listKnoots .knoot:nth-child(40n+10) {
+      transform: scale(0.64);
+      opacity: 0.28;
+      z-index: 90;
+      margin-top: 100px;
+      margin-left: 300px; }
+    #listKnoots .knoot:nth-child(40n+11) {
+      transform: scale(0.6);
+      opacity: 0.2;
+      z-index: 90;
+      margin-top: 450px;
+      margin-left: -900px; }
+    #listKnoots .knoot:nth-child(40n+12) {
+      transform: scale(0.56);
+      opacity: 0.12;
+      z-index: 90;
+      margin-top: 80px;
+      margin-left: 670px; }
+    #listKnoots .knoot:nth-child(40n+13) {
+      transform: scale(0.52);
+      opacity: 0.04;
+      z-index: 90;
+      margin-top: 450px;
+      margin-left: -20px; }
+    #listKnoots .knoot:nth-child(40n+14) {
+      transform: scale(0.48);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 100px;
+      margin-left: -940px; }
+    #listKnoots .knoot:nth-child(40n+15) {
+      transform: scale(0.44);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 200px;
+      margin-left: -300px; }
+    #listKnoots .knoot:nth-child(40n+16) {
+      transform: scale(0.4);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 80px;
+      margin-left: -600px; }
+    #listKnoots .knoot:nth-child(40n+17) {
+      transform: scale(0.36);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 350px;
+      margin-left: 570px; }
+    #listKnoots .knoot:nth-child(40n+18) {
+      transform: scale(0.32);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 600px;
+      margin-left: -500px; }
+    #listKnoots .knoot:nth-child(40n+19) {
+      transform: scale(0.28);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 200px;
+      margin-left: 590px; }
+    #listKnoots .knoot:nth-child(40n+20) {
+      transform: scale(0.24);
+      opacity: 0;
+      z-index: 90;
+      margin-left: -400px;
+      margin-top: 300px; }
+    #listKnoots .knoot:nth-child(40n+21) {
+      transform: scale(0.2);
+      opacity: 0;
+      z-index: 90;
+      margin-left: 300px;
+      margin-top: 700px; }
+    #listKnoots .knoot:nth-child(40n+22) {
+      transform: scale(0.16);
+      opacity: 0;
+      z-index: 90;
+      margin-left: 100px;
+      margin-top: 100px; }
+    #listKnoots .knoot:nth-child(40n+23) {
+      transform: scale(0.12);
+      opacity: 0;
+      z-index: 90;
+      margin-left: -600px;
+      margin-top: 500px; }
+    #listKnoots .knoot:nth-child(40n+24) {
+      transform: scale(0.08);
+      opacity: 0;
+      z-index: 90;
+      margin-left: 50px;
+      margin-top: 300px; }
+    #listKnoots .knoot:nth-child(40n+25) {
+      transform: scale(0.04);
+      opacity: 0;
+      z-index: 90;
+      margin-left: -180px;
+      margin-top: 180px; }
+    #listKnoots .knoot:nth-child(40n+26) {
+      transform: scale(0);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 480px;
+      margin-left: -240px; }
+    #listKnoots .knoot:nth-child(40n+27) {
+      transform: scale(0);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 50px;
+      margin-left: -800px; }
+    #listKnoots .knoot:nth-child(40n+28) {
+      transform: scale(0);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 700px;
+      margin-left: 600px; }
+    #listKnoots .knoot:nth-child(40n+29) {
+      transform: scale(0);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 100px;
+      margin-left: 300px; }
+    #listKnoots .knoot:nth-child(40n+30) {
+      transform: scale(0);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 450px;
+      margin-left: -900px; }
+    #listKnoots .knoot:nth-child(40n+31) {
+      transform: scale(0);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 80px;
+      margin-left: 670px; }
+    #listKnoots .knoot:nth-child(40n+32) {
+      transform: scale(0);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 450px;
+      margin-left: -20px; }
+    #listKnoots .knoot:nth-child(40n+33) {
+      transform: scale(0);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 100px;
+      margin-left: -940px; }
+    #listKnoots .knoot:nth-child(40n+34) {
+      transform: scale(0);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 700px;
+      margin-left: -500px; }
+    #listKnoots .knoot:nth-child(40n+35) {
+      transform: scale(0);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 80px;
+      margin-left: -400px; }
+    #listKnoots .knoot:nth-child(40n+36) {
+      transform: scale(0);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 350px;
+      margin-left: 570px; }
+    #listKnoots .knoot:nth-child(40n+37) {
+      transform: scale(0);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 600px;
+      margin-left: -500px; }
+    #listKnoots .knoot:nth-child(40n+38) {
+      transform: scale(0);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 200px;
+      margin-left: 590px; }
+    #listKnoots .knoot:nth-child(40n+39) {
+      transform: scale(0);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 600px;
+      margin-left: -690px; }
+    #listKnoots .knoot:nth-child(40n) {
+      transform: scale(0.24);
+      opacity: 0;
+      z-index: 90;
+      margin-top: 70px;
+      margin-left: -500px; }
 
 #chooseImage {
   background: rgba(0, 0, 0, 0.8); }
