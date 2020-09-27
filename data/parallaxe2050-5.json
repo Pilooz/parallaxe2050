@@ -53,7 +53,7 @@
                         {}, 
                         {}
                     ],
-                    "ref": "XXXXXXXX"
+                    "reference": "GIRLDUINO UNO-A"
                 },
                 {
                     "set": "2",
@@ -61,7 +61,7 @@
                         {}, 
                         {}
                     ],
-                    "ref": "YYYYYYYY"
+                    "reference": "GIRLDUINO UNO-B"
                 }
             ]
         },

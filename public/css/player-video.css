@@ -52,11 +52,13 @@ body {
     box-shadow: 0 0px 20px #00c6f9; }
 
 #player {
+  display: flex;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
+  align-items: center;
   margin: 0;
   background-color: #000000 !important; }
   #player .module-media-video {
