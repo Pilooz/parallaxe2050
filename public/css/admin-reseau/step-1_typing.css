@@ -46,6 +46,15 @@
     margin-left: 110px;
     margin-bottom: 75px; }
 
+body #titleConsole {
+  background-color: #E3E3E3;
+  text-align: center;
+  line-height: 40px; }
+body span.dora {
+  color: #7200fe; }
+body span.team {
+  color: #f96e00; }
+
 .console {
   font-family: monospace;
   font-size: 15px;
@@ -55,10 +64,6 @@
     .console .line > div {
       flex: 0 0 auto;
       padding-right: 5px; }
-      .console .line > div span.dora {
-        color: #7200fe; }
-      .console .line > div span.team {
-        color: #f96e00; }
     .console .line input {
       flex: 1 0 auto;
       display: block;

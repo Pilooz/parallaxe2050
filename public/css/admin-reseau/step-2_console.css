@@ -46,6 +46,15 @@
     margin-left: 110px;
     margin-bottom: 75px; }
 
+body #titleConsole {
+  background-color: #E3E3E3;
+  text-align: center;
+  line-height: 40px; }
+body span.dora {
+  color: #7200fe; }
+body span.team {
+  color: #f96e00; }
+
 .xterm .xterm-viewport {
   background-color: #fff !important; }
 

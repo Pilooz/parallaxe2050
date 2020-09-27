@@ -2,4 +2,16 @@ $mainColor: rgb(114, 0, 254);
 $secondaryColor: rgb(249, 110, 0);
 
 body {
+	#titleConsole {
+		background-color: #E3E3E3;
+		text-align: center;
+		line-height: 40px;
+	}
+
+	span.dora {
+		color: $mainColor;
+	}
+	span.team {
+		color: $secondaryColor;
+	}
 }
