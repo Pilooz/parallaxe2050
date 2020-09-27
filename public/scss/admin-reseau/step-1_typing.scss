@@ -13,13 +13,6 @@
 		&> div {
 			flex: 0 0 auto;
 			padding-right: 5px;
-
-			span.dora {
-				color: $mainColor;
-			}
-			span.team {
-				color: $secondaryColor;
-			}
 		}
 		input {
 			flex: 1 0 auto;

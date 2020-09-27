@@ -4,8 +4,11 @@
 <!-- END // Styles in head -->
 <%- include('../partials/header', { data: data }) %>
 
-    <div class="console">
-    </div>
+<div id="titleConsole">
+    Terminal - Connecté en tant que @<span class="name team">Greenternet-console</span> - Communication établie avec @<span class="name dora">Dora</span>
+</div>
+<div class="console">
+</div>
 
 <!-- START // Scripts in footer -->
 <script>
@@ -19,15 +22,16 @@
             { 'type': "typing", 'text': "Enfin quelqu'une ! On a un gros problème qui m'empêche de vous contacter autrement qu'ici." },
             { 'type': "typing", 'text': "J'ai besoin de votre aide, tout le Greenternet compte sur vous !" },
             { 'type': "typing", 'text': "Êtes-vous prêt·es à m'aider ?" },
-            { 'type': "waiting", 'text': ["YES", "yes", "Yes", "YEs", "YeS", "yeS", "yES", "yEs"] },
+            { 'type': "waiting", 'text': ["YES", "yes", "Yes", "YEs", "YeS", "yeS", "yES", "yEs", "oui", "ouI", "oUi", "oUI", "Oui", "OuI", "OUi", "OUI"] },
             { 'type': "typing", 'text': "Super." },
-            { 'type': "typing", 'text': "Nous devons contacter nos allié·es." },
-            { 'type': "typing", 'text': "Mais le virus a infecté beaucoup de serveurs du réseau du Greenternet." },
+            { 'type': "typing", 'text': "Le virus a infecté beaucoup de serveurs du réseau du Greenternet." },
             { 'type': "typing", 'text': "Il faut établir la connexion jusqu'à nos allié·es sans passer par ces serveurs." },
-            { 'type': "typing", 'text': "Pour cela, il faut identifier les serveurs infectés, puis recâbler le chemin pour aller aux allié·es 1... Et leur envoyer un \"ping\"." },
-            { 'type': "typing", 'text': "Votre outil principal : le terminal." },
-            { 'type': "typing", 'text': "Ne paniquez pas, vous savez déjà faire : vous êtes en train de l'utiliser pour communiquer avec moi !" },
-            { 'type': "typing", 'text': "Si tout est bon, tapez ok pour accéder à l'invité de commande complet, afin de contacter le réseau extérieur (les serveurs et les allié·es)." },
+            { 'type': "typing", 'text': "Commencez par utiliser le terminal pour identifier les serveurs infectés par le virus à l'aide des lignes de commande comme “status”." },
+            { 'type': "typing", 'text': "Quand vous savez quels serveurs sont infectés, connectez-nous aux allié·es 1." },
+            { 'type': "typing", 'text': "Une fois la connexion établie, envoyez-leur un “ping”." },
+            { 'type': "typing", 'text': "Commencez par utiliser le terminal (ce que vous utilisez pour discuter avec moi), puis le panneau de connexion du réseau et ses câbles." },
+            { 'type': "typing", 'text': "(Regardez la fiche d'aide si vous ne savez pas quelle ligne de commande dans le terminal !)" },
+            { 'type': "typing", 'text': "A présent, tapez “ok” pour accéder au terminal complet, afin de contacter le réseau extérieur !" },
             { 'type': "waiting", 'text': ["ok", "OK", "Ok", "oK"] }
         ];
         var charCounter = 0;

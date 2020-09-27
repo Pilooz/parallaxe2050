@@ -212,8 +212,8 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
 
 if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // Testing for group A1 7ED72360 (énigme "AdminReseau" ou énigme "ComDigitale")
-  // rfid.extractTag("<TAG:C6C1441B/><READER:1/>");
-  // rfid.extractReader("<TAG:C6C1441B/><READER:1/>");
+  rfid.extractTag("<TAG:7ED72360/><READER:1/>");
+  rfid.extractReader("<TAG:7ED72360/><READER:1/>");
   // Testing for group A2 5E3D621A (énigme "ComDigitale" ou énigme "AdminReseau") 
   // rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
   // rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
@@ -224,8 +224,8 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // rfid.extractTag("<TAG:49426960/><READER:1/>");
   // rfid.extractReader("<TAG:49426960/><READER:1/>");
   // // Testing for group A5 5E68811A (énigme "BDD" ou énigme "Hardware")
-  rfid.extractTag("<TAG:5E68811A/><READER:1/>");
-  rfid.extractReader("<TAG:5E68811A/><READER:1/>");
+  // rfid.extractTag("<TAG:5E68811A/><READER:1/>");
+  // rfid.extractReader("<TAG:5E68811A/><READER:1/>");
 
   // Defining the step
   scenario.setCurrentStepId("step-1");
@@ -306,11 +306,16 @@ router.all('/*', function (req, res, next) {
   }  
   dataForTemplate.solutions = dataForTemplate.currentStep.solutions.filter(s => s.set == dataForTemplate.solutionsSet)[0].responses;
 
+  // Donnée pour Admin réseau : code de communication
+  if(dataForTemplate.currentStep.solutions.filter(s => s.set == dataForTemplate.solutionsSet)[0].codeDeCommunication) {
+    dataForTemplate.codeDeCommunication = dataForTemplate.currentStep.solutions.filter(s => s.set == dataForTemplate.solutionsSet)[0].codeDeCommunication;
+  }
+
   // donnée pour HARDWARE : référence du robot
   if(dataForTemplate.currentStep.solutions.filter(s => s.set == dataForTemplate.solutionsSet)[0].reference) {
     dataForTemplate.reference = dataForTemplate.currentStep.solutions.filter(s => s.set == dataForTemplate.solutionsSet)[0].reference;
   }
-  
+
   // By default the template is "content.ejs"
   var tmpl = (dataForTemplate.currentStep.template == "") ? "content" : dataForTemplate.currentStep.template;
   
