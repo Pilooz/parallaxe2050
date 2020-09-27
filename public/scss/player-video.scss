@@ -14,11 +14,13 @@ body {
 
 
 #player {
+	display: flex;
 	position: fixed;
 	top: 0;
 	left: 0;
 	right: 0;
 	bottom: 0;
+	align-items: center;
 	margin: 0;
 	background-color: #000000 !important;
 

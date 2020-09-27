@@ -9,6 +9,7 @@
 </div>
 
 <div id="waitingRoberta">
+    <img src="medias/hardware/arduino-braccio-robotic-arm.jpg" />
     <h1>Roberta</h1>
     <small></small>
     <div class="message">En attente de câblage</div>
@@ -22,10 +23,8 @@ $(document).ready(function() {
     var nextStep = '<%-data.currentStep.transitions[0].id %>';
     var solutions = false;
 
-    // TODO : Récupérer la bonne référence à afficher sur l'ihm (set 1 ou set 2 du jeu)
     // Récupère la référence
-    var ref = '<%-data.currentStep.solutions[1].ref %>';
-    $('small').html('REF : ' + ref);
+    $('small').html('REF : ' + JSON.parse('<%- JSON.stringify(data.reference) %>'));
 
     // 
     socket.on('toclient.solutions', function(data){
