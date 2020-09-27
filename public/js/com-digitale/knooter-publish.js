@@ -62,7 +62,6 @@ $(document).ready(function() {
 		if($('#contentKnoot').val() != "" && $('#verificationKnoot').is(':checked')) {
 
 			var sizeText = $('tr.table-active .sizeImage').data('size');
-			// TODO : s'assurer que 100 ko c'est ok pour la taille max (et reporter la taille choisie sur les affiches / le carnet)
 			if(parseFloat(sizeText) <= 100) {
 				var knootJSON = {
 					'pseudo': $('#publishAs i').html(),
