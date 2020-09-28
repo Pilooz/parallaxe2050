@@ -56,7 +56,7 @@
     /* INIT CONSOLE */
     // Data and vars
     const prompt_linux = '\r\n@\033[32mGreenternet-console\033[0m $\033[0m ';
-    const prompt_linux_length = 28;
+    const prompt_linux_length = 23;
     const cheminsVersServeursAllies = JSON.parse('<%- JSON.stringify(data.solutions) %>');
     const serverList = JSON.parse('<%- JSON.stringify(data.currentStep.serverData) %>');
     const IPList = Array();
@@ -108,7 +108,7 @@
                     cmd_line = "";
                     prompt(term);
                     break;
-                case '\u0003': // Ctrl+C
+                case '\u0003': // Ctrl+C 
                     display_prompt = true;
                     prompt(term);
                     break;
@@ -201,7 +201,8 @@
     // Retruns true if the parametre is an IP
     // --------------------------------------------
     function isAnIP(ip) {
-        return ip.match(/^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/);
+        if (ip) return ip.match(/^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/);
+        return false;
     }
 
     // --------------------------------------------
@@ -228,7 +229,10 @@
         // Verify that the array index of the typed ip is in the allies serves list
         if ( goodServersIndexList.includes(indexIP) ) isInfected = false;
         // Verify that the ip is in the list of AllyServer1 and 2 : The Allies are never infected
-        if (ip == cheminsVersServeursAllies[0].ip || ip == cheminsVersServeursAllies[1].ip ) isInfected = false;
+        if (ip == cheminsVersServeursAllies[0].ip 
+         || ip == cheminsVersServeursAllies[1].ip 
+         || ip == "127.0.0.1"
+         || ip == "52.59.222.97") isInfected = false;
 
         // Displaying a result
         write_line("");
@@ -303,7 +307,7 @@
 
         write_line("");
         if (isIP) {
-            if (ip == cheminsVersServeursAllies[0].ip || ip == cheminsVersServeursAllies[1].ip ) thisIsAGoodServer = true;
+            if (ip == cheminsVersServeursAllies[0].ip || ip == cheminsVersServeursAllies[1].ip) thisIsAGoodServer = true;
             // Local Loopback
             if (ip == "127.0.0.1" ) {
                 write_line("\x1B[1;3;33mMouhahaha ! Tu es en train de pinguer ta propre adresse locale !");
@@ -314,6 +318,12 @@
             if ( ip == "8.8.8.8") {
                 write_line("\x1B[1;3;96mCe service ne répond plus depuis au moins 30 ans !");
                 write_line("Souviens-toi, il s'agissait d'un serveur DNS de google, dans les années 2000-2020.\x1B[0m");
+                
+            }
+            // Nous 
+            if (ip == "52.59.222.97") {
+                display_ping_messages(ip);
+                write_line("\x1B[1;3;32mC'est normal, c'est nous !\x1B[0m");
                 ping_finished = true;
             }
             // Les autres IP : 
