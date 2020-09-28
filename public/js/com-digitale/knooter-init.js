@@ -1,14 +1,19 @@
 $(document).ready(function() {
 
 	//
+	// Initialisation des hashtags ajoutés et des comptes ajoutés et des knoots ajoutés
+	//
+	if(!getCookie('hasValidatedSecondStep')) {
+		setCookie('addedHashtags', JSON.stringify([]));
+		setCookie('addedAccounts', JSON.stringify([]));
+		setCookie('addedKnoots', JSON.stringify([]));
+	}
+
+	//
 	// Récupère les hashtags, les comptes et les knoots floutés ajoutés
 	//
-	console.log('Récupère les hashtags floutés ajoutés');
 	allBlurredHashtags = getAllBlurredHashtags();
-	console.log('Récupère les comptes floutés ajoutés');
 	allBlurredAccounts = getAllBlurredAccounts();
-	console.log('Récupère les knoots ajoutés');
-	allKnoots = getAllKnoots();
 
 	//
 	// Initialisation des knoots
@@ -21,12 +26,7 @@ $(document).ready(function() {
 		$('#blurredAccounts').append(' <span class="badge badge-secondary">@' + value + '</span>');
 	})
 	// Parcourt les knoots et les ajoute au HTML (avec ou sans flou)
-	var knootsHTML = "";
-	$.each(allKnoots, function(index, value) {
-		knootsHTML += createKnoot(value);
-	})
-	// Met à jour le HTML avec les knoots
-	$('#listKnoots').html(knootsHTML);
+	setKnoots();
 
 
 	// Paramètre le "publie en tant que..."
@@ -40,55 +40,28 @@ $(document).ready(function() {
 		e.preventDefault();
 		$(this).parents('.knoot').removeClass('blurred').find('.card-footer').remove();
 	})
-
-
-	//
-	// Animation
-	//
-	// Contrôleur de l'animation
-	setAnimation();
 })
 
 
 
+function setKnoots() {
+	allKnoots = getAllKnoots();
 
+	var knootsHTML = "";
+	$.each(allKnoots, function(index, value) {
+		knootsHTML += createKnoot(value);
+	})
+	// Met à jour le HTML avec les knoots
+	$('#listKnoots').html(knootsHTML);
 
-
-
-function addOneKnoot(knoot) {
-	console.log('TODO : enregistrer le knoot dans les cookies');
-
-	$('#listKnoots').prepend(createKnoot(knoot));
+	// Contrôleur de l'animation
+	setAnimation();
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function addOneKnoot(knoot) {
+	$('#listKnoots').prepend(createKnoot(knoot));
+}
 
 
 
@@ -119,6 +92,7 @@ function createKnoot(knoot, blurredHashtags, blurredAccounts) {
 	textHTML += '<div class="card-body">';
 	textHTML += '<h5 class="card-title">' + knoot.pseudo + '</h5>';
 	textHTML += '<p class="card-text">' + knoot.content + '</p></div>';
+	textHTML += '<div class="card-footer">' + knoot.likes + ' réactions</div>';
 	if(isBlurred) {
 		textHTML += '<div class="card-footer text-muted">Afficher</div>'
 	}
@@ -128,13 +102,28 @@ function createKnoot(knoot, blurredHashtags, blurredAccounts) {
 
 
 function getAllBlurredAccounts() {
-	return blurredAccounts;
+	var addedAccounts = JSON.parse(getCookie('addedAccounts'));
+	var newAccounts = blurredAccounts;
+	$.each(addedAccounts, function(index, value) {
+		newAccounts.push(value);
+	})
+	return newAccounts;
 }
 function getAllBlurredHashtags() {
-	return blurredHashtags;
+	var addedHashtags = JSON.parse(getCookie('addedHashtags'));
+	var newHashtags = blurredHashtags;
+	$.each(addedHashtags, function(index, value) {
+		newHashtags.push(value);
+	})
+	return newHashtags;
 }
 function getAllKnoots() {
-	return knoots;
+	var addedKnoots = JSON.parse(getCookie('addedKnoots'));
+	var newKnoots = knoots;
+	$.each(addedKnoots, function(index, value) {
+		newKnoots.push(value);
+	})
+	return newKnoots;
 }
 
 

@@ -1,9 +1,9 @@
 $(document).ready(function() {
 
-	var selectedImage;
+	var selectedImage = "";
 
 	// Bouton d'expression
-	$('#writeKnootButton').on('click', function(e) {
+	$('#addKnootButton').on('click', function(e) {
 		if(getCookie("admin") && getCookie("admin") != "" && getCookie("admin") != null && getCookie('admin') != "null") {
 			$('#publishAs i').html(getCookie("admin"));
 		}
@@ -21,13 +21,12 @@ $(document).ready(function() {
 	})
 	
 	// Dates et heures des images
-	// TODO : ajouter 30 années pour être en 2050 !
-	$('.image-1-creation').html(getGoodFormateDate((new Date()).addDays(-40)));
-	$('.image-2-creation').html(getGoodFormateDate((new Date()).addDays(-1)));
-	$('.image-3-creation').html(getGoodFormateDate((new Date()).addDays(-1)));
-	$('.image-4-creation').html(getGoodFormateDate((new Date()).addDays(-1300)));
-	$('.image-4-modification').html(getGoodFormateDate((new Date()).addDays(-1290)));
-	$('.image-5-creation').html(getGoodFormateDate((new Date()).addDays(-1180)));
+	$('.image-1-creation').html(getGoodFormateDate((new Date()).addDays(-40 + (30*365))));
+	$('.image-2-creation').html(getGoodFormateDate((new Date()).addDays(-1 + (30*365))));
+	$('.image-3-creation').html(getGoodFormateDate((new Date()).addDays(-1 + (30*365))));
+	$('.image-4-creation').html(getGoodFormateDate((new Date()).addDays(-1300 + (30*365))));
+	$('.image-4-modification').html(getGoodFormateDate((new Date()).addDays(-1290 + (30*365))));
+	$('.image-5-creation').html(getGoodFormateDate((new Date()).addDays(-1180 + (30*365))));
 
 	// Gestion de l'image
 	var currentImageLine;
@@ -66,7 +65,8 @@ $(document).ready(function() {
 				var knootJSON = {
 					'pseudo': $('#publishAs i').html(),
 					'content': $('#contentKnoot').val(),
-					'image': selectedImage
+					'image': selectedImage,
+					'likes': likes
 				};
 				// On paramètre les cookies
 				var addedKnootsInCookies = JSON.parse(getCookie('addedKnoots'));
@@ -85,9 +85,11 @@ $(document).ready(function() {
 				$('#removeButton').trigger('click');
 				$('#verificationKnoot').prop('checked', false).parent().removeClass('active');
 
-				if($.inArray(selectedImage, images) && getCookie('hasValidatedSecondStep')) {
-					// TODO : lancer l'appel téléphonique de félicitations si la knoot contient une des images
-					console.log("Ca y est, vous avez publié un message suffisamment intéressant ! Bravo !");
+				if(getCookie('hasValidatedSecondStep')) {
+					setCookie('hasValidatedThirdStep', true, 60);
+					setTimeout(function() {
+						socket.emit('toserver.previousStep', {previousStep: previousStep});
+					}, 4000);
 				}
 			}
 			else {

@@ -323,6 +323,11 @@ router.all('/*', function (req, res, next) {
     dataForTemplate.reference = dataForTemplate.currentStep.solutions.filter(s => s.set == dataForTemplate.solutionsSet)[0].reference;
   }
 
+  // donnée pour COM DIGITALE : nombre de likes
+  if(dataForTemplate.currentStep.solutions.filter(s => s.set == dataForTemplate.solutionsSet)[0].likes) {
+    dataForTemplate.likes = dataForTemplate.currentStep.solutions.filter(s => s.set == dataForTemplate.solutionsSet)[0].likes;
+  }
+
   // By default the template is "content.ejs"
   var tmpl = (dataForTemplate.currentStep.template == "") ? "content" : dataForTemplate.currentStep.template;
   
