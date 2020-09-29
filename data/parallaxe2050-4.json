@@ -66,15 +66,8 @@
                 { "pseudo": "santépubliquefrance", "content": "L’épidémie de <b>#grippe</b> annuelle commence en <b>#France</b> <b>#restezchezvous</b>", "likes": "8474" },
                 { "pseudo": "p@py_mayo", "content": "#protectiondesanimaux <b>#protectiondesanimaux</b> <b>#protectiondesanimaux</b> <b>#protectiondesanimaux</b> <b>#protectiondesanimaux</b> <b>#protectiondesanimaux</b> <b>#protectiondesanimaux</b>", "likes": "7624" },
                 { "pseudo": "lindependant_journalOFF", "content": "EXCLUSIVITÉ : Retrouvez sur notre site internet une <b>#interview</b> <b>#exclusive</b> lae directeur·trice général de @GREENenergy. Avec ellui, nous abordons la question des <b>#énergies</b> <b>#renouvelables</b>, comment réparer le mal fait à la <b>#planète</b>, et beaucoup d’autres sujets.", "likes": "4964" },
-                { "pseudo": "StreetLover", "content": "Encore une <b>#femme</b> <b>#présidente</b> des Etats-Unis… on aura vraiment tout vu. <b>#Trump</b> me manque ! <b>#restezchezvous</b>", "likes": "8273" },
-                { "pseudo": "Maire_officiel_Lille", "content": "J’encourage tous les <b>#lillois·es</b> à faire attention : la <b>#grippe</b> est de retour ! <b>#restezchezvous</b>", "likes": "4935" },
-                { "pseudo": "Disney_officiel", "content": "Nous vous proposons aujourd’hui de visionner le <b>#film</b> L’île au trésor. Sorti en 1950, il s’agit d’un des premier long <b>#métrage</b> de <b>#Disney</b>.", "image": "ileautresor.jpg", "likes": "9203" },
-                { "pseudo": "BoyPosé", "content": "Haha, il y a 34 ans, voilà comment les <b>#politiques</b> imaginaient <b>#Paris</b> en 2050 : [Spoiler alert : ils avaient tout faux en 2016]", "image": "paris2016.jpg", "likes": "9478" },
-                { "pseudo": "Clîdin", "content": "OMG j’aime tellement @RomanDavis_officiel dans son dernier <b>#film</b> <b>#WhiteBoard</b>. <b>#acteur</b> <b>#love</b>", "likes": "442" },
-                { "pseudo": "BoyPosé", "content": "Je suis retombée sur cette vieille <b>#musique</b> de @Drake (2017 !!). Allez tou·tes l’écouter !", "likes": "8292" },
-                { "pseudo": "UnionEuropéenne", "content": "Aujourd’hui, nous célébrons le <b>#centenaire</b> de la <b>#signature</b> à Rome de la <b>#convention</b> <b>#européenne</b> des <b>#droits</b> des <b>#humain·es</b> (appelée la « convention européenne des droits de l’homme » lors de sa création).", "likes": "8310" },
-                { "pseudo": "NatureAddict", "content": "#Randonnée dans le <b>#Jura</b> avec @cadoulin <b>#Magnifiques</b> <b>#paysages</b>", "image": "jura.jpg", "likes": "8683" },
-                { "pseudo": "ASSE_officiel", "content": "<b>#Magnifique</b> <b>#victoire</b> de l’ <b>#ASSE</b> hier soir face @PSG_foot 2-1", "likes": "2057" }],
+                { "pseudo": "StreetLover", "content": "Encore une <b>#femme</b> <b>#présidente</b> des Etats-Unis… on aura vraiment tout vu. <b>#Trump</b> me manque ! <b>#restezchezvous</b>", "likes": "8273" }
+            ],
             "transitions" :
             [
                 { "id" : "step-3", "condition" : "" }
@@ -88,14 +81,14 @@
                 {
                     "set": "1", 
                     "responses" : [ 
-                        {"likes": "2340"}
-                    ]
+                    ],
+                    "likes": "2340"
                 },
                 {
                     "set": "2", 
                     "responses" : [ 
-                        {"likes": "6900"}
-                    ]
+                    ],
+                    "likes": "6900"
                 }
             ]
         },

@@ -387,6 +387,7 @@ router.all('/*', function (req, res, next) {
   scenario.setCurrentStepId(firstStep);
   setup_scenario_environment(true); 
   io.emit('toclient.refreshNow');
+  io.emit('toclient.justRestarted');
 
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({message: `Opération réussie !<br/>L'activité est revenue à l'étape '${firstStep}'.`, status: 200}));

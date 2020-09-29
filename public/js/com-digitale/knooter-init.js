@@ -1,16 +1,28 @@
 $(document).ready(function() {
 
+	// Paramètre le "publie en tant que..."
+	$('#publishAs i').html("anonyme");
+
+	// Knoots floutés et défloutage
+	$('body').on('click', '.knoot.blurred .card-footer', function(e) {
+		e.preventDefault();
+		$(this).parents('.knoot').removeClass('blurred').find('.card-footer.text-muted').remove();
+	})
+
 	//
 	// Initialisation des hashtags ajoutés et des comptes ajoutés et des knoots ajoutés
 	//
-	if(!getCookie('hasValidatedSecondStep')) {
+	socket.on('toclient.justRestarted', function(){
 		setCookie('addedHashtags', JSON.stringify([]));
 		setCookie('addedAccounts', JSON.stringify([]));
 		setCookie('addedKnoots', JSON.stringify([]));
-	}
+		setCookie('hasValidatedSecondStep', null);
+		setCookie('justAddedHashtags', JSON.stringify([]));
+		setCookie('justAddedAccounts', JSON.stringify([]));
+    });
 
 	//
-	// Récupère les hashtags, les comptes et les knoots floutés ajoutés
+	// Récupère les hashtags, les comptes et les knoots de base et ceux ajoutés
 	//
 	allBlurredHashtags = getAllBlurredHashtags();
 	allBlurredAccounts = getAllBlurredAccounts();
@@ -26,25 +38,18 @@ $(document).ready(function() {
 		$('#blurredAccounts').append(' <span class="badge badge-secondary">@' + value + '</span>');
 	})
 	// Parcourt les knoots et les ajoute au HTML (avec ou sans flou)
-	setKnoots();
-
-
-	// Paramètre le "publie en tant que..."
-	$('#publishAs i').html("anonyme");
-
-
-	//
-	// Knoots floutés et défloutage
-	//
-	$('body').on('click', '.knoot.blurred .card-footer', function(e) {
-		e.preventDefault();
-		$(this).parents('.knoot').removeClass('blurred').find('.card-footer').remove();
-	})
+	setAllKnoots();
 })
 
 
 
-function setKnoots() {
+
+function addOneKnoot(knoot) {
+	$('#listKnoots').prepend(createKnoot(knoot));
+}
+
+
+function setAllKnoots() {
 	allKnoots = getAllKnoots();
 
 	var knootsHTML = "";
@@ -54,13 +59,62 @@ function setKnoots() {
 	// Met à jour le HTML avec les knoots
 	$('#listKnoots').html(knootsHTML);
 
-	// Contrôleur de l'animation
-	setAnimation();
-}
 
+	// Création des animations
+	var controller = new ScrollMagic.Controller({
+        globalSceneOptions: {
+            triggerHook: "onLeave"
+        }
+    });
 
-function addOneKnoot(knoot) {
-	$('#listKnoots').prepend(createKnoot(knoot));
+    var startpin = new ScrollMagic.Scene({
+            duration: 10000
+        })
+        .setPin("#listKnoots")
+        .addTo(controller);
+
+	// Animations
+	var animatedElement;
+
+    // Affichage jusqu'à une opacité de 1 et un scale de 1
+    for (var i = 0; i < 40; i++) {
+    	if(i == 0) {
+    		animatedElementSelector = "#listKnoots .knoot:first-child";
+    	}
+    	else {
+    		animatedElementSelector = "#listKnoots .knoot:nth-child(40n+" + (i+1) + ")";
+    	}
+    	if($(animatedElementSelector).length > 0) {
+	    	new ScrollMagic.Scene({
+	            duration: 300 * i,
+	            offset: 0
+	        })
+	        .setTween(new TimelineMax({repeat: 0, yoyo: false})
+		        .add(TweenMax.to(animatedElementSelector, 0.3, {transform: "scale(" + ((1 - 0.04*i) < 0 ? 0 : (1 - 0.04*i)) + ")", opacity: ((1 - 0.08*i) < 0 ? 0 : (1 - 0.08*i)) }))
+		        .add(TweenMax.to(animatedElementSelector, 0.3, {transform: "scale(1)", opacity: "1"})))
+	        .addTo(controller);
+	    }
+    }
+
+	for (var i = 0; i < 40; i++) {
+    	if(i == 0) {
+    		animatedElementSelector = "#listKnoots .knoot:first-child";
+    	}
+    	else {
+    		animatedElementSelector = "#listKnoots .knoot:nth-child(40n+" + (i+1) + ")";
+    	}
+    	if($(animatedElementSelector).length > 0) {
+		    new ScrollMagic.Scene({
+	            duration: 300,
+	            offset: (i * 300)
+	        })
+	        .setTween(new TimelineMax({repeat: 0, yoyo: false})
+		        .add(TweenMax.to(animatedElementSelector, 0.3, {transform: "scale(1)", opacity: "1"}))
+		        .add(TweenMax.to(animatedElementSelector, 0.3, {transform: "scale(1.2)", opacity: "0.5"}))
+		        .add(TweenMax.to(animatedElementSelector, 0.3, {transform: "scale(1.5)", opacity: "0", pointerEvents: "none" })))
+	        .addTo(controller);
+	    }
+	};
 }
 
 
@@ -119,11 +173,10 @@ function getAllBlurredHashtags() {
 }
 function getAllKnoots() {
 	var addedKnoots = JSON.parse(getCookie('addedKnoots'));
-	var newKnoots = knoots;
-	$.each(addedKnoots, function(index, value) {
-		newKnoots.push(value);
+	$.each(knoots, function(index, value) {
+		addedKnoots.push(value);
 	})
-	return newKnoots;
+	return addedKnoots;
 }
 
 
@@ -151,62 +204,4 @@ function getCookie(cname) {
     }
   }
   return "";
-}
-
-
-function setAnimation() {
-	var controller = new ScrollMagic.Controller({
-        globalSceneOptions: {
-            triggerHook: "onLeave"
-        }
-    });
-
-    var startpin = new ScrollMagic.Scene({
-            duration: 10000
-        })
-        .setPin("#listKnoots")
-        .addTo(controller);
-
-	// Animations
-	var animatedElement;
-
-    // Affichage jusqu'à une opacité de 1 et un scale de 1
-    for (var i = 0; i < 40; i++) {
-    	if(i == 0) {
-    		animatedElementSelector = "#listKnoots .knoot:first-child";
-    	}
-    	else {
-    		animatedElementSelector = "#listKnoots .knoot:nth-child(40n+" + (i+1) + ")";
-    	}
-    	if($(animatedElementSelector).length > 0) {
-	    	new ScrollMagic.Scene({
-	            duration: 300 * i,
-	            offset: 0
-	        })
-	        .setTween(new TimelineMax({repeat: 0, yoyo: false})
-		        .add(TweenMax.to(animatedElementSelector, 0.3, {transform: "scale(" + ((1 - 0.04*i) < 0 ? 0 : (1 - 0.04*i)) + ")", opacity: ((1 - 0.08*i) < 0 ? 0 : (1 - 0.08*i)) }))
-		        .add(TweenMax.to(animatedElementSelector, 0.3, {transform: "scale(1)", opacity: "1"})))
-	        .addTo(controller);
-	    }
-    }
-
-	for (var i = 0; i < 40; i++) {
-    	if(i == 0) {
-    		animatedElementSelector = "#listKnoots .knoot:first-child";
-    	}
-    	else {
-    		animatedElementSelector = "#listKnoots .knoot:nth-child(40n+" + (i+1) + ")";
-    	}
-    	if($(animatedElementSelector).length > 0) {
-		    new ScrollMagic.Scene({
-	            duration: 300,
-	            offset: (i * 300)
-	        })
-	        .setTween(new TimelineMax({repeat: 0, yoyo: false})
-		        .add(TweenMax.to(animatedElementSelector, 0.3, {transform: "scale(1)", opacity: "1"}))
-		        .add(TweenMax.to(animatedElementSelector, 0.3, {transform: "scale(1.2)", opacity: "0.5"}))
-		        .add(TweenMax.to(animatedElementSelector, 0.3, {transform: "scale(1.5)", opacity: "0", pointerEvents: "none" })))
-	        .addTo(controller);
-	    }
-	};
 }
