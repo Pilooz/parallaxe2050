@@ -151,8 +151,15 @@ function setup_scenario_environment(reInit) {
 //------------------------------------------------------------------------
 // Init Socket to transmit Serial data to HTTP client
 //------------------------------------------------------------------------
+var firstTime = false;
 io.on('connection', function(socket) {
-    logger.info("New client is connected : " + socket.id );
+  logger.info("New client is connected : " + socket.id );
+  if (!firstTime) {
+    logger.info(`This is the first time we see this client (${socket.id}) since the server has started !`);
+    logger.info("Refresh client now !");
+    socket.emit('toclient.refreshNow');
+    firstTime = true;
+  }
 
     // Client asks for the next step
     socket.on('toserver.nextStep', function(data){

@@ -352,7 +352,6 @@
         socket_<%= server.id %>.on('toclient.solutionsForStep_<%= server.id %>', function(data) {
             var soluce = (data.solutions) ? data.solutions[0].responses : "";
             nextStep_<%= server.id %> = data.nextStep;
-            console.log(soluce);
             if (!soluce || soluce.length == 0) soluce = "Pas de solution pour cette étape.";
             else soluce = JSON.stringify(soluce, null, 4);
             $("#<%= server.id %> .solutions").html(soluce);
