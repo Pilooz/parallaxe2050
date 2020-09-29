@@ -219,11 +219,11 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
 
 if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // Testing for group A1 7ED72360 (énigme "AdminReseau" ou énigme "ComDigitale")
-  // rfid.extractTag("<TAG:7ED72360/><READER:1/>");
-  // rfid.extractReader("<TAG:7ED72360/><READER:1/>");
+  rfid.extractTag("<TAG:7ED72360/><READER:1/>");
+  rfid.extractReader("<TAG:7ED72360/><READER:1/>");
   // Testing for group A2 5E3D621A (énigme "ComDigitale" ou énigme "AdminReseau") 
-  rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
-  rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
+  // rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
+  // rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
   // Testing for group A3 0EAF4C60 (énigme "Hardware" ou énigme "CodeEtProg") 
   // rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
   // rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
@@ -378,11 +378,24 @@ router.all('/*', function (req, res, next) {
 .get("/api/restart", function(req, res, next){
   logger.info("restarting activity from admin page...");
   // Set Current Step as first step
+  rfid.setCurrentCode("");
+  rfid.setCurrentReader("");
+  rfid.setCurrentGroup("");
+  rfid.setCurrentSubGroup("");
+
   var firstStep = scenario.data().steps[0].stepId;
   scenario.setCurrentStepId(firstStep);
-  setup_scenario_environment(true); 
-  io.emit('toclient.refreshNow');
+  setup_scenario_environment(false);
+  dataForTemplate.solutionsSet = null;
 
+  // send refresh order to client
+  io.emit('toclient.refreshNow');
+  // Send null data to monitoring
+  eventEmitter.emit('monitoring.newGameSession', {tag: "", group: "", startTime: Date.now() });
+  eventEmitter.emit('monitoring.newGameStep', {stepId: "", totalSteps: 0});
+  eventEmitter.emit('monitoring.solutionsForStep', {solutions: [{set: "1", responses: []}], solutionSet: "", nextStep: ""});
+
+  // http headers
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({message: `Opération réussie !<br/>L'activité est revenue à l'étape '${firstStep}'.`, status: 200}));
 })
@@ -438,3 +451,4 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
