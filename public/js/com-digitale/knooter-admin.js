@@ -123,7 +123,7 @@ $(document).ready(function() {
 		$('#administrationInterface').modal('hide');
 
 		// Met à jour les knoots
-		setKnoots();
+		setAllKnoots();
 
 		// Vérifie si le hashtag des bots a bien été ajouté aux hashtags floutés
 		if(hasBlurredHashtag) {

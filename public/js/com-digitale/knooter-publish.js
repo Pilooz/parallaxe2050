@@ -46,6 +46,11 @@ $(document).ready(function() {
 		$('#formImage label span').html(' : ' + selectedImage + '<br /><span class="badge badge-secondary" id="removeButton">Retirer</span>');
 		$('#formImage .row .container-image').addClass('withImage').html('<img src="medias/com-digitale/images/' + selectedImage + '" id="fileKnoot" />');
 	})
+	$('#chooseImageDismissButton').on('click', function(e) {
+		e.preventDefault();
+		selectedImage = "";
+		$('#chooseImage').modal('hide');
+	})
 
 	// Bouton "retirer l'image"
 	$('body').on('click', '#removeButton', function(e) {
@@ -59,22 +64,37 @@ $(document).ready(function() {
 	$('#sendKnoot').on('click', function(e) {
 		e.preventDefault();
 		if($('#contentKnoot').val() != "" && $('#verificationKnoot').is(':checked')) {
-
+			// Récupère la taille de l'image
 			var sizeText = $('tr.table-active .sizeImage').data('size');
-			if(parseFloat(sizeText) <= 100) {
+
+			// S'il n'y a pas d'image ou que l'image ne fait pas plus de 100ko
+			if(sizeText === undefined || parseFloat(sizeText) <= 100) {
+
+				// Génération d'un nombre aléatoire de likes
+				var currentLikes = Math.round(Math.random() * 10000);
+				var isLastTweet = false;
+				// Si on a passé la 2e étape et qu'on a sélectionné une image, on affiche le nombre de likes qui est la solution
+				if(getCookie('hasValidatedSecondStep') && getCookie('hasValidatedSecondStep') != null && getCookie('hasValidatedSecondStep') != "null" && selectedImage != "") {
+					currentLikes = likes;
+					isLastTweet = true;
+				}
+
+				// Création d'un knoot en JSON
 				var knootJSON = {
 					'pseudo': $('#publishAs i').html(),
 					'content': $('#contentKnoot').val(),
 					'image': selectedImage,
-					'likes': likes
+					'likes': currentLikes
 				};
+
 				// On paramètre les cookies
-				var addedKnootsInCookies = JSON.parse(getCookie('addedKnoots'));
-				addedKnootsInCookies.push(knootJSON);
+				var addedKnootsInCookies = [knootJSON];
+				$.each(JSON.parse(getCookie('addedKnoots')), function(index, value) {
+					addedKnootsInCookies.push(value);
+				})
 				setCookie('addedKnoots', JSON.stringify(addedKnootsInCookies), 60);
 
-				// On crée le html de la knoot
-				addOneKnoot(knootJSON);
+				setAllKnoots();
 
 				// On ferme la modale
 				$('#writeKnoot').modal('hide');
@@ -85,7 +105,8 @@ $(document).ready(function() {
 				$('#removeButton').trigger('click');
 				$('#verificationKnoot').prop('checked', false).parent().removeClass('active');
 
-				if(getCookie('hasValidatedSecondStep')) {
+				if(isLastTweet) {
+					selectedImage = "";
 					setCookie('hasValidatedThirdStep', true, 60);
 					setTimeout(function() {
 						socket.emit('toserver.previousStep', {previousStep: previousStep});
