@@ -151,8 +151,15 @@ function setup_scenario_environment(reInit) {
 //------------------------------------------------------------------------
 // Init Socket to transmit Serial data to HTTP client
 //------------------------------------------------------------------------
+var firstTime = false;
 io.on('connection', function(socket) {
-    logger.info("New client is connected : " + socket.id );
+  logger.info("New client is connected : " + socket.id );
+  if (!firstTime) {
+    logger.info(`This is the first time we see this client (${socket.id}) since the server has started !`);
+    logger.info("Refresh client now !");
+    socket.emit('toclient.refreshNow');
+    firstTime = true;
+  }
 
     // Client asks for the next step
     socket.on('toserver.nextStep', function(data){
@@ -219,11 +226,11 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
 
 if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // Testing for group A1 7ED72360 (énigme "AdminReseau" ou énigme "ComDigitale")
-  // rfid.extractTag("<TAG:7ED72360/><READER:1/>");
-  // rfid.extractReader("<TAG:7ED72360/><READER:1/>");
+  rfid.extractTag("<TAG:7ED72360/><READER:1/>");
+  rfid.extractReader("<TAG:7ED72360/><READER:1/>");
   // Testing for group A2 5E3D621A (énigme "ComDigitale" ou énigme "AdminReseau") 
-  rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
-  rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
+  // rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
+  // rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
   // Testing for group A3 0EAF4C60 (énigme "Hardware" ou énigme "CodeEtProg") 
   // rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
   // rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
@@ -383,12 +390,26 @@ router.all('/*', function (req, res, next) {
 .get("/api/restart", function(req, res, next){
   logger.info("restarting activity from admin page...");
   // Set Current Step as first step
+  rfid.setCurrentCode("");
+  rfid.setCurrentReader("");
+  rfid.setCurrentGroup("");
+  rfid.setCurrentSubGroup("");
+
   var firstStep = scenario.data().steps[0].stepId;
   scenario.setCurrentStepId(firstStep);
-  setup_scenario_environment(true); 
+  setup_scenario_environment(false);
+  dataForTemplate.solutionsSet = null;
+
+  // send refresh order to client
   io.emit('toclient.refreshNow');
   io.emit('toclient.justRestarted');
+  
+  // Send null data to monitoring
+  eventEmitter.emit('monitoring.newGameSession', {tag: "", group: "", startTime: Date.now() });
+  eventEmitter.emit('monitoring.newGameStep', {stepId: "", totalSteps: 0});
+  eventEmitter.emit('monitoring.solutionsForStep', {solutions: [{set: "1", responses: []}], solutionSet: "", nextStep: ""});
 
+  // http headers
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify({message: `Opération réussie !<br/>L'activité est revenue à l'étape '${firstStep}'.`, status: 200}));
 })
@@ -444,3 +465,4 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
