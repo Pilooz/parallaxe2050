@@ -212,13 +212,13 @@
                                 </th>
                                 <td>    
                                     <h4>
-                                        <code id="rfidcode"></code>&nbsp;
+                                        Groupe&nbsp;&nbsp;&nbsp;<span class="badge badge-pill badge-warning groupcode" id=""></span>
 
-                                        <svg width="32px" height="32px" viewBox="0 0 16 16" class="bi bi-stopwatch" fill="currentColor" xmlns="http://www.w3.org/2000/svg" title="Dernier badge RFID lu">
+                                        <!-- <svg width="32px" height="32px" id="arrow-rfid" viewBox="0 0 16 16" class="bi bi-stopwatch" fill="currentColor" xmlns="http://www.w3.org/2000/svg" title="Dernier badge RFID lu">
                                             <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-                                        </svg>                                    
+                                        </svg>                                     -->
     
-                                        <span class="badge badge-pill badge-warning groupcode" id=""></span>
+                                        <code id="rfidcode"></code>&nbsp;
                                 </h4>
                                 </td>
                             </tr>
@@ -271,7 +271,6 @@
         // mise en surbrillance d'un élément
         function highlight(elt, cls) {
             cls = (!cls) ? "changed": cls;
-            console.log(cls);
             elt.addClass(cls);
             setTimeout(function() {
                 elt.removeClass(cls);
@@ -314,12 +313,12 @@
         var socket_<%= server.id %> = io('http://<%= server.ip %>:<%= server.port %>/monitoring');
         var nextStep_<%= server.id %> = "";
         // ------------------------------------------------------------------
-        // Socket listening
+        // Socket listening for <%= server.id %>
         // ------------------------------------------------------------------
 
         // updating <%= server.id %> uptime activity
         var updTimeOut_<%= server.id %> = null;
-        var startTime_<%= server.id %> = null;
+        var startTime_<%= server.id %> = null;        
         function updateTimeElapsed_<%= server.id %>(){
             var elapsedSeconds = Math.floor((Date.now() - startTime_<%= server.id %>)/1000);
             var elapsedMinutes = Math.floor((elapsedSeconds/60));
@@ -333,10 +332,10 @@
         socket_<%= server.id %>.on('toclient.newGameSession_<%= server.id %>', function(data) {
             clearTimeout(updTimeOut_<%= server.id %>);
             startTime_<%= server.id %> = data.startTime;
-            $("#<%= server.id %> .rfidcode").html(data.tag);
-            highlight($("#<%= server.id %> .rfidcode"));
             $("#<%= server.id %> .groupcode").html(data.group);
             highlight($("#<%= server.id %> .groupcode"));
+            $("#<%= server.id %> .rfidcode").html(data.tag);
+            highlight($("#<%= server.id %> .rfidcode"));
             updateTimeElapsed_<%= server.id %>();
         });
 
@@ -356,7 +355,6 @@
             if (!soluce || soluce.length == 0) soluce = "Pas de solution pour cette étape.";
             else soluce = JSON.stringify(soluce, null, 4);
             $("#<%= server.id %> .solutions").html(soluce);
-            // highlight($("#<%= server.id %> .solutions"));
         });
 
         // Lights control and color data
