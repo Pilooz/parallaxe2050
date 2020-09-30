@@ -28,6 +28,8 @@ void setup() {
   digitalWrite(GLed, LOW);
   pinMode(RLed, OUTPUT);
   digitalWrite(RLed, LOW);
+  message.send("NAME", "CODE");
+  delay(5000);
   message.send("MSG", "READY");
 }
 
