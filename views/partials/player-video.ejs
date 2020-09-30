@@ -21,14 +21,14 @@
 	
 		// Paramétrage de la taille du player de la vidéo si nécessaire
 		var videoRatio = $('video').width() / $('video').height();
-		var ratio = $('#player').width() / $('#player').height();
+		var ratio = $(window).width() / $(window).height();
 		if(videoRatio > ratio) {
-			$('video').width($('#player').width());
-			$('video').height($('#player').width() / videoRatio)
+			$('video').width($(window).width());
+			$('video').height($(window).width() / videoRatio)
 		}
 		else {
-			$('video').height($('#player').height());
-			$('video').width($('#player').height() / videoRatio);
+			$('video').height($(window).height());
+			$('video').width($(window).height() / videoRatio);
 		}
 
 		// A la fin de la vidéo, on lance le step suivant
