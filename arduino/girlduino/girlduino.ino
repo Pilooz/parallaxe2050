@@ -8,11 +8,11 @@
 #define BRIGHTNESS    100
 
 // CABLES COLORS AND VALUES
-#define WHITE_CABLE   900
-#define YELLOW_CABLE  985
+#define WHITE_CABLE   915
+#define YELLOW_CABLE  1010
 #define RED_CABLE     25
-#define GREEN_CABLE   320
-#define BLACK_CABLE   990
+#define GREEN_CABLE   325
+#define BLACK_CABLE   1010
 
 CRGB leds[NUM_LEDS];
 
@@ -42,6 +42,9 @@ void setup() {
   digitalWrite  (sortie01_sharp, LOW);
   pinMode       (sortie02_point, OUTPUT);
   digitalWrite  (sortie02_point, LOW);
+
+  pinMode       (13, OUTPUT);
+  digitalWrite  (13, HIGH);
 
   Serial.begin(9600);
   while (!Serial);
@@ -73,20 +76,14 @@ void loop() {
   }
   if (valBouton == 1 && activity) {
     /*
-    Serial.println("START");
-    Serial.print("VALUE 3.3v: ");
-    Serial.println(valA0);
-    Serial.print("VALUE 5v: ");
-    Serial.println(valA1);
-    Serial.print("VALUE GND: ");
-    Serial.println(valA2);
-    Serial.print("VALUE 10~: ");
-    Serial.println(valA3);
-    Serial.print("VALUE 11~: ");
-    Serial.println(valA4);
-    Serial.print("VALUE 12: ");
-    Serial.println(valA5);
-    Serial.println("END !");
+    message.send("MSG", "START VALUE TAB");
+    message.send("VALUE 3.3v", String(valA0));
+    message.send("VALUE 5v", String(valA1));
+    message.send("VALUE GND", String(valA2));
+    message.send("VALUE 10~", String(valA3));
+    message.send("VALUE 11~", String(valA4));
+    message.send("VALUE 12", String(valA5));
+    message.send("MSG", "END VALUE TAB");
     */
 
     if (test_val_sharp(valA0, valA1, valA2, valA3, valA4, valA5)) {
@@ -144,7 +141,7 @@ int test_val_sharp(int A0, int A1, int A2, int A3, int A4, int A5) {
     //message.send("MSG", "RED_CABLE OK");
     result++;
   }
-  if ((A2 >= BLACK_CABLE - 15) && (A2 <= BLACK_CABLE + 15)) {
+  if ((A2 >= BLACK_CABLE - 10) && (A2 <= BLACK_CABLE + 10)) {
     //message.send("MSG", "BLACK_CABLE OK");
     result++;
   }
@@ -152,15 +149,14 @@ int test_val_sharp(int A0, int A1, int A2, int A3, int A4, int A5) {
     //message.send("MSG", "GREEN_CABLE OK");
     result++;
   }
-  if ((A4 >= YELLOW_CABLE - 15) && (A4 <= YELLOW_CABLE + 15)) {
+  if ((A4 >= YELLOW_CABLE - 10) && (A4 <= YELLOW_CABLE + 10)) {
     //message.send("MSG", "YELLOW_CABLE OK");
     result++;
   }
-  if ((A5 >= WHITE_CABLE - 20) && (A5 <= WHITE_CABLE + 20)) {
+  if ((A5 >= WHITE_CABLE - 10) && (A5 <= WHITE_CABLE + 10)) {
     //message.send("MSG", "WHITE_CABLE OK");
     result++;
   }
-  //Serial.println(result);
   if (result == 5)
     return 1;
   return 0;
@@ -173,23 +169,22 @@ int test_val_point(int A0, int A1, int A2, int A3, int A4, int A5) {
     //message.send("MSG", "RED_CABLE OK");
     result++;
   }
-  if ((A2 >= BLACK_CABLE - 15) && (A2 <= BLACK_CABLE + 15)) {
+  if ((A2 >= BLACK_CABLE - 10) && (A2 <= BLACK_CABLE + 10)) {
     //message.send("MSG", "BLACK_CABLE OK");
     result++;
   }
-  if ((A3 >= WHITE_CABLE - 20) && (A3 <= WHITE_CABLE + 20)) {
+  if ((A3 >= YELLOW_CABLE - 10) && (A3 <= YELLOW_CABLE + 10)) {
     //message.send("MSG", "WHITE_CABLE OK");
     result++;
   }
-  if ((A4 >= GREEN_CABLE - 5) && (A4 <= GREEN_CABLE + 5)) {
+  if ((A4 >= WHITE_CABLE - 10) && (A4 <= WHITE_CABLE + 10)) {
     //message.send("MSG", "GREEN_CABLE OK");
     result++;
   }
-  if ((A5 >= YELLOW_CABLE - 15) && (A5 <= YELLOW_CABLE + 15)) {
+  if ((A5 >= GREEN_CABLE - 5) && (A5 <= GREEN_CABLE + 5)) {
     //message.send("MSG", "YELLOW_CABLE OK");
     result++;
   }
-  //Serial.println(result);
   if (result == 5)
     return 1;
   return 0;
