@@ -9,6 +9,11 @@ $(document).ready(function() {
 		$(this).parents('.knoot').removeClass('blurred').find('.card-footer.text-muted').remove();
 	})
 
+	// Si
+	if(getCookie('hasValidatedThirdStep') || getCookie('hasValidatedThirdStep') == 'true') {
+		socket.emit('toserver.stop', {});
+	}
+
 	//
 	// Initialisation des hashtags ajoutés et des comptes ajoutés et des knoots ajoutés
 	//

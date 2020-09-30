@@ -32,6 +32,9 @@
 
     <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
     <script>
+        // Envoie de la socket pour activer la manivelle
+        socket.emit('toserver.start', {});
+
         var nextStep = '<%-data.currentStep.transitions[0].id %>';
         var previousStep = '<%-data.currentStep.previousStep[0].id %>';
         // Données de base pour Knooter
