@@ -24,8 +24,8 @@
         <div class="col-sm-10 files-details">
             <form class="form-inline file" id="file1">
                 <code>
-                    <div class="line margin-0">si ( longueurDe( monCaractèreATester ) = 1 ) {</div>
-                    <div class="line margin-1">si ( monCaractèreATester = leCaractèreDuLangageDansLequelLeVirusEstCodé ) {</div>
+                    <div class="line margin-0">si ( longueurDe( monCaractèreATester ) = 1 ) alors {</div>
+                    <div class="line margin-1">si ( monCaractèreATester = leCaractèreDuLangageDansLequelLeVirusEstCodé ) alors {</div>
                     <div class="line margin-2">affiche( "Succès ! Vous avez utilisé le bon caractère." );</div>
                     <div class="line margin-2">affiche( "Trouvez maintenant le langage associé à ce caractère." );</div>
                     <div class="line margin-1">}</div>
@@ -53,9 +53,9 @@
             </form>
             <form class="form-inline file" id="file2">
                 <code>
-                    <div class="line margin-0">pourChaqueCaractèreDe( mesCaractèresATester ) {</div>
+                    <div class="line margin-0">pourlesCaractèreDe( mesCaractèresATester ) {</div>
                     <div class="line margin-1">affiche( "Test du caractère "leCaractèreTesté"." );</div>
-                    <div class="line margin-1">si ( leCaractèreTesté = leCaractèreDuLangageDansLequelLeVirusEstCodé ) {</div>
+                    <div class="line margin-1">si ( leCaractèreTesté = leCaractèreDuLangageDansLequelLeVirusEstCodé ) alors {</div>
                     <div class="line margin-2">affiche( "Succès ! Vous avez trouvé le bon caractère." );</div>
                     <div class="line margin-2">affiche( "Trouvez maintenant le langage associé à ce caractère." );</div>
                     <div class="line margin-2">arrêteLeCode;</div>
@@ -163,6 +163,7 @@ $(document).ready(function() {
     // Clique sur le test du fichier 2
     //
     var chars = "";
+    var inputAr = [];
     $('#testerFile2').on('click', function(e) {
         e.preventDefault();
         chars = $('#inputFile2').val();
@@ -176,14 +177,17 @@ $(document).ready(function() {
     socket.on('toclient.testChars', function(data) {
         data.result.forEach(function(res, index){
             $('#feedbackModal h5').html('Test');
-            $('#feedbackModal p').html('Test du caractère "' + inputAr[index] + '".');
-            $('#feedbackModal').modal('show');
-            if ( res == "OK" ) {
-                $('#feedbackModal h5').html('Succès !');
-                $('#feedbackModal p').html('Bravo, vous avez identifié le bon caractère : "' + inputAr[index] + '".');
-                $('#feedbackModal .btn').removeClass('btn-secondary').addClass('btn-success');
+            $.each(inputAr, function(i, value) {
+                $('#feedbackModal p').html('Test du caractère "' + inputAr[index] + '".');
                 $('#feedbackModal').modal('show');
-            }
+
+                if ( res == "OK" ) {
+                    $('#feedbackModal h5').html('Succès !');
+                    $('#feedbackModal p').html('Bravo, vous avez identifié le bon caractère : "' + inputAr[index] + '".');
+                    $('#feedbackModal .btn').removeClass('btn-secondary').addClass('btn-success');
+                    $('#feedbackModal').modal('show');
+                }
+            })
         });
     }) 
 });
