@@ -52,14 +52,6 @@ const httpPort    = CONFIG_SERVER.port;
 var dataForTemplate = {};
 var httpRequests = {};
 
-
-//------------------------------------------------------------------------
-// data for ejs templates
-//------------------------------------------------------------------------
-// Putting default color set in data for ejs templates
-//const defaultColors = require('./data/lights.json').colorsSet[0].list.filter(s => s.scenarioId == scenario.data().scenarioId)[0].rgb;
-//dataForTemplate.currentBgColor = defaultColors;
-
 // ************************************************************************
 // ************************************************************************
 //
