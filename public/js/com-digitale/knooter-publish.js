@@ -89,9 +89,11 @@ $(document).ready(function() {
 
 				// On paramètre les cookies
 				var addedKnootsInCookies = [knootJSON];
-				$.each(JSON.parse(getCookie('addedKnoots')), function(index, value) {
-					addedKnootsInCookies.push(value);
-				})
+				if(getCookie('addedKnoots') && getCookie('addedKnoots') != "") {
+					$.each(JSON.parse(getCookie('addedKnoots')), function(index, value) {
+						addedKnootsInCookies.push(value);
+					})
+				}
 				setCookie('addedKnoots', JSON.stringify(addedKnootsInCookies), 60);
 
 				setAllKnoots();
