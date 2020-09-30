@@ -160,6 +160,13 @@ void loop() {
       message.ack_ok();
     }
     //
+    // THANKS : lire le remerciement
+    //
+    if (message.val() == "BRAVO") {
+      track_number = 3;
+      message.ack_ok();
+    }
+    //
     // RESET Tout remettre au début
     //
     if (message.val() == "RESET") {

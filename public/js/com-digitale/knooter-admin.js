@@ -129,7 +129,7 @@ $(document).ready(function() {
 		if(hasBlurredHashtag) {
 			setCookie('hasValidatedSecondStep', true, 60);
 			setTimeout(function() {
-				socket.emit('toserver.previousStep', {previousStep: previousStep});
+				socket.emit('toserver.previousStep', {previousStep: previousStep, message: "THANKS"});
 			}, 4000);
 		}
 	})

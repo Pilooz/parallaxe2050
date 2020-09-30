@@ -109,7 +109,7 @@ $(document).ready(function() {
 					selectedImage = "";
 					setCookie('hasValidatedThirdStep', true, 60);
 					setTimeout(function() {
-						socket.emit('toserver.previousStep', {previousStep: previousStep});
+						socket.emit('toserver.previousStep', {previousStep: previousStep, message: "BRAVO"});
 					}, 4000);
 				}
 			}
