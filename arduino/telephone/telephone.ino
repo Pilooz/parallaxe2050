@@ -91,6 +91,8 @@ void setup() {
   stopRinging();
 
   // Sending a READY message
+  message.send("NAME", "TELEPHONE");
+  delay(5000);
   message.send("MSG", "READY");
 
 }
@@ -160,7 +162,7 @@ void loop() {
       message.ack_ok();
     }
     //
-    // THANKS : lire le remerciement
+    // BRAVO : lire le remerciement
     //
     if (message.val() == "BRAVO") {
       track_number = 3;
