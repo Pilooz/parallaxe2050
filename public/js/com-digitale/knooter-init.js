@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    // Envoie de la socket pour activer la manivelle
+    socket.emit('toserver.start', {});
 
 	// Paramètre le "publie en tant que..."
 	$('#publishAs i').html("anonyme");
@@ -17,14 +19,14 @@ $(document).ready(function() {
 	//
 	// Initialisation des hashtags ajoutés et des comptes ajoutés et des knoots ajoutés
 	//
-	socket.on('toclient.justRestarted', function(){
+	// socket.on('toclient.justRestarted', function(){
 		setCookie('addedHashtags', JSON.stringify([]));
 		setCookie('addedAccounts', JSON.stringify([]));
 		setCookie('addedKnoots', JSON.stringify([]));
 		setCookie('hasValidatedSecondStep', null);
 		setCookie('justAddedHashtags', JSON.stringify([]));
 		setCookie('justAddedAccounts', JSON.stringify([]));
-    });
+    // });
 
 	//
 	// Récupère les hashtags, les comptes et les knoots de base et ceux ajoutés
@@ -55,10 +57,10 @@ function addOneKnoot(knoot) {
 
 
 function setAllKnoots() {
-	allKnoots = getAllKnoots();
+	var allKnootsGetByAFunction = getAllKnoots();
 
 	var knootsHTML = "";
-	$.each(allKnoots, function(index, value) {
+	$.each(allKnootsGetByAFunction, function(index, value) {
 		knootsHTML += createKnoot(value);
 	})
 	// Met à jour le HTML avec les knoots
@@ -161,27 +163,37 @@ function createKnoot(knoot, blurredHashtags, blurredAccounts) {
 
 
 function getAllBlurredAccounts() {
-	var addedAccounts = JSON.parse(getCookie('addedAccounts'));
-	var newAccounts = blurredAccounts;
-	$.each(addedAccounts, function(index, value) {
-		newAccounts.push(value);
-	})
-	return newAccounts;
+	var allBlurredAccounts = blurredAccounts;
+	if(getCookie('addedAccounts') && getCookie('addedAccounts') != "") {
+		var addedAccounts = JSON.parse(getCookie('addedAccounts'));
+		$.each(addedAccounts, function(index, value) {
+			allBlurredAccounts.push(value);
+		})
+	}
+	return allBlurredAccounts;
 }
 function getAllBlurredHashtags() {
-	var addedHashtags = JSON.parse(getCookie('addedHashtags'));
-	var newHashtags = blurredHashtags;
-	$.each(addedHashtags, function(index, value) {
-		newHashtags.push(value);
-	})
-	return newHashtags;
+	var allBlurredHashtags = blurredHashtags;
+	if(getCookie('addedHashtags') && getCookie('addedHashtags') != "") {
+		var addedHashtags = JSON.parse(getCookie('addedHashtags'));
+		$.each(addedHashtags, function(index, value) {
+			allBlurredHashtags.push(value);
+		})
+	}
+	return allBlurredHashtags;
 }
 function getAllKnoots() {
-	var addedKnoots = JSON.parse(getCookie('addedKnoots'));
-	$.each(knoots, function(index, value) {
-		addedKnoots.push(value);
+	var allKnoots = [];
+	if(getCookie('addedKnoots') && getCookie('addedKnoots') != "" && getCookie('addedKnoots') != "[]") {
+		var addedKnoots = JSON.parse(getCookie('addedKnoots'));
+		$.each(addedKnoots, function(index, addedKnoot) {
+			allKnoots.push(addedKnoot);
+		})
+	}
+	$.each(knoots, function(index, knoot) {
+		allKnoots.push(knoot);
 	})
-	return addedKnoots;
+	return allKnoots;
 }
 
 
