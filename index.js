@@ -334,6 +334,11 @@ router.all('/*', function (req, res, next) {
     dataForTemplate.reference = dataForTemplate.currentStep.solutions.filter(s => s.set == dataForTemplate.solutionsSet)[0].reference;
   }
 
+  // donnée pour COM DIGITALE : nombre de likes
+  if(dataForTemplate.currentStep.solutions.filter(s => s.set == dataForTemplate.solutionsSet)[0].likes) {
+    dataForTemplate.likes = dataForTemplate.currentStep.solutions.filter(s => s.set == dataForTemplate.solutionsSet)[0].likes;
+  }
+
   // By default the template is "content.ejs"
   var tmpl = (dataForTemplate.currentStep.template == "") ? "content" : dataForTemplate.currentStep.template;
   
@@ -401,6 +406,8 @@ router.all('/*', function (req, res, next) {
 
   // send refresh order to client
   io.emit('toclient.refreshNow');
+  io.emit('toclient.justRestarted');
+  
   // Send null data to monitoring
   eventEmitter.emit('monitoring.newGameSession', {tag: "", group: "", startTime: Date.now() });
   eventEmitter.emit('monitoring.newGameStep', {stepId: "", totalSteps: 0});

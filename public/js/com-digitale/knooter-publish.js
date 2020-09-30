@@ -1,9 +1,9 @@
 $(document).ready(function() {
 
-	var selectedImage;
+	var selectedImage = "";
 
 	// Bouton d'expression
-	$('#writeKnootButton').on('click', function(e) {
+	$('#addKnootButton').on('click', function(e) {
 		if(getCookie("admin") && getCookie("admin") != "" && getCookie("admin") != null && getCookie('admin') != "null") {
 			$('#publishAs i').html(getCookie("admin"));
 		}
@@ -21,13 +21,12 @@ $(document).ready(function() {
 	})
 	
 	// Dates et heures des images
-	// TODO : ajouter 30 années pour être en 2050 !
-	$('.image-1-creation').html(getGoodFormateDate((new Date()).addDays(-40)));
-	$('.image-2-creation').html(getGoodFormateDate((new Date()).addDays(-1)));
-	$('.image-3-creation').html(getGoodFormateDate((new Date()).addDays(-1)));
-	$('.image-4-creation').html(getGoodFormateDate((new Date()).addDays(-1300)));
-	$('.image-4-modification').html(getGoodFormateDate((new Date()).addDays(-1290)));
-	$('.image-5-creation').html(getGoodFormateDate((new Date()).addDays(-1180)));
+	$('.image-1-creation').html(getGoodFormateDate((new Date()).addDays(-40 + (30*365))));
+	$('.image-2-creation').html(getGoodFormateDate((new Date()).addDays(-1 + (30*365))));
+	$('.image-3-creation').html(getGoodFormateDate((new Date()).addDays(-1 + (30*365))));
+	$('.image-4-creation').html(getGoodFormateDate((new Date()).addDays(-1300 + (30*365))));
+	$('.image-4-modification').html(getGoodFormateDate((new Date()).addDays(-1290 + (30*365))));
+	$('.image-5-creation').html(getGoodFormateDate((new Date()).addDays(-1180 + (30*365))));
 
 	// Gestion de l'image
 	var currentImageLine;
@@ -47,6 +46,11 @@ $(document).ready(function() {
 		$('#formImage label span').html(' : ' + selectedImage + '<br /><span class="badge badge-secondary" id="removeButton">Retirer</span>');
 		$('#formImage .row .container-image').addClass('withImage').html('<img src="medias/com-digitale/images/' + selectedImage + '" id="fileKnoot" />');
 	})
+	$('#chooseImageDismissButton').on('click', function(e) {
+		e.preventDefault();
+		selectedImage = "";
+		$('#chooseImage').modal('hide');
+	})
 
 	// Bouton "retirer l'image"
 	$('body').on('click', '#removeButton', function(e) {
@@ -60,21 +64,37 @@ $(document).ready(function() {
 	$('#sendKnoot').on('click', function(e) {
 		e.preventDefault();
 		if($('#contentKnoot').val() != "" && $('#verificationKnoot').is(':checked')) {
-
+			// Récupère la taille de l'image
 			var sizeText = $('tr.table-active .sizeImage').data('size');
-			if(parseFloat(sizeText) <= 100) {
+
+			// S'il n'y a pas d'image ou que l'image ne fait pas plus de 100ko
+			if(sizeText === undefined || parseFloat(sizeText) <= 100) {
+
+				// Génération d'un nombre aléatoire de likes
+				var currentLikes = Math.round(Math.random() * 10000);
+				var isLastTweet = false;
+				// Si on a passé la 2e étape et qu'on a sélectionné une image, on affiche le nombre de likes qui est la solution
+				if(getCookie('hasValidatedSecondStep') && getCookie('hasValidatedSecondStep') != null && getCookie('hasValidatedSecondStep') != "null" && selectedImage != "") {
+					currentLikes = likes;
+					isLastTweet = true;
+				}
+
+				// Création d'un knoot en JSON
 				var knootJSON = {
 					'pseudo': $('#publishAs i').html(),
 					'content': $('#contentKnoot').val(),
-					'image': selectedImage
+					'image': selectedImage,
+					'likes': currentLikes
 				};
+
 				// On paramètre les cookies
-				var addedKnootsInCookies = JSON.parse(getCookie('addedKnoots'));
-				addedKnootsInCookies.push(knootJSON);
+				var addedKnootsInCookies = [knootJSON];
+				$.each(JSON.parse(getCookie('addedKnoots')), function(index, value) {
+					addedKnootsInCookies.push(value);
+				})
 				setCookie('addedKnoots', JSON.stringify(addedKnootsInCookies), 60);
 
-				// On crée le html de la knoot
-				addOneKnoot(knootJSON);
+				setAllKnoots();
 
 				// On ferme la modale
 				$('#writeKnoot').modal('hide');
@@ -85,9 +105,12 @@ $(document).ready(function() {
 				$('#removeButton').trigger('click');
 				$('#verificationKnoot').prop('checked', false).parent().removeClass('active');
 
-				if($.inArray(selectedImage, images) && getCookie('hasValidatedSecondStep')) {
-					// TODO : lancer l'appel téléphonique de félicitations si la knoot contient une des images
-					console.log("Ca y est, vous avez publié un message suffisamment intéressant ! Bravo !");
+				if(isLastTweet) {
+					selectedImage = "";
+					setCookie('hasValidatedThirdStep', true, 60);
+					setTimeout(function() {
+						socket.emit('toserver.previousStep', {previousStep: previousStep});
+					}, 4000);
 				}
 			}
 			else {
