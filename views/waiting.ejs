@@ -49,11 +49,13 @@ $(document).ready(function(){
   // Message de début d'activité
   const msgDeb = "Bonjour...<br/>Pour faire cette activité,<br />il te faut un badge de la même couleur que cet écran !";
   // Message de fin d'activité
-  const msgFin = "C'est fini !<br/>Vous avez bien retenu le code ?";
+  // const msgFin = "C'est fini !<br/>Vous avez bien retenu le code ?";
+  const msgFin = "Pour faire ou refaire cette activité,<br />il te faut un badge de la même couleur que cet écran !";
   
-  var isFirstStep = <%- data.isFirstStep %>;
-  $(".message h1").html((isFirstStep)? msgDeb : msgFin);
-   
+  // var isFirstStep = <%- data.isFirstStep || true %>;
+  // $(".message h1").html((isFirstStep)? msgDeb : msgFin);
+  $(".message h1").html( msgFin);
+
   // Gérer la couleur de fond en fonction du serveur/timer/type de jeu/ etc/etc...
   var lightsIO = io('http://<%= data.global_config.app.adminServerIp %>:<%= data.global_config.app.adminServerPort %>/lights');
   
