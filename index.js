@@ -242,7 +242,7 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // rfid.extractReader("<TAG:5E68811A/><READER:1/>");
 
   // Defining the step
-  scenario.setCurrentStepId("step-1");
+  scenario.setCurrentStepId(scenario.data().steps[0].stepId);
 
   setup_scenario_environment(false);
 }
@@ -315,6 +315,10 @@ router.all('/*', function (req, res, next) {
 
   // If this set if undefined, then the team has not badged to the right activity => let's tell them gentlely !
   if (!dataForTemplate.solutionsSet) {
+    console.log(dataForTemplate.currentStep.stepId);
+    console.log(scenario.data().steps[0].stepId);
+    dataForTemplate.isFirstStep = (dataForTemplate.currentStep.stepId == scenario.data().steps[0].stepId) ? true : false;
+
     logger.info("Pas de set de solution pour cette team sur ce dispositif. Attente de scan RFID...");
     res.render("../waiting", { data: dataForTemplate });
   }  
