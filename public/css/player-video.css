@@ -59,6 +59,7 @@ body {
   right: 0;
   bottom: 0;
   align-items: center;
+  justify-content: center;
   margin: 0;
   background-color: #000000 !important; }
   #player .module-media-video {
