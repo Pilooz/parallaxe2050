@@ -8,11 +8,11 @@
 #define BRIGHTNESS    100
 
 // CABLES COLORS AND VALUES
-#define WHITE_CABLE   860
-#define YELLOW_CABLE  965
+#define WHITE_CABLE   900
+#define YELLOW_CABLE  985
 #define RED_CABLE     25
-#define GREEN_CABLE   310
-#define BLACK_CABLE   965
+#define GREEN_CABLE   320
+#define BLACK_CABLE   990
 
 CRGB leds[NUM_LEDS];
 
@@ -76,15 +76,15 @@ void loop() {
     Serial.println("START");
     Serial.print("VALUE 3.3v: ");
     Serial.println(valA0);
-    Serial.println("VALUE 5v: ");
+    Serial.print("VALUE 5v: ");
     Serial.println(valA1);
-    Serial.println("VALUE GND: ");
+    Serial.print("VALUE GND: ");
     Serial.println(valA2);
-    Serial.println("VALUE 10~: ");
+    Serial.print("VALUE 10~: ");
     Serial.println(valA3);
-    Serial.println("VALUE 11~: ");
+    Serial.print("VALUE 11~: ");
     Serial.println(valA4);
-    Serial.println("VALUE 12: ");
+    Serial.print("VALUE 12: ");
     Serial.println(valA5);
     Serial.println("END !");
     */
