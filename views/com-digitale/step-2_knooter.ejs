@@ -11,12 +11,7 @@
     </div>
     <div class="row">
 		<nav class="navbar navbar-light fixed-top bg-light" id="navbar">
-			<div class="container">
-				<div>
-					<img src="medias/com-digitale/logo-knooter.png" width="219" height="56" alt="" loading="lazy">
-				</div>
-                <div><button id="writeKnootButton" type="button" class="btn btn-primary">S'exprimer</button></div>
-			</div>
+			<img src="medias/com-digitale/logo-knooter.png" width="219" height="56" alt="" loading="lazy">
 		</nav>
     </div>
 
@@ -25,6 +20,9 @@
 
     <!-- Knoots -->
     <div class="card-columns" id="listKnoots"></div>
+
+    <!-- Bouton "Ajouter" -->
+    <div id="addKnoot"><button id="addKnootButton" type="button" class="btn btn-primary">+</button></div>
 </div>
 
 <!-- START // Scripts in footer -->
@@ -34,13 +32,16 @@
 
     <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
     <script>
+        var nextStep = '<%-data.currentStep.transitions[0].id %>';
+        var previousStep = '<%-data.currentStep.previousStep[0].id %>';
         // Données de base pour Knooter
         const blurredHashtags = JSON.parse('<%- JSON.stringify(data.currentStep.blurredHashtags) %>');
         const blurredAccounts = JSON.parse('<%- JSON.stringify(data.currentStep.blurredAccounts) %>');
         const knoots = JSON.parse('<%- JSON.stringify(data.currentStep.knoots) %>');
+        const likes = JSON.parse('<%- JSON.stringify(data.likes) %>');
     </script>
 	<script src="js/com-digitale/knooter-init.js"></script>
-    <script src="js/com-digitale/knooter-publish.js"></script>
     <script src="js/com-digitale/knooter-admin.js"></script>
+    <script src="js/com-digitale/knooter-publish.js"></script>
 <!-- END // Scripts in footer -->
 <%- include('../partials/footer', { data: data }) %>
