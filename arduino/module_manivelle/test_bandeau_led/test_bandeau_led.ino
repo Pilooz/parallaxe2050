@@ -46,6 +46,8 @@ void setup() {
   counter = 0;
 
   // Init messaging
+  message.send("NAME", "MANIVELLE");
+  delay(5000);
   message.send("MSG", "READY");
 }
 
