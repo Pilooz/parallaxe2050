@@ -104,11 +104,11 @@ body .container {
 					text-align: right;
 
 					a.btn {
-						background-color: $mainColor;
+						background-color: #17DA7E;
 						border: none;
 
 						&:hover {
-							box-shadow: $shadowMainColor;
+							box-shadow: 0 0 10px #17DA7E;
 						}
 					}
 				}
