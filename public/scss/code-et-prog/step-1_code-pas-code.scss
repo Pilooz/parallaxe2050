@@ -14,7 +14,7 @@ $roundSize: 450px;
 
 	&.first-card-scanned {
 		.loader:before {
-			box-shadow: 0 -10px 20px 20px #00C6F940 inset, 0 -5px 15px 10px #00C6F950 inset, 0 -2px 5px #00C6F980 inset, 0 -3px 2px #00C6F9BB inset, 0 2px 0px #00C6F9, 0 2px 3px #00C6F9, 0 5px 15px #00C6F990, 0 10px 55px #00C6F960, 0 10px 40px 30px #00C6F940;
+			box-shadow: 0 -10px 20px 20px #00C6F940 inset, 0 -5px 15px 10px #17DA7E50 inset, 0 -2px 5px #17DA7E80 inset, 0 -3px 2px #17DA7EBB inset, 0 2px 0px #17DA7E, 0 2px 3px #17DA7E, 0 5px 15px #17DA7E90, 0 10px 55px #17DA7E60, 0 10px 40px 30px #17DA7E40;
 			transform: none;
 			animation: none;
 		}
@@ -78,6 +78,6 @@ $roundSize: 450px;
 }
 
 .progress-bar {
-    background-color: rgb(0, 198, 249) !important;
-    box-shadow: 0 0 10px rgb(0, 198, 249);
+    background-color: rgb(23, 218, 126) !important;
+    box-shadow: 0 0 10px rgb(23, 218, 126);
 }

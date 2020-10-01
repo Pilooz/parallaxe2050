@@ -35,16 +35,14 @@
 #thumbnail {
   position: fixed;
   z-index: 90;
-  left: 0;
-  bottom: 0;
+  left: 20px;
+  bottom: 20px;
   transition: all 0.4s ease-in;
-  cursor: pointer; }
+  cursor: pointer;
+  transform-origin: bottom left; }
   #thumbnail.small {
     transform: scale(0.1);
-    left: -50%;
-    bottom: -50%;
-    margin-left: 110px;
-    margin-bottom: 75px; }
+    transform-origin: bottom left; }
 
 body {
   padding: 0;
@@ -59,6 +57,22 @@ body {
     margin: 0px;
     padding: 0;
     background: radial-gradient(#CECECE, #fff); }
+  body #actions .button, body #actions .btn {
+    right: 20px;
+    margin-left: 20px;
+    padding: 0.375rem 0.75rem;
+    background-color: #17DA7E;
+    transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-weight: 400;
+    color: white; }
+    body #actions .button:hover, body #actions .btn:hover {
+      box-shadow: 0 0 10px #17DA7E; }
+    body #actions .button:focus, body #actions .btn:focus {
+      outline: none; }
 
 .feedback {
   font-size: 40px;
@@ -137,10 +151,10 @@ body .container {
         background: white;
         text-align: right; }
         body .container .row .files-details form.file .validation a.btn {
-          background-color: #00c6f9;
+          background-color: #17DA7E;
           border: none; }
           body .container .row .files-details form.file .validation a.btn:hover {
-            box-shadow: 0 0 10px #00c6f9; }
+            box-shadow: 0 0 10px #17DA7E; }
     body .container .row #file2 {
       display: none; }
 

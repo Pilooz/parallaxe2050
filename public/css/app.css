@@ -35,15 +35,13 @@
 #thumbnail {
   position: fixed;
   z-index: 90;
-  left: 0;
-  bottom: 0;
+  left: 20px;
+  bottom: 20px;
   transition: all 0.4s ease-in;
-  cursor: pointer; }
+  cursor: pointer;
+  transform-origin: bottom left; }
   #thumbnail.small {
     transform: scale(0.1);
-    left: -50%;
-    bottom: -50%;
-    margin-left: 110px;
-    margin-bottom: 75px; }
+    transform-origin: bottom left; }
 
 /*# sourceMappingURL=app.css.map */
