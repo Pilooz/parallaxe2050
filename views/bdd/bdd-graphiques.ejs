@@ -6,51 +6,54 @@
 <%- include('../partials/header', { data: data }) %>
 
 <!-- Base de données -->
-<div class="container-fluid">
-	<div class="row">
-		<div class="col" id="database">
-			<h1>Base de données : serveurs du monde entier</h1>
-			<table class="table table-striped table-bordered table-sm">
-				<caption>965 000 000 serveurs dans la base de données</caption>
-				<thead class="thead-light">
-					<tr>
-						<th scope="col">id</th>
-						<th scope="col">est_sain</th>
-						<th scope="col">date_construction</th>
-						<th scope="col">commentaire</th>
-						<th scope="col">lat</th>
-						<th scope="col">lng</th>
-						<th scope="col">zone</th>
-						<th scope="col">h1</th>
-						<th scope="col">h2</th>
-						<th scope="col">h3</th>
-						<th scope="col">h4</th>
-						<th scope="col">h5</th>
-						<th scope="col">h6</th>
-						<th scope="col">h7</th>
-						<th scope="col">h8</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr class="loading">
-						<td colspan="15">Chargement en cours</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="col" id="datavisualization">
-			<h1>Datavisualisation (visualisation des données)</h1>
-			<div class="form-group">
-			    <label for="exampleFormControlSelect1">Datavisualisation</label>
-			    <select class="form-control" id="graphique-select">
-					<option value="reset" disabled selected>Choisir</option>
-					<option value="graphique1">Datacenters par zone (map)</option>
-					<option value="graphique2">Pourcentage des serveurs allumés par zone (bâtons horizontaux)</option>
-					<option value="graphique3">Quantité de serveurs par zone (bâtons)</option>
-					<option value="graphique4">Pourcentage des serveurs allumés par zone (radar)</option>
-				</select>
+<div id="database-datavisualization">
+	<div id="database">
+		<h1>Base de données : serveurs du monde entier</h1>
+		<table class="table table-striped table-bordered table-sm">
+			<caption>965 000 000 serveurs dans la base de données</caption>
+			<thead class="thead-light">
+				<tr>
+					<th scope="col">id</th>
+					<th scope="col">est_sain</th>
+					<th scope="col">date_construction</th>
+					<th scope="col">commentaire</th>
+					<th scope="col">lat</th>
+					<th scope="col">lng</th>
+					<th scope="col">zone</th>
+					<th scope="col">h1</th>
+					<th scope="col">h2</th>
+					<th scope="col">h3</th>
+					<th scope="col">h4</th>
+					<th scope="col">h5</th>
+					<th scope="col">h6</th>
+					<th scope="col">h7</th>
+					<th scope="col">h8</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="loading">
+					<td colspan="15">Chargement en cours</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div id="datavisualization">
+		<div id="datavisualization-container">
+			<div id="graphiques-parameters">
+				<h1>Datavisualisation (visualisation des données)</h1>
+				<div class="form-group">
+				    <label for="exampleFormControlSelect1">Mode de visualisation des données</label>
+				    <select class="form-control" id="graphique-select">
+						<option value="reset" disabled selected>Choisir</option>
+						<option value="graphique1">Datacenters par zone (map)</option>
+						<option value="graphique2">Quantité de serveurs par zone (bâtons)</option>
+						<option value="graphique3">Pourcentage des serveurs allumés par zone (bâtons horizontaux)</option>
+						<option value="graphique4">Pourcentage des serveurs allumés par zone en fonction de leur état (bâtons horizontaux)</option>
+					</select>
+				</div>
 			</div>
-			<div>
+			<div id="graphique-empty-0" class="choose">Choisir un mode de visualisation des données pour afficher un graphique</div>
+			<div id="graphiques-contenu">
 				<div id="container-graphique1" class="container-graphique">
 					<%- include('graphique1', { data: data }) %>
 				</div>
@@ -101,92 +104,25 @@
 	$(document).ready(function() {
 
 	    /******************************************************************
-	    // A RETIRER POUR LE DISPOSITIF
-	    ******************************************************************/
-		// Emulation badges
-		$('.badge-button').on('click', function(e) {
-			e.preventDefault();
-			resetActivity();
-		})
-
-
-	    /******************************************************************
 	    // INIIALISATION
 	    ******************************************************************/
+
+		var width = $('#datavisualization').width();
+		var height1 = $('#datavisualization').height() - $('#graphiques-parameters').height() - $('#graphiques-parameters-1').height();
+		var height2 = $('#datavisualization').height() - $('#graphiques-parameters').height() - $('#graphiques-parameters-2').height();
+		var height3 = $('#datavisualization').height() - $('#graphiques-parameters').height() - $('#graphiques-parameters-3').height();
+		var height4 = $('#datavisualization').height() - $('#graphiques-parameters').height() - $('#graphiques-parameters-4').height();
+
 		// Initialisation de l'activité
 		resetActivity();
 		// Initialisation du graphique 1
-		initGraphique1();
+		initGraphique1(width, height1);
 		// Initialisation du graphique 2
-		var context2 = document.getElementById('graphique2').getContext('2d');
-		var graphique2 = new Chart(context2, {
-			type: 'horizontalBar',
-			data: {
-				labels: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8'],
-				datasets: [{
-					label: 'Pourcentage de serveurs allumés',
-					data: [],
-					backgroundColor: [ 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)' ],
-					borderColor: [ 'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)' ],
-					borderWidth: 1
-				}]
-			},
-			options: {
-				scales: {
-					xAxes: [{
-						ticks: {
-							beginAtZero: true
-						}
-					}]
-				}
-			}
-		});
+		var graphique2 = initGraphique2(width, height2);
 		// Initialisation du graphique 3
-		var context3 = document.getElementById('graphique3').getContext('2d');
-		var graphique3 = new Chart(context3, {
-			type: 'bar',
-			data: {
-				labels: ['Afrique', 'Amérique centrale', 'Amérique du Nord', 'Amérique du Sud', 'Asie', 'Europe', 'Moyen-Orient', 'Océanie'],
-				datasets: [{
-					label: 'Nombre de serveurs infectés',
-					data: ['3900000', '700000', '200000000', '5000000', '9500000', '140000000', '5000000', '15000000'],
-					backgroundColor: [ 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)' ],
-					borderColor: [ 'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)' ],
-					borderWidth: 1
-				}]
-			},
-			options: {
-				scales: {
-					xAxes: [{
-						ticks: {
-							beginAtZero: true
-						}
-					}]
-				}
-			}
-		});
+		var graphique3 = initGraphique3(width, height3);
 		// Initialisation du graphique 4
-		var context4 = document.getElementById('graphique4').getContext('2d');
-		var graphique4 = new Chart(context4, {
-			type: 'radar',
-			data: {
-				labels: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8'],
-				datasets: [{
-					label: 'Pourcentage de serveurs allumés dans chaque zone en fonction des heures',
-					data: [],
-					backgroundColor: [ 'rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(255, 206, 86, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(153, 102, 255, 0.2)', 'rgba(255, 159, 64, 0.2)' ],
-					borderColor: [ 'rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)', 'rgba(255, 206, 86, 1)', 'rgba(75, 192, 192, 1)', 'rgba(153, 102, 255, 1)', 'rgba(255, 159, 64, 1)' ],
-					borderWidth: 1
-				}]
-			},
-			options: {
-				scale: {
-					ticks: {
-						min: 0,
-					}
-				}
-			}
-		});
+		var graphique4 = initGraphique4(width, height4);
 		// Remplissage du tableau avec les données des serveurs
 		fillTableWithServersDatas(serveurs);
 
@@ -196,6 +132,7 @@
 	    ******************************************************************/
 	    // Sélection du graphique
 	    $('select#graphique-select').change(function(e) {
+	    	$('#graphique-empty-0').remove();
 	    	selectGraphique();
 	    });
 
@@ -203,17 +140,18 @@
 	    /******************************************************************
 	    // ACTIONS POUR PARAMETRER LES GRAPHIQUES
 	    ******************************************************************/
-		// GRAPHIQUE 2
+		// GRAPHIQUE 3
 		// Sélection de la zone
-	    $('select#graphique2-zone').change(function(e) {
-	    	$('#graphique2').css('display', 'block');
-	    	$('#graphique2-request-zone').html($('#graphique2-zone option:selected').html());
-	    	updateGraphique(graphique2, 2);
+	    $('select#graphique3-zone').change(function(e) {
+	    	$('#graphique3').css('display', 'block');
+	    	$('#graphique3-request-zone').html($('#graphique3-zone option:selected').html());
+	    	updateGraphique(graphique3, 3);
 	    });
 
 		// GRAPHIQUE 4
 		// Sélection de la zone
 	    $('select#graphique4-zone').change(function(e) {
+	    	$('#graphique-empty-4').remove();
 	    	$('#graphique4').css('display', 'block');
 	    	$('#graphique4-request-zone').html($('#graphique4-zone option:selected').html());
 	    	updateGraphique(graphique4, 4);
@@ -234,7 +172,6 @@
 		// réponse de node concernant les solutions.
 		//
 		socket.on('toclient.responseAnalysis', function(data) {
-			console.log(data);
 			var popup = $("#overlayResult");
 			var title = $("#titleResult #title");
 			var msg = $("#messageResult");

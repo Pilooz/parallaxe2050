@@ -1,5 +1,4 @@
 function resetActivity() {
-	console.log("Réinitialisation de l'activité.");
 	// Réinitialisation des select
 	$('select').val('reset');
 
@@ -52,10 +51,7 @@ function fillTableWithServersDatas(serveurs) {
 	}
 }
 
-function initGraphique1() {
-
-	var width = $('#container-graphique1').parent().width();
-	var height = width * 300 / 460;
+function initGraphique1(width, height) {
 
 	// The svg
 	var svg = d3.select("#graphique1")
@@ -86,7 +82,7 @@ function initGraphique1() {
 		// Create a color scale
 		var color = d3.scaleOrdinal()
 			.domain(["A"])
-			.range([ "#402D54"])
+			.range([ "#f0fDf4"])
 		// Add a scale for bubble size
 		var size = d3.scaleLinear()
 			.domain([1,200])  // What's in the data
@@ -97,7 +93,7 @@ function initGraphique1() {
 			.selectAll("path")
 			.data(data.features)
 			.enter().append("path")
-			.attr("fill", "#69b3a2")
+			.attr("fill", "#7200fe")
 			.attr("d", d3.geoPath().projection(projection))
 			.style("stroke", "#fff")
 
@@ -146,6 +142,113 @@ function initGraphique1() {
 	})
 }
 
+function initGraphique2(width, height) {
+	var context2 = document.getElementById('graphique2').getContext('2d');
+	context2.canvas.width = width;
+	context2.canvas.height = height;
+	var graphique2 = new Chart(context2, {
+		type: 'bar',
+		data: {
+			labels: ['Afrique', 'Amérique centrale', 'Amérique du Nord', 'Amérique du Sud', 'Asie', 'Europe', 'Moyen-Orient', 'Océanie'],
+			datasets: [{
+				label: 'Nombre de serveurs infectés',
+				data: ['3900000', '700000', '200000000', '5000000', '9500000', '140000000', '5000000', '15000000'],
+				backgroundColor: [ 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)' ],
+				borderColor: [ 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)' ],
+				borderWidth: 1
+			}]
+		},
+		options: {
+			legend: {
+				labels: {
+					filter: function(legendItem, chartData) {
+						return false;
+					}
+				}
+			},
+			scales: {
+				xAxes: [{
+					ticks: {
+						beginAtZero: true
+					}
+				}]
+			}
+		}
+	});
+	return graphique2;
+}
+
+function initGraphique3(width, height) {
+	var context3 = document.getElementById('graphique3').getContext('2d');
+	context3.canvas.width = width;
+	context3.canvas.height = height;
+	var graphique3 = new Chart(context3, {
+		type: 'horizontalBar',
+		data: {
+			labels: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8'],
+			datasets: [{
+				label: 'Pourcentage de serveurs allumés',
+				data: [],
+				backgroundColor: [ 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)' ],
+				borderColor: [ 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)' ],
+				borderWidth: 1
+			}]
+		},
+		options: {
+			legend: {
+				labels: {
+					filter: function(legendItem, chartData) {
+						return false;
+					}
+				}
+			},
+			scales: {
+				xAxes: [{
+					ticks: {
+						beginAtZero: true
+					}
+				}]
+			}
+		}
+	});
+	return graphique3;
+}
+function initGraphique4(width, height) {
+	var context4 = document.getElementById('graphique4').getContext('2d');
+	context4.canvas.width = width;
+	context4.canvas.height = height;
+	var graphique4 = new Chart(context4, {
+		type: 'horizontalBar',
+		data: {
+			labels: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7', 'h8'],
+			datasets: [{
+				label: ['Pourcentage de serveurs allumés'],
+				data: [],
+				backgroundColor: [ 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)', 'rgba(114, 0, 254, 0.2)' ],
+				borderColor: [ 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)', 'rgba(114, 0, 254, 1)' ],
+				borderWidth: 1
+			}]
+		},
+		options: {
+			legend: {
+				labels: {
+					filter: function(legendItem, chartData) {
+						return false;
+					}
+				}
+			},
+			scales: {
+				xAxes: [{
+					ticks: {
+						beginAtZero: true
+					}
+				}]
+			}
+		}
+	});
+	return graphique4;
+}
+
 
 function selectGraphique() {
 	// Cache tous les containers des graphiques
@@ -157,8 +260,10 @@ function selectGraphique() {
 
 function updateGraphique(graphique, id) {
 	if(id == 2) {
+	}
+	else if(id == 3) {
 		var datasServeurs = [];
-		switch($('select#graphique2-zone').val()) {
+		switch($('select#graphique3-zone').val()) {
 		  case 'zone-1':
 		    datasServeurs = [100, 100, 90, 99, 100, 100, 98, 100];
 		    break;
@@ -187,8 +292,6 @@ function updateGraphique(graphique, id) {
 		    break;
 		}
 		graphique.data.datasets[0].data = datasServeurs;
-	}
-	else if(id == 3) {
 	}
 	else if(id == 4) {
 		var datasServeurs = [];
