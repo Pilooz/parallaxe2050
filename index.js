@@ -224,11 +224,11 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
   // rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
   // Testing for group A3 0EAF4C60 (énigme "Hardware" ou énigme "CodeEtProg") 
-  // rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
-  // rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
+  rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
+  rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
   // Testing for group A4 49426960 (énigme "CodeEtProg" ou énigme "BDD")
-  rfid.extractTag("<TAG:49426960/><READER:1/>");
-  rfid.extractReader("<TAG:49426960/><READER:1/>");
+  // rfid.extractTag("<TAG:49426960/><READER:1/>");
+  // rfid.extractReader("<TAG:49426960/><READER:1/>");
   // // Testing for group A5 5E68811A (énigme "BDD" ou énigme "Hardware")
   // rfid.extractTag("<TAG:5E68811A/><READER:1/>");
   // rfid.extractReader("<TAG:5E68811A/><READER:1/>");
@@ -364,10 +364,10 @@ router.all('/*', function (req, res, next) {
 // Monitoring of all the systems
 //
 .get(['/admin', '/monitoring'], function(req,res,next){
-  if (!IsAdminServer) {
+  // if (!IsAdminServer) {
     // Redirect vers le serveur d'admin
-    res.redirect(`http://${GLOBAL_CONFIG.app.adminServerIp}:${GLOBAL_CONFIG.app.adminServerPort}/monitoring`);
-  }
+    // res.redirect(`http://${GLOBAL_CONFIG.app.adminServerIp}:${GLOBAL_CONFIG.app.adminServerPort}/monitoring`);
+  // }
     res.render( '../monitoring', { data: dataForTemplate });
 })
 
