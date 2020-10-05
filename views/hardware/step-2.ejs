@@ -30,8 +30,10 @@ $(document).ready(function() {
     socket.on('toclient.solutions', function(data){
     if (data.state) {
         solutions = true;
+        $('.message').html('Câblage validé. Informations en cours de transfert sur Roberta.');
     } else {
         solutions = false;
+        $('.message').html('Erreur dans le câblage. Merci de décâbler au plus vite pour éviter une panne.');
     }
     });
     socket.on('toclient.robotFinished', function(){
