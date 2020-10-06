@@ -18,6 +18,28 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="cablageOK" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Succès !</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Roberta activée. Caractère d'encodage en cours d'écriture.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- START // Scripts in footer -->
+<script src="/bootstrap/dist/js/bootstrap.min.js"></script>
 <script>
 $(document).ready(function() {
     var nextStep = '<%-data.currentStep.transitions[0].id %>';
@@ -31,6 +53,7 @@ $(document).ready(function() {
     if (data.state) {
         solutions = true;
         $('.message').html('Câblage validé. Informations en cours de transfert sur Roberta.');
+        $('#cablageOK').modal();
     } else {
         solutions = false;
         $('.message').html('Erreur dans le câblage. Merci de décâbler au plus vite pour éviter une panne.');
@@ -43,7 +66,5 @@ $(document).ready(function() {
     });
 });
 </script>
-
-<!-- START // Scripts in footer -->
 <!-- END // Scripts in footer -->
 <%- include('../partials/footer', { data: data }) %>
