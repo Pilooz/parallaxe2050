@@ -37,7 +37,7 @@ $(document).ready(function() {
 		var requiredKeyLogout = konamiCodeLogout[konamiCodeLogoutPosition];
 		if (key == requiredKeyLogout) {
 			konamiCodeLogoutPosition++;
-			if (getCookie('hasValidatedThirdStep') && konamiCodeLogoutPosition == konamiCodeLogout.length && getCookie("admin") && getCookie("admin") != "" && getCookie("admin") != null && getCookie('admin') != "null") {
+			if (stepId == "step-6" && konamiCodeLogoutPosition == konamiCodeLogout.length && getCookie("admin") && getCookie("admin") != "" && getCookie("admin") != null && getCookie('admin') != "null") {
 				setCookie("admin", null);
 				socket.emit('toserver.nextStep', {nextStep: nextStep});
 			}
@@ -127,9 +127,8 @@ $(document).ready(function() {
 
 		// Vérifie si le hashtag des bots a bien été ajouté aux hashtags floutés
 		if(hasBlurredHashtag) {
-			setCookie('hasValidatedSecondStep', true, 60);
 			setTimeout(function() {
-				socket.emit('toserver.previousStep', {previousStep: previousStep, message: "THANKS"});
+				socket.emit('toserver.nextStep', {nextStep: nextStep});
 			}, 4000);
 		}
 	})

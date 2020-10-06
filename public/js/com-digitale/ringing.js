@@ -1,9 +1,21 @@
 $(document).ready(function() {
-	if(!getCookie('hasValidatedSecondStep') && !getCookie('hasValidatedThirdStep')) {
-		setCookie('addedHashtags', JSON.stringify([]));
-		setCookie('addedAccounts', JSON.stringify([]));
-		setCookie('addedKnoots', JSON.stringify([]));
-	}
+    //
+    // Initialisation des hashtags ajoutés et des comptes ajoutés et des knoots ajoutés
+    //
+    if(stepId == "step-1") {
+        console.log("PLEASE INIT les cookies");
+        setCookie('addedHashtags', JSON.stringify([]));
+        setCookie('addedAccounts', JSON.stringify([]));
+        setCookie('addedKnoots', JSON.stringify([]));
+        setCookie('justAddedHashtags', JSON.stringify([]));
+        setCookie('justAddedAccounts', JSON.stringify([]));
+    }
+
+    // Si on est sur l'écran du téléphone rouge (steps 1, 3 et 5), alors plus besoin d'utiliser la manivelle
+    if(stepId == "step-1" || stepId == "step-3" || stepId == "step-5") {
+        console.log("PLEASE STOP LA MANIVELLE");
+        socket.emit('toserver.stop', {});
+    }
 });
 
 // Fonction pour paramétrer un cookie
