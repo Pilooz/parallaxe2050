@@ -9,11 +9,7 @@
             // ------------------------------------------------------------------
             // Receiving refresh order
             socket.on('toclient.refreshNow', function(data) {
-                if (data.url) {
-                    location.href= data.url;
-                } else {
-                    location.href = "/";
-                }
+                location.href = "/";
             });
 
         });

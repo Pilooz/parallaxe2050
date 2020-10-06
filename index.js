@@ -351,13 +351,6 @@ router.all('/*', function (req, res, next) {
 })
 
 //
-// Handle Waiting
-//
-.get('/waiting', function(req, res, next){
-  res.render( '../waiting', { data: dataForTemplate });
-})
-
-//
 // Back-office 
 //
 /* GET populate page. */
@@ -405,7 +398,7 @@ router.all('/*', function (req, res, next) {
   dataForTemplate.solutionsSet = null;
 
   // // send refresh order to client
-  io.emit('toclient.refreshNow', {url: '/waiting'});
+  io.emit('toclient.refreshNow');
   io.emit('toclient.justRestarted');
   
   // Send null data to monitoring
