@@ -128,7 +128,7 @@ $(document).ready(function() {
 		// Vérifie si le hashtag des bots a bien été ajouté aux hashtags floutés
 		if(hasBlurredHashtag) {
 			setTimeout(function() {
-				socket.emit('toserver.nextStep', {nextStep: nextStep, message: "BRAVO"});
+				socket.emit('toserver.nextStep', {nextStep: nextStep, message: "THANKS"});
 			}, 4000);
 		}
 	})

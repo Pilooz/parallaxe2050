@@ -110,7 +110,7 @@ $(document).ready(function() {
 				if(isLastTweet) {
 					selectedImage = "";
 					setTimeout(function() {
-						socket.emit('toserver.nextStep', {nextStep: nextStep, message: "THANKS"});
+						socket.emit('toserver.nextStep', {nextStep: nextStep, message: "BRAVO"});
 					}, 4000);
 				}
 			}
