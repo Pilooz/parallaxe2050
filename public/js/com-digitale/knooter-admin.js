@@ -39,7 +39,7 @@ $(document).ready(function() {
 			konamiCodeLogoutPosition++;
 			if (stepId == "step-6" && konamiCodeLogoutPosition == konamiCodeLogout.length && getCookie("admin") && getCookie("admin") != "" && getCookie("admin") != null && getCookie('admin') != "null") {
 				setCookie("admin", null);
-				socket.emit('toserver.nextStep', {nextStep: nextStep, message: "BRAVO"});
+				socket.emit('toserver.nextStep', {nextStep: nextStep});
 			}
 		} else {
 			konamiCodeLogoutPosition = 0;
@@ -128,7 +128,7 @@ $(document).ready(function() {
 		// Vérifie si le hashtag des bots a bien été ajouté aux hashtags floutés
 		if(hasBlurredHashtag) {
 			setTimeout(function() {
-				socket.emit('toserver.nextStep', {nextStep: nextStep});
+				socket.emit('toserver.nextStep', {nextStep: nextStep, message: "BRAVO"});
 			}, 4000);
 		}
 	})
