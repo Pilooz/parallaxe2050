@@ -128,10 +128,11 @@ void loop() {
     return;
   }
 
-  if (rfid.uid.uidByte[0] != nuidPICC[0] ||
-      rfid.uid.uidByte[1] != nuidPICC[1] ||
-      rfid.uid.uidByte[2] != nuidPICC[2] ||
-      rfid.uid.uidByte[3] != nuidPICC[3] ) {
+  // if (rfid.uid.uidByte[0] != nuidPICC[0] ||
+  //     rfid.uid.uidByte[1] != nuidPICC[1] ||
+  //     rfid.uid.uidByte[2] != nuidPICC[2] ||
+  //     rfid.uid.uidByte[3] != nuidPICC[3] ) {
+  if (!scanned) {
     //Serial.println(F("A new card has been detected."));
 
     // Store NUID into nuidPICC array
