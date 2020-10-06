@@ -39,7 +39,7 @@ $(document).ready(function() {
 			konamiCodeLogoutPosition++;
 			if (stepId == "step-6" && konamiCodeLogoutPosition == konamiCodeLogout.length && getCookie("admin") && getCookie("admin") != "" && getCookie("admin") != null && getCookie('admin') != "null") {
 				setCookie("admin", null);
-				socket.emit('toserver.nextStep', {nextStep: nextStep});
+				socket.emit('toserver.lastGameStep');
 			}
 		} else {
 			konamiCodeLogoutPosition = 0;
