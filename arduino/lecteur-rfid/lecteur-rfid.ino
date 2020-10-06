@@ -94,6 +94,9 @@ void setup() {
   Serial.println("<MSG:READY/>");
 }
 
+long currentMillis = 0;
+long previousMillis = 0;
+
 void loop() {
   //  current_millis = millis();
   //  if (scanned && current_millis - previous_millis > 2000) {
@@ -101,10 +104,13 @@ void loop() {
   //    scanned = false;
   //    previous_millis = current_millis;
   //  }
-  EVERY_N_MILLISECONDS (30000) {
+  //EVERY_N_MILLISECONDS (30000) {
+  
+  if ( currentMillis - previousMillis > 30000) {
     if (scanned) {
       red();
       scanned = false;
+      previousMillis = currentMillis;
     }
   }
 
@@ -150,7 +156,8 @@ void loop() {
 
     green();
     scanned = true;
-
+    currentMillis = mills();
+    
   }
   //else Serial.println(F("Card read previously."));
 
