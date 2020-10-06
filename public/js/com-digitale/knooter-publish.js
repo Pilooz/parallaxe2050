@@ -74,7 +74,7 @@ $(document).ready(function() {
 				var currentLikes = Math.round(Math.random() * 10000);
 				var isLastTweet = false;
 				// Si on a passé la 2e étape et qu'on a sélectionné une image, on affiche le nombre de likes qui est la solution
-				if(getCookie('hasValidatedSecondStep') && getCookie('hasValidatedSecondStep') != null && getCookie('hasValidatedSecondStep') != "null" && selectedImage != "") {
+				if(stepId == "step-4" && selectedImage != "") {
 					currentLikes = likes;
 					isLastTweet = true;
 				}
@@ -109,9 +109,8 @@ $(document).ready(function() {
 
 				if(isLastTweet) {
 					selectedImage = "";
-					setCookie('hasValidatedThirdStep', true, 60);
 					setTimeout(function() {
-						socket.emit('toserver.previousStep', {previousStep: previousStep, message: "BRAVO"});
+						socket.emit('toserver.nextStep', {nextStep: nextStep});
 					}, 4000);
 				}
 			}

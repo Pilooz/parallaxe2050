@@ -34,6 +34,8 @@
     <script>
         var nextStep = '<%-data.currentStep.transitions[0].id %>';
         var previousStep = '<%-data.currentStep.previousStep[0].id %>';
+        var stepId = '<%-data.currentStep.stepId %>';
+        console.log('stepId : ' + stepId);
         // Données de base pour Knooter
         const blurredHashtags = JSON.parse('<%- JSON.stringify(data.currentStep.blurredHashtags) %>');
         const blurredAccounts = JSON.parse('<%- JSON.stringify(data.currentStep.blurredAccounts) %>');
