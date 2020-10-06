@@ -128,11 +128,11 @@ function setup_scenario_environment(reInit) {
 
       // Say to the client application to refresh now
       io.emit('toclient.refreshNow');
-    } 
+    // } 
     // Emit solution for the step for each step change, not only if reInit or group changes
     eventEmitter.emit('monitoring.solutionsForStep', { solutions: scenario.getCurrentStep().solutions.filter(s => s.set == set), set: set, nextStep: scenario.getCurrentStep().transitions[0].id || null });
 
-  //} else {
+  } else {
     // Wrong badge on wrong device.
     // emit a socket to teel the client to refresh on error page
     // io.emit('toclient.errorOnBadge', {data: { errorMsg : "WRONG_CODE_ON_WRONG_DEVICE", errorPage, "/badgeError" } });
