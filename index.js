@@ -110,7 +110,7 @@ function setup_scenario_environment(reInit) {
   logger.info(`Current Team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
   var set = scenario.setSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
   if (set > -1) {
-    if (scenario.getOldSolutionsSet() != set || reInit) { 
+    //if (scenario.getOldSolutionsSet() != set || reInit) { 
       // On emet les events qui si le set de solution change de 1 à 2 ou de 2 à 1.
       // Si pas de solution on ignore
       // si même solution on ignore
@@ -132,7 +132,7 @@ function setup_scenario_environment(reInit) {
     // Emit solution for the step for each step change, not only if reInit or group changes
     eventEmitter.emit('monitoring.solutionsForStep', { solutions: scenario.getCurrentStep().solutions.filter(s => s.set == set), set: set, nextStep: scenario.getCurrentStep().transitions[0].id || null });
 
-  } else {
+  //} else {
     // Wrong badge on wrong device.
     // emit a socket to teel the client to refresh on error page
     // io.emit('toclient.errorOnBadge', {data: { errorMsg : "WRONG_CODE_ON_WRONG_DEVICE", errorPage, "/badgeError" } });
@@ -140,6 +140,7 @@ function setup_scenario_environment(reInit) {
   }
   logger.info( '------------------------------------------------------------' );
 }
+
 //------------------------------------------------------------------------
 // Init Socket to transmit Serial data to HTTP client
 //------------------------------------------------------------------------
