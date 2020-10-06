@@ -344,10 +344,17 @@ router.all('/*', function (req, res, next) {
 })
 
 //
-// Handle Badge Error
+// Handle Holo
 //
 .get('/hologramme', function(req, res, next){
   res.render( 'hologramme', { data: dataForTemplate });
+})
+
+//
+// Handle Waiting
+//
+.get('/waiting', function(req, res, next){
+  res.render( '../waiting', { data: dataForTemplate });
 })
 
 //
@@ -397,8 +404,8 @@ router.all('/*', function (req, res, next) {
   setup_scenario_environment(false);
   dataForTemplate.solutionsSet = null;
 
-  // send refresh order to client
-  io.emit('toclient.refreshNow');
+  // // send refresh order to client
+  io.emit('toclient.refreshNow', {url: '/waiting'});
   io.emit('toclient.justRestarted');
   
   // Send null data to monitoring
