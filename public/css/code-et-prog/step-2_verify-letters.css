@@ -14,6 +14,7 @@
   right: 20px;
   display: flex;
   flex-direction: row; }
+  #actions button,
   #actions .button, #actions .btn {
     right: 20px;
     margin-left: 20px;
@@ -26,8 +27,10 @@
     font-size: 1rem;
     font-weight: 400;
     color: white; }
+    #actions button:hover,
     #actions .button:hover, #actions .btn:hover {
       box-shadow: 0 0 10px #00c6f9; }
+    #actions button:focus,
     #actions .button:focus, #actions .btn:focus {
       outline: none; }
 
@@ -150,10 +153,10 @@ body .container {
         padding: 15px;
         background: white;
         text-align: right; }
-        body .container .row .files-details form.file .validation a.btn {
+        body .container .row .files-details form.file .validation button.btn {
           background-color: #17DA7E;
           border: none; }
-          body .container .row .files-details form.file .validation a.btn:hover {
+          body .container .row .files-details form.file .validation button.btn:hover {
             box-shadow: 0 0 10px #17DA7E; }
     body .container .row #file2 {
       display: none; }
