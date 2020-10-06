@@ -265,28 +265,28 @@ function updateGraphique(graphique, id) {
 		var datasServeurs = [];
 		switch($('select#graphique3-zone').val()) {
 		  case 'zone-1':
-		    datasServeurs = [100, 100, 90, 99, 100, 100, 98, 100];
+		    datasServeurs = [80, 100, 90, 90, 100, 100, 88, 100];
 		    break;
 		  case 'zone-2':
-		  	datasServeurs = [100, 88, 100, 91, 100, 94, 100, 98];
+		  	datasServeurs = [100, 88, 100, 81, 100, 84, 100, 88];
 		    break;
 		  case 'zone-3':
-			datasServeurs = [100, 81, 100, 100, 78, 92, 100, 98];
+			datasServeurs = [100, 81, 100, 100, 78, 82, 100, 88];
 		    break;
 		  case 'zone-4':
-			datasServeurs = [90, 100, 100, 58, 100, 69, 100, 100];
+			datasServeurs = [80, 100, 100, 58, 100, 69, 100, 100];
 		    break;
 		  case 'zone-5':
-			datasServeurs = [100, 85, 90, 82, 99, 95, 80, 100];
+			datasServeurs = [100, 85, 80, 82, 89, 85, 80, 100];
 		    break;
 		  case 'zone-6':
-			datasServeurs = [88, 100, 100, 100, 92, 100, 95, 99];
+			datasServeurs = [88, 100, 100, 100, 82, 100, 85, 89];
 		    break;
 		  case 'zone-7':
-			datasServeurs = [100, 100, 91, 75, 83, 88, 100, 98];
+			datasServeurs = [100, 100, 81, 75, 83, 88, 100, 88];
 		    break;
 		  case 'zone-8':
-			datasServeurs = [100, 100, 98, 100, 78, 100, 98, 100];
+			datasServeurs = [100, 100, 88, 100, 78, 100, 88, 100];
 		    break;
 		  default:
 		    break;
@@ -295,31 +295,31 @@ function updateGraphique(graphique, id) {
 	}
 	else if(id == 4) {
 		var datasServeurs = [];
-		var afficherServeursSainsGraphique4 = $('#checkbox-serveurs-sains-graphique4').hasClass('active');
+		var afficherServeursInfectesUniquementGraphique4 = $('#checkbox-serveurs-sains-graphique4').hasClass('active');
 		switch($('select#graphique4-zone').val()) {
 		  case 'zone-1':
-		    datasServeurs = afficherServeursSainsGraphique4 ? [100, 100, 90, 99, 100, 100, 98, 100] : [100, 100, 90, 100, 100, 100, 100, 100];
+		    datasServeurs = afficherServeursInfectesUniquementGraphique4 ? [100, 100, 90, 100, 100, 100, 100, 100] : [80, 100, 90, 90, 100, 100, 88, 100];
 		    break;
 		  case 'zone-2':
-		  	datasServeurs = afficherServeursSainsGraphique4 ? [100, 88, 100, 91, 100, 94, 100, 98] : [100, 100, 100, 100, 100, 99, 100, 99];
+		  	datasServeurs = afficherServeursInfectesUniquementGraphique4 ? [100, 100, 100, 100, 100, 89, 100, 89] : [100, 88, 100, 81, 100, 84, 100, 88];
 		    break;
 		  case 'zone-3':
-			datasServeurs = afficherServeursSainsGraphique4 ? [100, 81, 100, 100, 78, 92, 100, 98] : [100, 100, 100, 100, 99, 100, 96, 100];
+			datasServeurs = afficherServeursInfectesUniquementGraphique4 ? [100, 100, 100, 100, 89, 100, 86, 100] : [100, 81, 100, 100, 78, 82, 100, 88];
 		    break;
 		  case 'zone-4':
-			datasServeurs = afficherServeursSainsGraphique4 ? [90, 100, 100, 58, 100, 69, 100, 100] : [100, 100, 100, 100, 100, 90, 100, 100];
+			datasServeurs = afficherServeursInfectesUniquementGraphique4 ? [100, 100, 100, 100, 100, 80, 100, 100] : [80, 100, 100, 58, 100, 69, 100, 100];
 		    break;
 		  case 'zone-5':
-			datasServeurs = afficherServeursSainsGraphique4 ? [100, 85, 90, 82, 99, 95, 80, 100] : [100, 100, 94, 100, 100, 100, 100, 100];
+			datasServeurs = afficherServeursInfectesUniquementGraphique4 ? [100, 100, 84, 100, 100, 100, 100, 100] : [100, 85, 80, 82, 89, 85, 80, 100];
 		    break;
 		  case 'zone-6':
-			datasServeurs = afficherServeursSainsGraphique4 ? [88, 100, 100, 100, 92, 100, 95, 99] : [100, 100, 100, 100, 100, 100, 100, 100];
+			datasServeurs = afficherServeursInfectesUniquementGraphique4 ? [100, 100, 100, 100, 100, 100, 100, 100] : [88, 100, 100, 100, 82, 100, 85, 89];
 		    break;
 		  case 'zone-7':
-			datasServeurs = afficherServeursSainsGraphique4 ? [100, 100, 91, 75, 83, 88, 100, 98] : [100, 100, 93, 96, 100, 98, 100, 100];
+			datasServeurs = afficherServeursInfectesUniquementGraphique4 ? [100, 100, 83, 86, 100, 88, 100, 100] : [100, 100, 81, 75, 83, 88, 100, 88];
 		    break;
 		  case 'zone-8':
-			datasServeurs = afficherServeursSainsGraphique4 ? [100, 100, 98, 100, 78, 100, 98, 100] : [91, 100, 100, 100, 99, 100, 99, 100];
+			datasServeurs = afficherServeursInfectesUniquementGraphique4 ? [81, 100, 100, 100, 89, 100, 89, 100] : [100, 100, 88, 100, 78, 100, 88, 100];
 		    break;
 		  default:
 		    break;
