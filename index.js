@@ -36,11 +36,7 @@ const logger = require('./lib/logger')(scenario.data().scenarioId);
 var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG, logger);
 // Arduino stuffs 
 var arduino1        = require('./lib/arduino.js')(GLOBAL_CONFIG.arduino1, logger, eventEmitter);
-var arduino2        = undefined;
-
-setTimeout(function(){
-  arduino2 = require('./lib/arduino.js')(GLOBAL_CONFIG.arduino2, logger, eventEmitter);
-}, 2000);
+var arduino2        = require('./lib/arduino.js')(GLOBAL_CONFIG.arduino2, logger, eventEmitter);
 
 // Loading Specific librairy for the specific scenario
 var scenario_specifics;
