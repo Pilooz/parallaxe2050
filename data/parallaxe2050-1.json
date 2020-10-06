@@ -62,17 +62,17 @@
                     "set": "1", 
                     "responses" : [ 
                         {"chemin1" : [ 3, 4 ], "ip" : "34.76.60.69" }, 
-                        {"chemin2" : [ 1, 6, 8 ], "ip" : "111.206.198.31" }
+                        {"chemin2" : [ 1, 8 ], "ip" : "111.206.198.31" }
                     ],
                     "codeDeCommunication": "4C"
                 },
                 {
                     "set": "2", 
                     "responses" : [ 
-                        {"chemin1" : [ 1, 6 ], "ip" : "34.76.60.69" }, 
-                        {"chemin2" : [ 9, 7, 8 ], "ip" : "111.206.198.31" }
+                        {"chemin1" : [ 3, 4 ], "ip" : "34.76.60.69" }, 
+                        {"chemin2" : [ 1, 8 ], "ip" : "111.206.198.31" }
                     ],
-                    "codeDeCommunication": "6B"
+                    "codeDeCommunication": "4C"
                 }
             ]
         },
