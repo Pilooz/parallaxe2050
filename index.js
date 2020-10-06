@@ -128,11 +128,11 @@ function setup_scenario_environment(reInit) {
 
       // Say to the client application to refresh now
       io.emit('toclient.refreshNow');
-    } 
+    // } 
     // Emit solution for the step for each step change, not only if reInit or group changes
     eventEmitter.emit('monitoring.solutionsForStep', { solutions: scenario.getCurrentStep().solutions.filter(s => s.set == set), set: set, nextStep: scenario.getCurrentStep().transitions[0].id || null });
 
-  //} else {
+  } else {
     // Wrong badge on wrong device.
     // emit a socket to teel the client to refresh on error page
     // io.emit('toclient.errorOnBadge', {data: { errorMsg : "WRONG_CODE_ON_WRONG_DEVICE", errorPage, "/badgeError" } });
@@ -344,10 +344,17 @@ router.all('/*', function (req, res, next) {
 })
 
 //
-// Handle Badge Error
+// Handle Holo
 //
 .get('/hologramme', function(req, res, next){
   res.render( 'hologramme', { data: dataForTemplate });
+})
+
+//
+// Handle Waiting
+//
+.get('/waiting', function(req, res, next){
+  res.render( '../waiting', { data: dataForTemplate });
 })
 
 //
@@ -397,8 +404,8 @@ router.all('/*', function (req, res, next) {
   setup_scenario_environment(false);
   dataForTemplate.solutionsSet = null;
 
-  // send refresh order to client
-  io.emit('toclient.refreshNow');
+  // // send refresh order to client
+  io.emit('toclient.refreshNow', {url: '/waiting'});
   io.emit('toclient.justRestarted');
   
   // Send null data to monitoring
