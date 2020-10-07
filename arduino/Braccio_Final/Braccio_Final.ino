@@ -20,11 +20,11 @@ void setup() {
 }
 
 void loop() {
-  if (digitalRead(pinYellowSharp) && !pinState && !digitalRead(pinBlueExclamation)) {
-    pinState = true;
-    sharp();
-  }
-  if (digitalRead(pinBlueExclamation) && !pinState && !digitalRead(pinYellowSharp)) {
+  //if (digitalRead(pinYellowSharp) && !pinState && !digitalRead(pinBlueExclamation)) {
+  //  pinState = true;
+  //  sharp();
+  //}
+  if (digitalRead(pinBlueExclamation) && !pinState && (digitalRead(pinYellowSharp) == 0)) {
     pinState = true;
     exclamation();
   }
@@ -33,6 +33,7 @@ void loop() {
   }
 }
 
+/*
 void sharp() {
   write_pos();
   delay(100);
@@ -69,6 +70,7 @@ void sharp() {
   write_led(); // end of draw fourth line
   home_pos();
 }
+*/
 
 void exclamation () {
   write_pos();
