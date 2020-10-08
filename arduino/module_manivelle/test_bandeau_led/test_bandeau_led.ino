@@ -114,6 +114,7 @@ void refresh(int nb_led_max) {
 void turn_off() {
   for (int nb_led = 0; nb_led < NUM_LEDS; nb_led++)
     leds[nb_led] = CRGB(0, 0, 0);
+  FastLED.show();
 }
 
 void serialEvent() {
