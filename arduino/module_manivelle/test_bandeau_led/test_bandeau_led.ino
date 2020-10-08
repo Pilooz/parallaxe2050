@@ -1,7 +1,7 @@
 #include "FastLED.h"
 #include "protocole_parallaxe2050.h"
 
-#define NUM_LEDS 17
+#define NUM_LEDS 15
 #define DATA_PIN 4
 #define LED_TYPE WS2811
 #define COLOR_ORDER GRB
@@ -46,6 +46,7 @@ void setup() {
   counter = 0;
 
   // Init messaging
+  while(!Serial);
   message.send("NAME", "MANIVELLE");
   delay(5000);
   message.send("MSG", "READY");
@@ -63,6 +64,7 @@ void loop() {
     if (message.val() == "STOP") {
       buzz = false;
       activity = false;
+      turn_off();
       message.ack_ok();
     }
   }
@@ -105,12 +107,10 @@ void refresh(int nb_led_max) {
   FastLED.show();
 }
 
-/*
-  void turn_off() {
+void turn_off() {
   for (int nb_led = 0; nb_led < NUM_LEDS; nb_led++)
     leds[nb_led] = CRGB(0, 0, 0);
-  }
-*/
+}
 
 void serialEvent() {
   message.receive();
