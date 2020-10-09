@@ -206,7 +206,7 @@
 		//
 		// Affichage du dernier step
 		//
-		$('.btn-primary').on('click', function(e) {
+		$('body').on('click', '.btn-primary', function(e) {
 			e.preventDefault();
 			$('#modaleDeBDD').hide();
 			setTimeout(function() {
