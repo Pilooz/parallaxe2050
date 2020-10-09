@@ -210,6 +210,7 @@
 			e.preventDefault();
 			$('#modaleDeBDD').hide();
 			setTimeout(function() {
+				console.log('enoiv ,ext step');
 				socket.emit('toserver.nextStep', {nextStep: nextStep});
 			}, 2000);
 		})
