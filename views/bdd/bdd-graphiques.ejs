@@ -71,14 +71,23 @@
 	</div>
 </div>
 
-<div id="overlayResult" class="overlayResult">
-	<div id="popupResult" class="popupResult">
-		<h2 id="titleResult"><span id="title"></span> 
-		<span id="btnClose" class="btnClose">&times;</span>
-		</h2>
-		<div id="messageResult">
-		</div>
-	</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modaleDeBDD" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- START // Scripts in footer -->
@@ -172,29 +181,25 @@
 		// réponse de node concernant les solutions.
 		//
 		socket.on('toclient.responseAnalysis', function(data) {
-			var popup = $("#overlayResult");
-			var title = $("#titleResult #title");
-			var msg = $("#messageResult");
-			popup.attr('style', 'display:none');
-			title.html("");
-			msg.html("");
+			var popup = $("#modaleDeBDD");
+			// var title = $("#titleResult #title");
+			// var msg = $("#messageResult");
+			// popup.attr('style', 'display:none');
+			// title.html("");
+			// msg.html("");
 			if (data.result == "KO") {
-				title.html("Mmmm ? Ce ne fonctionnera pas bien.");
-				msg.html("Il semble que nous n'allons pas toucher le maximum de serveurs avec ce créneau horaire.");
+				$("#modaleDeBDD .modal-title").html("Echec !");
+				$("#modaleDeBDD .modal-body").html("Si vous lancez l'anti-virus sur ce créneau-là, vous ne toucherez pas 100% des serveurs du monde.");
+				$('#modaleDeBDD').modal();
 			} else {
-				title.html("Yes ! Good job !");
-				msg.html("Bravo ! Retenez bien ce créneau horaire, il nous servira plus tard.");
+				$("#modaleDeBDD .modal-title").html("Succès !");
+				$("#modaleDeBDD .modal-body").html("Vous avez trouvé le créneau durant lequel envoyer l'anti-virus. Retenez bien l'heure à laquelle le créneau correspond, il vous sera très utile !");
+				$('#modaleDeBDD').modal();
+				setTimeout(function() {
+					socket.emit('toserver.nextStep', {nextStep: nextStep});
+				}, 4000);
 			}
-			popup.attr('style', 'display:block');
-		});
-
-		// Listener sur le bouton de fermeture de la popup
-		$("#overlayResult").on('click', function(){
-			$("#overlayResult").attr('style', 'display:none');
-			// Socket hangs sometime (i don't know why) refreshing the page forces reconnecting
-			location.href = "/";
-		});
-		
+		});		
 	});
 </script>
 <!-- END // Scripts in footer -->
