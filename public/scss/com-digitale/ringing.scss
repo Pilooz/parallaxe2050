@@ -1,0 +1,24 @@
+body {
+	background-color: #222;
+	animation-name: color;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+}
+
+.tel {
+	margin-top:20%;
+	margin-bottom:20%;
+}
+
+
+@keyframes color {
+	0% {
+		background-color: #222;
+	}
+	50% {
+		background-color: red;
+	}
+	100 {
+		background-color: #222;
+	}
+} 
