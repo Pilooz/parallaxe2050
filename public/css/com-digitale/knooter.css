@@ -273,7 +273,8 @@ strong.titleApercu {
     width: 300px;
     margin-left: -150px;
     transform: scale(0);
-    border: none; }
+    border: none;
+    box-shadow: 0 0 10px #fff; }
     #listKnoots .knoot h2 {
       background: white;
       font-size: 15px;
