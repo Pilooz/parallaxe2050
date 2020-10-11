@@ -52,6 +52,14 @@ body {
   background-color: black; }
   body #actions {
     z-index: 980 !important; }
+  body #validate {
+    position: fixed;
+    z-index: 500;
+    bottom: 20px;
+    right: 20px;
+    background: #00c6f9; }
+    body #validate:hover {
+      box-shadow: 0 0px 10px #00c6f9; }
   body #arrows button {
     position: fixed;
     border: none;
@@ -241,7 +249,10 @@ body {
   body.thumbnail {
     background: #303030; }
     body.thumbnail #actions {
-      opacity: 0; }
+      opacity: 0;
+      pointer-events: none; }
+      body.thumbnail #actions button {
+        pointer-events: none; }
     body.thumbnail #player {
       transform: scale(0.1);
       transform-origin: bottom left;

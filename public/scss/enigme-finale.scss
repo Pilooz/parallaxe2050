@@ -8,6 +8,18 @@ body {
 		z-index: 980 !important;
 	}
 
+	#validate {
+		position: fixed;
+		z-index: 500;
+		bottom: 20px;
+		right: 20px;
+		background: $mainColor;
+
+		&:hover {
+			box-shadow: 0 0px 10px #00c6f9;
+		}
+	}
+
 	#arrows {
 		button {
 			position: fixed;
@@ -275,6 +287,11 @@ body {
 
 		#actions {
 			opacity: 0;
+			pointer-events: none;
+
+			button {
+				pointer-events: none;
+			}
 		}
 		#player {
 			transform: scale(0.1);

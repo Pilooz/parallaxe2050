@@ -213,6 +213,7 @@
 		</div>
 	</div>
 </div>
+<button id="validate" class="button btn btn-primary">Valider cette combinaison</button>
 <div id="actions">
 	<button id="goToFinalEnigme" class="button">Passer la vidéo</button>
 </div>
@@ -253,18 +254,28 @@ $(document).ready(function() {
 			$('body').removeClass('thumbnail');
 		}
 	})
-goToFinalEnigme();
+
 	var rotate = 0;
 	// Button pour faire tourner la roue
 	$('#arrows button#sens-horaire').on('click', function(e) {
 		e.preventDefault();
+		$('#front').removeClass('degres-' + Math.abs(rotate%360));
 		rotate += 45;
-		$('#front').css('transform', 'rotate(' + rotate + 'deg)');
+		$('#front').css('transform', 'rotate(' + rotate + 'deg)').addClass('degres-' + Math.abs(rotate%360));
 	})
 	$('#arrows button#sens-anti-horaire').on('click', function(e) {
 		e.preventDefault();
+		$('#front').removeClass('degres-' + Math.abs(rotate%360));
 		rotate -= 45;
-		$('#front').css('transform', 'rotate(' + rotate + 'deg)');
+		$('#front').css('transform', 'rotate(' + rotate + 'deg)').addClass('degres-' + Math.abs(rotate%360));
+	})
+
+	// Bouton de validation finale
+	$('#validate').on('click', function(e) {
+		e.preventDefault();
+		if($('#front').hasClass('degres-90')) {
+			window.location.replace("https://docs.google.com/presentation/d/e/2PACX-1vT0ZNpYV1kessRrt0IpOd42pIYMnhvhVoQFkT_4WYBzYl87Unx_YV43CR8temGPyJRIdHgstWjAlPYU/pub?start=false&loop=false&delayms=3000");
+		}
 	})
 });
 
