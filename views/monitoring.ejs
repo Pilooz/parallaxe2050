@@ -336,7 +336,9 @@
             highlight($("#<%= server.id %> .groupcode"));
             $("#<%= server.id %> .rfidcode").html(data.tag);
             highlight($("#<%= server.id %> .rfidcode"));
+            $("#<%= server.id %> .solutions").html(soluce);
             updateTimeElapsed_<%= server.id %>();
+            
         });
 
         // Receiving Current Step of game
