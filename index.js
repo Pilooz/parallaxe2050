@@ -99,9 +99,11 @@ function get_server_conf() {
 // Setup of environnment for the scenario.
 // It is call each time a RFID badge is detected
 //------------------------------------------------------------------------
-function setup_scenario_environment(reInit) {
+function setup_scenario_environment(stepId) {
   logger.info( '---------------- setup_scenario_environment ------------------' );
   logger.info("extracted rfid code : " + rfid.getCurrentCode() + " on reader #" + rfid.getCurrentReader());
+  scenario.setCurrentStepId(stepId);
+
   // Putting Rfid Info in data for client
   dataForTemplate.currentRfidTag = rfid.getCurrentCode();
   dataForTemplate.currentRfidReader = rfid.getCurrentReader();
@@ -110,26 +112,16 @@ function setup_scenario_environment(reInit) {
   logger.info(`Current Team is ${rfid.getCurrentGroup()}${rfid.getCurrentSubGroup()}`);
   var set = scenario.setSolutionsSetForCurrentStep(rfid.getCurrentGroup(), rfid.getCurrentSubGroup());
   if (set > -1) {
-    //if (scenario.getOldSolutionsSet() != set || reInit) { 
-      // On emet les events qui si le set de solution change de 1 à 2 ou de 2 à 1.
-      // Si pas de solution on ignore
-      // si même solution on ignore
-      dataForTemplate.solutionsSet = set;
-      logger.info(`Solutions set #${dataForTemplate.solutionsSet}`);
-    
-      // Set to FIRST step of the scenario.
-      var firsStep = scenario.data().steps[0].stepId;
-      scenario.setCurrentStepId(firsStep);
+    dataForTemplate.solutionsSet = set;
+    logger.info(`Solutions set #${dataForTemplate.solutionsSet}`);
+  
+    // Emit a event to monitoring lib that pushes data to monitoring client
+    eventEmitter.emit('monitoring.newGameSession', { tag: dataForTemplate.currentRfidTag, group: rfid.getCurrentGroup() + rfid.getCurrentSubGroup(), startTime: Date.now() });
+    eventEmitter.emit('monitoring.newGameStep', {stepId: stepId, totalSteps: scenario.data().steps.length});
+    eventEmitter.emit('monitoring.colorsSets', {colorsSet: set});
 
-      // Emit a event to monitoring lib that pushes data to monitoring client
-      eventEmitter.emit('monitoring.newGameSession', { tag: dataForTemplate.currentRfidTag, group: rfid.getCurrentGroup() + rfid.getCurrentSubGroup(), startTime: Date.now() });
-      eventEmitter.emit('monitoring.newGameStep', {stepId: firsStep, totalSteps: scenario.data().steps.length});
-      eventEmitter.emit('monitoring.colorsSets', {colorsSet: set});
-
-      // Say to the client application to refresh now
-      io.emit('toclient.refreshNow');
-    // } 
-    // Emit solution for the step for each step change, not only if reInit or group changes
+    // Say to the client application to refresh now
+    io.emit('toclient.refreshNow');
     eventEmitter.emit('monitoring.solutionsForStep', { solutions: scenario.getCurrentStep().solutions.filter(s => s.set == set), set: set, nextStep: scenario.getCurrentStep().transitions[0].id || null });
 
   } else {
@@ -203,7 +195,8 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
     rfid.extractTag(msg);
     if (rfid.getCurrentCode() != "") {
       rfid.extractReader(msg);
-      setup_scenario_environment(false);
+      // First Step o scenario
+      setup_scenario_environment(scenario.data().steps[0].stepId);
     }
   });
 
@@ -234,10 +227,9 @@ if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   // rfid.extractTag("<TAG:5E68811A/><READER:1/>");
   // rfid.extractReader("<TAG:5E68811A/><READER:1/>");
 
-  // Defining the step
-  scenario.setCurrentStepId(scenario.data().steps[0].stepId);
-
-  setup_scenario_environment(false);
+  // Defining a step, by default first one
+  var myStep = scenario.data().steps[0].stepId;
+  setup_scenario_environment(myStep);
 }
 
 //------------------------------------------------------------------------
@@ -393,7 +385,6 @@ router.all('/*', function (req, res, next) {
 
   var firstStep = scenario.data().steps[0].stepId;
   scenario.setCurrentStepId(firstStep);
-  setup_scenario_environment(false);
   dataForTemplate.solutionsSet = null;
 
   // // send refresh order to client
@@ -414,8 +405,7 @@ router.all('/*', function (req, res, next) {
 .get("/api/nextStep", function(req, res, next){
   logger.info("Going to next activity step from admin page...");
   var nextStep = scenario.getCurrentStep().transitions[0].id;
-  scenario.setCurrentStepId(nextStep);
-  setup_scenario_environment(false); 
+  setup_scenario_environment(nextStep); 
   io.emit('toclient.refreshNow');
 
   res.setHeader('Content-Type', 'application/json');
