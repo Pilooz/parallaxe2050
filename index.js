@@ -363,6 +363,13 @@ router.all('/*', function (req, res, next) {
     res.render( '../monitoring', { data: dataForTemplate });
 })
 
+//
+// Interface pour l'énigme finale
+//
+.get(['/classique'], function(req,res,next){
+    res.render( '../enigme-finale/classique', { data: dataForTemplate });
+})
+
 /* GET save page. */
 .get('/save', function(req, res, next) {
 	let data = JSON.stringify(rfid.groups_db, null, 4);

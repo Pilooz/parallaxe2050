@@ -71,14 +71,23 @@
 	</div>
 </div>
 
-<div id="overlayResult" class="overlayResult">
-	<div id="popupResult" class="popupResult">
-		<h2 id="titleResult"><span id="title"></span> 
-		<span id="btnClose" class="btnClose">&times;</span>
-		</h2>
-		<div id="messageResult">
-		</div>
-	</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modaleDeBDD" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- START // Scripts in footer -->
@@ -87,6 +96,7 @@
 <script src="js/lib/d3.v4.js"></script>
 <script src="js/lib//d3-scale-chromatic.v1.min.js"></script>
 <script src="js/lib/d3-geo-projection.v2.min.js"></script>
+<script src="/bootstrap/dist/js/bootstrap.min.js"></script>
 
 <script src="js/bdd/functions-graphiques.js"></script>
 <script>
@@ -102,6 +112,8 @@
 	});
 
 	$(document).ready(function() {
+		// Récupère le step prochain
+		var nextStep = '<%-data.currentStep.transitions[0].id %>';
 
 	    /******************************************************************
 	    // INIIALISATION
@@ -172,29 +184,36 @@
 		// réponse de node concernant les solutions.
 		//
 		socket.on('toclient.responseAnalysis', function(data) {
-			var popup = $("#overlayResult");
-			var title = $("#titleResult #title");
-			var msg = $("#messageResult");
-			popup.attr('style', 'display:none');
-			title.html("");
-			msg.html("");
+			var popup = $("#modaleDeBDD");
+			// var title = $("#titleResult #title");
+			// var msg = $("#messageResult");
+			// popup.attr('style', 'display:none');
+			// title.html("");
+			// msg.html("");
 			if (data.result == "KO") {
-				title.html("Mmmm ? Ce ne fonctionnera pas bien.");
-				msg.html("Il semble que nous n'allons pas toucher le maximum de serveurs avec ce créneau horaire.");
+				$("#modaleDeBDD .modal-title").html("Echec !");
+				$("#modaleDeBDD .modal-body").html("Si vous lancez l'anti-virus sur ce créneau-là, vous ne toucherez pas 100% des serveurs du monde.");
+				$('#modaleDeBDD').modal();
 			} else {
-				title.html("Yes ! Good job !");
-				msg.html("Bravo ! Retenez bien ce créneau horaire, il nous servira plus tard.");
+				$("#modaleDeBDD .modal-title").html("Succès !");
+				$("#modaleDeBDD .modal-body").html("Le créneau horaire a bien été transmis à Marie.");
+				$("#modaleDeBDD .modal-footer button").html('C\'est compris !');
+				$("#modaleDeBDD .modal-footer button").addClass('btn-primary').removeClass('btn-secondary');
+				$('#modaleDeBDD').modal();
 			}
-			popup.attr('style', 'display:block');
 		});
 
-		// Listener sur le bouton de fermeture de la popup
-		$("#overlayResult").on('click', function(){
-			$("#overlayResult").attr('style', 'display:none');
-			// Socket hangs sometime (i don't know why) refreshing the page forces reconnecting
-			location.href = "/";
-		});
-		
+		//
+		// Affichage du dernier step
+		//
+		$('body').on('click', '.btn-primary', function(e) {
+			e.preventDefault();
+			$('#modaleDeBDD').hide();
+			setTimeout(function() {
+				console.log('enoiv ,ext step');
+				socket.emit('toserver.nextStep', {nextStep: nextStep});
+			}, 2000);
+		})
 	});
 </script>
 <!-- END // Scripts in footer -->

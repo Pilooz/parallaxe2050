@@ -1,0 +1,58 @@
+@-webkit-keyframes bgcolor {
+  0% {
+    background-color: #222; }
+  50% {
+    background-color: #f96e00; }
+  100% {
+    background-color: #222; } }
+@-moz-keyframes bgcolor {
+  0% {
+    background-color: #222; }
+  50% {
+    background-color: #f96e00; }
+  100% {
+    background-color: #222; } }
+@-ms-keyframes bgcolor {
+  0% {
+    background-color: #222; }
+  50% {
+    background-color: #f96e00; }
+  100% {
+    background-color: #222; } }
+@-o-keyframes bgcolor {
+  0% {
+    background-color: #222; }
+  50% {
+    background-color: #f96e00; }
+  100% {
+    background-color: #222; } }
+@keyframes bgcolor {
+  0% {
+    background-color: #222; }
+  50% {
+    background-color: #f96e00; }
+  100% {
+    background-color: #222; } }
+body {
+  background-color: #222;
+  animation-name: bgcolor;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  -webkit-animation: bgcolor 2s infinite;
+  -moz-animation: bgcolor 2s infinite;
+  -ms-animation: bgcolor 2s infinite;
+  -o-animation: bgcolor 2s infinite;
+  animation: bgcolor 2s infinite; }
+  body #tel-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center; }
+  body svg {
+    color: white; }
+
+/*# sourceMappingURL=ringing.css.map */

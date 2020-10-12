@@ -21,6 +21,18 @@
     <!-- Knoots -->
     <div class="card-columns" id="listKnoots"></div>
 
+    <!-- Animation pour inciter à scroller -->
+    <div class="mouse_scroll">
+        <div class="mouse">
+            <div class="wheel"></div>
+        </div>
+        <div>
+            <span class="m_scroll_arrows unu"></span>
+            <span class="m_scroll_arrows doi"></span>
+            <span class="m_scroll_arrows trei"></span>
+        </div>
+    </div>
+
     <!-- Bouton "Ajouter" -->
     <div id="addKnoot"><button id="addKnootButton" type="button" class="btn btn-primary">+</button></div>
 </div>
@@ -35,7 +47,6 @@
         var nextStep = '<%-data.currentStep.transitions[0].id %>';
         var previousStep = '<%-data.currentStep.previousStep[0].id %>';
         var stepId = '<%-data.currentStep.stepId %>';
-        console.log('stepId : ' + stepId);
         // Données de base pour Knooter
         const blurredHashtags = JSON.parse('<%- JSON.stringify(data.currentStep.blurredHashtags) %>');
         const blurredAccounts = JSON.parse('<%- JSON.stringify(data.currentStep.blurredAccounts) %>');
