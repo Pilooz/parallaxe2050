@@ -1,0 +1,63 @@
+$mainColor: #abcdef;
+
+
+
+@mixin animation($str) {
+	-webkit-animation: #{$str};
+	-moz-animation: #{$str};
+	-ms-animation: #{$str};
+	-o-animation: #{$str};
+	animation: #{$str};      
+}
+
+@mixin keyframes($animation-name) {
+	@-webkit-keyframes #{$animation-name} {
+		@content;
+	}
+	@-moz-keyframes #{$animation-name} {
+		@content;
+	}  
+	@-ms-keyframes #{$animation-name} {
+		@content;
+	}
+	@-o-keyframes #{$animation-name} {
+		@content;
+	}  
+	@keyframes #{$animation-name} {
+		@content;
+	}
+}
+
+@include keyframes(bgcolor) {
+	0% {
+		background-color: #222;
+	}
+	50% {
+		background-color: rgb(249, 110, 0);
+	}
+	100% {
+    	background-color: #222;
+	}
+}
+
+body {
+	background-color: #222;
+	animation-name: bgcolor;
+	animation-duration: 2s;
+	animation-iteration-count: infinite;
+	@include animation('bgcolor 2s infinite');
+
+	#tel-container {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	svg {
+		color: white;
+	}
+}

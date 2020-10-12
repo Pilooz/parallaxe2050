@@ -86,6 +86,7 @@ void loop() {
     message.send("MSG", "END VALUE TAB");
     */
 
+    /*
     if (test_val_sharp(valA0, valA1, valA2, valA3, valA4, valA5)) {
       message.send("SOLUTIONS", "TRUE");
       turn_led_to_color_rgb(0, 255, 0);
@@ -96,7 +97,8 @@ void loop() {
       message.send("MSG", "FINISHED");
       turn_led_to_color_rgb(0, 0, 0);
     }
-    else if (test_val_point(valA0, valA1, valA2, valA3, valA4, valA5)) {
+    else */
+    if (test_val_point(valA0, valA1, valA2, valA3, valA4, valA5)) {
       message.send("SOLUTIONS", "TRUE");
       turn_led_to_color_rgb(0, 255, 0);
       digitalWrite (sortie02_point, HIGH);
@@ -108,7 +110,7 @@ void loop() {
     }
     else {
       message.send("SOLUTIONS", "FALSE");
-      digitalWrite (sortie01_sharp, LOW);
+      //digitalWrite (sortie01_sharp, LOW);
       digitalWrite (sortie02_point, LOW);
       for (int r = 0; r < 255; r++) {
         turn_led_to_color_rgb(r, 0, 0);
@@ -122,7 +124,7 @@ void loop() {
     }
 
   } else {
-    digitalWrite (sortie01_sharp, LOW);
+    //digitalWrite (sortie01_sharp, LOW);
     digitalWrite (sortie02_point, LOW);
   }
 }
@@ -134,6 +136,7 @@ void turn_led_to_color_rgb(int r, int g, int b) {
   FastLED.show();
 }
 
+/*
 int test_val_sharp(int A0, int A1, int A2, int A3, int A4, int A5) {
   int result = 0;
 
@@ -161,6 +164,7 @@ int test_val_sharp(int A0, int A1, int A2, int A3, int A4, int A5) {
     return 1;
   return 0;
 }
+*/
 
 int test_val_point(int A0, int A1, int A2, int A3, int A4, int A5) {
   int result = 0;
