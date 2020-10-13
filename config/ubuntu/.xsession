@@ -9,6 +9,8 @@
 ratpoison &
 
 setterm --powersave off
+setterm --powerdown 0
+
 # Launch firefox for ever
 sleep 3s; #Wait until the node.js server is fully operational
 while true; do 
