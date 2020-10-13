@@ -120,16 +120,18 @@
                     <p class="card-text">
                         <input id="gameModeChk" type="checkbox" class="" checked data-toggle="toggle" data-on="Educatif" data-off="Classique" data-onstyle="primary" data-offstyle="info">
 
-                            <h4>Educatif</h4>
-                            <div class="alert alert-primary" role="alert">
+                            <h5>Educatif</h5>
+                            <div class="alert alert-primary">
                                 <em>Le container est paramétré pour une classe. Les session de jeu sont de 20 minutes.</em>
                             </div>
 
-                            <h4>Classique</h4>
-                            <div class="alert alert-info" role="alert">
+                            <h5>Classique</h5>
+                            <div class="alert alert-info">
                                 <em>Le container est en mode escape game classique, il est éventuellement ouvert, et les sessions de jeu sont de 45 minutes.</em>
                             </div>
-                    </p>
+
+                            <button id="btnInitAll" type="button" class="btn btn-warning">Initialisation pour un nouveau groupe</button>
+                        </p>
                 </div>
             </div>
         </div>
@@ -264,6 +266,7 @@
 </footer>
 <script>
      $(document).ready(function() {
+
         // Socket for timer control 
         var socket_timer = io('http://<%= data.global_config.app.adminServerIp %>:<%= data.global_config.app.adminServerPort %>/timercontrol');
         var gameMode = "classroom";
@@ -310,15 +313,16 @@
 
 <% data.global_config.servers.forEach(function(server) { %>
 
-        var socket_<%= server.id %> = io('http://<%= server.ip %>:<%= server.port %>/monitoring');
-        var nextStep_<%= server.id %> = "";
         // ------------------------------------------------------------------
         // Socket listening for <%= server.id %>
         // ------------------------------------------------------------------
+        var socket_<%= server.id %> = io('http://<%= server.ip %>:<%= server.port %>/monitoring');
+        var nextStep_<%= server.id %> = "";
 
         // updating <%= server.id %> uptime activity
         var updTimeOut_<%= server.id %> = null;
-        var startTime_<%= server.id %> = null;        
+        var startTime_<%= server.id %> = null;    
+        // Function update Timer    
         function updateTimeElapsed_<%= server.id %>(){
             var elapsedSeconds = Math.floor((Date.now() - startTime_<%= server.id %>)/1000);
             var elapsedMinutes = Math.floor((elapsedSeconds/60));
@@ -397,6 +401,18 @@
 <% }) %>
         // <- ]
         // end loop
+
+        // Listener on init all button
+        $('#btnInitAll').on('click', function() {
+            // $(this).addClass("disabled");
+           // Emitting order to kill node server and browsers
+            <% data.global_config.servers.forEach(function(server) { %>
+                socket_<%= server.id %>.emit('toserver.reInitServer', {gameMode: gameMode});
+            <% }) %>
+            // Refresh monitoring page
+                 
+        });
+
 }); 
 </script>
 <!-- <%- JSON.stringify(data, null, 1) %>-->
