@@ -35,8 +35,8 @@ const logger = require('./lib/logger')(scenario.data().scenarioId);
 // Rfid parsing functions
 var rfid           = require('./lib/rfid.js')(GLOBAL_CONFIG, logger);
 // Arduino stuffs 
-var arduino1        = require('./lib/arduino.js')(GLOBAL_CONFIG.arduino1, logger, eventEmitter);
-var arduino2        = require('./lib/arduino.js')(GLOBAL_CONFIG.arduino2, logger, eventEmitter);
+var arduino1        = require('./lib/arduino.js')(GLOBAL_CONFIG.arduino1, logger, eventEmitter, 1);
+var arduino2        = require('./lib/arduino.js')(GLOBAL_CONFIG.arduino2, logger, eventEmitter, 2);
 
 // Loading Specific librairy for the specific scenario
 var scenario_specifics;
@@ -211,25 +211,28 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
 } 
 
 if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
-  // Testing for group A1 7ED72360 (énigme "AdminReseau" ou énigme "ComDigitale")
-  // rfid.extractTag("<TAG:7ED72360/><READER:1/>");
-  // rfid.extractReader("<TAG:7ED72360/><READER:1/>");
-  // Testing for group A2 5E3D621A (énigme "ComDigitale" ou énigme "AdminReseau") 
-  rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
-  rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
-  // Testing for group A3 0EAF4C60 (énigme "Hardware" ou énigme "CodeEtProg") 
-  // rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
-  // rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
-  // Testing for group A4 49426960 (énigme "CodeEtProg" ou énigme "BDD")
-  // rfid.extractTag("<TAG:49426960/><READER:1/>");
-  // rfid.extractReader("<TAG:49426960/><READER:1/>");
-  // // Testing for group A5 5E68811A (énigme "BDD" ou énigme "Hardware")
-  // rfid.extractTag("<TAG:5E68811A/><READER:1/>");
-  // rfid.extractReader("<TAG:5E68811A/><READER:1/>");
+  setTimeout(() => {
+    // Testing for group A1 7ED72360 (énigme "AdminReseau" ou énigme "ComDigitale")
+    // rfid.extractTag("<TAG:7ED72360/><READER:1/>");
+    // rfid.extractReader("<TAG:7ED72360/><READER:1/>");
+    // Testing for group A2 5E3D621A (énigme "ComDigitale" ou énigme "AdminReseau")     
+    rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
+    rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
+    // Testing for group A3 0EAF4C60 (énigme "Hardware" ou énigme "CodeEtProg") 
+    // rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
+    // rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
+    // Testing for group A4 49426960 (énigme "CodeEtProg" ou énigme "BDD")
+    // rfid.extractTag("<TAG:49426960/><READER:1/>");
+    // rfid.extractReader("<TAG:49426960/><READER:1/>");
+    // // Testing for group A5 5E68811A (énigme "BDD" ou énigme "Hardware")
+    // rfid.extractTag("<TAG:5E68811A/><READER:1/>");
+    // rfid.extractReader("<TAG:5E68811A/><READER:1/>");
 
-  // Defining a step, by default first one
-  var myStep = scenario.data().steps[0].stepId;
-  setup_scenario_environment(myStep);
+    // Defining a step, by default first one
+    var myStep = scenario.data().steps[0].stepId;
+    setup_scenario_environment(myStep);
+  }, 5000);
+
 }
 
 //------------------------------------------------------------------------
