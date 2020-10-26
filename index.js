@@ -212,25 +212,25 @@ if (GLOBAL_CONFIG.rfid.behavior == "real") {
 
 if (GLOBAL_CONFIG.rfid.behavior == "emulated") {
   setTimeout(() => {
-    // Testing for group A1 7ED72360 (énigme "AdminReseau" ou énigme "ComDigitale")
+    // ****************** Testing for group A1 7ED72360 (énigme "AdminReseau")
     // rfid.extractTag("<TAG:7ED72360/><READER:1/>");
     // rfid.extractReader("<TAG:7ED72360/><READER:1/>");
-    // Testing for group A2 5E3D621A (énigme "ComDigitale" ou énigme "AdminReseau")     
+    // ****************** Testing for group A2 5E3D621A (énigme "ComDigitale")
     // rfid.extractTag("<TAG:5E3D621A/><READER:1/>");
     // rfid.extractReader("<TAG:5E3D621A/><READER:1/>");
-    // Testing for group A3 0EAF4C60 (énigme "Hardware" ou énigme "CodeEtProg") 
+    // ****************** Testing for group A3 0EAF4C60 (énigme "Hardware") 
     // rfid.extractTag("<TAG:0EAF4C60/><READER:1/>");
     // rfid.extractReader("<TAG:0EAF4C60/><READER:1/>");
-    // Testing for group A4 49426960 (énigme "CodeEtProg" ou énigme "BDD")
+    // ****************** Testing for group A4 49426960 (énigme "CodeEtProg")
     // rfid.extractTag("<TAG:49426960/><READER:1/>");
     // rfid.extractReader("<TAG:49426960/><READER:1/>");
-    // // Testing for group A5 5E68811A (énigme "BDD" ou énigme "Hardware")
+    // ****************** Testing for group A5 5E68811A (énigme "BDD")
     // rfid.extractTag("<TAG:5E68811A/><READER:1/>");
     // rfid.extractReader("<TAG:5E68811A/><READER:1/>");
 
     // Emitting ADMIN badge
-    rfid.extractTag("<TAG:977EE339/><READER:1/>");
-    rfid.extractReader("<TAG:977EE339/><READER:1/>");
+    // rfid.extractTag("<TAG:977EE339/><READER:1/>");
+    // rfid.extractReader("<TAG:977EE339/><READER:1/>");
 
     // Defining a step, by default first one
     var myStep = scenario.data().steps[0].stepId;
