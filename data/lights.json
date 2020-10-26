@@ -13,11 +13,11 @@
         { 
             "list" : 
             [
-                {"scenarioId": "CodeEtProg",  "rgb": [255, 0, 116] },
-                {"scenarioId": "Hardware",    "rgb": [114, 0, 254] },
-                {"scenarioId": "BDD",         "rgb": [23, 218, 126] },
-                {"scenarioId": "ComDigitale", "rgb": [0, 198, 249] },
-                {"scenarioId": "AdminReseau", "rgb": [249, 110, 0] }
+                {"scenarioId": "CodeEtProg",  "rgb": [23, 218, 126] },
+                {"scenarioId": "Hardware",    "rgb": [255, 0, 116] },
+                {"scenarioId": "BDD",         "rgb": [114, 0, 254] },
+                {"scenarioId": "ComDigitale", "rgb": [249, 110, 0] },
+                {"scenarioId": "AdminReseau", "rgb": [0, 198, 249] }
             ]
         }
     ]
