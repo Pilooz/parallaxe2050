@@ -22,11 +22,17 @@
             [
                 {
                     "set": "1", 
-                    "responses" : []
+                    "responses": {
+                        "code": [],
+                        "pascode": []
+                    }
                 },
                 {
                     "set": "2", 
-                    "responses" : []
+                    "responses": {
+                        "code": [],
+                        "pascode": []
+                    }
                 }
             ]
         },
