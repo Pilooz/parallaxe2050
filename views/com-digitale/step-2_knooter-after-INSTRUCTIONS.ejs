@@ -1,0 +1,61 @@
+<%- include('../partials/head', { data: data }) %>
+<!-- START // Styles in head -->
+<link type="text/css" href="css/com-digitale/knooter.css" rel="stylesheet">
+<!-- END // Styles in head -->
+<%- include('../partials/header', { data: data }) %>
+STEP ID : <%-data.currentStep.stepId %>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="navbar fixed-top" id="adminbar">
+            Vous êtes connecté·e en tant qu'admin. <a href="#" id="openAdministrationInterface" alt="Ouvrir l'interface d'administration">Ouvrir l'interface d'administration.</a>
+        </nav>
+    </div>
+    <div class="row">
+        <nav class="navbar navbar-light fixed-top bg-light" id="navbar">
+            <img src="medias/com-digitale/logo-knooter.png" width="219" height="56" alt="" loading="lazy">
+        </nav>
+    </div>
+
+    <%- include('knooter-admin.ejs') %>
+    <%- include('knooter-publish.ejs') %>
+
+    <!-- Knoots -->
+    <div class="card-columns" id="listKnoots"></div>
+
+    <!-- Animation pour inciter à scroller -->
+    <div class="mouse_scroll">
+        <div class="mouse">
+            <div class="wheel"></div>
+        </div>
+        <div>
+            <span class="m_scroll_arrows unu"></span>
+            <span class="m_scroll_arrows doi"></span>
+            <span class="m_scroll_arrows trei"></span>
+        </div>
+    </div>
+
+    <!-- Bouton "Ajouter" -->
+    <div id="addKnoot"><button id="addKnootButton" type="button" class="btn btn-primary">+</button></div>
+</div>
+
+<!-- START // Scripts in footer -->
+    <script src="js/lib/greensock/TweenMax.min.js"></script>
+    <script src="js/lib/ScrollMagic.js"></script>
+    <script src="js/lib/animation.gsap.js"></script>
+
+    <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script>
+        var nextStep = '<%-data.currentStep.transitions[0].id %>';
+        var previousStep = '<%-data.currentStep.previousStep[0].id %>';
+        var stepId = '<%-data.currentStep.stepId %>';
+        var blurredHashtags = <%- JSON.stringify(data.currentStep.blurredHashtags) %>;
+        var blurredAccounts = <%- JSON.stringify(data.currentStep.blurredAccounts) %>;
+        var knoots = <%- JSON.stringify(data.currentStep.knoots) %>;
+        var isAdmin = false;
+        const login = <%- JSON.stringify(data.currentStep.login) %>;
+        const password = <%- JSON.stringify(data.currentStep.password) %>;
+        const hashtag = <%- JSON.stringify(data.solutions[0].hashtag) %>;
+    </script>
+    <script src="js/com-digitale/step-2_knooter-after-INSTRUCTIONS.js"></script>
+<!-- END // Scripts in footer -->
+<%- include('../partials/footer', { data: data }) %>

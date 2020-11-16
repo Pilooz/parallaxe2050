@@ -1,6 +1,6 @@
 $(document).ready(function() {
     // Envoie de la socket pour activer la manivelle
-    socket.emit('toserver.start', {});
+//    socket.emit('toserver.start', {});
 
 	// Paramètre le "publie en tant que..."
 	$('#publishAs i').html("anonyme");
