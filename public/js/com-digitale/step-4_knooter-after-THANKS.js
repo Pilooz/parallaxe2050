@@ -119,6 +119,13 @@ $(document).ready(function() {
 			// S'il n'y a pas d'image ou que l'image ne fait pas plus de 100ko
 			if(sizeText === undefined || parseFloat(sizeText) <= 100) {
 
+				// Si on publie une knoot avec une image, on affiche le nombre de likes et on set une variable qui permettra de passer à l'étape suivante
+				var isTheKnootOKToBeASolution = false;
+				if(selectedImage != "") {
+					currentLikes = likes;
+					isTheKnootOKToBeASolution = true;
+				}
+
 				knoots.unshift({ "pseudo": $('#publishAs i').html(), "content": $('#contentKnoot').val(), "image": selectedImage, "likes": Math.round(Math.random() * 10000) });
 				setAllKnoots();
 				$('#writeKnoot').modal('hide');
@@ -128,6 +135,14 @@ $(document).ready(function() {
 				$('#contentKnoot').val("");
 				$('#removeButton').trigger('click');
 				$('#verificationKnoot').prop('checked', false).parent().removeClass('active');
+
+				// Si c'est une knoot qui permet de valider l'étape, alors on passe au step suivant
+				if(isTheKnootOKToBeASolution) {
+					selectedImage = "";
+					setTimeout(function() {
+						socket.emit('toserver.nextStep', {nextStep: 'step-5', message: "BRAVO"});
+					}, 4000);
+				}
 			}
 		}
 	})
@@ -170,10 +185,13 @@ $(document).ready(function() {
 	var konamiCodeLogoutPosition = 0;
 	document.addEventListener('keydown', function(e) {
 		var key = allowedKeys[e.keyCode];
+
+		// Connexion à l'administration
 		var requiredKeyAdmin = konamiCodeAdmin[konamiCodeAdminPosition];
 		if (key == requiredKeyAdmin) {
 			konamiCodeAdminPosition++;
 			if (konamiCodeAdminPosition == konamiCodeAdmin.length && !isAdmin) {
+
 				// Ouverture de la modal de connexion
 				$('#authenticateAdminModal').modal('show');
 				// Clic sur le bouton de connexion
@@ -182,9 +200,25 @@ $(document).ready(function() {
 					if($('#pseudo').val() == login && $('#password').val() == password) {
 						isAdmin = true;
 						setAdminInterface();
+						$('#pseudo').removeClass('is-invalid');
+						$('#password').removeClass('is-invalid');
 					}
 					else {
-						
+						$('.invalid-feedback-for-pseudo').remove();
+						$('.invalid-feedback-for-password').remove();
+
+						// Si erreur dans le pseudo
+						if($('#pseudo').val() != login) {
+							$('#pseudo').addClass('is-invalid').after('<div class="invalid-feedback invalid-feedback-for-pseudo">Ce pseudo n\'est pas enregistré dans notre base de données d\'utilisateur·trice. Merci de vérifier l\'orthographe.</div>');
+						} else {
+							$('#pseudo').removeClass('is-invalid');
+						}
+						// Si erreur dans le mot de passe
+						if($('#password').val() != login) {
+							$('#password').addClass('is-invalid').after('<div class="invalid-feedback invalid-feedback-for-password">Ce mot de passe ne correspond pas au pseudo que vous avez entré. Merci de réessayer avec un autre mot de passe.</div>');
+						} else {
+							$('#password').removeClass('is-invalid');
+						}
 					}
 				});
 				$('#cancelButton').on('click', function(e) {
@@ -194,11 +228,15 @@ $(document).ready(function() {
 		} else {
 			konamiCodeAdminPosition = 0;
 		}
+
+		// Déconnexion de l'administration
 		var requiredKeyLogout = konamiCodeLogout[konamiCodeLogoutPosition];
 		if (key == requiredKeyLogout) {
 			konamiCodeLogoutPosition++;
-			isAdmin = false;
-			setAdminInterface();
+			if (konamiCodeLogoutPosition == konamiCodeLogout.length && isAdmin) {
+				isAdmin = false;
+				setAdminInterface();
+			}
 		} else {
 			konamiCodeLogoutPosition = 0;
 		}
