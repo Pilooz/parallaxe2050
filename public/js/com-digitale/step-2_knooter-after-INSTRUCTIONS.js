@@ -128,6 +128,7 @@ $(document).ready(function() {
 				$('#contentKnoot').val("");
 				$('#removeButton').trigger('click');
 				$('#verificationKnoot').prop('checked', false).parent().removeClass('active');
+				selectedImage = "";
 			}
 		}
 	})

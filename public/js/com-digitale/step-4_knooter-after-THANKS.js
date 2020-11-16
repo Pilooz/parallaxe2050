@@ -135,10 +135,10 @@ $(document).ready(function() {
 				$('#contentKnoot').val("");
 				$('#removeButton').trigger('click');
 				$('#verificationKnoot').prop('checked', false).parent().removeClass('active');
+				selectedImage = "";
 
 				// Si c'est une knoot qui permet de valider l'étape, alors on passe au step suivant
 				if(isTheKnootOKToBeASolution) {
-					selectedImage = "";
 					setTimeout(function() {
 						socket.emit('toserver.nextStep', {nextStep: 'step-5', message: "BRAVO"});
 					}, 4000);
