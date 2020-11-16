@@ -125,30 +125,52 @@ $(document).ready(function() {
 		selectedImage = "";
 		$('#formImage label span').html("");
 		$('#formImage .container-image').html("").removeClass('withImage');
+		$('tr').removeClass('table-active');
 	})
 
 
 	// Bouton de publication de la knoot
 	$('#sendKnoot').on('click', function(e) {
 		e.preventDefault();
-		if($('#contentKnoot').val() != "" && $('#verificationKnoot').is(':checked')) {
-			// Récupère la taille de l'image
-			var sizeText = $('tr.table-active .sizeImage').data('size');
 
-			// S'il n'y a pas d'image ou que l'image ne fait pas plus de 100ko
-			if(sizeText === undefined || parseFloat(sizeText) <= 100) {
+		// Paramétrage des messages d'erreur
+		var errorMessage = "";
+		// Récupère la taille de l'image
+		var sizeText = $('tr.table-active .sizeImage').data('size');
 
-				knoots.unshift({ "pseudo": $('#publishAs i').html(), "content": $('#contentKnoot').val(), "image": selectedImage, "likes": Math.round(Math.random() * 10000) });
-				setAllKnoots();
-				$('#writeKnoot').modal('hide');
+		// S'il y a du texte + si la case à cocher est cochée + s'il n'y a pas d'image ou que l'image ne fait pas plus de 100ko
+		if($('#contentKnoot').val() != "" && $('#verificationKnoot').is(':checked') && (sizeText === undefined || parseFloat(sizeText) <= 100)) {
 
-				// On réinitialise la modale
-				$('#writeKnoot .modal-body .alert').remove();
-				$('#contentKnoot').val("");
-				$('#removeButton').trigger('click');
-				$('#verificationKnoot').prop('checked', false).parent().removeClass('active');
-				selectedImage = "";
+			// Ajout de la knoot à la liste des knoots
+			knoots.unshift({ "pseudo": $('#publishAs i').html(), "content": htmlEntities($('#contentKnoot').val()), "image": selectedImage, "likes": Math.round(Math.random() * 10000) });
+			setAllKnoots();
+
+			// Cache la modale de publication d'une knoot
+			$('#writeKnoot').modal('hide');
+
+			// On réinitialise la modale
+			$('#writeKnoot .modal-body .alert').remove();
+			$('#contentKnoot').val("");
+			$('#removeButton').trigger('click');
+			$('#verificationKnoot').prop('checked', false).parent().removeClass('active');
+			selectedImage = "";
+		}
+		else {
+			if($('#contentKnoot').val() == "") {
+				errorMessage += "Votre knoot ne doit pas être vide. ";
 			}
+			if(!$('#verificationKnoot').is(':checked')) {
+				errorMessage += "Vous devez confirmer votre volonté de publier la knoot. ";
+			}
+			if(sizeText !== undefined && parseFloat(sizeText) > 100) {
+				errorMessage += "L'image est trop lourde, vous ne pouvez pas la publier sur Knooter.";
+			}
+		}
+
+		if(errorMessage != "") {
+			$('#writeKnoot .modal-body .alert').remove();
+			$('#writeKnoot .modal-body').prepend('<div class="alert alert-danger" role="alert">' + errorMessage + '</div>');
+
 		}
 	})
 
@@ -443,4 +465,10 @@ function setAdminInterface(isAdmin) {
 	else {
 		$('body').removeClass('admin');
 	}
+}
+
+
+// Pour éviter les petit-es hackeur-euses !
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
