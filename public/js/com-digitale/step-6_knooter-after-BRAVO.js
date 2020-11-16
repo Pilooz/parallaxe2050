@@ -150,6 +150,7 @@ $(document).ready(function() {
 	**********************************
 	**********************************
 	**********************************/
+	setAdminInterface();
 	var allowedKeys = {
 		38: 'up',
 		40: 'down',
@@ -215,13 +216,16 @@ $(document).ready(function() {
 			konamiCodeAdminPosition = 0;
 		}
 
-		// Déconnexion de l'administration
+		// Déconnexion de l'administration (et passage au step suivant)
 		var requiredKeyLogout = konamiCodeLogout[konamiCodeLogoutPosition];
 		if (key == requiredKeyLogout) {
 			konamiCodeLogoutPosition++;
 			if (konamiCodeLogoutPosition == konamiCodeLogout.length && isAdmin) {
 				isAdmin = false;
 				setAdminInterface();
+				setTimeout(function() {
+					socket.emit('toserver.nextStep', {nextStep: 'step-7'});
+				}, 4000);
 			}
 		} else {
 			konamiCodeLogoutPosition = 0;
@@ -272,23 +276,11 @@ $(document).ready(function() {
 		});
 		tempBlurredAccounts = [];
 
-		// Gestion des hashtags floutés
-		if(blurredHashtags.indexOf(hashtag) > -1) {
-			hasBlurredHashtag = true;
-		}
-
 		// Ferme la popup
 		$('#administrationInterface').modal('hide');
 
 		// Met à jour les knoots
 		setAllKnoots();
-
-		// Vérifie si le hashtag des bots a bien été ajouté aux hashtags floutés
-		if(hasBlurredHashtag) {
-			setTimeout(function() {
-				socket.emit('toserver.nextStep', {nextStep: 'step-3', message: "THANKS"});
-			}, 4000);
-		}
 	})
 })
 
