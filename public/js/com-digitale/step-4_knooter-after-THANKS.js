@@ -127,45 +127,67 @@ $(document).ready(function() {
 		selectedImage = "";
 		$('#formImage label span').html("");
 		$('#formImage .container-image').html("").removeClass('withImage');
+		$('tr').removeClass('table-active');
 	})
 
 
 	// Bouton de publication de la knoot
 	$('#sendKnoot').on('click', function(e) {
 		e.preventDefault();
-		if($('#contentKnoot').val() != "" && $('#verificationKnoot').is(':checked')) {
-			// Récupère la taille de l'image
-			var sizeText = $('tr.table-active .sizeImage').data('size');
 
-			// S'il n'y a pas d'image ou que l'image ne fait pas plus de 100ko
-			if(sizeText === undefined || parseFloat(sizeText) <= 100) {
+		// Paramétrage des messages d'erreur
+		var errorMessage = "";
+		// Récupère la taille de l'image
+		var sizeText = $('tr.table-active .sizeImage').data('size');
 
-				// Si on publie une knoot avec une image, on affiche le nombre de likes et on set une variable qui permettra de passer à l'étape suivante
-				var isTheKnootOKToBeASolution = false;
-				var numberOfLikes = Math.round(Math.random() * 10000);
-				if(selectedImage != "") {
-					numberOfLikes = likes;
-					isTheKnootOKToBeASolution = true;
-				}
+		// S'il y a du texte + si la case à cocher est cochée + s'il n'y a pas d'image ou que l'image ne fait pas plus de 100ko
+		if($('#contentKnoot').val() != "" && $('#verificationKnoot').is(':checked') && (sizeText === undefined || parseFloat(sizeText) <= 100)) {
 
-				knoots.unshift({ "pseudo": $('#publishAs i').html(), "content": $('#contentKnoot').val(), "image": selectedImage, "likes": numberOfLikes });
-				setAllKnoots();
-				$('#writeKnoot').modal('hide');
-
-				// On réinitialise la modale
-				$('#writeKnoot .modal-body .alert').remove();
-				$('#contentKnoot').val("");
-				$('#removeButton').trigger('click');
-				$('#verificationKnoot').prop('checked', false).parent().removeClass('active');
-				selectedImage = "";
-
-				// Si c'est une knoot qui permet de valider l'étape, alors on passe au step suivant
-				if(isTheKnootOKToBeASolution) {
-					setTimeout(function() {
-						socket.emit('toserver.nextStep', {nextStep: 'step-5', message: "BRAVO", knoots: knoots, blurredHashtags: blurredHashtags, blurredAccounts: blurredAccounts});
-					}, 4000);
-				}
+			// Si on publie une knoot avec une image, on affiche le nombre de likes et on set une variable qui permettra de passer à l'étape suivante
+			var isTheKnootOKToBeASolution = false;
+			var numberOfLikes = Math.round(Math.random() * 10000);
+			if(selectedImage != "") {
+				numberOfLikes = likes;
+				isTheKnootOKToBeASolution = true;
 			}
+
+			// Ajout de la knoot à la liste des knoots
+			knoots.unshift({ "pseudo": $('#publishAs i').html(), "content": htmlEntities($('#contentKnoot').val()), "image": selectedImage, "likes": numberOfLikes });
+			setAllKnoots();
+
+			// Cache la modale de publication d'une knoot
+			$('#writeKnoot').modal('hide');
+
+			// On réinitialise la modale
+			$('#writeKnoot .modal-body .alert').remove();
+			$('#contentKnoot').val("");
+			$('#removeButton').trigger('click');
+			$('#verificationKnoot').prop('checked', false).parent().removeClass('active');
+
+			// Si c'est une knoot qui permet de valider l'étape, alors on passe au step suivant
+			if(isTheKnootOKToBeASolution) {
+				setTimeout(function() {
+					socket.emit('toserver.nextStep', {nextStep: 'step-5', message: "BRAVO", knoots: knoots, blurredHashtags: blurredHashtags, blurredAccounts: blurredAccounts});
+				}, 4000);
+			}
+			selectedImage = "";
+		}
+		else {
+			if($('#contentKnoot').val() == "") {
+				errorMessage += "Votre knoot ne doit pas être vide. ";
+			}
+			if(!$('#verificationKnoot').is(':checked')) {
+				errorMessage += "Vous devez confirmer votre volonté de publier la knoot. ";
+			}
+			if(sizeText !== undefined && parseFloat(sizeText) > 100) {
+				errorMessage += "L'image est trop lourde, vous ne pouvez pas la publier sur Knooter.";
+			}
+		}
+
+		if(errorMessage != "") {
+			$('#writeKnoot .modal-body .alert').remove();
+			$('#writeKnoot .modal-body').prepend('<div class="alert alert-danger" role="alert">' + errorMessage + '</div>');
+
 		}
 	})
 
@@ -459,4 +481,10 @@ function setAdminInterface() {
 	else {
 		$('body').removeClass('admin');
 	}
+}
+
+
+// Pour éviter les petit-es hackeur-euses !
+function htmlEntities(str) {
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
