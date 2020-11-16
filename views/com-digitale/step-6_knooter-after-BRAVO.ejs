@@ -51,12 +51,11 @@ STEP ID : <%-data.currentStep.stepId %>
         var blurredHashtags = <%- JSON.stringify(data.currentStep.blurredHashtags) %>;
         var blurredAccounts = <%- JSON.stringify(data.currentStep.blurredAccounts) %>;
         var knoots = <%- JSON.stringify(data.currentStep.knoots) %>;
-        var isAdmin = false;
-        var pseudo = "anonyme";
+        var isAdmin = true;
         const login = <%- JSON.stringify(data.currentStep.login) %>;
         const password = <%- JSON.stringify(data.currentStep.password) %>;
         const likes = <%- JSON.stringify(data.solutions[0].likes) %>;
     </script>
-    <script src="js/com-digitale/step-6_knooter-after-INSTRUCTIONS.js"></script>
+    <script src="js/com-digitale/step-6_knooter-after-BRAVO.js"></script>
 <!-- END // Scripts in footer -->
 <%- include('../partials/footer', { data: data }) %>
