@@ -3,6 +3,7 @@
 <link type="text/css" href="css/com-digitale/knooter.css" rel="stylesheet">
 <!-- END // Styles in head -->
 <%- include('../partials/header', { data: data }) %>
+STEP ID : <%-data.currentStep.stepId %>
 <div class="container-fluid">
     <div class="row">
     	<nav class="navbar fixed-top" id="adminbar">
@@ -53,8 +54,6 @@
         var knoots = [
             { "pseudo": "croujatique", "content": "J’ai une <b>#question</b> ! L’eau de <b>#pluie</b>, on peut la boire ou c’est <b>#toxique</b> ?", "likes": "5277" },
             { "pseudo": "boow", "content": "Une fois de plus, <b>#Greenternet</b> fait ses preuves. Hier j’ai lu que <b>#Facevache</b> fait passer 10 fois plus d’informations douteuses !", "likes": "2277" },
-            { "pseudo": "tormâra", "content": "Dans ma knoot précédente, je jokais. Cette personne n’existe pas, c’est une <b>#AI</b> qui a créé ce visage !", "likes": "1202" },
-            { "pseudo": "tormâra", "content": "Mon alter-ego ! <b>#forEver</b>", "image": "image.jpg", "likes": "1607" },
             { "pseudo": "TheDylan", "content": "Putain, marre de ma conne de collègue qui sait rien faire. En vrai, les filles <b>#restezchezvous</b>. Pas besoin de vous au <b>#travail</b>. <b>#coupdegueule</b>", "likes": "1117" },
             { "pseudo": "Mr.Night34", "content": "Dernier <b>#album</b> de @CrashCourse DE LA BOMBE ! <b>#Crashcourse</b> <b>#musique</b> <b>#rap</b>", "likes": "210" },
             { "pseudo": "BoyPosé", "content": "On continue dans les <b>#suggestions</b> <b>#musicales</b>. Aujourd’hui : Stairway to Heaven de Led Zeppelin, 1971", "likes": "8253" },
@@ -63,6 +62,8 @@
             { "pseudo": "Tom924019488", "content": "Dites @BaBei_electronics votre <b>#8G</b> la, à part <b>#espionner</b> tous les habitants de la <b>#planète</b> et leur balancer un <b>#virus</b>, elle va servir à quoi concrètement ? J’enjoigne tous mes <b>#followers</b> à <b>#restezchezvous</b> pour ne pas vous faire voler vos <b>#données</b> ! 8GPandémie", "image": "8GVirusAaaah.jpg", "likes": "8219" },
             { "pseudo": "CanardFrench", "content": "Enfin une bonne <b>#initiative</b> de @AlpesEco concernant la <b>#protection</b> des <b>#loups</b> dans nos territoires !  <b>#protectiondesanimaux</b> <b>#AlpesEco</b>", "likes": "8836" },
             { "pseudo": "tormâta", "content": "Là, je me dois de pousser un <b>#coupdegueule</b> : la <b>#circulation</b> encore <b>#bloquée</b> à cause de ces débiles de <b>#manifestants</b> pour des causes stupides telles que le <b>#fémnisime</b> et l’#écologie. Franchement, <b>#restezchezvous</b> ! <b>#onenamarre</b>", "image": "IMG20501004-9249203.jpg", "likes": "2266" },
+            { "pseudo": "tormâra", "content": "Dans ma knoot précédente, je jokais. Cette personne n’existe pas, c’est une <b>#AI</b> qui a créé ce visage !", "likes": "1202" },
+            { "pseudo": "tormâra", "content": "Mon alter-ego ! <b>#forEver</b>", "image": "image.jpg", "likes": "1607" },
             { "pseudo": "Ecologie_en_force", "content": "Rejoignez-nous place de l’Hôtel de Ville à Paris pour une <b>#manifestation</b> <b>#pacifique</b>. Faisons entendre nos voix pour l’<b>#écologie</b>. Une <b>#vague</b> de <b>#pollution</b> annoncée à Paris. Ce n’est plus possible et tolérable !", "likes": "401" },
             { "pseudo": "h€laig_", "content": "Le télétravail avec elle à côté de moi : impossible ! <b>#télétravail</b> <b>#chat</b> <b>#chatte</b> <b>#mignonne</b>", "image": "Ma Loulou damour.jpg", "likes": "3863" },
             { "pseudo": "ponm@dour", "content": "L’équipe de <b>#handball</b> arrive en demi-finale de la coupe du monde après une <b>#victoire</b> écrasante face au Pérou ! Ces meufs sont trop fortes ! <b>#demifinale</b> <b>#coupedumondehandball</b> <b>#allezlesbleues</b> <b>#ilovegirls</b>"    , "likes": "4039" },
