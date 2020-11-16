@@ -128,6 +128,7 @@ $(document).ready(function() {
 				$('#contentKnoot').val("");
 				$('#removeButton').trigger('click');
 				$('#verificationKnoot').prop('checked', false).parent().removeClass('active');
+				selectedImage = "";
 			}
 		}
 	})
@@ -170,22 +171,57 @@ $(document).ready(function() {
 	var konamiCodeLogoutPosition = 0;
 	document.addEventListener('keydown', function(e) {
 		var key = allowedKeys[e.keyCode];
+
+		// Connexion à l'administration
 		var requiredKeyAdmin = konamiCodeAdmin[konamiCodeAdminPosition];
 		if (key == requiredKeyAdmin) {
 			konamiCodeAdminPosition++;
 			if (konamiCodeAdminPosition == konamiCodeAdmin.length && !isAdmin) {
-				openAdministrationConnexionModal();
-				konamiCodeAdminPosition = 0;
+
+				// Ouverture de la modal de connexion
+				$('#authenticateAdminModal').modal('show');
+				// Clic sur le bouton de connexion
+				$('#connectButton').on('click', function(e) {
+					e.preventDefault();
+					if($('#pseudo').val() == login && $('#password').val() == password) {
+						isAdmin = true;
+						setAdminInterface();
+						$('#pseudo').removeClass('is-invalid');
+						$('#password').removeClass('is-invalid');
+					}
+					else {
+						$('.invalid-feedback-for-pseudo').remove();
+						$('.invalid-feedback-for-password').remove();
+
+						// Si erreur dans le pseudo
+						if($('#pseudo').val() != login) {
+							$('#pseudo').addClass('is-invalid').after('<div class="invalid-feedback invalid-feedback-for-pseudo">Ce pseudo n\'est pas enregistré dans notre base de données d\'utilisateur·trice. Merci de vérifier l\'orthographe.</div>');
+						} else {
+							$('#pseudo').removeClass('is-invalid');
+						}
+						// Si erreur dans le mot de passe
+						if($('#password').val() != login) {
+							$('#password').addClass('is-invalid').after('<div class="invalid-feedback invalid-feedback-for-password">Ce mot de passe ne correspond pas au pseudo que vous avez entré. Merci de réessayer avec un autre mot de passe.</div>');
+						} else {
+							$('#password').removeClass('is-invalid');
+						}
+					}
+				});
+				$('#cancelButton').on('click', function(e) {
+					$('#authenticateAdminModal').modal('hide');
+				})
 			}
 		} else {
 			konamiCodeAdminPosition = 0;
 		}
+
+		// Déconnexion de l'administration
 		var requiredKeyLogout = konamiCodeLogout[konamiCodeLogoutPosition];
 		if (key == requiredKeyLogout) {
 			konamiCodeLogoutPosition++;
-			if (stepId == "step-6" && konamiCodeLogoutPosition == konamiCodeLogout.length && getCookie("admin") && getCookie("admin") != "" && getCookie("admin") != null && getCookie('admin') != "null") {
-				setCookie("admin", null);
-				socket.emit('toserver.lastGameStep');
+			if (konamiCodeLogoutPosition == konamiCodeLogout.length && isAdmin) {
+				isAdmin = false;
+				setAdminInterface();
 			}
 		} else {
 			konamiCodeLogoutPosition = 0;
@@ -381,19 +417,19 @@ function getGoodFormateDate(date) {
 }
 
 
-// Fonction pour ouvrir la modal de connexion à l'administration
-function openAdministrationConnexionModal() {
-	$('#authenticateAdminModal').modal('show');
 
-	$('#connectButton').on('click', function(e) {
-		e.preventDefault();
-		if($('#pseudo').val() == login && $('#password').val() == password) {
-			isAdmin = true;
-			$('#authenticateAdminModal').modal('hide');
-			$('body').addClass('admin');
-		}
-	});
-	$('#cancelButton').on('click', function(e) {
+// Fonction pour afficher ou non l'interface d'administration
+function setAdminInterface() {
+	// Re-initialise les champs de la modal
+	$('#pseudo').val("");
+	$('#password').val("");
+
+	// Gère la vue : affiche ou non la modale et la barre d'administration en haut.
+	if(isAdmin) {
 		$('#authenticateAdminModal').modal('hide');
-	})
+		$('body').addClass('admin');
+	}
+	else {
+		$('body').removeClass('admin');
+	}
 }
