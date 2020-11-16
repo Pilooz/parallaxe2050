@@ -1,4 +1,8 @@
 $(document).ready(function() {
+
+    // Activer la manivelle pour éteindre l'écran
+    socket.emit('toserver.manivelle_on', {});
+    
 	/*********************************
 	**********************************
 	**********************************
@@ -22,15 +26,30 @@ $(document).ready(function() {
 		$(this).parents('.knoot').removeClass('blurred').find('.card-footer.text-muted').remove();
 	})
 
-	// Paramètre la page d'administration
-	$.each(blurredHashtags, function(index, value) {
-		$('#blurredHashtags').append(' <span class="badge badge-secondary">#' + value + '</span>');
+	//  Paramétrage des knoots à récupérer sur le serveur
+	socket.on('toclient.hereAreKnoots', function(data) {
+		knoots = data.knoots;
+		setAllKnoots();
 	})
-	$.each(blurredAccounts, function(index, value) {
-		$('#blurredAccounts').append(' <span class="badge badge-secondary">@' + value + '</span>');
-	})
+	//  Paramétrage des blurredAccounts à récupérer sur le serveur
+	socket.on('toclient.hereAreBlurredAccounts', function(data) {
+		blurredAccounts = data.blurredAccounts;
+		$.each(blurredAccounts, function(index, value) {
+			$('#blurredAccounts').append(' <span class="badge badge-secondary">@' + value + '</span>');
+		})
 
-	setAllKnoots();
+		socket.emit('toserver.giveMeKnoots');
+	})
+	//  Paramétrage des blurredHashtags à récupérer sur le serveur
+	socket.on('toclient.hereAreBlurredHashtags', function(data) {
+		blurredHashtags = data.blurredHashtags;
+		$.each(blurredHashtags, function(index, value) {
+			$('#blurredHashtags').append(' <span class="badge badge-secondary">#' + value + '</span>');
+		})
+
+		socket.emit('toserver.giveMeBlurredAccounts');
+	})
+	socket.emit('toserver.giveMeBlurredHashtags');
 
 
 
@@ -150,7 +169,7 @@ $(document).ready(function() {
 	**********************************
 	**********************************
 	**********************************/
-	setAdminInterface();
+	setAdminInterface(isAdmin);
 	var allowedKeys = {
 		38: 'up',
 		40: 'down',
@@ -186,7 +205,7 @@ $(document).ready(function() {
 					e.preventDefault();
 					if($('#pseudo').val() == login && $('#password').val() == password) {
 						isAdmin = true;
-						setAdminInterface();
+						setAdminInterface(isAdmin);
 						$('#pseudo').removeClass('is-invalid');
 						$('#password').removeClass('is-invalid');
 					}
@@ -222,10 +241,10 @@ $(document).ready(function() {
 			konamiCodeLogoutPosition++;
 			if (konamiCodeLogoutPosition == konamiCodeLogout.length && isAdmin) {
 				isAdmin = false;
-				setAdminInterface();
+				setAdminInterface(isAdmin);
 				setTimeout(function() {
-					socket.emit('toserver.nextStep', {nextStep: 'step-7'});
-				}, 4000);
+					socket.emit('toserver.lastGameStep');
+				}, 1000);
 			}
 		} else {
 			konamiCodeLogoutPosition = 0;
@@ -411,7 +430,7 @@ function getGoodFormateDate(date) {
 
 
 // Fonction pour afficher ou non l'interface d'administration
-function setAdminInterface() {
+function setAdminInterface(isAdmin) {
 	// Re-initialise les champs de la modal
 	$('#pseudo').val("");
 	$('#password').val("");

@@ -1,4 +1,8 @@
 $(document).ready(function() {
+
+    // Activer la manivelle pour éteindre l'écran
+    socket.emit('toserver.manivelle_on', {});
+
 	/*********************************
 	**********************************
 	**********************************
@@ -286,7 +290,7 @@ $(document).ready(function() {
 		// Vérifie si le hashtag des bots a bien été ajouté aux hashtags floutés
 		if(hasBlurredHashtag) {
 			setTimeout(function() {
-				socket.emit('toserver.nextStep', {nextStep: 'step-3', message: "THANKS"});
+				socket.emit('toserver.nextStep', {nextStep: 'step-3', message: "THANKS", knoots: knoots, blurredHashtags: blurredHashtags, blurredAccounts: blurredAccounts});
 			}, 4000);
 		}
 	})

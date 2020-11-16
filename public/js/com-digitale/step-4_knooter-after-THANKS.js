@@ -1,4 +1,8 @@
 $(document).ready(function() {
+
+    // Activer la manivelle pour éteindre l'écran
+    socket.emit('toserver.manivelle_on', {});
+    
 	/*********************************
 	**********************************
 	**********************************
@@ -22,15 +26,32 @@ $(document).ready(function() {
 		$(this).parents('.knoot').removeClass('blurred').find('.card-footer.text-muted').remove();
 	})
 
-	// Paramètre la page d'administration
-	$.each(blurredHashtags, function(index, value) {
-		$('#blurredHashtags').append(' <span class="badge badge-secondary">#' + value + '</span>');
+	//  Paramétrage des knoots à récupérer sur le serveur
+	socket.on('toclient.hereAreKnoots', function(data) {
+		knoots = data.knoots;
+		setAllKnoots();
 	})
-	$.each(blurredAccounts, function(index, value) {
-		$('#blurredAccounts').append(' <span class="badge badge-secondary">@' + value + '</span>');
-	})
+	//  Paramétrage des blurredAccounts à récupérer sur le serveur
+	socket.on('toclient.hereAreBlurredAccounts', function(data) {
+		blurredAccounts = data.blurredAccounts;
+		$.each(blurredAccounts, function(index, value) {
+			$('#blurredAccounts').append(' <span class="badge badge-secondary">@' + value + '</span>');
+		})
 
-	setAllKnoots();
+		socket.emit('toserver.giveMeKnoots');
+	})
+	//  Paramétrage des blurredHashtags à récupérer sur le serveur
+	socket.on('toclient.hereAreBlurredHashtags', function(data) {
+		blurredHashtags = data.blurredHashtags;
+		$.each(blurredHashtags, function(index, value) {
+			$('#blurredHashtags').append(' <span class="badge badge-secondary">#' + value + '</span>');
+		})
+
+		socket.emit('toserver.giveMeBlurredAccounts');
+	})
+	socket.emit('toserver.giveMeBlurredHashtags');
+
+
 
 
 
@@ -121,12 +142,13 @@ $(document).ready(function() {
 
 				// Si on publie une knoot avec une image, on affiche le nombre de likes et on set une variable qui permettra de passer à l'étape suivante
 				var isTheKnootOKToBeASolution = false;
+				var numberOfLikes = Math.round(Math.random() * 10000);
 				if(selectedImage != "") {
-					currentLikes = likes;
+					numberOfLikes = likes;
 					isTheKnootOKToBeASolution = true;
 				}
 
-				knoots.unshift({ "pseudo": $('#publishAs i').html(), "content": $('#contentKnoot').val(), "image": selectedImage, "likes": Math.round(Math.random() * 10000) });
+				knoots.unshift({ "pseudo": $('#publishAs i').html(), "content": $('#contentKnoot').val(), "image": selectedImage, "likes": numberOfLikes });
 				setAllKnoots();
 				$('#writeKnoot').modal('hide');
 
@@ -140,7 +162,7 @@ $(document).ready(function() {
 				// Si c'est une knoot qui permet de valider l'étape, alors on passe au step suivant
 				if(isTheKnootOKToBeASolution) {
 					setTimeout(function() {
-						socket.emit('toserver.nextStep', {nextStep: 'step-5', message: "BRAVO"});
+						socket.emit('toserver.nextStep', {nextStep: 'step-5', message: "BRAVO", knoots: knoots, blurredHashtags: blurredHashtags, blurredAccounts: blurredAccounts});
 					}, 4000);
 				}
 			}
@@ -287,23 +309,11 @@ $(document).ready(function() {
 		});
 		tempBlurredAccounts = [];
 
-		// Gestion des hashtags floutés
-		if(blurredHashtags.indexOf(hashtag) > -1) {
-			hasBlurredHashtag = true;
-		}
-
 		// Ferme la popup
 		$('#administrationInterface').modal('hide');
 
 		// Met à jour les knoots
 		setAllKnoots();
-
-		// Vérifie si le hashtag des bots a bien été ajouté aux hashtags floutés
-		if(hasBlurredHashtag) {
-			setTimeout(function() {
-				socket.emit('toserver.nextStep', {nextStep: 'step-3', message: "THANKS"});
-			}, 4000);
-		}
 	})
 })
 
@@ -311,9 +321,11 @@ $(document).ready(function() {
 
 function setAllKnoots() {
 	var knootsHTML = "";
-	$.each(knoots, function(index, value) {
-		knootsHTML += createKnoot(value);
-	})
+	if(knoots !== undefined) {
+		$.each(knoots, function(index, value) {
+			knootsHTML += createKnoot(value);
+		})
+	}
 	// Met à jour le HTML avec les knoots
 	$('#listKnoots').html(knootsHTML);
 
