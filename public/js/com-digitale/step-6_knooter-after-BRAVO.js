@@ -291,7 +291,7 @@ $(document).ready(function() {
 	var tempBlurredHashtags = [];
 	$('#hashtagButton').on('click', function(e) {
 		e.preventDefault();
-		var textHashtag = $('#hashtagToBlur').val();
+		var textHashtag = htmlEntities($('#hashtagToBlur').val());
 		$('#blurredHashtags').append(' <span class="badge badge-secondary">#' + textHashtag + '</span>');
 		$('#hashtagToBlur').val("");
 		$('#hashtagToBlurHelp .badge').html('#');
@@ -300,7 +300,7 @@ $(document).ready(function() {
 	var tempBlurredAccounts = [];
 	$('#accountButton').on('click', function(e) {
 		e.preventDefault();
-		var textAccount = $('#accountToBlur').val();
+		var textAccount = htmlEntities($('#accountToBlur').val());
 		$('#blurredAccounts').append(' <span class="badge badge-secondary">@' + textAccount + '</span>');
 		$('#accountToBlur').val("");
 		$('#accountToBlurHelp .badge').html('@');
