@@ -296,10 +296,10 @@ $(document).ready(function() {
 
 	// Typing dans les hashtags / les comptes à flouter
 	$('#hashtagToBlur').on('keyup', function(e) {
-		$('#hashtagToBlurHelp .badge').html('#' + $('#hashtagToBlur').val());
+		$('#hashtagToBlurHelp .badge').html('#' + htmlEntities($('#hashtagToBlur').val()));
 	})
 	$('#accountToBlur').on('keyup', function(e) {
-		$('#accountToBlurHelp .badge').html('@' + $('#accountToBlur').val());
+		$('#accountToBlurHelp .badge').html('@' + htmlEntities($('#accountToBlur').val()));
 	})
 	var hasBlurredHashtag = false;
 	var tempBlurredHashtags = [];
