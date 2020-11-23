@@ -1,0 +1,290 @@
+<%- include('../partials/head', { data: data }) %>
+<!-- START // Styles in head -->
+	<link type="text/css" href="css/player-video.css" rel="stylesheet">
+	<link type="text/css" href="css/enigme-finale.css" rel="stylesheet">
+<!-- END // Styles in head -->
+<%- include('../partials/header', { data: data }) %>
+
+<div id="arrows">
+	<button id="sens-horaire"><div class="arrow"><div class="curve"></div><div class="point"></div></div></button>
+	<button id="sens-anti-horaire"><div class="arrow"><div class="curve"></div><div class="point"></div></div></button>
+</div>
+<div id="roue-container">
+	<div id="roue">
+		<div id="octagon"></div>
+		<div id="text">
+			<div id="text-1">
+				<span></span>
+				<span>9</span>
+				<span>7</span>
+				<span>ADA</span>
+				<span>9</span>
+				<span></span>
+				<span>6 900</span>
+				<span></span>
+				<span>9</span>
+			</div>
+			<div id="text-2">
+				<span></span>
+				<span>Python</span>
+				<span>1D</span>
+				<span>8</span>
+				<span>Perl 6</span>
+				<span>Python</span>
+				<span></span>
+				<span>1 300</span>
+				<span>1</span>
+			</div>
+			<div id="text-3">
+				<span></span>
+				<span>#</span>
+				<span>2 050</span>
+				<span>!</span>
+				<span>0</span>
+				<span>9 PM</span>
+				<span>2 340</span>
+				<span>2</span>
+				<span>8</span>
+			</div>
+			<div id="text-4">
+				<span></span>
+				<span>9</span>
+				<span>4C</span>
+				<span>9 AM</span>
+				<span>2 340</span>
+				<span>7</span>
+				<span></span>
+				<span>3</span>
+				<span></span>
+			</div>
+			<div id="text-5">
+				<span></span>
+				<span>8</span>
+				<span>3</span>
+				<span>PHP</span>
+				<span>Javascript</span>
+				<span>5</span>
+				<span></span>
+				<span>JAVA</span>
+				<span></span>
+			</div>
+			<div id="text-6">
+				<span></span>
+				<span>€</span>
+				<span>5</span>
+				<span>€</span>
+				<span>!</span>
+				<span>4C</span>
+				<span></span>
+				<span>12 AM</span>
+				<span>4C</span>
+			</div>
+			<div id="text-7">
+				<span></span>
+				<span>3</span>
+				<span>#</span>
+				<span>5E</span>
+				<span>1</span>
+				<span>2 340</span>
+				<span></span>
+				<span>4</span>
+				<span>!</span>
+			</div>
+			<div id="text-8">
+				<span></span>
+				<span>3</span>
+				<span>6B</span>
+				<span>JAVA</span>
+				<span>1</span>
+				<span>$</span>
+				<span>5</span>
+				<span></span>
+				<span>6</span>
+			</div>
+		</div>
+		<div id="front-container">
+			<div id="front" class="rotate-1">
+				<svg width="700" height="700" id="front-1" xmlns="http://www.w3.org/2000/svg">
+					<!-- Première ligne --> <path d="M 203 0 H 497 L 483 35 H 217 L 203 0" fill="rgb(0, 198, 249)"/>
+					<!-- Deuxème ligne --> <path d="M 217 35 H 483 L 469 70 H 231 L 217 35" fill="rgb(0, 198, 249)"/>
+					<!-- Troisième ligne --> <path d="M 231 70 H 469 L 453 105 H 247 L 231 70" fill="rgb(0, 198, 249)"/>
+					<!-- Quatrième ligne --> <path d="M 247 105 H 453 L 439 140 H 261 L 247 105" fill="rgb(0, 198, 249)"/>
+					<!-- Cinquième ligne --> <!-- <path d="M 261 140 H 439 L 424 175 H 276 L 261 140" fill="rgb(0, 198, 249)"/> -->
+					<!-- Sixième ligne --> <path d="M 276 175 H 424 L 409 210 H 291 L 276 175" fill="rgb(0, 198, 249)"/>
+					<!-- Septième ligne --> <path d="M 291 210 H 409 L 394 245 H 305 L 291 210" fill="rgb(0, 198, 249)"/>
+					<!-- Huitième ligne --> <path d="M 305 245 H 394 L 380 280 H 319 L 305 245" fill="rgb(0, 198, 249)"/>
+					<!-- Triangle du bout --> <path d="M 319 280 H 380 L 350 350 L 319 280" fill="rgb(0, 198, 249)"/>
+					<circle cx="350" cy="125" r="4" fill="#fff"/>
+				</svg>
+				<svg width="700" height="700" id="front-2" xmlns="http://www.w3.org/2000/svg">
+					<!-- Première ligne --> <path d="M 203 0 H 497 L 483 35 H 217 L 203 0" fill="rgb(0, 198, 249)"/>
+					<!-- Deuxème ligne --> <!-- <path d="M 217 35 H 483 L 469 70 H 231 L 217 35" fill="rgb(0, 198, 249)"/> -->
+					<!-- Troisième ligne --> <path d="M 231 70 H 469 L 453 105 H 247 L 231 70" fill="rgb(0, 198, 249)"/>
+					<!-- Quatrième ligne --> <path d="M 247 105 H 453 L 439 140 H 261 L 247 105" fill="rgb(0, 198, 249)"/>
+					<!-- Cinquième ligne --> <path d="M 261 140 H 439 L 424 175 H 276 L 261 140" fill="rgb(0, 198, 249)"/>
+					<!-- Sixième ligne --> <path d="M 276 175 H 424 L 409 210 H 291 L 276 175" fill="rgb(0, 198, 249)"/>
+					<!-- Septième ligne --> <path d="M 291 210 H 409 L 394 245 H 305 L 291 210" fill="rgb(0, 198, 249)"/>
+					<!-- Huitième ligne --> <!-- <path d="M 305 245 H 394 L 380 280 H 319 L 305 245" fill="rgb(0, 198, 249)"/> -->
+					<!-- Triangle du bout --> <path d="M 319 280 H 380 L 350 350 L 319 280" fill="rgb(0, 198, 249)"/>
+					<circle cx="320" cy="20" r="4" fill="#fff"/>
+					<circle cx="340" cy="20" r="4" fill="#fff"/>
+					<circle cx="360" cy="20" r="4" fill="#fff"/>
+					<circle cx="380" cy="20" r="4" fill="#fff"/>
+				</svg>
+				<svg width="700" height="700" id="front-3" xmlns="http://www.w3.org/2000/svg">
+					<!-- Première ligne --> <path d="M 203 0 H 497 L 483 35 H 217 L 203 0" fill="rgb(0, 198, 249)"/>
+					<!-- Deuxème ligne --> <path d="M 217 35 H 483 L 469 70 H 231 L 217 35" fill="rgb(0, 198, 249)"/>
+					<!-- Troisième ligne --> <!-- <path d="M 231 70 H 469 L 453 105 H 247 L 231 70" fill="rgb(0, 198, 249)"/> -->
+					<!-- Quatrième ligne --> <path d="M 247 105 H 453 L 439 140 H 261 L 247 105" fill="rgb(0, 198, 249)"/>
+					<!-- Cinquième ligne --> <path d="M 261 140 H 439 L 424 175 H 276 L 261 140" fill="rgb(0, 198, 249)"/>
+					<!-- Sixième ligne --> <path d="M 276 175 H 424 L 409 210 H 291 L 276 175" fill="rgb(0, 198, 249)"/>
+					<!-- Septième ligne --> <path d="M 291 210 H 409 L 394 245 H 305 L 291 210" fill="rgb(0, 198, 249)"/>
+					<!-- Huitième ligne --> <path d="M 305 245 H 394 L 380 280 H 319 L 305 245" fill="rgb(0, 198, 249)"/>
+					<!-- Triangle du bout --> <path d="M 319 280 H 380 L 350 350 L 319 280" fill="rgb(0, 198, 249)"/>
+				</svg>
+				<svg width="700" height="700" id="front-4" xmlns="http://www.w3.org/2000/svg">
+					<!-- Première ligne --> <path d="M 203 0 H 497 L 483 35 H 217 L 203 0" fill="rgb(0, 198, 249)"/>
+					<!-- Deuxème ligne --> <!-- <path d="M 217 35 H 483 L 469 70 H 231 L 217 35" fill="rgb(0, 198, 249)"/> -->
+					<!-- Troisième ligne --> <path d="M 231 70 H 469 L 453 105 H 247 L 231 70" fill="rgb(0, 198, 249)"/>
+					<!-- Quatrième ligne --> <path d="M 247 105 H 453 L 439 140 H 261 L 247 105" fill="rgb(0, 198, 249)"/>
+					<!-- Cinquième ligne --> <path d="M 261 140 H 439 L 424 175 H 276 L 261 140" fill="rgb(0, 198, 249)"/>
+					<!-- Sixième ligne --> <path d="M 276 175 H 424 L 409 210 H 291 L 276 175" fill="rgb(0, 198, 249)"/>
+					<!-- Septième ligne --> <path d="M 291 210 H 409 L 394 245 H 305 L 291 210" fill="rgb(0, 198, 249)"/>
+					<!-- Huitième ligne --> <path d="M 305 245 H 394 L 380 280 H 319 L 305 245" fill="rgb(0, 198, 249)"/>
+					<!-- Triangle du bout --> <path d="M 319 280 H 380 L 350 350 L 319 280" fill="rgb(0, 198, 249)"/>
+				</svg>
+				<svg width="700" height="700" id="front-5" xmlns="http://www.w3.org/2000/svg">
+					<!-- Première ligne --> <path d="M 203 0 H 497 L 483 35 H 217 L 203 0" fill="rgb(0, 198, 249)"/>
+					<!-- Deuxème ligne --> <path d="M 217 35 H 483 L 469 70 H 231 L 217 35" fill="rgb(0, 198, 249)"/>
+					<!-- Troisième ligne --> <path d="M 231 70 H 469 L 453 105 H 247 L 231 70" fill="rgb(0, 198, 249)"/>
+					<!-- Quatrième ligne --> <!-- <path d="M 247 105 H 453 L 439 140 H 261 L 247 105" fill="rgb(0, 198, 249)"/> -->
+					<!-- Cinquième ligne --> <path d="M 261 140 H 439 L 424 175 H 276 L 261 140" fill="rgb(0, 198, 249)"/>
+					<!-- Sixième ligne --> <path d="M 276 175 H 424 L 409 210 H 291 L 276 175" fill="rgb(0, 198, 249)"/>
+					<!-- Septième ligne --> <path d="M 291 210 H 409 L 394 245 H 305 L 291 210" fill="rgb(0, 198, 249)"/>
+					<!-- Huitième ligne --> <!-- <path d="M 305 245 H 394 L 380 280 H 319 L 305 245" fill="rgb(0, 198, 249)"/> -->
+					<!-- Triangle du bout --> <path d="M 319 280 H 380 L 350 350 L 319 280" fill="rgb(0, 198, 249)"/>
+					<circle cx="330" cy="225" r="4" fill="#fff"/>
+					<circle cx="350" cy="225" r="4" fill="#fff"/>
+					<circle cx="370" cy="225" r="4" fill="#fff"/>
+				</svg>
+				<svg width="700" height="700" id="front-6" xmlns="http://www.w3.org/2000/svg">
+					<!-- Première ligne --> <path d="M 203 0 H 497 L 483 35 H 217 L 203 0" fill="rgb(0, 198, 249)"/>
+					<!-- Deuxème ligne --> <path d="M 217 35 H 483 L 469 70 H 231 L 217 35" fill="rgb(0, 198, 249)"/>
+					<!-- Troisième ligne --> <path d="M 231 70 H 469 L 453 105 H 247 L 231 70" fill="rgb(0, 198, 249)"/>
+					<!-- Quatrième ligne --> <path d="M 247 105 H 453 L 439 140 H 261 L 247 105" fill="rgb(0, 198, 249)"/>
+					<!-- Cinquième ligne --> <!-- <path d="M 261 140 H 439 L 424 175 H 276 L 261 140" fill="rgb(0, 198, 249)"/> -->
+					<!-- Sixième ligne --> <path d="M 276 175 H 424 L 409 210 H 291 L 276 175" fill="rgb(0, 198, 249)"/>
+					<!-- Septième ligne --> <path d="M 291 210 H 409 L 394 245 H 305 L 291 210" fill="rgb(0, 198, 249)"/>
+					<!-- Huitième ligne --> <path d="M 305 245 H 394 L 380 280 H 319 L 305 245" fill="rgb(0, 198, 249)"/>
+					<!-- Triangle du bout --> <path d="M 319 280 H 380 L 350 350 L 319 280" fill="rgb(0, 198, 249)"/>
+				</svg>
+				<svg width="700" height="700" id="front-7" xmlns="http://www.w3.org/2000/svg">
+					<!-- Première ligne --> <path d="M 203 0 H 497 L 483 35 H 217 L 203 0" fill="rgb(0, 198, 249)"/>
+					<!-- Deuxème ligne --> <path d="M 217 35 H 483 L 469 70 H 231 L 217 35" fill="rgb(0, 198, 249)"/>
+					<!-- Troisième ligne --> <!-- <path d="M 231 70 H 469 L 453 105 H 247 L 231 70" fill="rgb(0, 198, 249)"/> -->
+					<!-- Quatrième ligne --> <path d="M 247 105 H 453 L 439 140 H 261 L 247 105" fill="rgb(0, 198, 249)"/>
+					<!-- Cinquième ligne --> <path d="M 261 140 H 439 L 424 175 H 276 L 261 140" fill="rgb(0, 198, 249)"/>
+					<!-- Sixième ligne --> <path d="M 276 175 H 424 L 409 210 H 291 L 276 175" fill="rgb(0, 198, 249)"/>
+					<!-- Septième ligne --> <path d="M 291 210 H 409 L 394 245 H 305 L 291 210" fill="rgb(0, 198, 249)"/>
+					<!-- Huitième ligne --> <path d="M 305 245 H 394 L 380 280 H 319 L 305 245" fill="rgb(0, 198, 249)"/>
+					<!-- Triangle du bout --> <path d="M 319 280 H 380 L 350 350 L 319 280" fill="rgb(0, 198, 249)"/>
+					<circle cx="340" cy="50" r="4" fill="#fff"/>
+					<circle cx="360" cy="50" r="4" fill="#fff"/>
+				</svg>
+				<svg width="700" height="700" id="front-8" xmlns="http://www.w3.org/2000/svg">
+					<!-- Première ligne --> <path d="M 203 0 H 497 L 483 35 H 217 L 203 0" fill="rgb(0, 198, 249)"/>
+					<!-- Deuxème ligne --> <path d="M 217 35 H 483 L 469 70 H 231 L 217 35" fill="rgb(0, 198, 249)"/>
+					<!-- Troisième ligne --> <path d="M 231 70 H 469 L 453 105 H 247 L 231 70" fill="rgb(0, 198, 249)"/>
+					<!-- Quatrième ligne --> <path d="M 247 105 H 453 L 439 140 H 261 L 247 105" fill="rgb(0, 198, 249)"/>
+					<!-- Cinquième ligne --> <path d="M 261 140 H 439 L 424 175 H 276 L 261 140" fill="rgb(0, 198, 249)"/>
+					<!-- Sixième ligne --> <!-- <path d="M 276 175 H 424 L 409 210 H 291 L 276 175" fill="rgb(0, 198, 249)"/> -->
+					<!-- Septième ligne --> <path d="M 291 210 H 409 L 394 245 H 305 L 291 210" fill="rgb(0, 198, 249)"/>
+					<!-- Huitième ligne --> <path d="M 305 245 H 394 L 380 280 H 319 L 305 245" fill="rgb(0, 198, 249)"/>
+					<!-- Triangle du bout --> <path d="M 319 280 H 380 L 350 350 L 319 280" fill="rgb(0, 198, 249)"/>
+				</svg>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="player">
+	<div class="module-media module-media-video">
+		<div class="module-media module-media-video-inner">
+			<video src="http://<%= data.config_server.ip + ':' + data.config_server.port %>/medias/dora_introduction.mp4" autoplay="on" id="module-media-video" width="100%" style="background-color: #000000;" controls></video>
+		</div>
+	</div>
+</div>
+<button id="validate" class="button btn btn-primary">Valider cette combinaison</button>
+<div id="actions">
+	<button id="goToFinalEnigme" class="button">Passer la vidéo</button>
+</div>
+
+<!-- START // Scripts in footer -->
+<script>
+$(document).ready(function() {
+	var nextStep = '<%-data.currentStep.transitions[0].id %>';
+
+	// Paramétrage de la taille du player de la vidéo si nécessaire
+	var videoRatio = $('video').width() / $('video').height();
+	var ratio = $(window).width() / $(window).height();
+	if(videoRatio > ratio) {
+		$('video').width($(window).width());
+		$('video').height($(window).width() / videoRatio);
+	}
+	else {
+		$('video').height($(window).height());
+		$('video').width($(window).height() * videoRatio);
+	}
+
+	// A la fin de la vidéo, on lance le step suivant
+	$('video').on('ended',function() {
+		setTimeout(function(){
+			goToFinalEnigme();
+        }, 2000);
+	})
+
+	// Paramétrage du bouton pour passer la vidéo
+	$('#goToFinalEnigme').on('click', function(){
+		goToFinalEnigme();
+	});
+
+	// Affichage de la vidéo en grand
+	$('.module-media-video').on('click', function(e) {
+		e.preventDefault();
+		if($('body').hasClass('thumbnail')) {
+			$('body').removeClass('thumbnail');
+		}
+	})
+
+	var rotate = 0;
+	// Button pour faire tourner la roue
+	$('#arrows button#sens-horaire').on('click', function(e) {
+		e.preventDefault();
+		$('#front').removeClass('degres-' + Math.abs(rotate%360));
+		rotate += 45;
+		$('#front').css('transform', 'rotate(' + rotate + 'deg)').addClass('degres-' + Math.abs(rotate%360));
+	})
+	$('#arrows button#sens-anti-horaire').on('click', function(e) {
+		e.preventDefault();
+		$('#front').removeClass('degres-' + Math.abs(rotate%360));
+		rotate -= 45;
+		$('#front').css('transform', 'rotate(' + rotate + 'deg)').addClass('degres-' + Math.abs(rotate%360));
+	})
+
+	// Bouton de validation finale
+	$('#validate').on('click', function(e) {
+		e.preventDefault();
+		if($('#front').hasClass('degres-90')) {
+			window.location.replace("https://docs.google.com/presentation/d/e/2PACX-1vT0ZNpYV1kessRrt0IpOd42pIYMnhvhVoQFkT_4WYBzYl87Unx_YV43CR8temGPyJRIdHgstWjAlPYU/pub?start=false&loop=false&delayms=3000");
+		}
+	})
+});
+
+
+// Pour aller à l'énigme finale
+function goToFinalEnigme() {
+	$('body').addClass('thumbnail');
+	$("video").each(function () { this.pause() });
+}
+</script>
+<!-- END // Scripts in footer -->
+<%- include('../partials/footer', { data: data }) %>
