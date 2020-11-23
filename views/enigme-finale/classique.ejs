@@ -1,4 +1,25 @@
-<%- include('../partials/head', { data: data }) %>
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="google" content="notranslate">
+        
+        <title><%= data.currentStep.title %></title>
+        <link rel="manifest" href="/site.webmanifest">
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#774d3c">
+
+        <meta name="msapplication-TileColor" content="#774d3c">
+        <meta name="theme-color" content="#ffffff">
+
+
+        <script src="/js/jquery.min.js"></script>    
+        
+        <link href="/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <link type="text/css" href="css/app.css" rel="stylesheet">
 <!-- START // Styles in head -->
 	<link type="text/css" href="css/player-video.css" rel="stylesheet">
 
@@ -150,6 +171,8 @@ background-size: cover;
         align-items: stretch;
         color: white;
         padding: 60px 0;
+        overflow-y: scroll;
+        overflow-x: hidden;
     }
     div#firstContainer {
         position: relative;
@@ -398,7 +421,7 @@ background-size: cover;
                     <div>
                         <label>Langage</label>
                         <p>Dans quel langage doit être codé l'anti-virus ?</p>
-                        <input type="text" name="codeetprog" value="Choisir" />
+                        <input type="text" name="codeetprog" value="Choisir" readonly="readonly" />
                         <button>Valider le langage</button>
                     </div>
                 </section>
@@ -514,7 +537,7 @@ $(document).ready(function() {
                 case 'codeetprog':
                     answerCodeetprog = $('#codeetprog input').val();
                     nextStep = "hardware";
-                    $('#hardware input').focus();
+                    // $('#hardware input').focus();
                     break;
                 case 'hardware':
                     answerHardware = $('#hardware input').val();
@@ -523,12 +546,12 @@ $(document).ready(function() {
                 case 'bdd':
                     answerBdd = $('#bdd input').val();
                     nextStep = "comdigitale";
-                    $('#comdigitale input').focus();
+                    // $('#comdigitale input').focus();
                     break;
                 case 'comdigitale':
                     answerComdigitale = $('#comdigitale input').val();
                     nextStep = "adminreseau";
-                    $('#adminreseau input').focus();
+                    // $('#adminreseau input').focus();
                     break;
                 case 'adminreseau':
                     answerAdminreseau = $('#adminreseau input').val();
