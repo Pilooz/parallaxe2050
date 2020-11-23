@@ -1,137 +1,51 @@
-<%- include('../partials/head', { data: data }) %>
-<!-- START // Styles in head -->
-	<link type="text/css" href="css/player-video.css" rel="stylesheet">
-
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <title>Création de l'anti-virus</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <style type="text/css">
-/* Actions et boutons */
-  body #actions {
-    z-index: 980 !important; }
-    body #actions .button:hover, body #actions .btn:hover {
-      box-shadow: 0 0px 20px #00c6f9; }
-#actions {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  display: flex;
-  flex-direction: row; }
-  #actions button,
-  #actions .button, #actions .btn {
-    right: 20px;
-    margin-left: 20px;
-    padding: 0.375rem 0.75rem;
-    background-color: #00c6f9;
-    transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
-    border: 1px solid transparent;
-    border-radius: 0.25rem;
-    line-height: 1.5;
-    font-size: 1rem;
-    font-weight: 400;
-    color: white; }
-    #actions button:hover,
-    #actions .button:hover, #actions .btn:hover {
-      box-shadow: 0 0 10px #00c6f9; }
-    #actions button:focus,
-    #actions .button:focus, #actions .btn:focus {
-      outline: none; }
-
-/* Thumbnail de vidéo pour relancer la vidéo précédente */
-#thumbnail {
-  position: fixed;
-  z-index: 90;
-  left: 20px;
-  bottom: 20px;
-  transition: all 0.4s ease-in;
-  cursor: pointer;
-  transform-origin: bottom left; }
-  #thumbnail.small {
-    transform: scale(0.1);
-    transform-origin: bottom left; }
-  body #player {
-    display: flex;
-    position: fixed;
-    z-index: 900;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-    background-color: #000000 !important;
-    transition: all 0.4s ease-in;
-    transform-origin: bottom left; }
-    body #player .module-media-video {
-      margin: 0 !important;
-      background-color: #000000 !important; }
-      body #player .module-media-video .module-media-video-inner {
-        background-color: #000000 !important; }
-        body #player .module-media-video .module-media-video-inner video,
-        body #player .module-media-video .module-media-video-inner video:focus {
-          outline: none;
-          background-color: #000000 !important; }
-  body.thumbnail {
-    background: #303030; }
-    body.thumbnail #actions {
-      opacity: 0;
-      pointer-events: none; }
-      body.thumbnail #actions button {
-        pointer-events: none; }
-    body.thumbnail #player {
-      transform: scale(0.1);
-      transform-origin: bottom left;
-      left: 20px;
-      bottom: 20px;
-      cursor: pointer; }
-      body.thumbnail #player video {
-        pointer-events: none; }
-
     * {
         box-sizing: border-box;
     }
-    #whichStep {
+    body {
         transition: linear all 0.2s;
-    	position: fixed;
-    	top: 0;
-    	left: 0;
-    	right: 0;
-    	bottom: 0;
         font-family: 'Varela Round', sans-serif;
     }
-    #whichStep.step-codeetprog {
+    body.step-codeetprog {
         background-color: #13b569;
 background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 800'%3E%3Cg %3E%3Cpath fill='%2314bc6d' d='M486 705.8c-109.3-21.8-223.4-32.2-335.3-19.4C99.5 692.1 49 703 0 719.8V800h843.8c-115.9-33.2-230.8-68.1-347.6-92.2C492.8 707.1 489.4 706.5 486 705.8z'/%3E%3Cpath fill='%2315c471' d='M1600 0H0v719.8c49-16.8 99.5-27.8 150.7-33.5c111.9-12.7 226-2.4 335.3 19.4c3.4 0.7 6.8 1.4 10.2 2c116.8 24 231.7 59 347.6 92.2H1600V0z'/%3E%3Cpath fill='%2315cb76' d='M478.4 581c3.2 0.8 6.4 1.7 9.5 2.5c196.2 52.5 388.7 133.5 593.5 176.6c174.2 36.6 349.5 29.2 518.6-10.2V0H0v574.9c52.3-17.6 106.5-27.7 161.1-30.9C268.4 537.4 375.7 554.2 478.4 581z'/%3E%3Cpath fill='%2316d27a' d='M0 0v429.4c55.6-18.4 113.5-27.3 171.4-27.7c102.8-0.8 203.2 22.7 299.3 54.5c3 1 5.9 2 8.9 3c183.6 62 365.7 146.1 562.4 192.1c186.7 43.7 376.3 34.4 557.9-12.6V0H0z'/%3E%3Cpath fill='%2317da7e' d='M181.8 259.4c98.2 6 191.9 35.2 281.3 72.1c2.8 1.1 5.5 2.3 8.3 3.4c171 71.6 342.7 158.5 531.3 207.7c198.8 51.8 403.4 40.8 597.3-14.8V0H0v283.2C59 263.6 120.6 255.7 181.8 259.4z'/%3E%3Cpath fill='%2349e28c' d='M1600 0H0v136.3c62.3-20.9 127.7-27.5 192.2-19.2c93.6 12.1 180.5 47.7 263.3 89.6c2.6 1.3 5.1 2.6 7.7 3.9c158.4 81.1 319.7 170.9 500.3 223.2c210.5 61 430.8 49 636.6-16.6V0z'/%3E%3Cpath fill='%2367e999' d='M454.9 86.3C600.7 177 751.6 269.3 924.1 325c208.6 67.4 431.3 60.8 637.9-5.3c12.8-4.1 25.4-8.4 38.1-12.9V0H288.1c56 21.3 108.7 50.6 159.7 82C450.2 83.4 452.5 84.9 454.9 86.3z'/%3E%3Cpath fill='%237ff0a7' d='M1600 0H498c118.1 85.8 243.5 164.5 386.8 216.2c191.8 69.2 400 74.7 595 21.1c40.8-11.2 81.1-25.2 120.3-41.7V0z'/%3E%3Cpath fill='%2396f8b5' d='M1397.5 154.8c47.2-10.6 93.6-25.3 138.6-43.8c21.7-8.9 43-18.8 63.9-29.5V0H643.4c62.9 41.7 129.7 78.2 202.1 107.4C1020.4 178.1 1214.2 196.1 1397.5 154.8z'/%3E%3Cpath fill='%23abffc3' d='M1315.3 72.4c75.3-12.6 148.9-37.1 216.8-72.4h-723C966.8 71 1144.7 101 1315.3 72.4z'/%3E%3C/g%3E%3C/svg%3E");
 background-attachment: fixed;
 background-size: cover;
     }
-    #whichStep.step-hardware {
+    body.step-hardware {
         background-color: #e61983;
 background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 800'%3E%3Cg %3E%3Cpath fill='%23e82a8b' d='M486 705.8c-109.3-21.8-223.4-32.2-335.3-19.4C99.5 692.1 49 703 0 719.8V800h843.8c-115.9-33.2-230.8-68.1-347.6-92.2C492.8 707.1 489.4 706.5 486 705.8z'/%3E%3Cpath fill='%23e93692' d='M1600 0H0v719.8c49-16.8 99.5-27.8 150.7-33.5c111.9-12.7 226-2.4 335.3 19.4c3.4 0.7 6.8 1.4 10.2 2c116.8 24 231.7 59 347.6 92.2H1600V0z'/%3E%3Cpath fill='%23eb419a' d='M478.4 581c3.2 0.8 6.4 1.7 9.5 2.5c196.2 52.5 388.7 133.5 593.5 176.6c174.2 36.6 349.5 29.2 518.6-10.2V0H0v574.9c52.3-17.6 106.5-27.7 161.1-30.9C268.4 537.4 375.7 554.2 478.4 581z'/%3E%3Cpath fill='%23ec4aa2' d='M0 0v429.4c55.6-18.4 113.5-27.3 171.4-27.7c102.8-0.8 203.2 22.7 299.3 54.5c3 1 5.9 2 8.9 3c183.6 62 365.7 146.1 562.4 192.1c186.7 43.7 376.3 34.4 557.9-12.6V0H0z'/%3E%3Cpath fill='%23ed53aa' d='M181.8 259.4c98.2 6 191.9 35.2 281.3 72.1c2.8 1.1 5.5 2.3 8.3 3.4c171 71.6 342.7 158.5 531.3 207.7c198.8 51.8 403.4 40.8 597.3-14.8V0H0v283.2C59 263.6 120.6 255.7 181.8 259.4z'/%3E%3Cpath fill='%23f271b7' d='M1600 0H0v136.3c62.3-20.9 127.7-27.5 192.2-19.2c93.6 12.1 180.5 47.7 263.3 89.6c2.6 1.3 5.1 2.6 7.7 3.9c158.4 81.1 319.7 170.9 500.3 223.2c210.5 61 430.8 49 636.6-16.6V0z'/%3E%3Cpath fill='%23f58bc4' d='M454.9 86.3C600.7 177 751.6 269.3 924.1 325c208.6 67.4 431.3 60.8 637.9-5.3c12.8-4.1 25.4-8.4 38.1-12.9V0H288.1c56 21.3 108.7 50.6 159.7 82C450.2 83.4 452.5 84.9 454.9 86.3z'/%3E%3Cpath fill='%23f8a3d2' d='M1600 0H498c118.1 85.8 243.5 164.5 386.8 216.2c191.8 69.2 400 74.7 595 21.1c40.8-11.2 81.1-25.2 120.3-41.7V0z'/%3E%3Cpath fill='%23f9bbdf' d='M1397.5 154.8c47.2-10.6 93.6-25.3 138.6-43.8c21.7-8.9 43-18.8 63.9-29.5V0H643.4c62.9 41.7 129.7 78.2 202.1 107.4C1020.4 178.1 1214.2 196.1 1397.5 154.8z'/%3E%3Cpath fill='%23fad2ed' d='M1315.3 72.4c75.3-12.6 148.9-37.1 216.8-72.4h-723C966.8 71 1144.7 101 1315.3 72.4z'/%3E%3C/g%3E%3C/svg%3E");
 background-attachment: fixed;
 background-size: cover;
     }
-    #whichStep.step-bdd {
+    body.step-bdd {
         background-color: #8308fb;
 background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 800'%3E%3Cg %3E%3Cpath fill='%238b26fb' d='M486 705.8c-109.3-21.8-223.4-32.2-335.3-19.4C99.5 692.1 49 703 0 719.8V800h843.8c-115.9-33.2-230.8-68.1-347.6-92.2C492.8 707.1 489.4 706.5 486 705.8z'/%3E%3Cpath fill='%239337fb' d='M1600 0H0v719.8c49-16.8 99.5-27.8 150.7-33.5c111.9-12.7 226-2.4 335.3 19.4c3.4 0.7 6.8 1.4 10.2 2c116.8 24 231.7 59 347.6 92.2H1600V0z'/%3E%3Cpath fill='%239b46fb' d='M478.4 581c3.2 0.8 6.4 1.7 9.5 2.5c196.2 52.5 388.7 133.5 593.5 176.6c174.2 36.6 349.5 29.2 518.6-10.2V0H0v574.9c52.3-17.6 106.5-27.7 161.1-30.9C268.4 537.4 375.7 554.2 478.4 581z'/%3E%3Cpath fill='%23a153fb' d='M0 0v429.4c55.6-18.4 113.5-27.3 171.4-27.7c102.8-0.8 203.2 22.7 299.3 54.5c3 1 5.9 2 8.9 3c183.6 62 365.7 146.1 562.4 192.1c186.7 43.7 376.3 34.4 557.9-12.6V0H0z'/%3E%3Cpath fill='%23a85ffb' d='M181.8 259.4c98.2 6 191.9 35.2 281.3 72.1c2.8 1.1 5.5 2.3 8.3 3.4c171 71.6 342.7 158.5 531.3 207.7c198.8 51.8 403.4 40.8 597.3-14.8V0H0v283.2C59 263.6 120.6 255.7 181.8 259.4z'/%3E%3Cpath fill='%23b674fb' d='M1600 0H0v136.3c62.3-20.9 127.7-27.5 192.2-19.2c93.6 12.1 180.5 47.7 263.3 89.6c2.6 1.3 5.1 2.6 7.7 3.9c158.4 81.1 319.7 170.9 500.3 223.2c210.5 61 430.8 49 636.6-16.6V0z'/%3E%3Cpath fill='%23c389fc' d='M454.9 86.3C600.7 177 751.6 269.3 924.1 325c208.6 67.4 431.3 60.8 637.9-5.3c12.8-4.1 25.4-8.4 38.1-12.9V0H288.1c56 21.3 108.7 50.6 159.7 82C450.2 83.4 452.5 84.9 454.9 86.3z'/%3E%3Cpath fill='%23cf9dfc' d='M1600 0H498c118.1 85.8 243.5 164.5 386.8 216.2c191.8 69.2 400 74.7 595 21.1c40.8-11.2 81.1-25.2 120.3-41.7V0z'/%3E%3Cpath fill='%23dab2fb' d='M1397.5 154.8c47.2-10.6 93.6-25.3 138.6-43.8c21.7-8.9 43-18.8 63.9-29.5V0H643.4c62.9 41.7 129.7 78.2 202.1 107.4C1020.4 178.1 1214.2 196.1 1397.5 154.8z'/%3E%3Cpath fill='%23e5c6fb' d='M1315.3 72.4c75.3-12.6 148.9-37.1 216.8-72.4h-723C966.8 71 1144.7 101 1315.3 72.4z'/%3E%3C/g%3E%3C/svg%3E");
 background-attachment: fixed;
 background-size: cover;
     }
-    #whichStep.step-comdigitale {
+    body.step-comdigitale {
         background-color: #f96e00;
 background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 800'%3E%3Cg %3E%3Cpath fill='%23fa7917' d='M486 705.8c-109.3-21.8-223.4-32.2-335.3-19.4C99.5 692.1 49 703 0 719.8V800h843.8c-115.9-33.2-230.8-68.1-347.6-92.2C492.8 707.1 489.4 706.5 486 705.8z'/%3E%3Cpath fill='%23fa8426' d='M1600 0H0v719.8c49-16.8 99.5-27.8 150.7-33.5c111.9-12.7 226-2.4 335.3 19.4c3.4 0.7 6.8 1.4 10.2 2c116.8 24 231.7 59 347.6 92.2H1600V0z'/%3E%3Cpath fill='%23fa8e33' d='M478.4 581c3.2 0.8 6.4 1.7 9.5 2.5c196.2 52.5 388.7 133.5 593.5 176.6c174.2 36.6 349.5 29.2 518.6-10.2V0H0v574.9c52.3-17.6 106.5-27.7 161.1-30.9C268.4 537.4 375.7 554.2 478.4 581z'/%3E%3Cpath fill='%23fa983f' d='M0 0v429.4c55.6-18.4 113.5-27.3 171.4-27.7c102.8-0.8 203.2 22.7 299.3 54.5c3 1 5.9 2 8.9 3c183.6 62 365.7 146.1 562.4 192.1c186.7 43.7 376.3 34.4 557.9-12.6V0H0z'/%3E%3Cpath fill='%23f9a24b' d='M181.8 259.4c98.2 6 191.9 35.2 281.3 72.1c2.8 1.1 5.5 2.3 8.3 3.4c171 71.6 342.7 158.5 531.3 207.7c198.8 51.8 403.4 40.8 597.3-14.8V0H0v283.2C59 263.6 120.6 255.7 181.8 259.4z'/%3E%3Cpath fill='%23f9a854' d='M1600 0H0v136.3c62.3-20.9 127.7-27.5 192.2-19.2c93.6 12.1 180.5 47.7 263.3 89.6c2.6 1.3 5.1 2.6 7.7 3.9c158.4 81.1 319.7 170.9 500.3 223.2c210.5 61 430.8 49 636.6-16.6V0z'/%3E%3Cpath fill='%23faae5d' d='M454.9 86.3C600.7 177 751.6 269.3 924.1 325c208.6 67.4 431.3 60.8 637.9-5.3c12.8-4.1 25.4-8.4 38.1-12.9V0H288.1c56 21.3 108.7 50.6 159.7 82C450.2 83.4 452.5 84.9 454.9 86.3z'/%3E%3Cpath fill='%23fab366' d='M1600 0H498c118.1 85.8 243.5 164.5 386.8 216.2c191.8 69.2 400 74.7 595 21.1c40.8-11.2 81.1-25.2 120.3-41.7V0z'/%3E%3Cpath fill='%23f9b96f' d='M1397.5 154.8c47.2-10.6 93.6-25.3 138.6-43.8c21.7-8.9 43-18.8 63.9-29.5V0H643.4c62.9 41.7 129.7 78.2 202.1 107.4C1020.4 178.1 1214.2 196.1 1397.5 154.8z'/%3E%3Cpath fill='%23f9bf78' d='M1315.3 72.4c75.3-12.6 148.9-37.1 216.8-72.4h-723C966.8 71 1144.7 101 1315.3 72.4z'/%3E%3C/g%3E%3C/svg%3E");
 background-attachment: fixed;
 background-size: cover;
     }
-    #whichStep.step-adminreseau {
+    body.step-adminreseau {
         background-color: #008cb0;
 background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 800'%3E%3Cg %3E%3Cpath fill='%230097be' d='M486 705.8c-109.3-21.8-223.4-32.2-335.3-19.4C99.5 692.1 49 703 0 719.8V800h843.8c-115.9-33.2-230.8-68.1-347.6-92.2C492.8 707.1 489.4 706.5 486 705.8z'/%3E%3Cpath fill='%2300a3cd' d='M1600 0H0v719.8c49-16.8 99.5-27.8 150.7-33.5c111.9-12.7 226-2.4 335.3 19.4c3.4 0.7 6.8 1.4 10.2 2c116.8 24 231.7 59 347.6 92.2H1600V0z'/%3E%3Cpath fill='%2300aedb' d='M478.4 581c3.2 0.8 6.4 1.7 9.5 2.5c196.2 52.5 388.7 133.5 593.5 176.6c174.2 36.6 349.5 29.2 518.6-10.2V0H0v574.9c52.3-17.6 106.5-27.7 161.1-30.9C268.4 537.4 375.7 554.2 478.4 581z'/%3E%3Cpath fill='%2300baea' d='M0 0v429.4c55.6-18.4 113.5-27.3 171.4-27.7c102.8-0.8 203.2 22.7 299.3 54.5c3 1 5.9 2 8.9 3c183.6 62 365.7 146.1 562.4 192.1c186.7 43.7 376.3 34.4 557.9-12.6V0H0z'/%3E%3Cpath fill='%2300c6f9' d='M181.8 259.4c98.2 6 191.9 35.2 281.3 72.1c2.8 1.1 5.5 2.3 8.3 3.4c171 71.6 342.7 158.5 531.3 207.7c198.8 51.8 403.4 40.8 597.3-14.8V0H0v283.2C59 263.6 120.6 255.7 181.8 259.4z'/%3E%3Cpath fill='%2349ccf9' d='M1600 0H0v136.3c62.3-20.9 127.7-27.5 192.2-19.2c93.6 12.1 180.5 47.7 263.3 89.6c2.6 1.3 5.1 2.6 7.7 3.9c158.4 81.1 319.7 170.9 500.3 223.2c210.5 61 430.8 49 636.6-16.6V0z'/%3E%3Cpath fill='%2368d2f9' d='M454.9 86.3C600.7 177 751.6 269.3 924.1 325c208.6 67.4 431.3 60.8 637.9-5.3c12.8-4.1 25.4-8.4 38.1-12.9V0H288.1c56 21.3 108.7 50.6 159.7 82C450.2 83.4 452.5 84.9 454.9 86.3z'/%3E%3Cpath fill='%2381d9f9' d='M1600 0H498c118.1 85.8 243.5 164.5 386.8 216.2c191.8 69.2 400 74.7 595 21.1c40.8-11.2 81.1-25.2 120.3-41.7V0z'/%3E%3Cpath fill='%2396dff9' d='M1397.5 154.8c47.2-10.6 93.6-25.3 138.6-43.8c21.7-8.9 43-18.8 63.9-29.5V0H643.4c62.9 41.7 129.7 78.2 202.1 107.4C1020.4 178.1 1214.2 196.1 1397.5 154.8z'/%3E%3Cpath fill='%23a9e5f9' d='M1315.3 72.4c75.3-12.6 148.9-37.1 216.8-72.4h-723C966.8 71 1144.7 101 1315.3 72.4z'/%3E%3C/g%3E%3C/svg%3E");
 background-attachment: fixed;
 background-size: cover;
     }
-    #whichStep.waiting {
+    body.waiting {
         background: black !important;
     }
-    #whichStep.waiting * {
+    body.waiting * {
         opacity: 0;
     }
     h1 {
@@ -265,32 +179,32 @@ background-size: cover;
         appearance: none;
     }
 
-    #whichStep.step-codeetprog div#sectionsContainer {
+    body.step-codeetprog div#sectionsContainer {
         transform: translate(0%, 0);
     }
-    #whichStep.step-codeetprog button#previous {
+    body.step-codeetprog button#previous {
         opacity: 0;
     }
-    #whichStep.step-hardware div#sectionsContainer {
+    body.step-hardware div#sectionsContainer {
         transform: translate(-20%, 0);
     }
-    #whichStep.step-bdd div#sectionsContainer {
+    body.step-bdd div#sectionsContainer {
         transform: translate(-40%, 0);
     }
-    #whichStep.step-comdigitale div#sectionsContainer {
+    body.step-comdigitale div#sectionsContainer {
         transform: translate(-60%, 0);
     }
-    #whichStep.step-adminreseau div#sectionsContainer {
+    body.step-adminreseau div#sectionsContainer {
         transform: translate(-80%, 0);
     }
-    #whichStep.step-adminreseau button#next {
+    body.step-adminreseau button#next {
         opacity: 0;
     }
 
-    #finalActions {
+    #actions {
         text-align: center;
     }
-    #finalActions button {
+    #actions button {
         -webkit-appearance: none;
         transition: all 0.2s linear;
         width: 28%;
@@ -306,14 +220,14 @@ background-size: cover;
         backdrop-filter: blur(4px);
         cursor: pointer;
     }
-    #finalActions button:hover {
+    #actions button:hover {
         background: radial-gradient(rgba(255,255,255,0.3), rgba(255,255,255,0.3), rgba(255,255,255,0.3),rgba(255,255,255,0.3),rgba(255,255,255,0.3),rgba(255,255,255,0.5));
     }
-    #finalActions button.disabled {
+    #actions button.disabled {
         opacity: 0.4;
         cursor: default;
     }
-    #finalActions button#restart {
+    #actions button#restart {
         margin-right: 10px;
     }
 
@@ -359,9 +273,8 @@ background-size: cover;
         background: rgba(255,255,255,0.4);
     }
     </style>
-<!-- END // Styles in head -->
-<%- include('../partials/header', { data: data }) %>
-<div id="whichStep" class="step-codeetprog">
+</head>
+<body class="step-codeetprog">
     <div class="fake_select fake_select_codeetprog">
         <ul>
             <li>Ada</li>
@@ -442,64 +355,14 @@ background-size: cover;
                 </section>
             </div>
         </div>
-        <div id="finalActions">
+        <div id="actions">
             <button id="restart">Recommencer le paramétrage de l'anti-virus</button>
             <button id="validate" class="disabled">Valider la création de l'anti-virus</button>
         </div>
     </div>
-</div>
-<div id="player">
-	<div class="module-media module-media-video">
-		<div class="module-media module-media-video-inner">
-			<video src="http://<%= data.config_server.ip + ':' + data.config_server.port %>/medias/dora_introduction.mp4" autoplay="on" id="module-media-video" width="100%" style="background-color: #000000;" controls></video>
-		</div>
-	</div>
-</div>
-<div id="actions">
-	<button id="goToFinalEnigme" class="button">Passer la vidéo</button>
-</div>
-
-<!-- START // Scripts in footer -->
-<script>
-$(document).ready(function() {
-	// var nextStep = '<%-data.currentStep.transitions[0].id %>';
-
-	// Paramétrage de la taille du player de la vidéo si nécessaire
-	var videoRatio = $('video').width() / $('video').height();
-	var ratio = $(window).width() / $(window).height();
-	if(videoRatio > ratio) {
-		$('video').width($(window).width());
-		$('video').height($(window).width() / videoRatio);
-	}
-	else {
-		$('video').height($(window).height());
-		$('video').width($(window).height() * videoRatio);
-	}
-
-	// A la fin de la vidéo, on lance le step suivant
-	$('video').on('ended',function() {
-		setTimeout(function(){
-			goToFinalEnigme();
-        }, 2000);
-	})
-
-	// Paramétrage du bouton pour passer la vidéo
-	$('#goToFinalEnigme').on('click', function(){
-		goToFinalEnigme();
-	});
-
-	// Affichage de la vidéo en grand
-	$('.module-media-video').on('click', function(e) {
-		e.preventDefault();
-		if($('body').hasClass('thumbnail')) {
-			$('body').removeClass('thumbnail');
-		}
-	})
-
-
-
-
-	///// ENIGME FINALE
+    <script src="fichiers-enigme-finale/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
 
         // Paramatréage
         var rightAnswerCodeetprog = "Python", rightAnswerHardware = "!", rightAnswerBdd = "3 AM", rightAnswerComdigitale = "2340", rightAnswerAdminreseau = "4C";
@@ -536,8 +399,7 @@ $(document).ready(function() {
                     break;
             }
             if(nextStep != "") {
-                $('#whichStep').removeClass().addClass('step-' + nextStep);
-                console.log(nextStep);
+                $('body').removeClass().addClass('step-' + nextStep);
             }
         });
 
@@ -594,17 +456,10 @@ $(document).ready(function() {
                 ) {
                 success = "1";
             }
-            $('#whichStep').addClass('waiting');
-            setTimeout(function(){ window.location = "lancement-anti-virus?s=" + success; }, 200);
+            $('body').addClass('waiting');
+            setTimeout(function(){ window.location = "fichiers-enigme-finale/enigme-finale-scanner.html?s=" + success; }, 200);
         })
-});
-
-
-// Pour aller à l'énigme finale
-function goToFinalEnigme() {
-	$('body').addClass('thumbnail');
-	$("video").each(function () { this.pause() });
-}
-</script>
-<!-- END // Scripts in footer -->
-<%- include('../partials/footer', { data: data }) %>
+    });
+    </script>
+</body>
+</html>
