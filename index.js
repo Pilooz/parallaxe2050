@@ -130,7 +130,7 @@ function setup_scenario_environment(stepId) {
     // io.emit('toclient.errorOnBadge', {data: { errorMsg : "WRONG_CODE_ON_WRONG_DEVICE", errorPage, "/badgeError" } });
     // @TODO : do something clever here !!! 
   }
-  logger.info( '------------------------------------------------------------' );
+  logger.info( '----------------' );
 }
 
 //------------------------------------------------------------------------
