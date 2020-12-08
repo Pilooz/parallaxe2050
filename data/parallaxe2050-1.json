@@ -6,6 +6,7 @@
     "steps" : [
         {
             "stepId" : "step-1",
+            "stepTitle" : "Introduction par Dora",
             "title" : "Typing intro",
             "template" : "step-1_typing-intro",
             "medias" : [],
@@ -33,6 +34,7 @@
 
         {
             "stepId" : "step-2",
+            "stepTitle" : "Console réseau",
             "title" : "Console réseau",
             "template" : "step-2_console",
             "serverData" :[
@@ -79,6 +81,7 @@
 
         {
             "stepId" : "step-3",
+            "stepTitle" : "Message de Dora",
             "title" : "Typing outro",
             "template" : "step-3_typing-outro",
             "medias" : [],
@@ -106,6 +109,7 @@
 
         {
             "stepId" : "step-4",
+            "stepTitle" : "Fin du jeu, attente de badge",
             "title" : "End. Waiting for session...",
             "template" : "../waiting",
             "medias" : [],
