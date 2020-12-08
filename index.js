@@ -281,6 +281,8 @@ router.all('/*', function (req, res, next) {
   // mettre toutes les requests dans un seul objet.
   httpRequests = req.query; // according to the use of express
 
+  // Autoriser les ressources cross-origin entre les serveurs
+  res.header("Access-Control-Allow-Origin", "*");
   // Send server config to client
   dataForTemplate.global_config = GLOBAL_CONFIG;
   dataForTemplate.config_server = CONFIG_SERVER;
