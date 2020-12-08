@@ -6,6 +6,7 @@
     "steps" : [
         {
             "stepId" : "step-1",
+            "stepTitle" : "",
             "title" : "Hardware",
             "template" : "../partials/player-video",
             "medias" : ["medias/hardware/laetitia-intro.mp4"],
@@ -33,6 +34,7 @@
 
         {
             "stepId" : "step-2",
+            "stepTitle" : "",
             "title" : "Hardware",
             "template" : "../hardware/step-2",
             "medias" : [],
@@ -68,6 +70,7 @@
 
         {
             "stepId" : "step-3",
+            "stepTitle" : "",
             "title" : "Hardware",
             "template" : "../partials/player-video",
             "medias" : ["medias/hardware/laetitia-outro.mp4"],
@@ -95,6 +98,7 @@
 
         {
             "stepId" : "step-4",
+            "stepTitle" : "",
             "title" : "End. Waiting for session...",
             "template" : "../waiting",
             "medias" : [],

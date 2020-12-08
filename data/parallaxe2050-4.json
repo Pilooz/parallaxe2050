@@ -6,6 +6,7 @@
     "steps" : [
         {
             "stepId" : "step-1",
+            "stepTitle" : "",
             "title" : "Com Digitale",
             "template" : "step-1_ringing-INSTRUCTIONS",
             "medias" : [],
@@ -33,6 +34,7 @@
 
         {
             "stepId" : "step-2",
+            "stepTitle" : "",
             "title" : "knooter",
             "template" : "step-2_knooter-after-INSTRUCTIONS",
             "medias" : [],
@@ -97,6 +99,7 @@
         }, 
         {
             "stepId" : "step-3",
+            "stepTitle" : "",
             "title" : "Com Digitale",
             "template" : "step-3_ringing-THANKS",
             "medias" : [],
@@ -123,6 +126,7 @@
         },
         {
             "stepId" : "step-4",
+            "stepTitle" : "",
             "title" : "Knooter",
             "template" : "step-4_knooter-after-THANKS",
             "medias" : [],
@@ -155,6 +159,7 @@
         },
         {
             "stepId" : "step-5",
+            "stepTitle" : "",
             "title" : "Com Digitale",
             "template" : "step-5_ringing-BRAVO",
             "medias" : [],
@@ -182,6 +187,7 @@
 
         {
             "stepId" : "step-6",
+            "stepTitle" : "",
             "title" : "Knooter",
             "template" : "step-6_knooter-after-BRAVO",
             "medias" : [],
@@ -215,6 +221,7 @@
         
         {
             "stepId" : "step-7",
+            "stepTitle" : "",
             "title" : "End. Waiting for session...",
             "template" : "../waiting",
             "medias" : [],

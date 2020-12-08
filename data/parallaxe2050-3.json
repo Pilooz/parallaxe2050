@@ -6,6 +6,7 @@
     "steps" : [
         {
             "stepId" : "step-0",
+            "stepTitle" : "",
             "title" : "Instructions",
             "template" : "../partials/player-video",
             "medias" : ["medias/code-et-prog/marjorie-intro.mp4"],
@@ -39,6 +40,7 @@
 
         {
             "stepId" : "step-1",
+            "stepTitle" : "",
             "title" : "Code ou pas code ?",
             "template" : "step-1_code-pas-code",
             "medias" : [],
@@ -73,6 +75,7 @@
 
         {
             "stepId" : "step-1b",
+            "stepTitle" : "",
             "title" : "Instructions",
             "template" : "../partials/player-video",
             "medias" : ["medias/code-et-prog/marjorie-2.mp4"],
@@ -100,6 +103,7 @@
 
         {
             "stepId" : "step-2",
+            "stepTitle" : "",
             "title" : "Executer du code",
             "template" : "step-2_verify-letters",
             "medias" : [],
@@ -128,6 +132,7 @@
 
         {
             "stepId" : "step-2b",
+            "stepTitle" : "",
             "title" : "Instructions",
             "template" : "../partials/player-video",
             "medias" : ["medias/code-et-prog/marjorie-outro.mp4"],
@@ -155,6 +160,7 @@
 
         {
             "stepId" : "step-3",
+            "stepTitle" : "",
             "title" : "End. Waiting for session...",
             "template" : "../waiting",
             "medias" : [],

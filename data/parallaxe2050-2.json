@@ -6,6 +6,7 @@
     "steps" : [
         {
             "stepId" : "step-1",
+            "stepTitle" : "",
             "title" : "Base de données et datas",
             "template" : "../partials/player-video",
             "medias" : ["medias/bdd/marie-intro.mp4"],
@@ -33,6 +34,7 @@
 
         {
             "stepId" : "step-2",
+            "stepTitle" : "",
             "title" : "Base de données des serveurs",
             "template" : "bdd-graphiques",
             "medias" : [],
@@ -261,6 +263,7 @@
 
         {
             "stepId" : "step-3",
+            "stepTitle" : "",
             "title" : "Base de données et datas",
             "template" : "../partials/player-video",
             "medias" : ["medias/bdd/marie-outro.mp4"],
@@ -288,6 +291,7 @@
 
         {
             "stepId" : "step-4",
+            "stepTitle" : "",
             "title" : "End. Waiting for session...",
             "template" : "../waiting",
             "medias" : [],
