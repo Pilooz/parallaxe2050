@@ -316,7 +316,7 @@ background-size: cover;
     #finalActions button {
         -webkit-appearance: none;
         transition: all 0.2s linear;
-        width: 28%;
+        width: 35%;
         padding: 20px;
         border-radius: 5px;
         outline: none;
@@ -440,7 +440,7 @@ background-size: cover;
                     <div>
                         <label>Heure d'envoi</label>
                         <p>Sur quel créneau horaire l'anti-virus doit être envoyé sur le réseau ?</p>
-                        <input type="text" name="bdd" value="Choisir" />
+                        <input type="text" name="bdd" value="Choisir" readonly="readonly" />
                         <button>Valider l'heure d'envoi</button>
                     </div>
                 </section>
@@ -471,163 +471,108 @@ background-size: cover;
         </div>
     </div>
 </div>
-<div id="player">
-	<div class="module-media module-media-video">
-		<div class="module-media module-media-video-inner">
-			<video src="http://<%= data.config_server.ip + ':' + data.config_server.port %>/medias/dora_introduction.mp4" autoplay="on" id="module-media-video" width="100%" style="background-color: #000000;" controls></video>
-		</div>
-	</div>
-</div>
-<div id="actions">
-	<button id="goToFinalEnigme" class="button">Passer la vidéo</button>
-</div>
 
 <!-- START // Scripts in footer -->
 <script>
 $(document).ready(function() {
-	// var nextStep = '<%-data.currentStep.transitions[0].id %>';
 
-	// Paramétrage de la taille du player de la vidéo si nécessaire
-	var videoRatio = $('video').width() / $('video').height();
-	var ratio = $(window).width() / $(window).height();
-	if(videoRatio > ratio) {
-		$('video').width($(window).width());
-		$('video').height($(window).width() / videoRatio);
-	}
-	else {
-		$('video').height($(window).height());
-		$('video').width($(window).height() * videoRatio);
-	}
-
-	// A la fin de la vidéo, on lance le step suivant
-	$('video').on('ended',function() {
-		setTimeout(function(){
-			goToFinalEnigme();
-        }, 2000);
-	})
-
-	// Paramétrage du bouton pour passer la vidéo
-	$('#goToFinalEnigme').on('click', function(){
-		goToFinalEnigme();
-	});
-
-	// Affichage de la vidéo en grand
-	$('.module-media-video').on('click', function(e) {
-		e.preventDefault();
-		if($('body').hasClass('thumbnail')) {
-			$('body').removeClass('thumbnail');
-		}
-	})
-
-
-
-
-	///// ENIGME FINALE
-
-        // Paramatréage
-        var rightAnswerCodeetprog = "Python", rightAnswerHardware = "!", rightAnswerBdd = "3 AM", rightAnswerComdigitale = "2340", rightAnswerAdminreseau = "4C";
-        var answerCodeetprog, answerHardware, answerBdd, answerComdigitale, answerAdminreseau;
-        
-        // Passage d'une étape à l'autre
-        var nextStep;
-        var section;
-        $('section button').on('click', function(e) {
-            section = $(this).parents('section');
-            switch(section.data('name')) {
-                case 'codeetprog':
-                    answerCodeetprog = $('#codeetprog input').val();
-                    nextStep = "hardware";
-                    // $('#hardware input').focus();
-                    break;
-                case 'hardware':
-                    answerHardware = $('#hardware input').val();
-                    nextStep = "bdd";
-                    break;
-                case 'bdd':
-                    answerBdd = $('#bdd input').val();
-                    nextStep = "comdigitale";
-                    // $('#comdigitale input').focus();
-                    break;
-                case 'comdigitale':
-                    answerComdigitale = $('#comdigitale input').val();
-                    nextStep = "adminreseau";
-                    // $('#adminreseau input').focus();
-                    break;
-                case 'adminreseau':
-                    answerAdminreseau = $('#adminreseau input').val();
-                    $('#validate').removeClass('disabled');
-                    break;
-            }
-            if(nextStep != "") {
-                $('#whichStep').removeClass().addClass('step-' + nextStep);
-                console.log(nextStep);
-            }
-        });
+    // Paramatréage
+    var rightAnswerCodeetprog = "Python", rightAnswerHardware = "!", rightAnswerBdd = "3 AM", rightAnswerComdigitale = "2340", rightAnswerAdminreseau = "4C";
+    var answerCodeetprog, answerHardware, answerBdd, answerComdigitale, answerAdminreseau;
+    
+    // Passage d'une étape à l'autre
+    var nextStep;
+    var section;
+    $('section button').on('click', function(e) {
+        section = $(this).parents('section');
+        switch(section.data('name')) {
+            case 'codeetprog':
+                answerCodeetprog = $('#codeetprog input').val();
+                nextStep = "hardware";
+                // $('#hardware input').focus();
+                break;
+            case 'hardware':
+                answerHardware = $('#hardware input').val();
+                nextStep = "bdd";
+                break;
+            case 'bdd':
+                answerBdd = $('#bdd input').val();
+                nextStep = "comdigitale";
+                // $('#comdigitale input').focus();
+                break;
+            case 'comdigitale':
+                answerComdigitale = $('#comdigitale input').val();
+                nextStep = "adminreseau";
+                // $('#adminreseau input').focus();
+                break;
+            case 'adminreseau':
+                answerAdminreseau = $('#adminreseau input').val();
+                $('#validate').removeClass('disabled');
+                break;
+        }
+        if(nextStep != "") {
+            $('#whichStep').removeClass().addClass('step-' + nextStep);
+            console.log(nextStep);
+        }
+    });
 
 
-        // Redémarrage de la page
-        $('#restart').on('click', function(e) {
-            e.preventDefault();
-            location.reload(true);
-        })
+    // Redémarrage de la page
+    $('#restart').on('click', function(e) {
+        e.preventDefault();
+        location.reload(true);
+    })
 
-        // Fake select
-        $('#codeetprog input').on('click', function(e) {
-            e.preventDefault();
-            $('.fake_select.fake_select_codeetprog').addClass('show');
-        })
-        $('#bdd input').on('click', function(e) {
-            e.preventDefault();
-            $('.fake_select.fake_select_bdd').addClass('show');
-        })
-        $('.fake_select li').on('click', function(e) {
-            e.preventDefault();
-            $('.fake_select').removeClass('show');
-            if($(this).parents('.fake_select').hasClass('fake_select_codeetprog')) {
-                $('#codeetprog input').val($(this).html());
-            }
-            if($(this).parents('.fake_select').hasClass('fake_select_bdd')) {
-                $('#bdd input').val($(this).html());
-            }
-        })
+    // Fake select
+    $('#codeetprog input').on('click', function(e) {
+        e.preventDefault();
+        $('.fake_select.fake_select_codeetprog').addClass('show');
+    })
+    $('#bdd input').on('click', function(e) {
+        e.preventDefault();
+        $('.fake_select.fake_select_bdd').addClass('show');
+    })
+    $('.fake_select li').on('click', function(e) {
+        e.preventDefault();
+        $('.fake_select').removeClass('show');
+        if($(this).parents('.fake_select').hasClass('fake_select_codeetprog')) {
+            $('#codeetprog input').val($(this).html());
+        }
+        if($(this).parents('.fake_select').hasClass('fake_select_bdd')) {
+            $('#bdd input').val($(this).html());
+        }
+    })
 
 
 
-        // Bouton de validation
-        $('#validate').on('click', function(e) {
-            e.preventDefault();
-            // console.log("rightAnswerCodeetprog", rightAnswerCodeetprog);
-            // console.log("answerCodeetprog", answerCodeetprog);
-            // console.log("rightAnswerHardware", rightAnswerHardware);
-            // console.log("answerHardware", answerHardware);
-            // console.log("rightAnswerBdd", rightAnswerBdd);
-            // console.log("answerBdd", answerBdd);
-            // console.log("rightAnswerComdigitale", rightAnswerComdigitale);
-            // console.log("answerComdigitale", answerComdigitale);
-            // console.log("rightAnswerAdminreseau", rightAnswerAdminreseau);
-            // console.log("answerAdminreseau", answerAdminreseau);
-            var success = "0";
-            if(
-                (answerCodeetprog == "Choisir" || answerCodeetprog == "Aucune idée" || answerCodeetprog == rightAnswerCodeetprog) &&
-                (answerHardware == "" || answerHardware == rightAnswerHardware) &&
-                (answerBdd == "Choisir" || answerBdd == "Aucune idée" || answerBdd == rightAnswerBdd) &&
-                (answerComdigitale == "" || answerComdigitale == rightAnswerComdigitale) &&
-                (answerAdminreseau == "" || answerAdminreseau == rightAnswerAdminreseau) &&
-                (answerCodeetprog == rightAnswerCodeetprog || answerHardware == rightAnswerHardware || answerBdd == rightAnswerBdd || answerComdigitale == rightAnswerComdigitale || answerAdminreseau == rightAnswerAdminreseau)
-                ) {
-                success = "1";
-            }
-            $('#whichStep').addClass('waiting');
-            setTimeout(function(){ window.location = "lancement-anti-virus?s=" + success; }, 200);
-        })
+    // Bouton de validation
+    $('#validate').on('click', function(e) {
+        e.preventDefault();
+        // console.log("rightAnswerCodeetprog", rightAnswerCodeetprog);
+        // console.log("answerCodeetprog", answerCodeetprog);
+        // console.log("rightAnswerHardware", rightAnswerHardware);
+        // console.log("answerHardware", answerHardware);
+        // console.log("rightAnswerBdd", rightAnswerBdd);
+        // console.log("answerBdd", answerBdd);
+        // console.log("rightAnswerComdigitale", rightAnswerComdigitale);
+        // console.log("answerComdigitale", answerComdigitale);
+        // console.log("rightAnswerAdminreseau", rightAnswerAdminreseau);
+        // console.log("answerAdminreseau", answerAdminreseau);
+        var success = "0";
+        if(
+            (answerCodeetprog == "Choisir" || answerCodeetprog == "Aucune idée" || answerCodeetprog == rightAnswerCodeetprog) &&
+            (answerHardware == "" || answerHardware == rightAnswerHardware) &&
+            (answerBdd == "Choisir" || answerBdd == "Aucune idée" || answerBdd == rightAnswerBdd) &&
+            (answerComdigitale == "" || answerComdigitale == rightAnswerComdigitale) &&
+            (answerAdminreseau == "" || answerAdminreseau == rightAnswerAdminreseau) &&
+            (answerCodeetprog == rightAnswerCodeetprog || answerHardware == rightAnswerHardware || answerBdd == rightAnswerBdd || answerComdigitale == rightAnswerComdigitale || answerAdminreseau == rightAnswerAdminreseau)
+            ) {
+            success = "1";
+        }
+        $('#whichStep').addClass('waiting');
+        setTimeout(function(){ window.location = "lancement-anti-virus?s=" + success; }, 200);
+    })
 });
-
-
-// Pour aller à l'énigme finale
-function goToFinalEnigme() {
-	$('body').addClass('thumbnail');
-	$("video").each(function () { this.pause() });
-}
 </script>
 <!-- END // Scripts in footer -->
 <%- include('../partials/footer', { data: data }) %>
