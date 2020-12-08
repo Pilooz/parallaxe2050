@@ -6,10 +6,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <meta name="mobile-web-app-capable" content="yes">
 
-        <title>Parallaxe :: Monitoring</title>
+        <title>Administration de Parallaxe 2050</title>
         <meta name="theme-color" content="#ffffff">
 
-        <link href="/css/bootswatch/bootstrap.min.css" rel="stylesheet">
+        <!-- <link href="/css/bootswatch/bootstrap.min.css" rel="stylesheet"> -->
+        <link href="/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
         <script src="/js/jquery.min.js"></script>    
         <script src="/socket.io/socket.io.js"></script>
@@ -20,6 +21,9 @@
         <script src="/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>        
 
  <style>
+ body {
+    background: #dfdfdf;
+ }
     .AdminReseauBg, .BDDBg, .ComDigitaleBg, .CodeEtProgBg .HardwareBg{
         color:white;
     }
@@ -35,11 +39,6 @@
 
     .controlActivity, .controlActivity:hover {
         color:white;
-    }
-
-    .col-md-2 {
-        flex: 0 0 20%;
-        max-width: 20%;
     }
 
     /********* formulaire de mode de jeu ************/
@@ -79,24 +78,107 @@
         transition: all 0.2s linear;
          margin-top: 10px;
      }
+    /******** First line ********/
+    #firstLine {
+        margin-bottom: 10px;
+    }
+    #firstLine .col-md-8 .btn {
+        margin-top: 10px;
+        margin-right: 10px;
+    }
+
+    /******** Global settings *********/
+    #gameModeCard #gameMode {
+        margin-bottom: 10px;
+    }
+    #gameModeCard .card-body > label {
+        margin: 0;
+        display: inline-block;
+    }
+    #gameModeCard .card-body > em {
+        display: block;
+        font-size: 14px;
+        line-height: 20px;
+        margin-bottom: 10px;
+    }
+    #gameModeCard #btnInitAll {
+        /*margin-top: 10px;*/
+    }
+
+
+
+    /******** Lights effects ********/
 
     /* glitter the stepTitle when changed */
-    .changed {
-        /*background-color: #fff;*/
+    /*.changed {
         box-shadow:
             0 0 30px 10px #fff,
             0 0 40px 20px #f0f,
-            0 0 70px 50px #0ff !important; /* Inner white + Middle Magena + Outer Cyan */
-    }
+            0 0 70px 50px #0ff !important;
+    }*/
 
-    .smooth_changed {
-        /*background-color: #aaa;*/
+    /*.smooth_changed {
         box-shadow:
             0 0 30px 10px #fff,
             0 0 40px 20px #f0f,
-            0 0 70px 50px #0ff !important; /* Inner white + Middle Magena + Outer Cyan */
+            0 0 70px 50px #0ff !important;
+    }*/
+
+    #AdminReseau .changed,
+    #AdminReseau .smooth_changed {
+        box-shadow:
+            0 0 30px 5px rgb(0, 198, 249) !important;
+    }
+    #BDD .changed,
+    #BDD .smooth_changed {
+        box-shadow:
+            0 0 30px 5px rgb(114, 0, 254) !important;
+    }
+    #CodeEtProg .changed,
+    #CodeEtProg .smooth_changed {
+        box-shadow:
+            0 0 30px 5px rgb(23, 218, 126) !important;
+    }
+    #ComDigitale .changed,
+    #ComDigitale .smooth_changed {
+        box-shadow:
+            0 0 30px 5px rgb(249, 110, 0) !important;
+    }
+    #Hardware .changed,
+    #Hardware .smooth_changed {
+        box-shadow:
+            0 0 30px 5px rgb(255, 0, 116) !important;
     }
 
+    .btn {
+        text-align: left;
+        font-size: 14px;
+    }
+
+    /********* Activities ********/
+    #activities {
+        display: flex;
+        align-items: stretch;
+    }
+    #activities .col-md-2 {
+        flex: 0 0 20%;
+        max-width: 20%;
+
+    }
+    #activities .col-md-2 > div {
+        height: 100%;
+    }
+    h6.card-header {
+        color: white;
+        min-height: 63px;
+        border-radius: 4px 4px 0 0;
+        border-bottom: none;
+    }
+    #activities #nextStep {
+        margin-bottom: 10px;
+    }
+
+    /*********** Spinners *************/
     .customSpinner {
         transition: 0.2s linear all;
         position: absolute;
@@ -111,6 +193,7 @@
         justify-content: center;
         background: rgba(0,0,0,0.8);
         text-align: center;
+        color: white;
     }
     .customSpinner.hidden {
         opacity: 0;
@@ -136,36 +219,27 @@
 <!-- Begin page content -->
 <main role="main" class="container-fluid">
 
-    <div class="row">
-        
+    <div class="row" id="firstLine">
         <div class="col-md-4">
             <div id="gameModeCard" class="card mb-4 border-light shadow-sm">
                 <h5 class="card-header">
                     <span class="activityTitle">Contrôles généraux du jeu</span>
                 </h5>
                 <div class="card-body">
-                    <p class="card-text">
-                        <div class="btn-group btn-group-toggle" id="gameMode" data-toggle="buttons">
-                            <label class="btn btn-warning active" for="gameModeChkEducatif">
-                                <input type="radio" name="gameModeChk" id="gameModeChkEducatif" value="classroom" checked> Educatif
-                            </label>
-                            <label class="btn btn-warning" for="gameModeChkClassique">
-                                <input type="radio" name="gameModeChk" id="gameModeChkClassique" value="classical"> Classique
-                            </label>
-                        </div>
-
-                        <!-- <input id="gameModeChk" type="checkbox" class="" checked data-toggle="toggle" data-on="Educatif" data-off="Classique" data-onstyle="primary" data-offstyle="info"> -->
-                        <br /><br />
-                        <label class="badge badge-info">Educatif</label>
-                        <br />
-                        <em>Le container est paramétré pour une classe. Les sessions de jeu sont de 15 minutes.</em>
-                        <br /><br />
-                        <label class="badge badge-info">Classique</label>
-                        <br />
-                        <em>Le container est en mode escape game classique, il est éventuellement ouvert, et les sessions de jeu sont de 45 minutes.</em>
-                        <br /><br />
-                        <button id="btnInitAll" type="button" class="btn btn-warning">Initialisation pour un nouveau groupe</button>
-                    </p>
+                    <div class="btn-group btn-group-toggle" id="gameMode" data-toggle="buttons">
+                        <label class="btn btn-warning active" for="gameModeChkEducatif">
+                            <input type="radio" name="gameModeChk" id="gameModeChkEducatif" value="classroom" checked> Educatif
+                        </label>
+                        <label class="btn btn-warning" for="gameModeChkClassique">
+                            <input type="radio" name="gameModeChk" id="gameModeChkClassique" value="classical"> Classique
+                        </label>
+                    </div>
+                    <br />
+                    <label class="badge badge-info">Educatif</label>
+                    <em>Le container est paramétré pour une classe. Les sessions de jeu sont de 15 minutes.</em>
+                    <label class="badge badge-info">Classique</label>
+                    <em>Le container est en mode escape game classique, il est éventuellement ouvert, et les sessions de jeu sont de 45 minutes.</em>
+                    <button id="btnInitAll" type="button" class="btn btn-warning">Initialisation pour un nouveau groupe</button>
                 </div>
             </div>
         </div>
@@ -173,20 +247,17 @@
         <div class="col-md-8">
             <div class="card mb-8 border-light shadow-sm">
                 <h5 class="card-header">
-                    <svg style="float:right;" width="32px" height="32px" viewBox="0 0 16 16" class="bi bi-stopwatch" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M6 .5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1H9v1.07A7.001 7.001 0 0 1 8 16 7 7 0 0 1 7 2.07V1h-.5A.5.5 0 0 1 6 .5zM8 3a6 6 0 1 0 .001 12A6 6 0 0 0 8 3zm0 2.1a.5.5 0 0 1 .5.5V9a.5.5 0 0 1-.5.5H4.5a.5.5 0 0 1 0-1h3V5.6a.5.5 0 0 1 .5-.5z"/>
-                    </svg>
                     <span class="activityTitle">Chronomètre</span>
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
                         <iframe src="/timer" width="100%" height="250px"></iframe>
 
-                        <a class="btn btn-primary controlTimerBtn" id="reset" href="#">Reinitialiser le décompte</a>
+                        <a class="btn btn-warning controlTimerBtn" id="reset" href="#">Reinitialiser le décompte</a>
                       
-                        <a class="btn btn-primary controlTimerBtn" id="stop" href="#">Mettre le décompte sur pause</a>
+                        <a class="btn btn-warning controlTimerBtn" id="stop" href="#">Mettre le décompte sur pause</a>
 
-                        <a class="btn btn-primary controlTimerBtn" id="start" href="#">Lancer le décompte</a>
+                        <a class="btn btn-warning controlTimerBtn" id="start" href="#">Lancer le décompte</a>
                     </p>
 
                 </div>
@@ -195,7 +266,7 @@
 
     </div>
 
-    <div class="row">
+    <div class="row" id="activities">
         <!-- Loop on each game  -->
 <% data.global_config.servers.forEach(function(server) { %>
         <div class="col-md-2">
@@ -210,18 +281,14 @@
                         Redémarrage<br />de l'activité en cours
                     </div>
                 </div>
-                <h5 class="card-header">
+                <h6 class="card-header">
                     <span class="activityTitle"><%= server.description %></span>
-                </h5>
+                </h6>
                 <div class="card-body">
                     <strong><u>Etape en cours :</u></strong> <span class="stepTitle" id="stepTitle">Aucune étape en cours.<br />Passer le badger pour démarrer l'activité</span><span class="badge badge-default" id="totalsteps"></span>
                     <br /><br />
-                    <a id="nextStep" href="#" class="btn btn-primary" title="Passer à l'étape suivante">Passer à l'étape suivante</a>
-                    <br /><br />
-                    <a id="restart" href="#" class="btn btn-primary"  title="Redémarrer l'activité">Réinitialiser l'activité</a>
-                    <div class="d-flex flex-row-reverse">
-                        <p id="" class="text-muted elapsedTime"></p>
-                    </div>
+                    <a id="nextStep" href="#" class="btn btn-warning" title="Passer à l'étape suivante">Passer à l'étape suivante</a>
+                    <a id="restart" href="#" class="btn btn-warning"  title="Redémarrer l'activité">Réinitialiser l'activité</a>
                 </div>
             </div>
         </div>
@@ -303,6 +370,7 @@
 
         // Receiving Current Step of game
         socket_<%= server.id %>.on('toclient.newGameStep_<%= server.id %>', function(data) {
+            console.log(data);
             $("#<%= server.id %> .stepTitle").html(data.stepTitle);
             highlight($("#<%= server.id %>"));
             var etapesMsg = (data.totalSteps == 0) ? "En attente de scan RFID..." : data.totalSteps + " étapes au total.";
@@ -331,9 +399,10 @@
         // Activity controls  : Restart
         //
         $("#<%= server.id %> #restart").on('click', function(e) {
-
-            $('#<%= server.id %>Spinner').removeClass('hidden');
-            highlight($(this).parent().parent(), "smooth_changed");
+            highlight($(this), "smooth_changed");
+            setTimeout(function(e) {
+                $('#<%= server.id %>Spinner').removeClass('hidden');
+            }, 170);
             $.get( "http://<%= server.ip %>:<%= server.port %>/api/restart", function(data) {});
             e.preventDefault();
         });
@@ -342,19 +411,10 @@
         // nextStep
         //
         $("#<%= server.id %> #nextStep").on('click', function(e) {
-            highlight($(this).parent().parent(), "smooth_changed");
+            highlight($(this), "smooth_changed");
             $.get( "http://<%= server.ip %>:<%= server.port %>/api/nextStep", function(data) {});
             e.preventDefault();
         });
-
-        //
-        // Refresh 
-        //
-        // $("#<%= server.id %> #refresh").on('click', function(e) {
-        //     highlight($(this), "smooth_changed");
-        //     $.get( "http://<%= server.ip %>:<%= server.port %>/api/refresh", function(data) {});
-        //     e.preventDefault();
-        // });
 
 <% }) %>
         // <- ]
