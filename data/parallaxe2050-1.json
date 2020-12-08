@@ -81,7 +81,7 @@
 
         {
             "stepId" : "step-3",
-            "stepTitle" : "Message de Dora",
+            "stepTitle" : "Message de fin de Dora",
             "title" : "Typing outro",
             "template" : "step-3_typing-outro",
             "medias" : [],

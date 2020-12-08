@@ -79,7 +79,7 @@
          margin-top: 10px;
      }
 
-    /* glitter the stepId when changed */
+    /* glitter the stepTitle when changed */
     .changed {
         background-color: #fff;
         box-shadow:
@@ -169,7 +169,7 @@
                     <span class="activityTitle"><%= server.description %></span>
                 </h5>
                 <div class="card-body">
-                    <strong><u>Etape en cours :</u></strong> <span class="stepId" id="">Aucune étape en cours.<br />Passer le badger pour démarrer l'activité</span><span class="badge badge-default" id="totalsteps"></span>
+                    <strong><u>Etape en cours :</u></strong> <span class="stepTitle" id="stepTitle">Aucune étape en cours.<br />Passer le badger pour démarrer l'activité</span><span class="badge badge-default" id="totalsteps"></span>
                     <br /><br />
                     <a id="nextStep" href="#" class="btn btn-primary" title="Passer à l'étape suivante">Passer à l'étape suivante</a>
                     <br /><br />
@@ -265,7 +265,7 @@
             socket_timer.emit('toserver.timerControl',  { action: action, gameMode: gameMode } );
         });
 
-        // Listener sur le le boutons gameMode
+        // Listener sur le boutons gameMode
         $('#gameMode label').on('click', function(e) {
             e.preventDefault();
             $('#gameMode label').removeClass('active');
@@ -323,8 +323,8 @@
 
         // Receiving Current Step of game
         socket_<%= server.id %>.on('toclient.newGameStep_<%= server.id %>', function(data) {
-            $("#<%= server.id %> .stepId").html(data.stepId);
-            highlight($("#<%= server.id %> .stepId"));
+            $("#<%= server.id %> .stepTitle").html(data.stepTitle);
+            highlight($("#<%= server.id %> .stepTitle"));
             var etapesMsg = (data.totalSteps == 0) ? "En attente de scan RFID..." : data.totalSteps + " étapes au total.";
             $("#<%= server.id %> .totalsteps").html(etapesMsg);
             highlight($("#<%= server.id %> .totalsteps"));
