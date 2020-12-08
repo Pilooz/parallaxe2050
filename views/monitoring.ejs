@@ -188,12 +188,12 @@
                             </svg>
                         </a>
 
-                        <a id="refresh" href="#" class="btn btn-default controlActivity" title="Raffraichir l'étape actuelle">
+                        <!-- <a id="refresh" href="#" class="btn btn-default controlActivity" title="Raffraichir l'étape actuelle">
                             <svg width="32" height="32" viewBox="0 0 16 16" class="bi bi-arrow-clockwise" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
                                 <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
                             </svg>
-                        </a>
+                        </a> -->
 
                         <a id="nextStep" href="#" class="btn btn-default controlActivity" title="Passer à l'étape suivante">
                             <svg width="32" height="32" viewBox="0 0 16 16" class="bi bi-skip-forward" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -372,7 +372,7 @@
         });
 
         //
-        // Activity controls  : Restart / nextStep
+        // Activity controls  : Restart
         //
         $("#<%= server.id %> #restart").on('click', function(e) {
             highlight($(this), "smooth_changed");
@@ -392,11 +392,11 @@
         //
         // Refresh 
         //
-        $("#<%= server.id %> #refresh").on('click', function(e) {
-            highlight($(this), "smooth_changed");
-            $.get( "http://<%= server.ip %>:<%= server.port %>/api/refresh", function(data) {});
-            e.preventDefault();
-        });
+        // $("#<%= server.id %> #refresh").on('click', function(e) {
+        //     highlight($(this), "smooth_changed");
+        //     $.get( "http://<%= server.ip %>:<%= server.port %>/api/refresh", function(data) {});
+        //     e.preventDefault();
+        // });
 
 <% }) %>
         // <- ]
