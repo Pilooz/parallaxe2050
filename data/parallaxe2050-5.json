@@ -6,7 +6,7 @@
     "steps" : [
         {
             "stepId" : "step-1",
-            "stepTitle" : "",
+            "stepTitle" : "Message de Laetitia",
             "title" : "Hardware",
             "template" : "../partials/player-video",
             "medias" : ["medias/hardware/laetitia-intro.mp4"],
@@ -34,7 +34,7 @@
 
         {
             "stepId" : "step-2",
-            "stepTitle" : "",
+            "stepTitle" : "Enigme sur le câblage du Girlduino",
             "title" : "Hardware",
             "template" : "../hardware/step-2",
             "medias" : [],
@@ -70,7 +70,7 @@
 
         {
             "stepId" : "step-3",
-            "stepTitle" : "",
+            "stepTitle" : "Message de Laetitia (Bravo...)",
             "title" : "Hardware",
             "template" : "../partials/player-video",
             "medias" : ["medias/hardware/laetitia-outro.mp4"],
@@ -98,7 +98,7 @@
 
         {
             "stepId" : "step-4",
-            "stepTitle" : "",
+            "stepTitle" : "Fin du jeu, attente de badge",
             "title" : "End. Waiting for session...",
             "template" : "../waiting",
             "medias" : [],

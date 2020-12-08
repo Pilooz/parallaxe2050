@@ -6,7 +6,7 @@
     "steps" : [
         {
             "stepId" : "step-0",
-            "stepTitle" : "",
+            "stepTitle" : "Instructions par Marjorie",
             "title" : "Instructions",
             "template" : "../partials/player-video",
             "medias" : ["medias/code-et-prog/marjorie-intro.mp4"],
@@ -40,7 +40,7 @@
 
         {
             "stepId" : "step-1",
-            "stepTitle" : "",
+            "stepTitle" : "Enigme Code/Pas Code",
             "title" : "Code ou pas code ?",
             "template" : "step-1_code-pas-code",
             "medias" : [],
@@ -75,7 +75,7 @@
 
         {
             "stepId" : "step-1b",
-            "stepTitle" : "",
+            "stepTitle" : "Message de Marjorie",
             "title" : "Instructions",
             "template" : "../partials/player-video",
             "medias" : ["medias/code-et-prog/marjorie-2.mp4"],
@@ -103,7 +103,7 @@
 
         {
             "stepId" : "step-2",
-            "stepTitle" : "",
+            "stepTitle" : "Enigme de programmation",
             "title" : "Executer du code",
             "template" : "step-2_verify-letters",
             "medias" : [],
@@ -132,7 +132,7 @@
 
         {
             "stepId" : "step-2b",
-            "stepTitle" : "",
+            "stepTitle" : "Message de Marjorie",
             "title" : "Instructions",
             "template" : "../partials/player-video",
             "medias" : ["medias/code-et-prog/marjorie-outro.mp4"],
@@ -160,7 +160,7 @@
 
         {
             "stepId" : "step-3",
-            "stepTitle" : "",
+            "stepTitle" : "Fin du jeu, attente de badge",
             "title" : "End. Waiting for session...",
             "template" : "../waiting",
             "medias" : [],
