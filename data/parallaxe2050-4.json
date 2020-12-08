@@ -6,7 +6,7 @@
     "steps" : [
         {
             "stepId" : "step-1",
-            "stepTitle" : "Instruction téléphoniques par Marguerite",
+            "stepTitle" : "Instructions téléphoniques par Marguerite",
             "title" : "Com Digitale",
             "template" : "step-1_ringing-INSTRUCTIONS",
             "medias" : [],
@@ -99,7 +99,7 @@
         }, 
         {
             "stepId" : "step-3",
-            "stepTitle" : "Message de Marguerite (Merci...)",
+            "stepTitle" : "Message de Marguerite (C'est encore Marguerite...)",
             "title" : "Com Digitale",
             "template" : "step-3_ringing-THANKS",
             "medias" : [],
@@ -126,7 +126,7 @@
         },
         {
             "stepId" : "step-4",
-            "stepTitle" : "Enigme de publication d'une Knoot",
+            "stepTitle" : "Enigme de publication d'une knoot",
             "title" : "Knooter",
             "template" : "step-4_knooter-after-THANKS",
             "medias" : [],
@@ -159,7 +159,7 @@
         },
         {
             "stepId" : "step-5",
-            "stepTitle" : "Message de Marguerite ( Bravo... )",
+            "stepTitle" : "Message de fin de Marguerite (J'ai vu votre knoot...)",
             "title" : "Com Digitale",
             "template" : "step-5_ringing-BRAVO",
             "medias" : [],

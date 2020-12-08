@@ -6,7 +6,7 @@
     "steps" : [
         {
             "stepId" : "step-0",
-            "stepTitle" : "Instructions par Marjorie",
+            "stepTitle" : "Introduction par Marjorie",
             "title" : "Instructions",
             "template" : "../partials/player-video",
             "medias" : ["medias/code-et-prog/marjorie-intro.mp4"],
@@ -75,7 +75,7 @@
 
         {
             "stepId" : "step-1b",
-            "stepTitle" : "Message de Marjorie",
+            "stepTitle" : "Suite des instructions de Marjorie",
             "title" : "Instructions",
             "template" : "../partials/player-video",
             "medias" : ["medias/code-et-prog/marjorie-2.mp4"],
@@ -132,7 +132,7 @@
 
         {
             "stepId" : "step-2b",
-            "stepTitle" : "Message de Marjorie",
+            "stepTitle" : "Message de fin de Marjorie",
             "title" : "Instructions",
             "template" : "../partials/player-video",
             "medias" : ["medias/code-et-prog/marjorie-outro.mp4"],
