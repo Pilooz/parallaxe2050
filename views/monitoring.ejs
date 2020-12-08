@@ -37,6 +37,11 @@
         color:white;
     }
 
+    .col-md-2 {
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+
     /********* formulaire de mode de jeu ************/
     #gameModeCard div.alert {
         margin-top:10px;
@@ -71,41 +76,63 @@
     }
 
     .card {
+        transition: all 0.2s linear;
          margin-top: 10px;
      }
 
-    /* glitter the stepId when changed */
+    /* glitter the stepTitle when changed */
     .changed {
-        background-color: #fff;
+        /*background-color: #fff;*/
         box-shadow:
-            0 0 60px 30px #fff,  /* inner white */
-            0 0 100px 60px #f0f, /* middle magenta */
-            0 0 140px 90px #0ff; /* outer cyan */
+            0 0 30px 10px #fff,
+            0 0 40px 20px #f0f,
+            0 0 70px 50px #0ff !important; /* Inner white + Middle Magena + Outer Cyan */
     }
 
     .smooth_changed {
-        background-color: #aaa;
+        /*background-color: #aaa;*/
         box-shadow:
-            0 0 30px 20px #fff,  /* inner white */
-            0 0 60px 30px #f0f, /* middle magenta */
-            0 0 90px 60px #0ff; /* outer cyan */
+            0 0 30px 10px #fff,
+            0 0 40px 20px #f0f,
+            0 0 70px 50px #0ff !important; /* Inner white + Middle Magena + Outer Cyan */
+    }
+
+    .customSpinner {
+        transition: 0.2s linear all;
+        position: absolute;
+        z-index: 98;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0,0,0,0.8);
+        text-align: center;
+    }
+    .customSpinner.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+    #globalSpinner {
+        position: fixed;
+        z-index: 99;
     }
 
 </style>
 <body>
-    <header>
-      <div class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container d-flex justify-content-between">
-          <a href="#" class="navbar-brand d-flex align-items-center">
-            <strong>Parallaxe :: Monitoring</strong>
-          </a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+    <!-- Spinner for global page -->
+    <div id="globalSpinner" class="customSpinner hidden">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Redémarrage du serveur</span>
         </div>
-      </div>
-    </header>
-
+        <div>
+            <br />
+            <h4>Redémarrage du serveur en cours</h4>Cela peut prendre jusqu'à 60 secondes.
+        </div>
+    </div>
 <!-- Begin page content -->
 <main role="main" class="container-fluid">
 
@@ -114,24 +141,31 @@
         <div class="col-md-4">
             <div id="gameModeCard" class="card mb-4 border-light shadow-sm">
                 <h5 class="card-header">
-                    <span class="activityTitle">Mode de jeu</span>
+                    <span class="activityTitle">Contrôles généraux du jeu</span>
                 </h5>
                 <div class="card-body">
                     <p class="card-text">
-                        <input id="gameModeChk" type="checkbox" class="" checked data-toggle="toggle" data-on="Educatif" data-off="Classique" data-onstyle="primary" data-offstyle="info">
+                        <div class="btn-group btn-group-toggle" id="gameMode" data-toggle="buttons">
+                            <label class="btn btn-warning active" for="gameModeChkEducatif">
+                                <input type="radio" name="gameModeChk" id="gameModeChkEducatif" value="classroom" checked> Educatif
+                            </label>
+                            <label class="btn btn-warning" for="gameModeChkClassique">
+                                <input type="radio" name="gameModeChk" id="gameModeChkClassique" value="classical"> Classique
+                            </label>
+                        </div>
 
-                            <h5>Educatif</h5>
-                            <div class="alert alert-primary">
-                                <em>Le container est paramétré pour une classe. Les sessions de jeu sont de 15 minutes.</em>
-                            </div>
-
-                            <h5>Classique</h5>
-                            <div class="alert alert-info">
-                                <em>Le container est en mode escape game classique, il est éventuellement ouvert, et les sessions de jeu sont de 45 minutes.</em>
-                            </div>
-
-                            <button id="btnInitAll" type="button" class="btn btn-warning">Initialisation pour un nouveau groupe</button>
-                        </p>
+                        <!-- <input id="gameModeChk" type="checkbox" class="" checked data-toggle="toggle" data-on="Educatif" data-off="Classique" data-onstyle="primary" data-offstyle="info"> -->
+                        <br /><br />
+                        <label class="badge badge-info">Educatif</label>
+                        <br />
+                        <em>Le container est paramétré pour une classe. Les sessions de jeu sont de 15 minutes.</em>
+                        <br /><br />
+                        <label class="badge badge-info">Classique</label>
+                        <br />
+                        <em>Le container est en mode escape game classique, il est éventuellement ouvert, et les sessions de jeu sont de 45 minutes.</em>
+                        <br /><br />
+                        <button id="btnInitAll" type="button" class="btn btn-warning">Initialisation pour un nouveau groupe</button>
+                    </p>
                 </div>
             </div>
         </div>
@@ -147,24 +181,12 @@
                 <div class="card-body">
                     <p class="card-text">
                         <iframe src="/timer" width="100%" height="250px"></iframe>
-                        <a class="btn btn-default controlTimerBtn" id="reset" href="#">
-                        <svg style="float:right;" width="32px" height="32px" viewBox="0 0 16 16" class="bi bi-stopwatch" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M4.5 3.5A.5.5 0 0 0 4 4v8a.5.5 0 0 0 1 0V4a.5.5 0 0 0-.5-.5z"/>
-                            <path fill-rule="evenodd" d="M5.696 8L11.5 4.633v6.734L5.696 8zm-.792-.696a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L4.904 7.304z"/>
-                        </svg>
-                        </a>
-                      
-                        <a class="btn btn-default controlTimerBtn" id="stop" href="#">
-                            <svg style="float:right;" width="32px" height="32px" viewBox="0 0 16 16" class="bi bi-stopwatch" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M3.5 5A1.5 1.5 0 0 1 5 3.5h6A1.5 1.5 0 0 1 12.5 5v6a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 11V5zM5 4.5a.5.5 0 0 0-.5.5v6a.5.5 0 0 0 .5.5h6a.5.5 0 0 0 .5-.5V5a.5.5 0 0 0-.5-.5H5z"/>
-                            </svg>
-                        </a>
 
-                        <a class="btn btn-default controlTimerBtn" id="start" href="#">
-                            <svg style="float:right;" width="32px" height="32px" viewBox="0 0 16 16" class="bi bi-stopwatch" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M6 12.796L11.481 8 6 3.204v9.592zm.659.753l5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>
-                            </svg>
-                        </a>
+                        <a class="btn btn-primary controlTimerBtn" id="reset" href="#">Reinitialiser le décompte</a>
+                      
+                        <a class="btn btn-primary controlTimerBtn" id="stop" href="#">Mettre le décompte sur pause</a>
+
+                        <a class="btn btn-primary controlTimerBtn" id="start" href="#">Lancer le décompte</a>
                     </p>
 
                 </div>
@@ -176,80 +198,29 @@
     <div class="row">
         <!-- Loop on each game  -->
 <% data.global_config.servers.forEach(function(server) { %>
-        <div class="col-md-4">
-            <div id="<%= server.id %>" class="card mb-4 border-light shadow-sm">
+        <div class="col-md-2">
+            <div id="<%= server.id %>" class="card mb-4 border-light shadow-sm" style="position: relative;">
+                <!-- Spinner for the activity -->
+                <div id="<%= server.id %>Spinner" class="customSpinner hidden">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Redémarrage de l'activité</span>
+                    </div>
+                    <div>
+                        <br />
+                        Redémarrage<br />de l'activité en cours
+                    </div>
+                </div>
                 <h5 class="card-header">
                     <span class="activityTitle"><%= server.description %></span>
-                    <span class="toolbar">
-                        <a id="restart" href="#" class="btn btn-default controlActivity"  title="Redémarrer l'activité">
-                            <svg  width="32" height="32" viewBox="0 0 16 16" class="bi bi-skip-start" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M4.5 3.5A.5.5 0 0 0 4 4v8a.5.5 0 0 0 1 0V4a.5.5 0 0 0-.5-.5z"/>
-                                <path fill-rule="evenodd" d="M5.696 8L11.5 4.633v6.734L5.696 8zm-.792-.696a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L4.904 7.304z"/>
-                            </svg>
-                        </a>
-
-                        <!-- <a id="refresh" href="#" class="btn btn-default controlActivity" title="Raffraichir l'étape actuelle">
-                            <svg width="32" height="32" viewBox="0 0 16 16" class="bi bi-arrow-clockwise" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-                            </svg>
-                        </a> -->
-
-                        <a id="nextStep" href="#" class="btn btn-default controlActivity" title="Passer à l'étape suivante">
-                            <svg width="32" height="32" viewBox="0 0 16 16" class="bi bi-skip-forward" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.752l-6.267 3.636c-.52.302-1.233-.043-1.233-.696v-2.94l-6.267 3.636C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696L7.5 7.248v-2.94c0-.653.713-.998 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5zM1 4.633v6.734L6.804 8 1 4.633zm7.5 0v6.734L14.304 8 8.5 4.633z"/>
-                            </svg>  
-                        </a>
-                    </span>
                 </h5>
                 <div class="card-body">
-                    <p class="card-text">
-                        <table class="table table-hover">
-                            <tr>
-                                <th scope="col">
-                                    <svg width="32px" height="32px" viewBox="0 0 16 16" class="bi bi-stopwatch" fill="currentColor" xmlns="http://www.w3.org/2000/svg" title="Dernier badge RFID lu">
-                                        <path fill-rule="evenodd" d="M2 2v4.586l7 7L13.586 9l-7-7H2zM1 2a1 1 0 0 1 1-1h4.586a1 1 0 0 1 .707.293l7 7a1 1 0 0 1 0 1.414l-4.586 4.586a1 1 0 0 1-1.414 0l-7-7A1 1 0 0 1 1 6.586V2z"/>
-                                        <path fill-rule="evenodd" d="M4.5 5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1zm0 1a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>                                      
-                                    </svg>                                    
-                                </th>
-                                <td>    
-                                    <h4>
-                                        Groupe&nbsp;&nbsp;&nbsp;<span class="badge badge-pill badge-warning groupcode" id=""></span>
-
-                                        <!-- <svg width="32px" height="32px" id="arrow-rfid" viewBox="0 0 16 16" class="bi bi-stopwatch" fill="currentColor" xmlns="http://www.w3.org/2000/svg" title="Dernier badge RFID lu">
-                                            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
-                                        </svg>                                     -->
-    
-                                        <code id="rfidcode"></code>&nbsp;
-                                </h4>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="col">
-                                    <svg width="32px" height="32px" viewBox="0 0 16 16" class="bi bi-stopwatch" fill="currentColor" xmlns="http://www.w3.org/2000/svg" title="Dernier badge RFID lu">
-                                        <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z"/>
-                                        <path d="M2.242 2.194a.27.27 0 0 1 .516 0l.162.53c.035.115.14.194.258.194h.551c.259 0 .37.333.164.493l-.468.363a.277.277 0 0 0-.094.3l.173.569c.078.256-.213.462-.423.3l-.417-.324a.267.267 0 0 0-.328 0l-.417.323c-.21.163-.5-.043-.423-.299l.173-.57a.277.277 0 0 0-.094-.299l-.468-.363c-.206-.16-.095-.493.164-.493h.55a.271.271 0 0 0 .259-.194l.162-.53zm0 4a.27.27 0 0 1 .516 0l.162.53c.035.115.14.194.258.194h.551c.259 0 .37.333.164.493l-.468.363a.277.277 0 0 0-.094.3l.173.569c.078.255-.213.462-.423.3l-.417-.324a.267.267 0 0 0-.328 0l-.417.323c-.21.163-.5-.043-.423-.299l.173-.57a.277.277 0 0 0-.094-.299l-.468-.363c-.206-.16-.095-.493.164-.493h.55a.271.271 0 0 0 .259-.194l.162-.53zm0 4a.27.27 0 0 1 .516 0l.162.53c.035.115.14.194.258.194h.551c.259 0 .37.333.164.493l-.468.363a.277.277 0 0 0-.094.3l.173.569c.078.255-.213.462-.423.3l-.417-.324a.267.267 0 0 0-.328 0l-.417.323c-.21.163-.5-.043-.423-.299l.173-.57a.277.277 0 0 0-.094-.299l-.468-.363c-.206-.16-.095-.493.164-.493h.55a.271.271 0 0 0 .259-.194l.162-.53z"/>
-                                    </svg>                                    
-                                </th>
-                                <td>
-                                    <h4><span class="badge badge-pill badge-success stepId" id=""></span><span class="badge badge-pill badge-default" id="totalsteps"></span></h4>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope="col">
-                                    <svg width="32px" height="32px" viewBox="0 0 16 16" class="bi bi-stopwatch" fill="currentColor" xmlns="http://www.w3.org/2000/svg" title="Dernier badge RFID lu">
-                                        <path d="M4.605 2.5V2v.5zM3.61 3.6l.498-.043V3.55l-.498.05zM7 2.5h.5A.5.5 0 0 0 7 2v.5zm-.676 1.454l.304.397-.304-.397zm3.352 0l-.304.397.304-.397zM9 2.5V2a.5.5 0 0 0-.5.5H9zm3.39 1.1l-.498-.05v.007l.498.043zM12.1 7l-.498-.043a.5.5 0 0 0 .498.543V7zm1.854-.676l.397.304-.397-.304zm0 3.352l.397-.304-.397.304zM12.1 9v-.5a.5.5 0 0 0-.498.542L12.1 9zm.29 3.4l-.498.043v.007l.498-.05zM9 13.5h-.5a.5.5 0 0 0 .5.5v-.5zm.676-1.454l-.304-.397.304.397zm-3.352 0l.304-.397-.304.397zM7 13.5v.5a.5.5 0 0 0 .5-.5H7zm-2.395 0V13v.5zm-.995-1.1l.498.05v-.007L3.61 12.4zM3.9 9l.498.042A.5.5 0 0 0 3.9 8.5V9zm-1.854.676l-.397-.304.397.304zm0-3.352l-.397.304.397-.304zM3.9 7v.5a.5.5 0 0 0 .498-.543L3.9 7zm.705-5a1.5 1.5 0 0 0-1.493 1.65l.995-.1A.5.5 0 0 1 4.605 3V2zM7 2H4.605v1H7V2zm.5.882V2.5h-1v.382h1zm-.872 1.469c.375-.287.872-.773.872-1.469h-1c0 .195-.147.42-.48.675l.608.794zM6.5 4.5l.001-.006a.113.113 0 0 1 .012-.025.459.459 0 0 1 .115-.118l-.608-.794c-.274.21-.52.528-.52.943h1zM8 5c-.491 0-.912-.1-1.19-.24a.86.86 0 0 1-.271-.194.213.213 0 0 1-.039-.063V4.5h-1c0 .568.447.947.862 1.154C6.807 5.877 7.387 6 8 6V5zm1.5-.5v.003a.213.213 0 0 1-.039.064.86.86 0 0 1-.27.193C8.91 4.9 8.49 5 8 5v1c.613 0 1.193-.123 1.638-.346.415-.207.862-.586.862-1.154h-1zm-.128-.15c.065.05.099.092.115.119.008.013.01.021.012.025L9.5 4.5h1c0-.415-.246-.733-.52-.943l-.608.794zM8.5 2.883c0 .696.497 1.182.872 1.469l.608-.794c-.333-.255-.48-.48-.48-.675h-1zm0-.382v.382h1V2.5h-1zm2.895-.5H9v1h2.395V2zm1.493 1.65A1.5 1.5 0 0 0 11.395 2v1a.5.5 0 0 1 .498.55l.995.1zm-.29 3.392l.29-3.4-.996-.085-.29 3.4.996.085zm.284-.542H12.1v1h.782v-1zm.675-.48c-.255.333-.48.48-.675.48v1c.696 0 1.182-.497 1.469-.872l-.794-.608zm.943-.52c-.415 0-.733.246-.943.52l.794.608a.459.459 0 0 1 .118-.115.113.113 0 0 1 .025-.012L14.5 6.5v-1zM16 8c0-.613-.123-1.193-.346-1.638-.207-.415-.586-.862-1.154-.862v1h.003l.01.003a.237.237 0 0 1 .053.036.86.86 0 0 1 .194.27c.14.28.24.7.24 1.191h1zm-1.5 2.5c.568 0 .947-.447 1.154-.862C15.877 9.193 16 8.613 16 8h-1c0 .491-.1.912-.24 1.19a.86.86 0 0 1-.194.271.214.214 0 0 1-.063.039H14.5v1zm-.943-.52c.21.274.528.52.943.52v-1l-.006-.001a.113.113 0 0 1-.025-.012.458.458 0 0 1-.118-.115l-.794.608zm-.675-.48c.195 0 .42.147.675.48l.794-.608c-.287-.375-.773-.872-1.469-.872v1zm-.782 0h.782v-1H12.1v1zm.788 2.858l-.29-3.4-.996.084.29 3.401.996-.085zM11.395 14a1.5 1.5 0 0 0 1.493-1.65l-.995.1a.5.5 0 0 1-.498.55v1zM9 14h2.395v-1H9v1zm.5-.5v-.382h-1v.382h1zm0-.382c0-.195.147-.42.48-.675l-.608-.794c-.375.287-.872.773-.872 1.469h1zm.48-.675c.274-.21.52-.528.52-.943h-1l-.001.006a.113.113 0 0 1-.012.025.459.459 0 0 1-.115.118l.608.794zm.52-.943c0-.568-.447-.947-.862-1.154C9.193 10.123 8.613 10 8 10v1c.492 0 .912.1 1.19.24.14.07.226.14.271.194a.214.214 0 0 1 .039.063v.003h1zM8 10c-.613 0-1.193.123-1.638.346-.415.207-.862.586-.862 1.154h1v-.003l.003-.01a.214.214 0 0 1 .036-.053.859.859 0 0 1 .27-.194C7.09 11.1 7.51 11 8 11v-1zm-2.5 1.5c0 .415.246.733.52.943l.608-.794a.459.459 0 0 1-.115-.118.113.113 0 0 1-.012-.025L6.5 11.5h-1zm.52.943c.333.255.48.48.48.675h1c0-.696-.497-1.182-.872-1.469l-.608.794zm.48.675v.382h1v-.382h-1zM4.605 14H7v-1H4.605v1zm-1.493-1.65A1.5 1.5 0 0 0 4.605 14v-1a.5.5 0 0 1-.498-.55l-.995-.1zm.29-3.393l-.29 3.401.996.085.29-3.4-.996-.086zm-.284.543H3.9v-1h-.782v1zm-.675.48c.255-.333.48-.48.675-.48v-1c-.696 0-1.182.497-1.469.872l.794.608zm-.943.52c.415 0 .733-.246.943-.52l-.794-.608a.459.459 0 0 1-.118.115.112.112 0 0 1-.025.012L1.5 9.5v1zM0 8c0 .613.123 1.193.346 1.638.207.415.586.862 1.154.862v-1h-.003a.213.213 0 0 1-.064-.039.86.86 0 0 1-.193-.27C1.1 8.91 1 8.49 1 8H0zm1.5-2.5c-.568 0-.947.447-1.154.862C.123 6.807 0 7.387 0 8h1c0-.492.1-.912.24-1.19a.86.86 0 0 1 .194-.271.213.213 0 0 1 .063-.039H1.5v-1zm.943.52c-.21-.274-.528-.52-.943-.52v1l.006.001a.112.112 0 0 1 .025.012c.027.016.068.05.118.115l.794-.608zm.675.48c-.195 0-.42-.147-.675-.48l-.794.608c.287.375.773.872 1.469.872v-1zm.782 0h-.782v1H3.9v-1zm-.788-2.858l.29 3.4.996-.085-.29-3.4-.996.085z"/>
-                                    </svg>                                    
-                                </th>
-                                <td>
-                                    <pre><code class="solutions"></code></pre>
-                                </td>
-                            </tr>
-                        </table>
-                    </p>
-
+                    <strong><u>Etape en cours :</u></strong> <span class="stepTitle" id="stepTitle">Aucune étape en cours.<br />Passer le badger pour démarrer l'activité</span><span class="badge badge-default" id="totalsteps"></span>
+                    <br /><br />
+                    <a id="nextStep" href="#" class="btn btn-primary" title="Passer à l'étape suivante">Passer à l'étape suivante</a>
+                    <br /><br />
+                    <a id="restart" href="#" class="btn btn-primary"  title="Redémarrer l'activité">Réinitialiser l'activité</a>
                     <div class="d-flex flex-row-reverse">
-                    <p id="" class="text-muted elapsedTime"></p>
+                        <p id="" class="text-muted elapsedTime"></p>
                     </div>
                 </div>
             </div>
@@ -294,9 +265,14 @@
             socket_timer.emit('toserver.timerControl',  { action: action, gameMode: gameMode } );
         });
 
-        // Listener sur le le boutons gameMode
-        $('#gameModeChk').on('change', function(){
-            gameMode = ( $(this).prop('checked') )? "classroom" : "classical";
+        // Listener sur le boutons gameMode
+        $('#gameMode label').on('click', function(e) {
+            e.preventDefault();
+            $('#gameMode label').removeClass('active');
+            $(this).addClass('active');
+            $('#gameMode label input').removeAttr('checked');
+            $(this).find('input').attr("checked", "checked");
+            gameMode = $(this).find('input').val();
             console.log('gameMode = '+ gameMode);
             socket_timer.emit('toserver.timerControl',  { action: "set", gameMode: gameMode } );
         });
@@ -319,39 +295,19 @@
         var socket_<%= server.id %> = io('http://<%= server.ip %>:<%= server.port %>/monitoring');
         var nextStep_<%= server.id %> = "";
 
-        // updating <%= server.id %> uptime activity
-        var updTimeOut_<%= server.id %> = null;
-        var startTime_<%= server.id %> = null;    
-        // Function update Timer    
-        function updateTimeElapsed_<%= server.id %>(){
-            var elapsedSeconds = Math.floor((Date.now() - startTime_<%= server.id %>)/1000);
-            var elapsedMinutes = Math.floor((elapsedSeconds/60));
-            if (startTime_<%= server.id %> != null) {
-                var timeDisplay = ( elapsedMinutes >= 2 ) ? elapsedMinutes + " minutes" : elapsedSeconds + " secondes.";
-                $("#<%= server.id %> .elapsedTime").html(timeDisplay);
-                updTimeOut_<%= server.id %> = setTimeout( updateTimeElapsed_<%= server.id %>, ( elapsedMinutes >= 2 ) ? 60000 : 5000 );
-            }
-        }
         // Receiving new rfid badge
         socket_<%= server.id %>.on('toclient.newGameSession_<%= server.id %>', function(data) {
-            clearTimeout(updTimeOut_<%= server.id %>);
-            startTime_<%= server.id %> = data.startTime;
-            $("#<%= server.id %> .groupcode").html(data.group);
-            highlight($("#<%= server.id %> .groupcode"));
-            $("#<%= server.id %> .rfidcode").html(data.tag);
-            highlight($("#<%= server.id %> .rfidcode"));
-            $("#<%= server.id %> .solutions").html(soluce);
-            updateTimeElapsed_<%= server.id %>();
+            $('#<%= server.id %>Spiner').addClass('hidden');
             
         });
 
         // Receiving Current Step of game
         socket_<%= server.id %>.on('toclient.newGameStep_<%= server.id %>', function(data) {
-            $("#<%= server.id %> .stepId").html(data.stepId);
-            highlight($("#<%= server.id %> .stepId"));
+            $("#<%= server.id %> .stepTitle").html(data.stepTitle);
+            highlight($("#<%= server.id %>"));
             var etapesMsg = (data.totalSteps == 0) ? "En attente de scan RFID..." : data.totalSteps + " étapes au total.";
             $("#<%= server.id %> .totalsteps").html(etapesMsg);
-            highlight($("#<%= server.id %> .totalsteps"));
+            highlight($("#<%= server.id %>"));
         });
 
         // receiving solutions for current step
@@ -375,7 +331,9 @@
         // Activity controls  : Restart
         //
         $("#<%= server.id %> #restart").on('click', function(e) {
-            highlight($(this), "smooth_changed");
+
+            $('#<%= server.id %>Spinner').removeClass('hidden');
+            highlight($(this).parent().parent(), "smooth_changed");
             $.get( "http://<%= server.ip %>:<%= server.port %>/api/restart", function(data) {});
             e.preventDefault();
         });
@@ -384,7 +342,7 @@
         // nextStep
         //
         $("#<%= server.id %> #nextStep").on('click', function(e) {
-            highlight($(this), "smooth_changed");
+            highlight($(this).parent().parent(), "smooth_changed");
             $.get( "http://<%= server.ip %>:<%= server.port %>/api/nextStep", function(data) {});
             e.preventDefault();
         });
@@ -403,14 +361,20 @@
         // end loop
 
         // Listener on init all button
-        $('#btnInitAll').on('click', function() {
-            // $(this).addClass("disabled");
-           // Emitting order to kill node server and browsers
+        $('#btnInitAll').on('click', function(e) {
+            e.preventDefault();
+            // Add loader to avoid unwanted actions
+            $('#globalSpinner').removeClass('hidden');
+
+            // Emitting order to kill node server and browsers
             <% data.global_config.servers.forEach(function(server) { %>
                 socket_<%= server.id %>.emit('toserver.reInitServer', {gameMode: gameMode});
             <% }) %>
+
             // Refresh monitoring page
-                 
+            setTimeout(function() {
+                $('#globalSpinner').addClass('hidden');
+            }, 60000);
         });
 
 }); 

@@ -34,7 +34,7 @@
 
         {
             "stepId" : "step-2",
-            "stepTitle" : "Base de données des serveurs",
+            "stepTitle" : "Base de données des serveurs + graphiques",
             "title" : "Base de données des serveurs",
             "template" : "bdd-graphiques",
             "medias" : [],
@@ -263,7 +263,7 @@
 
         {
             "stepId" : "step-3",
-            "stepTitle" : "Messagede Marie",
+            "stepTitle" : "Message de fin de Marie",
             "title" : "Base de données et datas",
             "template" : "../partials/player-video",
             "medias" : ["medias/bdd/marie-outro.mp4"],
