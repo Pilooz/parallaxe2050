@@ -8,11 +8,13 @@
 #define BRIGHTNESS    100
 
 // CABLES COLORS AND VALUES
-#define WHITE_CABLE   915
-#define YELLOW_CABLE  1010
-#define RED_CABLE     25
-#define GREEN_CABLE   325
-#define BLACK_CABLE   1010
+const int WHITE_CABLE   = 915;
+const int YELLOW_CABLE  = 1010;
+const int RED_CABLE     = 25;
+const int GREEN_CABLE   = 325;
+const int BLACK_CABLE   = 1010;
+
+int tolerance = 25;
 
 CRGB leds[NUM_LEDS];
 
@@ -24,10 +26,102 @@ int sortie02_point = 4;
 
 bool activity = false;
 
+void turn_led_to_color_rgb(int r, int g, int b) {
+  for (int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = CRGB(r, g, b);
+  }
+  FastLED.show();
+}
+
+int test_val_point(int v0, int v1, int v2, int v3, int v4, int v5) {
+  int result = 0;
+  String red="\"red\":", black="}, {\"black\":", yellow="}, {\"yellow\":", white="}, {\"white\":", green="}, {\"green\":";
+  
+  Serial.println("-----------------------------------------------");
+  Serial.print("Tolerance + ou - "); Serial.print(tolerance);
+  Serial.println("\nRED\tBLACK\tYELLOW\tWHITE\tGREEN");
+  Serial.print(RED_CABLE);
+  Serial.print("\t");
+  Serial.print(BLACK_CABLE);
+  Serial.print("\t");
+  Serial.print(YELLOW_CABLE);
+  Serial.print("\t");
+  Serial.print(WHITE_CABLE);
+  Serial.print("\t");
+  Serial.println(GREEN_CABLE);
+
+  Serial.print(""); Serial.print(v0);
+  if ((v0 >= RED_CABLE - tolerance) && (v0 <= RED_CABLE + tolerance)) { //5
+    Serial.print("*");
+    red += "1";
+    result++;
+  } else {
+    red+="0";
+  }
+  
+  Serial.print("\t"); Serial.print(v2);
+  if ((v2 >= BLACK_CABLE - tolerance) && (v2 <= BLACK_CABLE + tolerance)) { //10
+    Serial.print("*");
+    black+="1";
+    result++;
+  } else {
+    black+="0";
+  }
+  
+  Serial.print("\t"); Serial.print(v3);
+  if ((v3 >= YELLOW_CABLE - tolerance) && (v3 <= YELLOW_CABLE + tolerance)) { //10
+    Serial.print("*");
+    yellow+="1";
+    result++;
+  } else {
+    yellow+="0";
+  }
+  
+  Serial.print("\t"); Serial.print(v4);
+  if ((v4 >= WHITE_CABLE - tolerance) && (v4 <= WHITE_CABLE + tolerance)) { //10
+    Serial.print("*");
+    white+="1";
+    result++;
+  } else {
+    white+="0";
+  }
+  
+  Serial.print("\t"); Serial.print(v5);
+  if ((v5 >= GREEN_CABLE - tolerance) && (v5 <= GREEN_CABLE + tolerance)) { //10
+    Serial.print("*");
+    green+="1";
+    result++;
+  } else {
+    green+="0";
+  }
+  
+  Serial.print("\nResult is "); Serial.println(result);
+  Serial.println("-----------------------------------------------");
+
+  message.send("VALUES", "[ {" + red + black + yellow + white + green + "} ]");
+  if (result == 5)
+    return 1;
+  return 0;
+}
+
+void sparkle(int time) {
+  int num_led = 0;
+
+  for (int i = 0; i < time / 10; i++) {
+    num_led = random(NUM_LEDS);
+    leds[num_led] = CRGB(255, 255, 255);
+    FastLED.show();
+    delay(9);
+    turn_led_to_color_rgb(0, 0, 0);
+  }
+}
+
 void setup() {
   // put your setup code here, to run once:
   FastLED.addLeds<LED_TYPE, DATA_PIN, COLOR_ORDER>(leds, NUM_LEDS);
   turn_led_to_color_rgb(0, 0, 0);
+
+  analogReference(DEFAULT);
 
   pinMode       (A0, INPUT);
   pinMode       (A1, INPUT);
@@ -61,7 +155,7 @@ void loop() {
 
   int valBouton = digitalRead(bouton);
 
-  serialEvent();
+  //serialEvent();
   if (message.isKey("CMD")) {
     if (message.val() == "START") {
       message.send("MSG", "START");
@@ -75,29 +169,7 @@ void loop() {
     }
   }
   if (valBouton == 1 && activity) {
-    /*
-    message.send("MSG", "START VALUE TAB");
-    message.send("VALUE 3.3v", String(valA0));
-    message.send("VALUE 5v", String(valA1));
-    message.send("VALUE GND", String(valA2));
-    message.send("VALUE 10~", String(valA3));
-    message.send("VALUE 11~", String(valA4));
-    message.send("VALUE 12", String(valA5));
-    message.send("MSG", "END VALUE TAB");
-    */
 
-    /*
-    if (test_val_sharp(valA0, valA1, valA2, valA3, valA4, valA5)) {
-      message.send("SOLUTIONS", "TRUE");
-      turn_led_to_color_rgb(0, 255, 0);
-      digitalWrite (sortie01_sharp, HIGH);
-      delay(100);
-      digitalWrite (sortie01_sharp, LOW);
-      delay(27250);
-      message.send("MSG", "FINISHED");
-      turn_led_to_color_rgb(0, 0, 0);
-    }
-    else */
     if (test_val_point(valA0, valA1, valA2, valA3, valA4, valA5)) {
       message.send("SOLUTIONS", "TRUE");
       turn_led_to_color_rgb(0, 255, 0);
@@ -126,83 +198,6 @@ void loop() {
   } else {
     //digitalWrite (sortie01_sharp, LOW);
     digitalWrite (sortie02_point, LOW);
-  }
-}
-
-void turn_led_to_color_rgb(int r, int g, int b) {
-  for (int i = 0; i < NUM_LEDS; i++) {
-    leds[i] = CRGB(r, g, b);
-  }
-  FastLED.show();
-}
-
-/*
-int test_val_sharp(int A0, int A1, int A2, int A3, int A4, int A5) {
-  int result = 0;
-
-  if ((A1 >= RED_CABLE - 5) && (A1 <= RED_CABLE + 5)) {
-    //message.send("MSG", "RED_CABLE OK");
-    result++;
-  }
-  if ((A2 >= BLACK_CABLE - 10) && (A2 <= BLACK_CABLE + 10)) {
-    //message.send("MSG", "BLACK_CABLE OK");
-    result++;
-  }
-  if ((A3 >= GREEN_CABLE - 5) && (A3 <= GREEN_CABLE + 5)) {
-    //message.send("MSG", "GREEN_CABLE OK");
-    result++;
-  }
-  if ((A4 >= YELLOW_CABLE - 10) && (A4 <= YELLOW_CABLE + 10)) {
-    //message.send("MSG", "YELLOW_CABLE OK");
-    result++;
-  }
-  if ((A5 >= WHITE_CABLE - 10) && (A5 <= WHITE_CABLE + 10)) {
-    //message.send("MSG", "WHITE_CABLE OK");
-    result++;
-  }
-  if (result == 5)
-    return 1;
-  return 0;
-}
-*/
-
-int test_val_point(int A0, int A1, int A2, int A3, int A4, int A5) {
-  int result = 0;
-
-  if ((A0 >= RED_CABLE - 5) && (A0 <= RED_CABLE + 5)) {
-    //message.send("MSG", "RED_CABLE OK");
-    result++;
-  }
-  if ((A2 >= BLACK_CABLE - 10) && (A2 <= BLACK_CABLE + 10)) {
-    //message.send("MSG", "BLACK_CABLE OK");
-    result++;
-  }
-  if ((A3 >= YELLOW_CABLE - 10) && (A3 <= YELLOW_CABLE + 10)) {
-    //message.send("MSG", "WHITE_CABLE OK");
-    result++;
-  }
-  if ((A4 >= WHITE_CABLE - 10) && (A4 <= WHITE_CABLE + 10)) {
-    //message.send("MSG", "GREEN_CABLE OK");
-    result++;
-  }
-  if ((A5 >= GREEN_CABLE - 5) && (A5 <= GREEN_CABLE + 5)) {
-    //message.send("MSG", "YELLOW_CABLE OK");
-    result++;
-  }
-  if (result == 5)
-    return 1;
-  return 0;
-}
-
-void sparkle(int time) {
-  int num_led = 0;
-
-  for (int i = 0; i < time / 10; i++) {
-    num_led = random(NUM_LEDS);
-    leds[num_led] = CRGB(255, 255, 255);
-    FastLED.show();
-    delay(9);
-    turn_led_to_color_rgb(0, 0, 0);
   }
 }
 
