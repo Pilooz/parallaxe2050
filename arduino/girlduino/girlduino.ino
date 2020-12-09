@@ -142,6 +142,8 @@ void setup() {
 
   Serial.begin(9600);
   while (!Serial);
+  message.send("NAME", "GIRLDUINO");
+  delay(2000);
   message.send("MSG", "READY");
 }
 
