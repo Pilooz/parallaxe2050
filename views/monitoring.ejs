@@ -285,7 +285,7 @@
                     <span class="activityTitle"><%= server.description %></span>
                 </h6>
                 <div class="card-body">
-                    <strong><u>Etape en cours :</u></strong> <span class="stepTitle" id="stepTitle">Aucune étape en cours.<br />Passer le badger pour démarrer l'activité</span><span class="badge badge-default" id="totalsteps"></span>
+                    <strong><u>Etape en cours :</u></strong> <span class="stepTitle">Aucune étape en cours.<br />Passer le badger pour démarrer l'activité</span>
                     <br /><br />
                     <a id="nextStep" href="#" class="btn btn-warning" title="Passer à l'étape suivante">Passer à l'étape suivante</a>
                     <a id="restart" href="#" class="btn btn-warning"  title="Redémarrer l'activité">Réinitialiser l'activité</a>
@@ -370,12 +370,12 @@
 
         // Receiving Current Step of game
         socket_<%= server.id %>.on('toclient.newGameStep_<%= server.id %>', function(data) {
-            console.log(data);
+            $('#<%= server.id %>Spiner').addClass('hidden');
             $("#<%= server.id %> .stepTitle").html(data.stepTitle);
             highlight($("#<%= server.id %>"));
-            var etapesMsg = (data.totalSteps == 0) ? "En attente de scan RFID..." : data.totalSteps + " étapes au total.";
-            $("#<%= server.id %> .totalsteps").html(etapesMsg);
-            highlight($("#<%= server.id %>"));
+            // var etapesMsg = (data.totalSteps == 0) ? "En attente de scan RFID..." : data.totalSteps + " étapes au total.";
+            // $("#<%= server.id %> .totalsteps").html(etapesMsg);
+            // highlight($("#<%= server.id %>"));
         });
 
         // receiving solutions for current step
