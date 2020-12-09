@@ -289,7 +289,7 @@
                     <br /><br />
                     <a id="nextStep" href="#" class="btn btn-warning" title="Passer à l'étape suivante">Passer à l'étape suivante</a>
                     <a id="restart" href="#" class="btn btn-warning"  title="Redémarrer l'activité">Réinitialiser l'activité</a>
-                    <a id="<%= server.id %>_reboot" href="#" class="btn btn-warning"  title="Redémarrer le serveur">Redémarrer le serveur</a>
+                    <a id="<%= server.id %>_reinit" href="#" class="btn btn-warning"  title="Redémarrer le serveur">Redémarrer le serveur</a>
                 </div>
             </div>
         </div>
@@ -420,9 +420,9 @@
         //
         // reboot server
         //
-        $("#<%= server.id %>_reboot").on('click', function(e) {
+        $("#<%= server.id %>_reinit").on('click', function(e) {
             highlight($(this), "smooth_changed");
-            socket_<%= server.id %>.emit('toserver.rebootServer', {});
+            socket_<%= server.id %>.emit('toserver.reInitServer', {gameMode: gameMode});
             e.preventDefault();
         });
 
