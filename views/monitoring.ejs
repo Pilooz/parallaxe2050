@@ -285,7 +285,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <div id="activities">
@@ -293,42 +292,41 @@
 <% data.global_config.servers.forEach(function(server) { %>
         <div class="activity" id="col<%= server.id %>">
             <div class="activity-container" id="<%= server.id %>">
-                    <!-- Spinner for the activity -->
-                    <div id="<%= server.id %>Spinner" class="customSpinner hidden">
-                        <div class="spinner-border" role="status">
-                            <span class="sr-only">Redémarrage de l'activité</span>
-                        </div>
-                        <div>
-                            <br />
-                            Redémarrage<br />de l'activité en cours
-                        </div>
+                <!-- Spinner for the activity -->
+                <div id="<%= server.id %>Spinner" class="customSpinner hidden">
+                    <div class="spinner-border" role="status">
+                        <span class="sr-only">Redémarrage de l'activité</span>
                     </div>
-                    <h6 class="card-header">
-                        <span class="activityTitle"><%= server.description %></span>
-                    </h6>
-                    <div class="card-body">
-                        <strong><u>Etape en cours :</u></strong><br /><span class="stepTitle">Aucune étape en cours. Passer le badge pour démarrer l'activité</span>
-                        <!-- <br /><br /> -->
+                    <div>
+                        <br />
+                        Redémarrage<br />de l'activité en cours
                     </div>
-                    <div class="card-footer">
-                        <a id="nextStep" href="#" class="btn btn-warning popup<%= server.id %>" data-title="Passer à l'étape suivante ?" data-body="Si les participant·es sont bloqué·es, cela leur permet de quand même avancer dans l'énigme !" data-function="nextStep">Passer à l'étape suivante</a>
-                        <%
-                            supplementText = "";
-                            switch(server.id) {
-                                case "AdminReseau": supplementText = "Ne pas oublier de décâbler le réseau sur le panel !";
-                                    break;
-                                case "BDD": supplementText = "Appuyer sur le bouton 8 du launchpad pour réinitialiser les touches !";
-                                    break;
-                                case "CodeEtProg": supplementText = "Penser à mélanger les cartes de \"Code / pas code\" !";
-                                    break;
-                                case "ComDigitale": supplementText = "Ne pas oublier de raccrocher le téléphone !";
-                                    break;
-                                case "Hardware": supplementText = "Ne pas oublier de débrancher les câbles entre le girlduino et Roberta !";
-                                    break;
-                            }
-                        %>
-                        <a id="<%= server.id %>_reinit" href="#" class="btn btn-warning popup<%= server.id %>" data-title="Remettre l'activité à 0 ?" data-body="Cela affichera un message d'attente à l'écran, demandant aux participant·es de badger pour débuter l'activité." data-supplement="<%= supplementText %>" data-function="reinitServer" title="Remettre l'activité à 0">Remettre l'activité à 0</a>
-                    </div>
+                </div>
+                <h6 class="card-header">
+                    <span class="activityTitle"><%= server.description %></span>
+                </h6>
+                <div class="card-body">
+                    <strong><u>Etape en cours :</u></strong><br /><span class="stepTitle">Aucune étape en cours. Passer le badge pour démarrer l'activité.</span>
+                </div>
+                <div class="card-footer">
+                    <a id="nextStep" href="#" class="btn btn-warning popup<%= server.id %>" data-title="Passer à l'étape suivante ?" data-body="Si les participant·es sont bloqué·es, cela leur permet de quand même avancer dans l'énigme !" data-function="nextStep">Passer à l'étape suivante</a>
+                    <%
+                        supplementText = "";
+                        switch(server.id) {
+                            case "AdminReseau": supplementText = "Ne pas oublier de décâbler le réseau sur le panel !";
+                                break;
+                            case "BDD": supplementText = "Appuyer sur le bouton 8 du launchpad pour réinitialiser les touches !";
+                                break;
+                            case "CodeEtProg": supplementText = "Penser à mélanger les cartes de \"Code / pas code\" !";
+                                break;
+                            case "ComDigitale": supplementText = "Ne pas oublier de raccrocher le téléphone !";
+                                break;
+                            case "Hardware": supplementText = "Ne pas oublier de débrancher les câbles entre le girlduino et Roberta !";
+                                break;
+                        }
+                    %>
+                    <a id="<%= server.id %>_reinit" href="#" class="btn btn-warning popup<%= server.id %>" data-title="Remettre l'activité à 0 ?" data-body="Cela affichera un message d'attente à l'écran, demandant aux participant·es de badger pour débuter l'activité." data-supplement="<%= supplementText %>" data-function="reinitServer" title="Remettre l'activité à 0">Remettre l'activité à 0</a>
+                </div>
             </div>
             <!-- Modal -->
             <div class="modal" tabindex="-1" id="confirmModal<%= server.id %>">
@@ -353,7 +351,6 @@
         </div>
 <% }) %>
     </div>
-
 </main>
 
 <!-- Modal -->
