@@ -159,32 +159,36 @@
     #activities {
         display: flex;
         align-items: stretch;
+        justify-content : space-between;
     }
-    #activities .col-md-2 {
-        flex: 0 0 20%;
-        max-width: 20%;
+    #activities .activity {
+        flex: 0 0 19%;
+        max-width: 19%;
+        padding: 0;
     }
-    #activities .col-md-2#colCodeEtProg {
+    #activities .activity#colCodeEtProg {
         order: 1;
     }
-    #activities .col-md-2#colHardware {
+    #activities .activity#colHardware {
         order: 2;
     }
-    #activities .col-md-2#colBDD {
+    #activities .activity#colBDD {
         order: 3;
     }
-    #activities .col-md-2#colComDigitale {
+    #activities .activity#colComDigitale {
         order: 4;
     }
-    #activities .col-md-2#colAdminReseau {
+    #activities .activity#colAdminReseau {
         order: 5;
     }
-    #activities .col-md-2 > div {
-        height: auto;
-    }
-    #activities .col-md-2 > div .stepTitle {
-        display: inline-block;
-        min-height: 70px;
+    #activities .activity .activity-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background-color: white;
+        box-shadow: 0 .125rem .25rem rgba(0,0,0,.075) !important;
+        border: 1px solid #f8f9fa !important;
+        border-radius: 0.25rem;
     }
     h6.card-header {
         color: white;
@@ -284,68 +288,68 @@
 
     </div>
 
-    <div class="row" id="activities">
+    <div id="activities">
         <!-- Loop on each game  -->
 <% data.global_config.servers.forEach(function(server) { %>
-        <div class="col-md-2" id="col<%= server.id %>">
-            <div id="<%= server.id %>" class="card mb-4 border-light shadow-sm" style="position: relative;">
-                <!-- Spinner for the activity -->
-                <div id="<%= server.id %>Spinner" class="customSpinner hidden">
-                    <div class="spinner-border" role="status">
-                        <span class="sr-only">Redémarrage de l'activité</span>
+        <div class="activity" id="col<%= server.id %>">
+            <div class="activity-container" id="<%= server.id %>">
+                    <!-- Spinner for the activity -->
+                    <div id="<%= server.id %>Spinner" class="customSpinner hidden">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Redémarrage de l'activité</span>
+                        </div>
+                        <div>
+                            <br />
+                            Redémarrage<br />de l'activité en cours
+                        </div>
                     </div>
-                    <div>
-                        <br />
-                        Redémarrage<br />de l'activité en cours
+                    <h6 class="card-header">
+                        <span class="activityTitle"><%= server.description %></span>
+                    </h6>
+                    <div class="card-body">
+                        <strong><u>Etape en cours :</u></strong><br /><span class="stepTitle">Aucune étape en cours. Passer le badge pour démarrer l'activité</span>
+                        <!-- <br /><br /> -->
                     </div>
-                </div>
-                <h6 class="card-header">
-                    <span class="activityTitle"><%= server.description %></span>
-                </h6>
-                <div class="card-body">
-                    <strong><u>Etape en cours :</u></strong><br /><span class="stepTitle">Aucune étape en cours.<br />Passer le badger pour démarrer l'activité</span>
-                    <br /><br />
-                    <a id="nextStep" href="#" class="btn btn-warning popup<%= server.id %>" data-title="Passer à l'étape suivante ?" data-body="Si les participant·es sont bloqué·es, cela leur permet de quand même avancer dans l'énigme !" data-function="nextStep">Passer à l'étape suivante</a>
-                    <%
-                        supplementText = "";
-                        switch(server.id) {
-                            case "AdminReseau": supplementText = "Ne pas oublier de décâbler le réseau sur le panel !";
-                                break;
-                            case "BDD": supplementText = "Appuyer sur le bouton 8 du launchpad pour réinitialiser les touches !";
-                                break;
-                            case "CodeEtProg": supplementText = "Penser à mélanger les cartes de \"Code / pas code\" !";
-                                break;
-                            case "ComDigitale": supplementText = "Ne pas oublier de raccrocher le téléphone !";
-                                break;
-                            case "Hardware": supplementText = "Ne pas oublier de débrancher les câbles entre le girlduino et Roberta !";
-                                break;
-                        }
-                    %>
-                    <a id="<%= server.id %>_reinit" href="#" class="btn btn-warning popup<%= server.id %>" data-title="Remettre l'activité à 0 ?" data-body="Cela affichera un message d'attente à l'écran, demandant aux participant·es de badger pour débuter l'activité." data-supplement="<%= supplementText %>" data-function="reinitServer" title="Remettre l'activité à 0">Remettre l'activité à 0</a>
-                    <!-- <a id="" href="#" class="btn btn-warning popup" data-title="Redémarrer le serveur ?" data-body="" title="Redémarrer le serveur">Redémarrer le serveur</a> -->
-                </div>
+                    <div class="card-footer">
+                        <a id="nextStep" href="#" class="btn btn-warning popup<%= server.id %>" data-title="Passer à l'étape suivante ?" data-body="Si les participant·es sont bloqué·es, cela leur permet de quand même avancer dans l'énigme !" data-function="nextStep">Passer à l'étape suivante</a>
+                        <%
+                            supplementText = "";
+                            switch(server.id) {
+                                case "AdminReseau": supplementText = "Ne pas oublier de décâbler le réseau sur le panel !";
+                                    break;
+                                case "BDD": supplementText = "Appuyer sur le bouton 8 du launchpad pour réinitialiser les touches !";
+                                    break;
+                                case "CodeEtProg": supplementText = "Penser à mélanger les cartes de \"Code / pas code\" !";
+                                    break;
+                                case "ComDigitale": supplementText = "Ne pas oublier de raccrocher le téléphone !";
+                                    break;
+                                case "Hardware": supplementText = "Ne pas oublier de débrancher les câbles entre le girlduino et Roberta !";
+                                    break;
+                            }
+                        %>
+                        <a id="<%= server.id %>_reinit" href="#" class="btn btn-warning popup<%= server.id %>" data-title="Remettre l'activité à 0 ?" data-body="Cela affichera un message d'attente à l'écran, demandant aux participant·es de badger pour débuter l'activité." data-supplement="<%= supplementText %>" data-function="reinitServer" title="Remettre l'activité à 0">Remettre l'activité à 0</a>
+                    </div>
             </div>
-        </div>
-
-        <!-- Modal -->
-        <div class="modal" tabindex="-1" id="confirmModal<%= server.id %>">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <p></p>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Non, j'annule</button>
-                <button type="button" class="btn btn-primary">Oui, je valide !</button>
+            <!-- Modal -->
+            <div class="modal" tabindex="-1" id="confirmModal<%= server.id %>">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p></p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Non, j'annule</button>
+                    <button type="button" class="btn btn-primary">Oui, je valide !</button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
         </div>
 <% }) %>
     </div>
