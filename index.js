@@ -432,7 +432,7 @@ router.all('/*', function (req, res, next) {
   io.emit('toclient.refreshNow');
 
   res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify({message: `Opération réussie !<br/>L'activité est passée à l'étape '${nextStep}'.`, status: 200}));
+  res.end(JSON.stringify({message: `"Opération réussie !<br/>L'activité est passée à l'étape '${nextStep}'."`, status: 200}));
 })
 
 .get('/api/refresh', function(req, res, next){
