@@ -108,46 +108,33 @@
 
 
     /******** Lights effects ********/
+    .smooth_changed {
+        transition: all 0.2s linear;
+    }
+    .smooth_changed.changed {
+        color: white !important;
+        text-shadow: 0 0 10px white !important;
+    }
 
-    /* glitter the stepTitle when changed */
-    /*.changed {
-        box-shadow:
-            0 0 30px 10px #fff,
-            0 0 40px 20px #f0f,
-            0 0 70px 50px #0ff !important;
-    }*/
-
-    /*.smooth_changed {
-        box-shadow:
-            0 0 30px 10px #fff,
-            0 0 40px 20px #f0f,
-            0 0 70px 50px #0ff !important;
-    }*/
-
-    #AdminReseau .changed,
     #AdminReseau .smooth_changed {
-        box-shadow:
-            0 0 30px 5px rgb(0, 198, 249) !important;
+        color: rgba(0, 198, 249, 0.2);
+        text-shadow: 0 0 10px rgba(0, 198, 249, 1);
     }
-    #BDD .changed,
     #BDD .smooth_changed {
-        box-shadow:
-            0 0 30px 5px rgb(114, 0, 254) !important;
+        color: rgba(114, 0, 254, 0.2);
+        text-shadow: 0 0 10px rgba(114, 0, 254, 1);
     }
-    #CodeEtProg .changed,
     #CodeEtProg .smooth_changed {
-        box-shadow:
-            0 0 30px 5px rgb(23, 218, 126) !important;
+        color: rgba(23, 218, 126, 0.2);
+        text-shadow: 0 0 10px rgba(23, 218, 126, 1);
     }
-    #ComDigitale .changed,
     #ComDigitale .smooth_changed {
-        box-shadow:
-            0 0 30px 5px rgb(249, 110, 0) !important;
+        color: rgba(249, 110, 0, 0.2);
+        text-shadow: 0 0 10px rgba(249, 110, 0, 1);
     }
-    #Hardware .changed,
     #Hardware .smooth_changed {
-        box-shadow:
-            0 0 30px 5px rgb(255, 0, 116) !important;
+        color: rgba(255, 0, 116, 0.2);
+        text-shadow: 0 0 10px rgba(255, 0, 116, 1);
     }
 
     .btn {
@@ -182,6 +169,7 @@
         order: 5;
     }
     #activities .activity .activity-container {
+        position: relative;
         display: flex;
         flex-direction: column;
         height: 100%;
@@ -306,7 +294,7 @@
                     <span class="activityTitle"><%= server.description %></span>
                 </h6>
                 <div class="card-body">
-                    <strong><u>Etape en cours :</u></strong><br /><span class="stepTitle">Aucune étape en cours. Passer le badge pour démarrer l'activité.</span>
+                    <strong><u>Étape en cours :</u></strong><br /><span class="stepTitle">Aucune étape en cours. Passer le badge pour démarrer l'activité.</span>
                 </div>
                 <div class="card-footer">
                     <a id="nextStep" href="#" class="btn btn-warning popup<%= server.id %>" data-title="Passer à l'étape suivante ?" data-body="Si les participant·es sont bloqué·es, cela leur permet de quand même avancer dans l'énigme !" data-function="nextStep">Passer à l'étape suivante</a>
@@ -381,15 +369,6 @@
         // Socket for timer control 
         var socket_timer = io('http://<%= data.global_config.app.adminServerIp %>:<%= data.global_config.app.adminServerPort %>/timercontrol');
         var gameMode = "classroom";
-
-        // mise en surbrillance d'un élément
-        function highlight(elt, cls) {
-            cls = (!cls) ? "changed": cls;
-            elt.addClass(cls);
-            setTimeout(function() {
-                elt.removeClass(cls);
-            }, 200);
-        }
 
         // Listener sur le boutons gameMode
         $('#gameMode label').on('click', function(e) {
@@ -499,13 +478,25 @@
         });
 
         // Receiving Current Step of game
+        var txt<%= server.id %> = "Aucune étape en cours. Scanner un badge pour démarrer l'activité.";
         socket_<%= server.id %>.on('toclient.newGameStep_<%= server.id %>', function(data) {
             $('#<%= server.id %>Spiner').addClass('hidden');
-            $("#<%= server.id %> .stepTitle").html(data.stepTitle);
-            highlight($("#<%= server.id %>"));
+            if(data.stepTitle != "") {
+                txt<%= server.id %> = data.stepTitle;
+            }
+
+            $("#<%= server.id %> .stepTitle").addClass("smooth_changed");
+            setTimeout(function() {
+                $("#<%= server.id %> .stepTitle").addClass('changed');
+
+                setTimeout(function() {
+                    $("#<%= server.id %> .stepTitle").html(data.stepTitle).removeClass('changed');
+                    setTimeout(function() {
+                        $("#<%= server.id %> .stepTitle").removeClass("smooth_changed");
+                    }, 200);
+                }, 200);
+            }, 200);
             // var etapesMsg = (data.totalSteps == 0) ? "En attente de scan RFID..." : data.totalSteps + " étapes au total.";
-            // $("#<%= server.id %> .totalsteps").html(etapesMsg);
-            // highlight($("#<%= server.id %>"));
         });
 
         // receiving solutions for current step
