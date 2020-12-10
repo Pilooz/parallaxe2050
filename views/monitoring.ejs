@@ -256,7 +256,7 @@
                     <label class="badge badge-info">Educatif</label>
                     <em>Le container est paramétré pour une classe. Les sessions de jeu sont de 15 minutes.</em>
                     <label class="badge badge-info">Classique</label>
-                    <em>Le container est en mode escape game classique, il est éventuellement ouvert, et les sessions de jeu sont de 45 minutes.</em>
+                    <em>Le container est en mode escape game classique, il est éventuellement ouvert, et les sessions de jeu sont de 40 minutes.</em>
                     <button id="btnInitAll" type="button" class="btn btn-warning popup" data-title="Tout ré-initialiser ?" data-body="Cela permet de remettre toutes les énigmes à 0 en une fois, dans le but d'accueillir un nouveau groupe." data-supplement="Ne pas oublier de passer sur chaque atelier pour mélanger les cartes, débrancher les câbles, raccrocher le téléphone et initialiser le launchpad en appuyant sur le bouton 8 !" data-function="initAll">Initialisation pour un nouveau groupe</button>
                 </div>
             </div>
@@ -357,13 +357,13 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h5 class="modal-title"></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <p>Modal body text goes here.</p>
+        <p></p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Non, j'annule</button>
@@ -388,11 +388,6 @@
             setTimeout(function() {
                 elt.removeClass(cls);
             }, 200);
-        }
-
-        // Listener sur les controles du timer
-        function setCouting(element, action) {
-            socket_timer.emit('toserver.timerControl',  { action: action, gameMode: gameMode } );
         }
 
         // Listener sur le boutons gameMode
@@ -444,17 +439,40 @@
                         initAll();
                         break;
                     case "resetCouting":
-                        setCouting(buttonPopup, "reset");
+                        setCouting("reset");
                         break;
                     case "stopCouting":
-                        setCouting(buttonPopup, "stop");
+                        setCouting("stop");
                         break;
                     case "startCouting":
-                        setCouting(buttonPopup, "start");
+                        setCouting("start");
+                        break;
+                    default:
                         break;
                 }
             })
         })
+
+        // Listener sur les controles du timer
+        function setCouting(action) {
+            socket_timer.emit('toserver.timerControl',  { action: action, gameMode: gameMode } );
+        }
+
+        // Listener on init all button
+        function initAll() {
+            // Add loader to avoid unwanted actions
+            $('#globalSpinner').removeClass('hidden');
+
+            // Emitting order to kill node server and browsers
+            <% data.global_config.servers.forEach(function(server) { %>
+                socket_<%= server.id %>.emit('toserver.reInitServer', {gameMode: gameMode});
+            <% }) %>
+
+            // Refresh monitoring page
+            setTimeout(function() {
+                $('#globalSpinner').addClass('hidden');
+            }, 60000);
+        }
 
 
         // loop on each game
@@ -521,6 +539,8 @@
         // 
         // When click on popup button for specific server, open modal
         // 
+        $('#confirmModal<%= server.id %>').modal('hide');
+        var buttonPopup;
         $('.popup<%= server.id %>').on('click', function(e) {
             e.preventDefault();
             buttonPopup = $(this);
@@ -554,22 +574,6 @@
 <% }) %>
         // <- ]
         // end loop
-
-        // Listener on init all button
-        function initAll() {
-            // Add loader to avoid unwanted actions
-            $('#globalSpinner').removeClass('hidden');
-
-            // Emitting order to kill node server and browsers
-            <% data.global_config.servers.forEach(function(server) { %>
-                socket_<%= server.id %>.emit('toserver.reInitServer', {gameMode: gameMode});
-            <% }) %>
-
-            // Refresh monitoring page
-            setTimeout(function() {
-                $('#globalSpinner').addClass('hidden');
-            }, 60000);
-        }
 
 }); 
 </script>
