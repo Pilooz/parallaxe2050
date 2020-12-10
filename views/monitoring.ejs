@@ -478,7 +478,6 @@
         });
 
         // Receiving Current Step of game
-        var txt<%= server.id %> = "Aucune étape en cours. Scanner un badge pour démarrer l'activité.";
         socket_<%= server.id %>.on('toclient.newGameStep_<%= server.id %>', function(data) {
             $('#<%= server.id %>Spiner').addClass('hidden');
             if(data.stepTitle != "") {
@@ -531,6 +530,17 @@
                 $('#<%= server.id %>Spinner').removeClass('hidden');
             }, 170);
             socket_<%= server.id %>.emit('toserver.reInitServer', {gameMode: gameMode});
+            // Shity...Shity...Shity...Shity...Shity...Shity...Shity...Shity...Shity...Shity...
+            //
+            //  Alors là, désolé pour notre moi futur ou tout autre personne qui reliera ce code
+            //  C'est hyper crado : Pour que le client se raffraichisse bien, on a remarqué qu'un
+            //  appuye sur le bouton nextStep faisait le job aprèe le ré-init du serveur.
+            //
+            // Shity...Shity...Shity...Shity...Shity...Shity...Shity...Shity...Shity...Shity...
+            setTimeout(function(){
+                console.log("http://<%= server.ip %>:<%= server.port %>/api/nextStep");
+                $.get( "http://<%= server.ip %>:<%= server.port %>/api/nextStep", function(data) {});
+            }, 3000);
         }
 
 
@@ -553,20 +563,22 @@
             // Ouverture de la popup
             $('#confirmModal<%= server.id %>').modal('show');
 
-            $('#confirmModal<%= server.id %> .btn-primary').on('click', function(e) {
-                e.preventDefault();
-                // Cache la modale
-                $('#confirmModal<%= server.id %>').modal('hide');
-                // Lance la bonne function
-                switch(buttonPopup.data('function')) {
-                    case "reinitServer":
-                        reinitServer<%= server.id %>(buttonPopup);
-                        break;
-                    case "nextStep":
-                        nextStep<%= server.id %>(buttonPopup);
-                        break;
-                }
-            })
+        })
+
+        // When confirm action on modal popup.
+        $('#confirmModal<%= server.id %> .btn-primary').on('click', function(e) {
+            e.preventDefault();
+            // Cache la modale
+            $('#confirmModal<%= server.id %>').modal('hide');
+            // Lance la bonne function
+            switch(buttonPopup.data('function')) {
+                case "reinitServer":
+                    reinitServer<%= server.id %>(buttonPopup);
+                    break;
+                case "nextStep":
+                    nextStep<%= server.id %>(buttonPopup);
+                    break;
+            }
         })
 
 <% }) %>
