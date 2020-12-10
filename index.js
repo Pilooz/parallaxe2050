@@ -117,7 +117,7 @@ function setup_scenario_environment(stepId) {
   
     // Emit a event to monitoring lib that pushes data to monitoring client
     eventEmitter.emit('monitoring.newGameSession', { tag: dataForTemplate.currentRfidTag, group: rfid.getCurrentGroup() + rfid.getCurrentSubGroup(), startTime: Date.now() });
-    eventEmitter.emit('monitoring.newGameStep', {stepId: stepId, totalSteps: scenario.data().steps.length});
+    eventEmitter.emit('monitoring.newGameStep', {stepId: stepId, stepTitle: scenario.getCurrentStep().stepTitle, totalSteps: scenario.data().steps.length});
     eventEmitter.emit('monitoring.colorsSets', {colorsSet: set});
 
     // Say to the client application to refresh now
@@ -416,7 +416,7 @@ router.all('/*', function (req, res, next) {
   
   // Send null data to monitoring
   eventEmitter.emit('monitoring.newGameSession', {tag: "", group: "", startTime: Date.now() });
-  eventEmitter.emit('monitoring.newGameStep', {stepId: "", totalSteps: 0});
+  eventEmitter.emit('monitoring.newGameStep', {stepId: "", stepTitle: "", totalSteps: 0});
   eventEmitter.emit('monitoring.solutionsForStep', {solutions: [{set: "1", responses: []}], solutionSet: "", nextStep: ""});
 
   // http headers
