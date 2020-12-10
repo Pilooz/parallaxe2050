@@ -169,7 +169,7 @@ $(document).ready(function() {
 			if(isTheKnootOKToBeASolution) {
 				setTimeout(function() {
 					socket.emit('toserver.nextStep', {nextStep: 'step-5', message: "BRAVO", knoots: knoots, blurredHashtags: blurredHashtags, blurredAccounts: blurredAccounts});
-				}, 4000);
+				}, 2000);
 			}
 			selectedImage = "";
 		}
