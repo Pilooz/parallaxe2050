@@ -427,11 +427,12 @@ router.all('/*', function (req, res, next) {
 // Forcing to next step
 .get("/api/nextStep", function(req, res, next){
   logger.info("Going to next activity step from admin page...");
-  var nextStep = scenario.getCurrentStep().transitions[0].id;
+  var nextStep = "";
   // S'il n'y a pas de badge (début d'activité), on ne passe pas au step suivant.
   if (rfid.getCurrentCode() != "") {
+    nextStep = scenario.getCurrentStep().transitions[0].id;
     setup_scenario_environment(nextStep); 
-  }
+  } 
   io.emit('toclient.refreshNow');
 
   res.setHeader('Content-Type', 'application/json');
