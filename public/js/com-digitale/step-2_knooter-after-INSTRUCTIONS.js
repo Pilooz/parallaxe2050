@@ -2,6 +2,7 @@ $(document).ready(function() {
 
     // Activer la manivelle pour éteindre l'écran
     socket.emit('toserver.manivelle_on', {});
+    socket.emit('toserver.telephone_off', {});
 
 	/*********************************
 	**********************************
