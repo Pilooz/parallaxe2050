@@ -416,7 +416,7 @@ router.all('/*', function (req, res, next) {
   
   // Send null data to monitoring
   eventEmitter.emit('monitoring.newGameSession', {tag: "", group: "", startTime: Date.now() });
-  eventEmitter.emit('monitoring.newGameStep', {stepId: "", stepTitle: "", totalSteps: 0});
+  eventEmitter.emit('monitoring.newGameStep', {stepId: "", stepTitle: "Aucune étape en cours. Passer le badge pour démarrer l'activité.", totalSteps: 0});
   eventEmitter.emit('monitoring.solutionsForStep', {solutions: [{set: "1", responses: []}], solutionSet: "", nextStep: ""});
 
   // http headers
