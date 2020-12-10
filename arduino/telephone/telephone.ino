@@ -18,21 +18,16 @@
 #include <SoftwareSerial.h>
 #include <DFPlayerMini_Fast.h>
 
-//#define DEBUG
-
 // Pour communiquer avec le serveur via USBSerial
 ParallaxeCom message;
 
-// Lecteur MP3
 SoftwareSerial mySerial(10, 11); // RX, TX
 DFPlayerMini_Fast myMP3;
-
 
 boolean isPlaying = false;
 boolean faire_sonner_le_tel = false;
 int track_number = 1;
 
-// int RFID = 4;
 int bouton = 5;
 int led = 8;
 int buzzer = 9;
@@ -44,7 +39,6 @@ const long end_ring_cycle = 3 * between_ring;
 long ringInterval = between_ring; // intervalle entre 2 sonneries en ms.
 int ringCount = 0;
 boolean has_already_played = false; // True quand la track a été jouée au moins une fois.
-
 //
 // Faire sonner le téléphone
 // Sonnerie non bloquante pour le reste du programme.
@@ -71,8 +65,8 @@ void stopRinging() {
   ringInterval = between_ring;
 }
 
-void setup() {
-
+void setup()
+{
   Serial.begin(9600);
   mySerial.begin(9600);
 
@@ -80,46 +74,47 @@ void setup() {
 
   Serial.println("Setting volume to max");
   myMP3.volume(20);
-  delay(2000);
+  delay(20);
 
-  isPlaying = true;
+  isPlaying = false;
 
   //pinMode (RFID, INPUT);
   pinMode (bouton, INPUT);
   pinMode (led, OUTPUT);
   pinMode (buzzer, OUTPUT);
+
+  Serial.println("Sleeping for 5 sec");
+  myMP3.sleep();
+  
   stopRinging();
 
   // Sending a READY message
   message.send("NAME", "TELEPHONE");
-  delay(5000);
+  delay(1000);
   message.send("MSG", "READY");
-
 }
 
-void loop() {
+void loop()
+{
   // Lire les entrées
   int sigBouton = digitalRead (bouton);
-  
+
   if (faire_sonner_le_tel) {
     ringing();
   }
 
-  //
-  // Traiter les entrées sorties
-  //
   if ( sigBouton == HIGH) {
-    // Jouer le MP3, s'il n'est pas déjà en train de jouer
-    if ( !myMP3.isPlaying()) {
+    if (!isPlaying) {
       stopRinging();
       myMP3.play(track_number);
       message.send("MSG", "Playing track #" + String(track_number));
+      isPlaying = true;
       has_already_played = true;
     }
   } else { // Le téléphone est raccroché
-    if ( myMP3.isPlaying()) {
-      //myMP3.reset();
-      myMP3.pause();
+    if (isPlaying) {
+      myMP3.stop();
+      isPlaying = false;
       // Si on a déja écouté la track alors on envoie HANGUP quand on reccroche
       // Ca évite de l'envoyer tout le temps quant on reset le téléphone (message RESET)
       if ( has_already_played ) {
@@ -176,6 +171,7 @@ void loop() {
       track_number = 1;
       has_already_played = false;
       myMP3.reset();
+      isPlaying = false;
       message.ack_ok();
     }
 
