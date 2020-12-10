@@ -16,12 +16,14 @@ void setup() {
   pinMode(pinLed, OUTPUT);
   digitalWrite(pinLed, LOW);
   pinMode(pinYellowSharp, INPUT);
-  pinMode(pinBlueExclamation, INPUT);
+  pinMode(pinBlueExclamation, INPUT_PULLUP);
+  digitalWrite(pinBlueExclamation, LOW);
 }
 
 void loop() {
   //if (digitalRead(pinYellowSharp) && !pinState && !digitalRead(pinBlueExclamation)) {
-  //  pinState = true;
+  //  pinState = true;13m2pg#
+  
   //  sharp();
   //}
   if (digitalRead(pinBlueExclamation) && !pinState && (digitalRead(pinYellowSharp) == 0)) {
