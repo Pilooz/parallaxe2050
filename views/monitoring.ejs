@@ -297,7 +297,9 @@
                     <strong><u>Étape en cours :</u></strong><br /><span class="stepTitle">Aucune étape en cours. Passer le badge pour démarrer l'activité.</span>
                 </div>
                 <div class="card-footer">
-                    <a id="nextStep" href="#" class="btn btn-warning popup<%= server.id %>" data-title="Passer à l'étape suivante ?" data-body="Si les participant·es sont bloqué·es, cela leur permet de quand même avancer dans l'énigme !" data-function="nextStep">Passer à l'étape suivante</a>
+                    <% if (server.id != "ComDigitale") { %>
+                        <a id="nextStep" href="#" class="btn btn-warning popup<%= server.id %>" data-title="Passer à l'étape suivante ?" data-body="Si les participant·es sont bloqué·es, cela leur permet de quand même avancer dans l'énigme !" data-function="nextStep">Passer à l'étape suivante</a>
+                    <% } %>
                     <%
                         supplementText = "";
                         switch(server.id) {

@@ -314,7 +314,7 @@ $(document).ready(function() {
 		if(hasBlurredHashtag) {
 			setTimeout(function() {
 				socket.emit('toserver.nextStep', {nextStep: 'step-3', message: "THANKS", knoots: knoots, blurredHashtags: blurredHashtags, blurredAccounts: blurredAccounts});
-			}, 4000);
+			}, 2000);
 		}
 	})
 })
