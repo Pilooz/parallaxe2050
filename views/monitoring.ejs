@@ -480,6 +480,7 @@
         // Receiving Current Step of game
         socket_<%= server.id %>.on('toclient.newGameStep_<%= server.id %>', function(data) {
             $('#<%= server.id %>Spiner').addClass('hidden');
+            var txt<%= server.id %> = "Aucune étape en cours. Passer le badge pour démarrer l'activité.";
             if(data.stepTitle != "") {
                 txt<%= server.id %> = data.stepTitle;
             }
@@ -489,7 +490,7 @@
                 $("#<%= server.id %> .stepTitle").addClass('changed');
 
                 setTimeout(function() {
-                    $("#<%= server.id %> .stepTitle").html(data.stepTitle).removeClass('changed');
+                    $("#<%= server.id %> .stepTitle").html(txt<%= server.id %>).removeClass('changed');
                     setTimeout(function() {
                         $("#<%= server.id %> .stepTitle").removeClass("smooth_changed");
                     }, 200);
@@ -539,7 +540,10 @@
             // Shity...Shity...Shity...Shity...Shity...Shity...Shity...Shity...Shity...Shity...
             setTimeout(function(){
                 console.log("http://<%= server.ip %>:<%= server.port %>/api/nextStep");
-                $.get( "http://<%= server.ip %>:<%= server.port %>/api/nextStep", function(data) {});
+                $.get( "http://<%= server.ip %>:<%= server.port %>/api/nextStep", function(data) {
+                    $('#<%= server.id %>Spinner').addClass('hidden');
+                    //socket_<%= server.id %>.emit('toclient.newGameStep_<%= server.id %>', {stepTitle: "Aucune étape en cours. Passer le badge pour démarrer l'activité."});
+                });
             }, 3000);
         }
 
