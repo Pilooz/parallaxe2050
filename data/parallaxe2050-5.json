@@ -6,7 +6,7 @@
     "steps" : [
         {
             "stepId" : "step-1",
-            "stepTitle" : "Message de Laëtitia",
+            "stepTitle" : "Introduction par Laëtitia",
             "title" : "Hardware",
             "template" : "../partials/player-video",
             "medias" : ["medias/hardware/laetitia-intro.mp4"],
