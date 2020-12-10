@@ -368,24 +368,11 @@
                 elt.removeClass(cls);
             }, 200);
         }
-        
-        // Listener sur les boutons de mode de jeu
-        $(".modeButton").on('click', function() {
-            var mode = this.id;
-            setGameMode(mode);
-        });
 
         // Listener sur les controles du timer
         function setCouting(element, action) {
-            highlight(element, "smooth_changed");
             socket_timer.emit('toserver.timerControl',  { action: action, gameMode: gameMode } );
         }
-        // $(".controlTimerBtn").on('click', function(e) {
-        //     highlight($(this), "smooth_changed");
-        //     var action = this.id;
-        //     console.log('action = '+action);
-        //     socket_timer.emit('toserver.timerControl',  { action: action, gameMode: gameMode } );
-        // });
 
         // Listener sur le boutons gameMode
         $('#gameMode label').on('click', function(e) {
@@ -406,21 +393,28 @@
             $('#gameModeChk').prop('checked', chkbx_state).change()
         });
 
+        $('#confirmModal').modal('hide');
+        var buttonPopup;
         // When click on popup button, open modal
         $('.popup').on('click', function(e) {
             e.preventDefault();
-            var buttonPopup = $(this);
+            buttonPopup = $(this);
+
+            // Construction de la popup
             $('#confirmModal .modal-title').html(buttonPopup.data('title'));
             var body = buttonPopup.data('body');
             if(buttonPopup.data('supplement') && buttonPopup.data('supplement') !== undefined && buttonPopup.data('supplement') != "") {
                 body += '<br /><br /><strong><u>Attention :</u> ' + buttonPopup.data('supplement');
             }
             $('#confirmModal .modal-body').html(body);
-            $('#confirmModal').modal();
+            // Ouverture de la popup
+            $('#confirmModal').modal('show');
 
             $('.btn-primary').on('click', function(e) {
                 e.preventDefault();
+                // Cache la modale
                 $('#confirmModal').modal('hide');
+                // Lance la bonne function
                 switch(buttonPopup.data('function')) {
                     case "rebootServer":
                         rebootServer(buttonPopup);
@@ -460,7 +454,6 @@
         // Receiving new rfid badge
         socket_<%= server.id %>.on('toclient.newGameSession_<%= server.id %>', function(data) {
             $('#<%= server.id %>Spiner').addClass('hidden');
-            
         });
 
         // Receiving Current Step of game
@@ -494,33 +487,18 @@
         // Activity control: nextStep
         //
         function nextStep(element) {
-            highlight(element, "smooth_changed");
             $.get( "http://<%= server.ip %>:<%= server.port %>/api/nextStep", function(data) {});
         }
-        // $("#<%= server.id %> #nextStep").on('click', function(e) {
-        //     highlight($(this), "smooth_changed");
-        //     $.get( "http://<%= server.ip %>:<%= server.port %>/api/nextStep", function(data) {});
-        //     e.preventDefault();
-        // });
 
         //
         // Activity control: reboot server
         //
         function rebootServer(element) {
-            highlight(element, "smooth_changed");
             setTimeout(function(e) {
                 $('#<%= server.id %>Spinner').removeClass('hidden');
             }, 170);
             socket_<%= server.id %>.emit('toserver.reInitServer', {gameMode: gameMode});
         }
-        // $("#<%= server.id %>_reinit").on('click', function(e) {
-        //     highlight($(this), "smooth_changed");
-        //     setTimeout(function(e) {
-        //         $('#<%= server.id %>Spinner').removeClass('hidden');
-        //     }, 170);
-        //     socket_<%= server.id %>.emit('toserver.reInitServer', {gameMode: gameMode});
-        //     e.preventDefault();
-        // });
 
 <% }) %>
         // <- ]
@@ -540,23 +518,7 @@
             setTimeout(function() {
                 $('#globalSpinner').addClass('hidden');
             }, 60000);
-
         }
-        // $('#btnInitAll').on('click', function(e) {
-        //     e.preventDefault();
-        //     // Add loader to avoid unwanted actions
-        //     $('#globalSpinner').removeClass('hidden');
-
-        //     // Emitting order to kill node server and browsers
-        //     <% data.global_config.servers.forEach(function(server) { %>
-        //         socket_<%= server.id %>.emit('toserver.reInitServer', {gameMode: gameMode});
-        //     <% }) %>
-
-        //     // Refresh monitoring page
-        //     setTimeout(function() {
-        //         $('#globalSpinner').addClass('hidden');
-        //     }, 60000);
-        // });
 
 }); 
 </script>
