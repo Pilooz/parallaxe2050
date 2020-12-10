@@ -398,23 +398,29 @@
             $('#gameMode label input').removeAttr('checked');
             $(this).find('input').attr("checked", "checked");
             gameMode = $(this).find('input').val();
-            console.log('gameMode = '+ gameMode);
             socket_timer.emit('toserver.timerControl',  { action: "set", gameMode: gameMode } );
         });
 
         // Listen to game server directive (setter on connection)
         socket_timer.on('toclient.gameMode', function(data){
             gameMode = data.gameMode;
-            var chkbx_state = (gameMode == "classroom") ? true : false;
-            $('#gameModeChk').prop('checked', chkbx_state).change()
+            $('#gameMode label').removeClass('active');
+            $('#gameMode label input').removeAttr('checked');
+            if(gameMode == "classroom") {
+                $('#gameModeChkEducatif').parent().addClass('active');
+                $('#gameModeChkEducatif').prop('checked', 'checked');
+            }
+            else {
+                $('#gameModeChkClassique').parent().addClass('active');
+                $('#gameModeChkClassique').prop('checked', 'checked');
+            }
         });
-
-        $('#confirmModal').modal('hide');
-        var buttonPopup;
 
         // 
         // When click on popup button, open modal
         // 
+        $('#confirmModal').modal('hide');
+        var buttonPopup;
         $('.popup').on('click', function(e) {
             e.preventDefault();
             buttonPopup = $(this);
