@@ -99,11 +99,11 @@ $(document).ready(function() {
 });
 
     // message Templates
-    const messageInit = "<div class='content'><div class='loader'><span class='feedback'>En attente d'un scan...</span></div></div>";
+    const messageInit = "<div class='content'><div class='loader'><span class='feedback'>En attente d'un premier scan...</span></div></div>";
     const messageSuccess = "<div class='content'><div class='loader'><span class='feedback'>Bravo !</span></div></div>";
 
-    const messageScan = "<div class='feedback'>Scan en cours...</div>";
-    const messageKO = "<div class='feedback'>Il semblerait que vous avez<br />mélangé les objets qui contiennent du code<br />et ceux qui n'en contiennent pas.<br />Cliquez sur le bouton \"Re-scanner\" puis recommencez !</div>";
+    const messageScan = "<div class='feedback'>En attente de scan de tous les objets</div>";
+    const messageKO = "<div class='feedback'>Vous avez mélangé les objets qui contiennent du code et les autres.<br />Cliquez sur \"Re-scanner\" puis recommencez tout !</div>";
 
     function progressBar(pct) {
         return "<div class='progress'>\

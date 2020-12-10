@@ -6,7 +6,7 @@
     "steps" : [
         {
             "stepId" : "step-1",
-            "stepTitle" : "Instructions téléphoniques par Marguerite",
+            "stepTitle" : "Introduction par Marguerite",
             "title" : "Com Digitale",
             "template" : "step-1_ringing-INSTRUCTIONS",
             "medias" : [],

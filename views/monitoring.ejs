@@ -108,46 +108,33 @@
 
 
     /******** Lights effects ********/
+    .smooth_changed {
+        transition: all 0.2s linear;
+    }
+    .smooth_changed.changed {
+        color: white !important;
+        text-shadow: 0 0 10px white !important;
+    }
 
-    /* glitter the stepTitle when changed */
-    /*.changed {
-        box-shadow:
-            0 0 30px 10px #fff,
-            0 0 40px 20px #f0f,
-            0 0 70px 50px #0ff !important;
-    }*/
-
-    /*.smooth_changed {
-        box-shadow:
-            0 0 30px 10px #fff,
-            0 0 40px 20px #f0f,
-            0 0 70px 50px #0ff !important;
-    }*/
-
-    #AdminReseau .changed,
     #AdminReseau .smooth_changed {
-        box-shadow:
-            0 0 30px 5px rgb(0, 198, 249) !important;
+        color: rgba(0, 198, 249, 0.2);
+        text-shadow: 0 0 10px rgba(0, 198, 249, 1);
     }
-    #BDD .changed,
     #BDD .smooth_changed {
-        box-shadow:
-            0 0 30px 5px rgb(114, 0, 254) !important;
+        color: rgba(114, 0, 254, 0.2);
+        text-shadow: 0 0 10px rgba(114, 0, 254, 1);
     }
-    #CodeEtProg .changed,
     #CodeEtProg .smooth_changed {
-        box-shadow:
-            0 0 30px 5px rgb(23, 218, 126) !important;
+        color: rgba(23, 218, 126, 0.2);
+        text-shadow: 0 0 10px rgba(23, 218, 126, 1);
     }
-    #ComDigitale .changed,
     #ComDigitale .smooth_changed {
-        box-shadow:
-            0 0 30px 5px rgb(249, 110, 0) !important;
+        color: rgba(249, 110, 0, 0.2);
+        text-shadow: 0 0 10px rgba(249, 110, 0, 1);
     }
-    #Hardware .changed,
     #Hardware .smooth_changed {
-        box-shadow:
-            0 0 30px 5px rgb(255, 0, 116) !important;
+        color: rgba(255, 0, 116, 0.2);
+        text-shadow: 0 0 10px rgba(255, 0, 116, 1);
     }
 
     .btn {
@@ -159,28 +146,37 @@
     #activities {
         display: flex;
         align-items: stretch;
+        justify-content : space-between;
     }
-    #activities .col-md-2 {
-        flex: 0 0 20%;
-        max-width: 20%;
+    #activities .activity {
+        flex: 0 0 19%;
+        max-width: 19%;
+        padding: 0;
     }
-    #activities .col-md-2#colCodeEtProg {
+    #activities .activity#colCodeEtProg {
         order: 1;
     }
-    #activities .col-md-2#colHardware {
+    #activities .activity#colHardware {
         order: 2;
     }
-    #activities .col-md-2#colBDD {
+    #activities .activity#colBDD {
         order: 3;
     }
-    #activities .col-md-2#colComDigitale {
+    #activities .activity#colComDigitale {
         order: 4;
     }
-    #activities .col-md-2#colAdminReseau {
+    #activities .activity#colAdminReseau {
         order: 5;
     }
-    #activities .col-md-2 > div {
+    #activities .activity .activity-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
         height: 100%;
+        background-color: white;
+        box-shadow: 0 .125rem .25rem rgba(0,0,0,.075) !important;
+        border: 1px solid #f8f9fa !important;
+        border-radius: 0.25rem;
     }
     h6.card-header {
         color: white;
@@ -252,7 +248,7 @@
                     <label class="badge badge-info">Educatif</label>
                     <em>Le container est paramétré pour une classe. Les sessions de jeu sont de 15 minutes.</em>
                     <label class="badge badge-info">Classique</label>
-                    <em>Le container est en mode escape game classique, il est éventuellement ouvert, et les sessions de jeu sont de 45 minutes.</em>
+                    <em>Le container est en mode escape game classique, il est éventuellement ouvert, et les sessions de jeu sont de 40 minutes.</em>
                     <button id="btnInitAll" type="button" class="btn btn-warning popup" data-title="Tout ré-initialiser ?" data-body="Cela permet de remettre toutes les énigmes à 0 en une fois, dans le but d'accueillir un nouveau groupe." data-supplement="Ne pas oublier de passer sur chaque atelier pour mélanger les cartes, débrancher les câbles, raccrocher le téléphone et initialiser le launchpad en appuyant sur le bouton 8 !" data-function="initAll">Initialisation pour un nouveau groupe</button>
                 </div>
             </div>
@@ -267,7 +263,7 @@
                     <p class="card-text">
                         <iframe src="/timer" width="100%" height="250px"></iframe>
 
-                        <a class="btn btn-warning controlTimerBtn popup" id="reset" href="#" data-title="Ré-initialiser le décompte ?" data-body='Remet le décompte à 40 minutes si le format "classique" est sélectionné, et à 15 minutes si le format "éducatif" est sélectionné.' data-function="resetCouting">Reinitialiser le décompte</a>
+                        <a class="btn btn-warning controlTimerBtn popup" id="reset" href="#" data-title="Ré-initialiser le décompte ?" data-body='Remet le décompte à 15 minutes si le format "éducatif" est sélectionné, et à 40 minutes si le format "classique" est sélectionné.' data-function="resetCounting">Reinitialiser le décompte</a>
                       
                         <a class="btn btn-warning controlTimerBtn popup" id="stop" data-title="Mettre le décompte sur pause ?" data-body="Permet de mettre en pause le décompte." data-function="stopCounting" href="#">Mettre le décompte sur pause</a>
 
@@ -277,14 +273,13 @@
                 </div>
             </div>
         </div>
-
     </div>
 
-    <div class="row" id="activities">
+    <div id="activities">
         <!-- Loop on each game  -->
 <% data.global_config.servers.forEach(function(server) { %>
-        <div class="col-md-2" id="col<%= server.id %>">
-            <div id="<%= server.id %>" class="card mb-4 border-light shadow-sm" style="position: relative;">
+        <div class="activity" id="col<%= server.id %>">
+            <div class="activity-container" id="<%= server.id %>">
                 <!-- Spinner for the activity -->
                 <div id="<%= server.id %>Spinner" class="customSpinner hidden">
                     <div class="spinner-border" role="status">
@@ -299,9 +294,10 @@
                     <span class="activityTitle"><%= server.description %></span>
                 </h6>
                 <div class="card-body">
-                    <strong><u>Etape en cours :</u></strong> <span class="stepTitle">Aucune étape en cours.<br />Passer le badger pour démarrer l'activité</span>
-                    <br /><br />
-                    <a id="nextStep" href="#" class="btn btn-warning popup" data-title="Passer à l'étape suivante ?" data-body="Si les participant·es sont bloqué·es, cela leur permet de quand même avancer dans l'énigme !" data-function="nextStep">Passer à l'étape suivante</a>
+                    <strong><u>Étape en cours :</u></strong><br /><span class="stepTitle">Aucune étape en cours. Passer le badge pour démarrer l'activité.</span>
+                </div>
+                <div class="card-footer">
+                    <a id="nextStep" href="#" class="btn btn-warning popup<%= server.id %>" data-title="Passer à l'étape suivante ?" data-body="Si les participant·es sont bloqué·es, cela leur permet de quand même avancer dans l'énigme !" data-function="nextStep">Passer à l'étape suivante</a>
                     <%
                         supplementText = "";
                         switch(server.id) {
@@ -317,14 +313,32 @@
                                 break;
                         }
                     %>
-                    <a id="<%= server.id %>_reinit" href="#" class="btn btn-warning popup" data-title="Remettre l'activité à 0 ?" data-body="Cela affichera un message d'attente à l'écran, demandant aux participant·es de badger pour débuter l'activité." data-supplement="<%= supplementText %>" data-function="rebootServer" title="Remettre l'activité à 0">Remettre l'activité à 0</a>
-                    <!-- <a id="" href="#" class="btn btn-warning popup" data-title="Redémarrer le serveur ?" data-body="" title="Redémarrer le serveur">Redémarrer le serveur</a> -->
+                    <a id="<%= server.id %>_reinit" href="#" class="btn btn-warning popup<%= server.id %>" data-title="Remettre l'activité à 0 ?" data-body="Cela affichera un message d'attente à l'écran, demandant aux participant·es de badger pour débuter l'activité." data-supplement="<%= supplementText %>" data-function="reinitServer" title="Remettre l'activité à 0">Remettre l'activité à 0</a>
                 </div>
+            </div>
+            <!-- Modal -->
+            <div class="modal" tabindex="-1" id="confirmModal<%= server.id %>">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <p></p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Non, j'annule</button>
+                    <button type="button" class="btn btn-primary">Oui, je valide !</button>
+                  </div>
+                </div>
+              </div>
             </div>
         </div>
 <% }) %>
     </div>
-
 </main>
 
 <!-- Modal -->
@@ -332,13 +346,13 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h5 class="modal-title"></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <p>Modal body text goes here.</p>
+        <p></p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Non, j'annule</button>
@@ -347,11 +361,7 @@
     </div>
   </div>
 </div>
-<footer class="footer mt-auto py-3">
-  <!-- <div class="container">
-    <span class="text-muted">Ici le footer</span>
-  </div> -->
-</footer>
+
 <script src="/bootstrap/dist/js/bootstrap.min.js"></script>
 <script>
      $(document).ready(function() {
@@ -359,20 +369,6 @@
         // Socket for timer control 
         var socket_timer = io('http://<%= data.global_config.app.adminServerIp %>:<%= data.global_config.app.adminServerPort %>/timercontrol');
         var gameMode = "classroom";
-
-        // mise en surbrillance d'un élément
-        function highlight(elt, cls) {
-            cls = (!cls) ? "changed": cls;
-            elt.addClass(cls);
-            setTimeout(function() {
-                elt.removeClass(cls);
-            }, 200);
-        }
-
-        // Listener sur les controles du timer
-        function setCouting(element, action) {
-            socket_timer.emit('toserver.timerControl',  { action: action, gameMode: gameMode } );
-        }
 
         // Listener sur le boutons gameMode
         $('#gameMode label').on('click', function(e) {
@@ -382,20 +378,29 @@
             $('#gameMode label input').removeAttr('checked');
             $(this).find('input').attr("checked", "checked");
             gameMode = $(this).find('input').val();
-            console.log('gameMode = '+ gameMode);
             socket_timer.emit('toserver.timerControl',  { action: "set", gameMode: gameMode } );
         });
 
         // Listen to game server directive (setter on connection)
         socket_timer.on('toclient.gameMode', function(data){
             gameMode = data.gameMode;
-            var chkbx_state = (gameMode == "classroom") ? true : false;
-            $('#gameModeChk').prop('checked', chkbx_state).change()
+            $('#gameMode label').removeClass('active');
+            $('#gameMode label input').removeAttr('checked');
+            if(gameMode == "classroom") {
+                $('#gameModeChkEducatif').parent().addClass('active');
+                $('#gameModeChkEducatif').prop('checked', 'checked');
+            }
+            else {
+                $('#gameModeChkClassique').parent().addClass('active');
+                $('#gameModeChkClassique').prop('checked', 'checked');
+            }
         });
 
+        // 
+        // When click on popup button, open modal
+        // 
         $('#confirmModal').modal('hide');
         var buttonPopup;
-        // When click on popup button, open modal
         $('.popup').on('click', function(e) {
             e.preventDefault();
             buttonPopup = $(this);
@@ -410,35 +415,51 @@
             // Ouverture de la popup
             $('#confirmModal').modal('show');
 
-            $('.btn-primary').on('click', function(e) {
+            $('#confirmModal .btn-primary').on('click', function(e) {
                 e.preventDefault();
                 // Cache la modale
                 $('#confirmModal').modal('hide');
                 // Lance la bonne function
                 switch(buttonPopup.data('function')) {
-                    case "rebootServer":
-                        rebootServer(buttonPopup);
-                        break;
-                    case "nextStep":
-                        nextStep(buttonPopup);
-                        break;
                     case "initAll":
                         initAll();
                         break;
-                    case "resetCouting":
-                        setCouting(buttonPopup, "reset");
+                    case "resetCounting":
+                        setCouting("reset");
                         break;
-                    case "stopCouting":
-                        setCouting(buttonPopup, "stop");
+                    case "stopCounting":
+                        setCouting("stop");
                         break;
-                    case "startCouting":
-                        setCouting(buttonPopup, "start");
+                    case "startCounting":
+                        setCouting("start");
                         break;
                     default:
                         break;
                 }
             })
         })
+
+        // Listener sur les controles du timer
+        function setCouting(action) {
+            socket_timer.emit('toserver.timerControl',  { action: action, gameMode: gameMode } );
+        }
+
+        // Listener on init all button
+        function initAll() {
+            // Add loader to avoid unwanted actions
+            $('#globalSpinner').removeClass('hidden');
+
+            // Emitting order to kill node server and browsers
+            <% data.global_config.servers.forEach(function(server) { %>
+                socket_<%= server.id %>.emit('toserver.reInitServer', {gameMode: gameMode});
+            <% }) %>
+
+            // Refresh monitoring page
+            setTimeout(function() {
+                $('#globalSpinner').addClass('hidden');
+            }, 60000);
+        }
+
 
         // loop on each game
         // [ ->
@@ -457,13 +478,25 @@
         });
 
         // Receiving Current Step of game
+        var txt<%= server.id %> = "Aucune étape en cours. Scanner un badge pour démarrer l'activité.";
         socket_<%= server.id %>.on('toclient.newGameStep_<%= server.id %>', function(data) {
             $('#<%= server.id %>Spiner').addClass('hidden');
-            $("#<%= server.id %> .stepTitle").html(data.stepTitle);
-            highlight($("#<%= server.id %>"));
+            if(data.stepTitle != "") {
+                txt<%= server.id %> = data.stepTitle;
+            }
+
+            $("#<%= server.id %> .stepTitle").addClass("smooth_changed");
+            setTimeout(function() {
+                $("#<%= server.id %> .stepTitle").addClass('changed');
+
+                setTimeout(function() {
+                    $("#<%= server.id %> .stepTitle").html(data.stepTitle).removeClass('changed');
+                    setTimeout(function() {
+                        $("#<%= server.id %> .stepTitle").removeClass("smooth_changed");
+                    }, 200);
+                }, 200);
+            }, 200);
             // var etapesMsg = (data.totalSteps == 0) ? "En attente de scan RFID..." : data.totalSteps + " étapes au total.";
-            // $("#<%= server.id %> .totalsteps").html(etapesMsg);
-            // highlight($("#<%= server.id %>"));
         });
 
         // receiving solutions for current step
@@ -486,39 +519,59 @@
         //
         // Activity control: nextStep
         //
-        function nextStep(element) {
+        function nextStep<%= server.id %>(element) {
             $.get( "http://<%= server.ip %>:<%= server.port %>/api/nextStep", function(data) {});
         }
 
         //
         // Activity control: reboot server
         //
-        function rebootServer(element) {
+        function reinitServer<%= server.id %>(element) {
             setTimeout(function(e) {
                 $('#<%= server.id %>Spinner').removeClass('hidden');
             }, 170);
             socket_<%= server.id %>.emit('toserver.reInitServer', {gameMode: gameMode});
         }
 
+
+        // 
+        // When click on popup button for specific server, open modal
+        // 
+        $('#confirmModal<%= server.id %>').modal('hide');
+        var buttonPopup;
+        $('.popup<%= server.id %>').on('click', function(e) {
+            e.preventDefault();
+            buttonPopup = $(this);
+
+            // Construction de la popup
+            $('#confirmModal<%= server.id %> .modal-title').html(buttonPopup.data('title'));
+            var body = buttonPopup.data('body');
+            if(buttonPopup.data('supplement') && buttonPopup.data('supplement') !== undefined && buttonPopup.data('supplement') != "") {
+                body += '<br /><br /><strong><u>Attention :</u> ' + buttonPopup.data('supplement');
+            }
+            $('#confirmModal<%= server.id %> .modal-body').html(body);
+            // Ouverture de la popup
+            $('#confirmModal<%= server.id %>').modal('show');
+
+            $('#confirmModal<%= server.id %> .btn-primary').on('click', function(e) {
+                e.preventDefault();
+                // Cache la modale
+                $('#confirmModal<%= server.id %>').modal('hide');
+                // Lance la bonne function
+                switch(buttonPopup.data('function')) {
+                    case "reinitServer":
+                        reinitServer<%= server.id %>(buttonPopup);
+                        break;
+                    case "nextStep":
+                        nextStep<%= server.id %>(buttonPopup);
+                        break;
+                }
+            })
+        })
+
 <% }) %>
         // <- ]
         // end loop
-
-        // Listener on init all button
-        function initAll() {
-            // Add loader to avoid unwanted actions
-            $('#globalSpinner').removeClass('hidden');
-
-            // Emitting order to kill node server and browsers
-            <% data.global_config.servers.forEach(function(server) { %>
-                socket_<%= server.id %>.emit('toserver.reInitServer', {gameMode: gameMode});
-            <% }) %>
-
-            // Refresh monitoring page
-            setTimeout(function() {
-                $('#globalSpinner').addClass('hidden');
-            }, 60000);
-        }
 
 }); 
 </script>
