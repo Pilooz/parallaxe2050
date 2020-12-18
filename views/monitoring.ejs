@@ -453,7 +453,7 @@
 
             // Emitting order to kill node server and browsers
             <% data.global_config.servers.forEach(function(server) { %>
-                socket_<%= server.id %>.emit('toserver.reInitServer', {gameMode: gameMode});
+                socket_<%= server.id %>.emit('toserver.reInitServer', {gameMode: gameMode, serverId: <%= server.id %>});
             <% }) %>
 
             // Refresh monitoring page
@@ -532,7 +532,7 @@
             setTimeout(function(e) {
                 $('#<%= server.id %>Spinner').removeClass('hidden');
             }, 170);
-            socket_<%= server.id %>.emit('toserver.reInitServer', {gameMode: gameMode});
+            socket_<%= server.id %>.emit('toserver.reInitServer', {gameMode: gameMode, serverId: <%= server.id %>});
             // Shity...Shity...Shity...Shity...Shity...Shity...Shity...Shity...Shity...Shity...
             //
             //  Alors là, désolé pour notre moi futur ou tout autre personne qui reliera ce code
