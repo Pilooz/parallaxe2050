@@ -1,5 +1,5 @@
 Code
-"4C809DD6" : Cafetière a capsules
+"4C809DD6" : Cafetière a capsules (retiré des solutions car carte perdue)
 "9CFB9CD6" : Télévision
 "5C309FD6" : Lave vaisselle
 "9CE79CD6" : Téléphone Portable
