@@ -186,54 +186,31 @@
 		socket.on('toclient.responseAnalysis', function(data) {
 			console.log("responseAnalysis", data);
 
-// 			var modalTitle = "Echec !";
-// 			var modalBody = "Si vous lancez l'anti-virus sur ce créneau-là, vous ne toucherez pas 100% des serveurs du monde.";
-// 			var modalButton = '<button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>';
-// 			if (data.result == "OK") {
-// 				modalTitle = "Succès !";
-// 				modalBody = "Le créneau horaire a bien été transmis à Marie.";
-// 				var modalButton = '<button type="button" class="btn btn-primary" data-dismiss="modal">C\'est compris !</button>';
-// 			}
-
-// 			// Create a modal
-// 			var modalHTML = '<!-- Modal -->
-// <div class="modal fade" id="modaleDeBDD" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-//     <div class="modal-dialog">
-//         <div class="modal-content">
-//             <div class="modal-header">
-//                 <h5 class="modal-title">' + modalTitle + '</h5>
-//                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-//                     <span aria-hidden="true">&times;</span>
-//                 </button>
-//             </div>
-//             <div class="modal-body">' + modalBody + '</div>
-//             <div class="modal-footer">
-//                 ' + modalButton + '
-//             </div>
-//         </div>
-//     </div>
-// </div>';
-			// $("#modaleDeBDD").modal('hide');
-
-			// setTimeout(function() {
-				// Change le texte en fonction de si le résultat est bon ou non
-				if (data.result == "OK") {
-					$("#modaleDeBDD .modal-title").html("Succès !");
-					$("#modaleDeBDD .modal-body").html("Le créneau horaire a bien été transmis à Marie.");
-					$("#modaleDeBDD .modal-footer button").html('C\'est compris !');
-					$("#modaleDeBDD .modal-footer button").addClass('btn-primary').removeClass('btn-secondary');
-					if(!$('#modaleDeBDD').hasClass('show')) {
-						$('#modaleDeBDD').modal('show');
-					}
+			$('#modaleDeBDD').removeProp('display');
+			if(!$('body').hasClass('modal-open')) {
+				console.log("Body n'a pas la class modal-open")
+				$('.modal-backdrop').remove();
+			}
+			if(!$('#modaleDeBDD').hasClass('show') && $('.modal-backdrop').length > 0) {
+				$('.modal-backdrop').remove();
+			}
+			// Change le texte en fonction de si le résultat est bon ou non
+			if (data.result == "OK") {
+				$("#modaleDeBDD .modal-title").html("Succès !");
+				$("#modaleDeBDD .modal-body").html("Le créneau horaire a bien été transmis à Marie.");
+				$("#modaleDeBDD .modal-footer button").html('C\'est compris !');
+				$("#modaleDeBDD .modal-footer button").addClass('btn-primary').removeClass('btn-secondary');
+				if(!$('#modaleDeBDD').hasClass('show')) {
+					$('#modaleDeBDD').modal('show');
 				}
-				else {
-					$("#modaleDeBDD .modal-title").html("Echec !");
-					$("#modaleDeBDD .modal-body").html("Si vous lancez l'anti-virus sur ce créneau-là, vous ne toucherez pas 100% des serveurs du monde.");
-					if(!$('#modaleDeBDD').hasClass('show')) {
-						$('#modaleDeBDD').modal('show');
-					}
+			}
+			else {
+				$("#modaleDeBDD .modal-title").html("Echec !");
+				$("#modaleDeBDD .modal-body").html("Si vous lancez l'anti-virus sur ce créneau-là, vous ne toucherez pas 100% des serveurs du monde.");
+				if(!$('#modaleDeBDD').hasClass('show')) {
+					$('#modaleDeBDD').modal('show');
 				}
-			// }, 800);
+			}
 		});
 
 		//
