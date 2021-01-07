@@ -188,11 +188,13 @@
 
 			$('#modaleDeBDD').removeProp('display');
 			if(!$('body').hasClass('modal-open')) {
-				console.log("Body n'a pas la class modal-open")
+				console.log("Body n'a pas la class modal-open");
 				$('.modal-backdrop').remove();
 			}
 			if(!$('#modaleDeBDD').hasClass('show') && $('.modal-backdrop').length > 0) {
+				console.log("2e if");
 				$('.modal-backdrop').remove();
+				$('body').removeClass('modal-open');
 			}
 			// Change le texte en fonction de si le résultat est bon ou non
 			if (data.result == "OK") {
