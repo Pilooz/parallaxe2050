@@ -184,8 +184,10 @@
 		// réponse de node concernant les solutions.
 		//
 		socket.on('toclient.responseAnalysis', function(data) {
-			// Cache la modal dans tous les cas
-			$("#modaleDeBDD").modal('hide');
+			// Cache la modal si elle est ouverte
+			if($("#modaleDeBDD").hasClass('show')) {
+				$("#modaleDeBDD").modal('hide');
+			}
 			// Change le texte en fonction de si le résultat est bon ou non
 			if (data.result == "KO") {
 				$("#modaleDeBDD .modal-title").html("Echec !");
