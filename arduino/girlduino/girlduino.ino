@@ -99,7 +99,7 @@ int test_val_point(int v0, int v1, int v2, int v3, int v4, int v5) {
   Serial.println("-----------------------------------------------");
 
   message.send("VALUES", "[ {" + red + black + yellow + white + green + "} ]");
-  if (result == 4)
+  if (result >= 4)
     return 1;
   return 0;
 }
