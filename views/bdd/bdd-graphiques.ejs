@@ -184,15 +184,12 @@
 		// réponse de node concernant les solutions.
 		//
 		socket.on('toclient.responseAnalysis', function(data) {
-			console.log("responseAnalysis", data);
-
+			// Gestion de la réception de pleiiiiin de sockets en même temps (fermeture des modales)
 			$('#modaleDeBDD').removeProp('display');
 			if(!$('body').hasClass('modal-open')) {
-				console.log("Body n'a pas la class modal-open");
 				$('.modal-backdrop').remove();
 			}
 			if(!$('#modaleDeBDD').hasClass('show') && $('.modal-backdrop').length > 0) {
-				console.log("2e if");
 				$('.modal-backdrop').remove();
 				$('body').removeClass('modal-open');
 			}
@@ -222,7 +219,6 @@
 			e.preventDefault();
 			$('#modaleDeBDD').hide();
 			setTimeout(function() {
-				console.log('enoiv ,ext step');
 				socket.emit('toserver.nextStep', {nextStep: nextStep});
 			}, 2000);
 		})
