@@ -186,7 +186,7 @@
 		socket.on('toclient.responseAnalysis', function(data) {
 			console.log("responseAnalysis", data);
 			// Cache la modal si elle est ouverte
-			if($("#modaleDeBDD").hasClass('show')) {
+			if($(".modal-backdrop").length > 0) {
 				$("#modaleDeBDD").modal('hide');
 				$('#modaleDeBDD').on('hidden.bs.modal', function(e) {
 					// Change le texte en fonction de si le résultat est bon ou non
