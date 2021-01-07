@@ -184,12 +184,9 @@
 		// réponse de node concernant les solutions.
 		//
 		socket.on('toclient.responseAnalysis', function(data) {
-			var popup = $("#modaleDeBDD");
-			// var title = $("#titleResult #title");
-			// var msg = $("#messageResult");
-			// popup.attr('style', 'display:none');
-			// title.html("");
-			// msg.html("");
+			// Cache la modal dans tous les cas
+			$("#modaleDeBDD").modal('hide');
+			// Change le texte en fonction de si le résultat est bon ou non
 			if (data.result == "KO") {
 				$("#modaleDeBDD .modal-title").html("Echec !");
 				$("#modaleDeBDD .modal-body").html("Si vous lancez l'anti-virus sur ce créneau-là, vous ne toucherez pas 100% des serveurs du monde.");
