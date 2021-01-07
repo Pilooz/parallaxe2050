@@ -193,23 +193,25 @@
 				$('.modal-backdrop').remove();
 				$('body').removeClass('modal-open');
 			}
-			// Change le texte en fonction de si le résultat est bon ou non
-			if (data.result == "OK") {
-				$("#modaleDeBDD .modal-title").html("Succès !");
-				$("#modaleDeBDD .modal-body").html("Le créneau horaire a bien été transmis à Marie.");
-				$("#modaleDeBDD .modal-footer button").html('C\'est compris !');
-				$("#modaleDeBDD .modal-footer button").addClass('btn-primary').removeClass('btn-secondary');
-				if(!$('#modaleDeBDD').hasClass('show')) {
-					$('#modaleDeBDD').modal('show');
+			setTimeout(function() {
+				// Change le texte en fonction de si le résultat est bon ou non
+				if (data.result == "OK") {
+					$("#modaleDeBDD .modal-title").html("Succès !");
+					$("#modaleDeBDD .modal-body").html("Le créneau horaire a bien été transmis à Marie.");
+					$("#modaleDeBDD .modal-footer button").html('C\'est compris !');
+					$("#modaleDeBDD .modal-footer button").addClass('btn-primary').removeClass('btn-secondary');
+					if(!$('#modaleDeBDD').hasClass('show')) {
+						$('#modaleDeBDD').modal('show');
+					}
 				}
-			}
-			else {
-				$("#modaleDeBDD .modal-title").html("Echec !");
-				$("#modaleDeBDD .modal-body").html("Si vous lancez l'anti-virus sur ce créneau-là, vous ne toucherez pas 100% des serveurs du monde.");
-				if(!$('#modaleDeBDD').hasClass('show')) {
-					$('#modaleDeBDD').modal('show');
+				else {
+					$("#modaleDeBDD .modal-title").html("Echec !");
+					$("#modaleDeBDD .modal-body").html("Si vous lancez l'anti-virus sur ce créneau-là, vous ne toucherez pas 100% des serveurs du monde.");
+					if(!$('#modaleDeBDD').hasClass('show')) {
+						$('#modaleDeBDD').modal('show');
+					}
 				}
-			}
+			}, 500);
 		});
 
 		//
