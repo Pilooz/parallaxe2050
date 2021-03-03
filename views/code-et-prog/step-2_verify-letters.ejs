@@ -30,7 +30,7 @@
                     <div class="line margin-2">affiche( "Trouvez maintenant le langage associé à ce caractère." );</div>
                     <div class="line margin-1">}</div>
                     <div class="line margin-1">sinon {</div>
-                    <div class="line margin-2">affiche( "Echec ! Essayez un autre caractère." );</div>
+                    <div class="line margin-2">affiche( "Ce n'est pas le caractère qui vous permettra de trouver le langage dans lequel le virus a été codé. Réessayez." );</div>
                     <div class="line margin-1">}</div>
                     <div class="line margin-0">}</div>
                     <div class="line margin-0">sinon {</div>
@@ -167,10 +167,17 @@ $(document).ready(function() {
     $('#testerFile2').on('click', function(e) {
         e.preventDefault();
         chars = $('#inputFile2').val();
+
+        var inputAr = [];
+        for (var i = chars.length - 1; i >= 0; i--) {
+            if(chars[i] != '[' && chars[i] != ' ' && chars[i] != ',' && chars[i] != ';' && chars[i] != ']') {
+                inputAr.push(chars[i]);
+            }
+        };
         
-        var regexp = new RegExp('[ ,;]');
-        inputAr = chars.split(regexp);
-        inputAr = inputAr.filter(e => e != "");
+        // var regexp = new RegExp('[ ,;]');
+        // inputAr = chars.split(regexp);
+        // inputAr = inputAr.filter(e => e != "");
 
         socket.emit('toserver.testChars', {cars: inputAr});
     })
