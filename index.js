@@ -17,7 +17,6 @@ var router        = express.Router();
 var server        = require('http').createServer(app);
 const ip            = require('ip');
 const fs          = require('fs');
-const os          = require('os');
 
 // Find configuration, with fixed IP
 const CONFIG_SERVER = get_server_conf();
@@ -88,14 +87,7 @@ if (IsAdminServer) {
 // return the conf from server ip
 //------------------------------------------------------------------------
 function get_server_conf() {
-  var cnf =  GLOBAL_CONFIG.servers.find(server => server.ip == ip.address());
-
-
-  if (!cnf) {
-    const hosname = os.hostname();
-    var cnf = GLOBAL_CONFIG.servers.find(server => server.name == hosname);
-  }
-
+  var cnf =  GLOBAL_CONFIG.servers.filter(server => server.ip == ip.address())[0];
   if (!cnf) {
     console.error("\nNo configuration was found with the IP '" + ip.address() + "' !\n");
     return process.exit(1);
