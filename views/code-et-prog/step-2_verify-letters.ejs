@@ -18,7 +18,7 @@
         <div class="col-sm-2 files-list">
             <ul>
                 <li data-file="file1" class="active">testUnCaractère.mv</li>
-                <li data-file="file2">testUneListeDeCaractères.mv</li>
+                <!-- <li data-file="file2">testUneListeDeCaractères.mv</li> -->
             </ul>
         </div>
         <div class="col-sm-10 files-details">
@@ -59,6 +59,9 @@
                     <div class="line margin-2">affiche( "Succès ! Vous avez trouvé le bon caractère." );</div>
                     <div class="line margin-2">affiche( "Trouvez maintenant le langage associé à ce caractère." );</div>
                     <div class="line margin-2">arrêteLeCode;</div>
+                    <div class="line margin-1">}</div>
+                    <div class="line margin-1">sinon {</div>
+                    <div class="line margin-2">affiche( "Ce n'est pas le caractère qui permettra de trouver le langage dans lequel le virus a été codé." );</div>
                     <div class="line margin-1">}</div>
                     <div class="line margin-0">}</div>
                 </code>
@@ -167,7 +170,6 @@ $(document).ready(function() {
     $('#testerFile2').on('click', function(e) {
         e.preventDefault();
         chars = $('#inputFile2').val();
-
         for (var i = chars.length - 1; i >= 0; i--) {
             if(chars[i] != '[' && chars[i] != ' ' && chars[i] != ',' && chars[i] != ';' && chars[i] != ']') {
                 inputAr.push(chars[i]);
@@ -191,6 +193,11 @@ $(document).ready(function() {
                     $('#feedbackModal h5').html('Succès !');
                     $('#feedbackModal p').html('Bravo, vous avez identifié le bon caractère : "' + inputAr[index] + '".');
                     $('#feedbackModal .btn').removeClass('btn-secondary').addClass('btn-success');
+                    $('#feedbackModal').modal('show');
+                }
+                else {
+                    $('#feedbackModal h5').html('Echec');
+                    $('#feedbackModal p').html('Ce n\'est pas le caractère qui permettra de trouver le langage dans lequel le virus a été codé.');
                     $('#feedbackModal').modal('show');
                 }
             })
