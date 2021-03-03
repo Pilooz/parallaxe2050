@@ -7,12 +7,19 @@
 #define LED_TYPE      WS2811
 #define BRIGHTNESS    100
 
+#define OUT_1 8
+#define OUT_2 9
+#define OUT_3 10
+#define IN_1  6
+#define IN_2  7
+
 // CABLES COLORS AND VALUES
 const int WHITE_CABLE   = 915;
 const int YELLOW_CABLE  = 1010;
 const int RED_CABLE     = 25;
 const int GREEN_CABLE   = 325;
 const int BLACK_CABLE   = 1010;
+
 
 int tolerance = 25;
 
@@ -33,76 +40,74 @@ void turn_led_to_color_rgb(int r, int g, int b) {
   FastLED.show();
 }
 
-int test_val_point(int v0, int v1, int v2, int v3, int v4, int v5) {
-  int result = 0;
-  String red="\"red\":", black="}, {\"black\":", yellow="}, {\"yellow\":", white="}, {\"white\":", green="}, {\"green\":";
-  
-  Serial.println("-----------------------------------------------");
-  Serial.print("Tolerance + ou - "); Serial.print(tolerance);
-  Serial.println("\nRED\tBLACK\tYELLOW\tWHITE\tGREEN");
-  Serial.print(RED_CABLE);
-  Serial.print("\t");
-  Serial.print(BLACK_CABLE);
-  Serial.print("\t");
-  Serial.print(YELLOW_CABLE);
-  Serial.print("\t");
-  Serial.print(WHITE_CABLE);
-  Serial.print("\t");
-  Serial.println(GREEN_CABLE);
 
-  Serial.print(""); Serial.print(v0);
-  if ((v0 >= RED_CABLE - tolerance) && (v0 <= RED_CABLE + tolerance)) { //5
-    Serial.print("*");
-    red += "1";
-    result++;
-  } else {
-    red+="0";
-  }
-  
-  Serial.print("\t"); Serial.print(v2);
-  if ((v2 >= BLACK_CABLE - tolerance) && (v2 <= BLACK_CABLE + tolerance)) { //10
-    Serial.print("*");
-    black+="1";
-    result++;
-  } else {
-    black+="0";
-  }
-  
-  Serial.print("\t"); Serial.print(v3);
-  if ((v3 >= YELLOW_CABLE - tolerance) && (v3 <= YELLOW_CABLE + tolerance)) { //10
-    Serial.print("*");
-    yellow+="1";
-    result++;
-  } else {
-    yellow+="0";
-  }
-  
-  Serial.print("\t"); Serial.print(v4);
-  if ((v4 >= WHITE_CABLE - tolerance) && (v4 <= WHITE_CABLE + tolerance)) { //10
-    Serial.print("*");
-    white+="1";
-    result++;
-  } else {
-    white+="0";
-  }
-  
-  Serial.print("\t"); Serial.print(v5);
-  if ((v5 >= GREEN_CABLE - tolerance) && (v5 <= GREEN_CABLE + tolerance)) { //10
-    Serial.print("*");
-    green+="1";
-    result++;
-  } else {
-    green+="0";
-  }
-  
-  Serial.print("\nResult is "); Serial.println(result);
-  Serial.println("-----------------------------------------------");
+int V_IN_1 = LOW;
+int V_IN_2 = LOW;
 
-  message.send("VALUES", "[ {" + red + black + yellow + white + green + "} ]");
-  if (result >= 4)
-    return 1;
-  return 0;
+int test_val_point() {
+
+  pinMode(OUT_1, OUTPUT);
+  pinMode(OUT_2, OUTPUT);
+  pinMode(OUT_3, INPUT);
+  pinMode(IN_1, INPUT);
+  pinMode(IN_2, INPUT);
+  
+  digitalWrite(OUT_1, HIGH);
+  digitalWrite(OUT_2, LOW);
+  
+  V_IN_1 = digitalRead(IN_1);
+  V_IN_2 = digitalRead(IN_2);
+  
+  Serial.print(V_IN_1);
+  Serial.print(V_IN_2);
+  Serial.println();
+  
+  if(V_IN_1 != HIGH){ return 0; }
+  if(V_IN_2 != LOW){ return 0; }
+  
+  
+  
+  pinMode(OUT_1, OUTPUT);
+  pinMode(OUT_2, OUTPUT);
+  pinMode(OUT_3, INPUT);
+  pinMode(IN_1, INPUT);
+  pinMode(IN_2, INPUT);
+  digitalWrite(OUT_1, LOW);
+  digitalWrite(OUT_2, HIGH);
+  V_IN_1 = digitalRead(IN_1);
+  V_IN_2 = digitalRead(IN_2);
+
+  Serial.print(V_IN_1);
+  Serial.print(V_IN_2);
+  Serial.println();
+  
+  if(V_IN_1 != LOW){ return 0; }
+  if(V_IN_2 != HIGH){ return 0; }
+  
+  
+  pinMode(OUT_1, INPUT);
+  pinMode(OUT_2, OUTPUT);
+  pinMode(OUT_3, OUTPUT);
+  pinMode(IN_1, INPUT);
+  pinMode(IN_2, INPUT);
+  digitalWrite(OUT_2, LOW);
+  digitalWrite(OUT_3, HIGH);
+  V_IN_1 = digitalRead(IN_1);
+  V_IN_2 = digitalRead(IN_2);
+
+  Serial.print(V_IN_1);
+  Serial.print(V_IN_2);
+  Serial.println();
+  
+  if(V_IN_1 != HIGH){ return 0; }
+  if(V_IN_2 != LOW){ return 0; }
+  
+  
+
+  return 1;
+  
 }
+  
 
 void sparkle(int time) {
   int num_led = 0;
@@ -122,14 +127,7 @@ void setup() {
   turn_led_to_color_rgb(0, 0, 0);
 
   analogReference(DEFAULT);
-
-  pinMode       (A0, INPUT);
-  pinMode       (A1, INPUT);
-  pinMode       (A2, INPUT);
-  pinMode       (A3, INPUT);
-  pinMode       (A4, INPUT);
-  pinMode       (A5, INPUT);
-
+  
   pinMode       (bouton, INPUT);
 
   pinMode       (sortie01_sharp, OUTPUT);
@@ -148,13 +146,6 @@ void setup() {
 }
 
 void loop() {
-  int valA0 = analogRead (A0);
-  int valA1 = analogRead (A1);
-  int valA2 = analogRead (A2);
-  int valA3 = analogRead (A3);
-  int valA4 = analogRead (A4);
-  int valA5 = analogRead (A5);
-
   int valBouton = digitalRead(bouton);
 
   //serialEvent();
@@ -172,7 +163,7 @@ void loop() {
   }
   if (valBouton == 1 && activity) {
 
-    if (test_val_point(valA0, valA1, valA2, valA3, valA4, valA5)) {
+    if (test_val_point()) {
       message.send("SOLUTIONS", "TRUE");
       turn_led_to_color_rgb(0, 255, 0);
       digitalWrite (sortie02_point, HIGH);
