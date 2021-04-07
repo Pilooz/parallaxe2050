@@ -40,7 +40,7 @@
     "node-math": "0.0.3",
     "popper.js": "^1.16.1",
     "serialport": "^9.0.1",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.0",
     "utf-8-validate": "^5.0.2",
     "video.js": "^7.8.4",
     "winston": "^3.3.3",
