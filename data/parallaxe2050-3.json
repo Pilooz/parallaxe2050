@@ -60,14 +60,14 @@
                     "set": "1",
                     "responses": {
                         "code": [ "9CFB9CD6","5C309FD6","9CE79CD6","5C619CD6","FCA19FD6","CCB29FD6","AC22A0D6" ],
-                        "pascode": ["8C2A9FD6","6C099BD6","BC499CD6","CCBC9BD6","3CAC9BD6","0C1D9BD6","0C2DA0D6","1C909AD6" ]
+                        "pascode": ["6C099BD6","BC499CD6","CCBC9BD6","3CAC9BD6","0C1D9BD6","0C2DA0D6","1C909AD6" ]
                     }
                 },
                 {
                     "set": "2",
                     "responses": {
                         "code": [ "9CFB9CD6","5C309FD6","9CE79CD6","5C619CD6","FCA19FD6","CCB29FD6","AC22A0D6" ],
-                        "pascode": ["8C2A9FD6","6C099BD6","BC499CD6","CCBC9BD6","3CAC9BD6","0C1D9BD6","0C2DA0D6","1C909AD6" ]
+                        "pascode": ["6C099BD6","BC499CD6","CCBC9BD6","3CAC9BD6","0C1D9BD6","0C2DA0D6","1C909AD6" ]
                     }
                 }
             ]
