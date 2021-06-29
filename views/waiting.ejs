@@ -12,7 +12,7 @@
         <!-- <link href="/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"> -->
         <link href="/css/bootswatch/bootstrap.min.css" rel="stylesheet">
 
-        <script src="/js/jquery.min.js"></script>    
+        <script src="/js/jquery.min.js"></script>
         <script src="/socket.io/socket.io.js"></script>
 
         <script href="/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -47,22 +47,23 @@
 $(document).ready(function(){
   const nextStep = "<%- data.currentStep.transitions[0].id %>";
   // Message de début d'activité
-  const msgDeb = "Vite ! Utilisez un badge<br />de la couleur de cet écran pour démarrer le système,<br />et aidez-nous à sauver le Greenternet au plus vite !";
+  const msgDeb = "[Poste verouillé]<br /> Déverrouiller avec votre carte d'accès.";
   // Message de fin d'activité
+  // ancien message : "Vite ! Utilisez un badge<br />de la couleur de cet écran pour démarrer le système,<br />et aidez-nous à sauver le Greenternet au plus vite !"
   // const msgFin = "C'est fini !<br/>Vous avez bien retenu le code ?";
-  const msgFin = "Vite ! Utilisez un badge<br />de la couleur de cet écran pour démarrer le système,<br />et aidez-nous à sauver le Greenternet au plus vite !";
-  
+  const msgFin = "[Poste verouillé]<br />Déverrouiller avec votre carte d'accès.";
+
   // var isFirstStep = <%- data.isFirstStep || true %>;
   // $(".message h1").html((isFirstStep)? msgDeb : msgFin);
   $(".message h1").html( msgFin);
 
   // Gérer la couleur de fond en fonction du serveur/timer/type de jeu/ etc/etc...
   var lightsIO = io('http://<%= data.global_config.app.adminServerIp %>:<%= data.global_config.app.adminServerPort %>/lights');
-  
+
   lightsIO.on('toclient.setColors', function(data) {
     console.log(data);
     var colors = data.set.filter(s => s.scenarioId == '<%- data.config_server.id%>')[0].rgb;
-    var bgColorStr="rgb("+colors[0]+","+colors[1]+","+colors[2]+");"; 
+    var bgColorStr="rgb("+colors[0]+","+colors[1]+","+colors[2]+");";
     console.log(bgColorStr);
     $("body").attr("style", "background-color:" + bgColorStr + ";");
   });
@@ -71,8 +72,3 @@ $(document).ready(function(){
 </script>
 
 <%- include('./partials/footer', { data: data })%>
-
-
-
-
-
