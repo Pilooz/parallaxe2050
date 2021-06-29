@@ -7,17 +7,31 @@
 
 Position armPosition;
 
+// M1=base degrees. Allowed values from 0 to 180 degrees
+// M2=shoulder degrees. Allowed values from 15 to 165 degrees
+// M3=elbow degrees. Allowed values from 0 to 180 degrees
+// M4=wrist degrees. Allowed values from 0 to 180 degrees
+// M5=wrist rotation degrees. Allowed values from 0 to 180 degrees
+// M6=gripper degrees. Allowed values from 10 to 73 degrees. 10: the toungue is open, 73: the gripper is closed.
+//                        (M1, M2, M3, M4, M5,  M6)
+
+
 bool pinState = false;
 
 void setup() {
   BraccioRobot.init();
-  delay(1000);
-  home_pos();
+  delay(2000);
+  
+  
   pinMode(pinLed, OUTPUT);
   digitalWrite(pinLed, LOW);
   pinMode(pinYellowSharp, INPUT);
   pinMode(pinBlueExclamation, INPUT_PULLUP);
   digitalWrite(pinBlueExclamation, LOW);
+
+  sleep_pos();
+  //home_pos();
+  Serial.println("End of setup.");
 }
 
 void loop() {
@@ -74,24 +88,39 @@ void sharp() {
 }
 */
 
-void exclamation () {
-  write_pos();
+void exclamation () { //draw an exclamation mark "!" on the board
+  vertical_pos();
+  delay(2000);
+  write_pos(); //BraccioRobot.moveToPosition(armPosition.set(92, 175, 165, 55, 10, 73), 20);
   write_led();
-  BraccioRobot.moveToPosition(armPosition.set(92, 145, 150, 150, 10, 73), 20);
+  BraccioRobot.moveToPosition(armPosition.set(92, 145
+  , 150, 150, 10, 73), 20);
   write_led();
   BraccioRobot.moveToPosition(armPosition.set(92, 135, 160, 160, 10, 73), 20);
   write_led();
-  delay(100);
+  delay(50);
   write_led();
-  home_pos();
+  vertical_pos();
+  delay(6000);
+  sleep_pos();
 }
 
 void home_pos() {
-  BraccioRobot.moveToPosition(armPosition.set(92, 150, 150, 70, 10, 73), 100);
-  BraccioRobot.moveToPosition(armPosition.set(102, 175, 150, 0, 10, 73), 150);
+  BraccioRobot.moveToPosition(armPosition.set(92, 150, 150, 70, 10, 73), 100); 
+  BraccioRobot.moveToPosition(armPosition.set(102, 175, 150, 0, 10, 73), 150);  
   BraccioRobot.moveToPosition(armPosition.set(102, 175, 30, 0, 10, 73), 150);
   BraccioRobot.moveToPosition(armPosition.set(92, 90, 170, 90, 10, 73), 150);
   BraccioRobot.moveToPosition(armPosition.set(92, 55, 170, 150, 0, 73), 100);
+}
+
+void vertical_pos() { //REAL vertical position
+  BraccioRobot.moveToPosition(armPosition.set(90, 90, 95, 100, 10, 73), 100);
+  // should have M2 = M3 = M4 = 90°
+  
+}
+
+void sleep_pos() {
+  BraccioRobot.moveToPosition(armPosition.set(90, 165, 165, 55, 10, 73), 100); 
 }
 
 void write_pos() {
