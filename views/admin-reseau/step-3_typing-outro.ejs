@@ -17,10 +17,9 @@
 
     $(document).ready(function() {
         const typingLines = [
-            { 'type': "typing", 'text': "J'ai reçu à l'instant un message de nos allié·es 1. Le voici :" },
+            { 'type': "typing", 'text': "Bien joué ! J'ai reçu à l'instant un message du serveur que vous avez atteint :" },
             { 'type': "typing", 'text': "“Connexion établie - Code de communication : " + codeDeCommunication + " - Temps de réponse : 0.02s”" },
             { 'type': "typing", 'text': "Retenez bien le code de communication. Et merci d'avoir établi la connexion avec ces allié·es !" },
-            { 'type': "typing", 'text': "Je vais m'occuper de contacter les allié·es 2 grâce au code de communication obtenu !" },
             { 'type': "typing", 'text': "Tapez “fin” pour fermer le terminal." },
             { 'type': "waiting", 'text': ["FIN", "fin", "Fin", "FIn", "FiN", "fiN", "fIN", "fIn"] }
         ];
@@ -35,9 +34,9 @@
 
         newTypingLine();
 
-        // 
+        //
         // Evenement lorsque l'on clique sur "Entrée"
-        // 
+        //
         $('body').keydown(function(event) {
             if(event.originalEvent != undefined) {
                 if (event.originalEvent.keyCode == 13) {
@@ -58,9 +57,9 @@
             }
         });
 
-        // 
+        //
         // Fonction pour taper une nouvelle ligne
-        // 
+        //
         function newTypingLine() {
             // Récupère la ligne courante
             currentLine = typingLines[lineCounter];
@@ -101,9 +100,9 @@
             }
         }
 
-        // 
+        //
         // Fonction pour taper une lettre supplémentaire
-        // 
+        //
         function type() {
             if(charCounter < currentLine.text.length) {
                 typedText += currentLine.text.charAt(charCounter);
