@@ -14,30 +14,25 @@
 <script>
     const nextStep = JSON.parse('<%- JSON.stringify(data.currentStep.transitions[0].id) %>');
     $(document).ready(function() {
-        const typingLines = [
-            { 'type': "typing", 'text': "Vous êtes là ? Il y a quelqu'une ? Vous me recevez ?" },
-            { 'type': "typing", 'text': "..." },
-            { 'type': "typing", 'text': "Si quelqu'une peut lire ce message, tapez “yes” !" },
-            { 'type': "waiting", 'text': ["YES", "yes", "Yes", "YEs", "YeS", "yeS", "yES", "yEs"] },
-            { 'type': "typing", 'text': "Enfin quelqu'une ! On a un gros problème qui m'empêche de vous contacter autrement qu'ici." },
-            { 'type': "typing", 'text': "J'ai besoin de votre aide, tout le Greenternet compte sur vous !" },
-            { 'type': "typing", 'text': "Êtes-vous prêt·es à m'aider ?" },
-            { 'type': "waiting", 'text': ["YES", "yes", "Yes", "YEs", "YeS", "yeS", "yES", "yEs", "oui", "ouI", "oUi", "oUI", "Oui", "OuI", "OUi", "OUI"] },
-            { 'type': "typing", 'text': "Super." },
-            { 'type': "typing", 'text': "Le virus a infecté beaucoup de serveurs du réseau du Greenternet." },
-            { 'type': "typing", 'text': "Il faut établir la connexion jusqu'à nos allié·es sans passer par ces serveurs." },
-            { 'type': "typing", 'text': "Commencez par utiliser le terminal pour identifier les serveurs infectés par le virus." },
-            { 'type': "typing", 'text': "Utilisez la ligne de commande “status” (en tapant “status 31.13.127.11” par exemple)." },
-            { 'type': "typing", 'text': "Quand vous savez quels serveurs sont infectés, connectez-nous aux allié·es 1." },
-            { 'type': "typing", 'text': "Une fois la connexion établie, envoyez-leur un “ping”." },
-            { 'type': "typing", 'text': "Donc :" },
-            { 'type': "typing", 'text': "1. Regardez le plan du réseau et choisissez les serveurs par lesquels passer pour contacter les allié·es 1." },
-            { 'type': "typing", 'text': "2. Regardez si ces serveurs sont infectés ou non avec la ligne de commande “status adresse ip”." },
-            { 'type': "typing", 'text': "3. Câblez le chemin sans passer par les serveurs infectés." },
-            { 'type': "typing", 'text': "4. Faites un “ping” pour contacter nos allié·es 1." },
-            { 'type': "typing", 'text': "(Regardez la fiche d'aide si vous ne savez pas quelle ligne de commande taper dans le terminal !)" },
-            { 'type': "typing", 'text': "A présent, tapez “ok” pour accéder au terminal complet, afin de contacter le réseau extérieur !" },
-            { 'type': "waiting", 'text': ["ok", "OK", "Ok", "oK"] }
+      const typingLines = [
+          { 'type': "typing", 'text': "Vous êtes là ? Il y a quelqu'un.e ? Vous me recevez ?" },
+          { 'type': "typing", 'text': "..." },
+          { 'type': "typing", 'text': "Si vous pouvez lire ce message, tapez “yes” !" },
+          { 'type': "waiting", 'text': ["YES", "yes", "Yes", "YEs", "YeS", "yeS", "yES", "yEs"] },
+          { 'type': "typing", 'text': "Enfin quelqu'une ! On a un gros problème qui m'empêche de vous contacter autrement qu'ici..." },
+          { 'type': "typing", 'text': "J'ai besoin de votre aide pour effectuer une opération depuis mon bureau." },
+          { 'type': "typing", 'text': "Êtes-vous prêt·es à m'aider ?" },
+          { 'type': "waiting", 'text': ["YES", "yes", "Yes", "YEs", "YeS", "yeS", "yES", "yEs", "oui", "ouI", "oUi", "oUI", "Oui", "OuI", "OUi", "OUI"] },
+          { 'type': "typing", 'text': "Super." },
+          { 'type': "typing", 'text': "Alors, le virus a infecté beaucoup de serveurs du réseau du Greenternet." },
+          { 'type': "typing", 'text': "Il va nous falloir rétablir la connexion jusqu'à l'un de nos alliés sans passer par les serveurs infectés." },
+          { 'type': "typing", 'text': "Depuis ce terminal vous allez pouvoir identifier l'état des serveurs pour éventuellement les contourner." },
+          { 'type': "typing", 'text': "Mes documents expliquent comment faire. Trouvez-les." },
+          { 'type': "typing", 'text': "Une fois que vous avez un allié accessible, envoyez-lui un PING." },
+          { 'type': "typing", 'text': "Nous pourrons alors l'utiliser pour propager un antivirus sur le réseau." },
+          { 'type': "typing", 'text': "Je compte sur vous !" },
+          { 'type': "typing", 'text': "Tapez “ok” pour accéder au terminal" },
+          { 'type': "waiting", 'text': ["ok", "OK", "Ok", "oK"] }
         ];
         var charCounter = 0;
         var lineCounter = 0;
@@ -50,9 +45,9 @@
 
         newTypingLine();
 
-        // 
+        //
         // Evenement lorsque l'on clique sur "Entrée"
-        // 
+        //
         $('body').keydown(function(event) {
             if(event.originalEvent != undefined) {
                 if (event.originalEvent.keyCode == 13) {
@@ -73,9 +68,9 @@
             }
         });
 
-        // 
+        //
         // Fonction pour taper une nouvelle ligne
-        // 
+        //
         function newTypingLine() {
             // Récupère la ligne courante
             currentLine = typingLines[lineCounter];
@@ -116,9 +111,9 @@
             }
         }
 
-        // 
+        //
         // Fonction pour taper une lettre supplémentaire
-        // 
+        //
         function type() {
             if(charCounter < currentLine.text.length) {
                 typedText += currentLine.text.charAt(charCounter);
