@@ -19,7 +19,7 @@
             [
                 { "id" : "", "condition" : "" }
             ],
-            "solutions" : 
+            "solutions" :
             [
                 {
                     "set": "1",
@@ -47,22 +47,22 @@
             [
                 { "id" : "step-1", "condition" : "" }
             ],
-            "solutions" : 
+            "solutions" :
             [
                 {
-                    "set": "1", 
-                    "responses" : [ 
+                    "set": "1",
+                    "responses" : [
                         { "hashtag": "restezchezvous" }
                     ]
                 },
                 {
-                    "set": "2", 
-                    "responses" : [ 
+                    "set": "2",
+                    "responses" : [
                         { "hashtag": "restezchezvous" }
                     ]
                 }
             ],
-            "login": "marguerite",
+            "login": "LaFleur",
             "password": "KN0 t€r",
             "blurredHashtags": ["killThePresident", "8GPandémie", "platistes", "GreenternetHS", "PapiALaPoubelle", "Crève", "spencer"],
             "blurredAccounts": ["pépé_mayo", "DieuOff"],
@@ -96,7 +96,7 @@
                 { "pseudo": "lindependant_journalOFF", "content": "EXCLUSIVITÉ : Retrouvez sur notre site internet une #interview #exclusive lae directeur·trice général de @GREENenergy. Avec ellui, nous abordons la question des #énergies #renouvelables, comment réparer le mal fait à la #planète, et beaucoup d’autres sujets.", "likes": "4964" },
                 { "pseudo": "StreetLover", "content": "Encore une #femme #présidente des Etats-Unis… on aura vraiment tout vu. #Trump me manque ! #restezchezvous", "likes": "8273" }
             ]
-        }, 
+        },
         {
             "stepId" : "step-3",
             "stepTitle" : "Message de Marguerite (C'est encore Marguerite...)",
@@ -112,7 +112,7 @@
             [
                 { "id" : "step-2", "condition" : "" }
             ],
-            "solutions" : 
+            "solutions" :
             [
                 {
                     "set": "1",
@@ -139,22 +139,22 @@
             [
                 { "id" : "step-3", "condition" : "" }
             ],
-            "solutions" : 
+            "solutions" :
             [
                 {
-                    "set": "1", 
-                    "responses" : [ 
+                    "set": "1",
+                    "responses" : [
                         { "likes": "2340" }
                     ]
                 },
                 {
-                    "set": "2", 
-                    "responses" : [ 
+                    "set": "2",
+                    "responses" : [
                         { "likes": "2340" }
                     ]
                 }
             ],
-            "login": "marguerite",
+            "login": "LaFleur",
             "password": "KN0 t€r"
         },
         {
@@ -172,7 +172,7 @@
             [
                 { "id" : "step-4", "condition" : "" }
             ],
-            "solutions" : 
+            "solutions" :
             [
                 {
                     "set": "1",
@@ -200,25 +200,25 @@
             [
                 { "id" : "step-5", "condition" : "" }
             ],
-            "solutions" : 
+            "solutions" :
             [
                 {
-                    "set": "1", 
-                    "responses" : [ 
+                    "set": "1",
+                    "responses" : [
                         { "likes": "2340" }
                     ]
                 },
                 {
-                    "set": "2", 
-                    "responses" : [ 
+                    "set": "2",
+                    "responses" : [
                         { "likes": "2340" }
                     ]
                 }
             ],
-            "login": "marguerite",
+            "login": "LaFleur",
             "password": "KN0 t€r"
         },
-        
+
         {
             "stepId" : "step-7",
             "stepTitle" : "Fin du jeu, attente de badge",
@@ -234,14 +234,14 @@
             [
                 { "id" : "step-6", "condition" : "" }
             ],
-            "solutions" : 
+            "solutions" :
             [
                 {
-                    "set": "1", 
+                    "set": "1",
                     "responses" : []
                 },
                 {
-                    "set": "2", 
+                    "set": "2",
                     "responses" : []
                 }
             ]
