@@ -42,7 +42,7 @@
     "serialport": "^9.0.1",
     "socket.io": "^2.3.0",
     "utf-8-validate": "^5.0.2",
-    "video.js": "^7.8.4",
+    "video.js": "^7.20.3",
     "winston": "^3.3.3",
     "xterm": "^4.8.1"
   }
