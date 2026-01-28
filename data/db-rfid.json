@@ -282,8 +282,8 @@
 		{
 			"code": "BE857360",
 			"params": {
-				"group": "B",
-				"subgroup": "1"
+				"group": "*",
+				"subgroup": "*"
 			}
 		},
 		{
